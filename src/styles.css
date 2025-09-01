@@ -33,3 +33,74 @@ body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,Helvetica,sans-serif;co
 .section-title{font-weight:700;margin:8px 0 6px 0;color:#0f172a}
 .btn-link{background:none;border:none;color:var(--liberty-navy);cursor:pointer;text-decoration:underline;padding:0}
 .footer{max-width:1200px;margin:12px auto 32px;padding:0 16px;color:#64748b;font-size:12px}
+
+/* ==== Layout: two-column container ==== */
+.container {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr); /* left rail fixed, right flexible */
+  gap: 16px;               /* a bit more breathing room */
+  align-items: start;      /* keep cards from stretching vertically */
+}
+
+/* Ensure grid children can shrink instead of overflowing their cells */
+.container > * { min-width: 0; }
+
+/* Left column “stack” */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 2;              /* sit above, just in case */
+  min-width: 0;
+}
+
+/* Generic card wrapper */
+.card {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  min-width: 0;            /* prevent overflow in grid cells */
+  overflow: hidden;        /* stop charts/contents from spilling out */
+}
+
+/* Two-up grids used for inputs and totals */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Inputs: keep labels & fields tidy and non-overflowing */
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+.input-row > label {
+  font-size: 12px;
+  color: #6B7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* don’t push layout if label is long */
+}
+.input-row > input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Vertical KPI stack on the right */
+.kpi-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* Optional: if you want to belt-and-suspenders the whole app */
+.grid > * { min-width: 0; } /* safe guard if you use other .grid blocks */
