@@ -142,3 +142,17 @@ body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,Helvetica,sans-serif;co
   width: 100%;
   min-width: 0;
 }
+
+/* Limit dropdown width in the left rail (Quick Inputs) */
+.stack select {
+  width: auto;          /* size to content */
+  max-width: 160px;     /* cap so it never stretches awkwardly */
+  min-width: 110px;     /* keep it tappable */
+}
+
+/* If ScenarioSelector renders inside .input-row, this keeps it neat */
+.stack .input-row select {
+  width: auto;
+  max-width: 160px;
+  min-width: 110px;
+}
