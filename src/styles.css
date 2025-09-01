@@ -104,3 +104,17 @@ body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,Helvetica,sans-serif;co
 
 /* Optional: if you want to belt-and-suspenders the whole app */
 .grid > * { min-width: 0; } /* safe guard if you use other .grid blocks */
+
+/* In the left rail's grid-2, stack label above input per field */
+.stack .grid-2 .input-row {
+  grid-template-columns: 1fr;   /* label above input */
+}
+
+.stack .grid-2 .input-row > label {
+  margin-bottom: 4px;
+  white-space: normal;
+}
+
+.stack .grid-2 .input-row > input {
+  width: 100%;
+}
