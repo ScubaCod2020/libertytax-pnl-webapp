@@ -118,3 +118,27 @@ body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,Helvetica,sans-serif;co
 .stack .grid-2 .input-row > input {
   width: 100%;
 }
+
+
+/* === Left rail: give it a little more room + breathing space between columns === */
+.container {
+  grid-template-columns: 360px minmax(0, 1fr); /* was 320px */
+  gap: 24px;                                    /* was 16px */
+  padding: 0 24px;                               /* a touch more side padding */
+}
+
+/* === KPI/Expense labels: wrap instead of cutting off === */
+.stack .grid-2 .input-row > label {
+  display: block;             /* ensures wrapping takes effect */
+  white-space: normal;        /* allow multi-line */
+  overflow-wrap: anywhere;    /* break long phrases if needed */
+  line-height: 1.2;
+  font-size: 12px;            /* slightly smaller to fit nicely */
+  margin-bottom: 4px;         /* space above the input */
+}
+
+/* Inputs: fill the available column width cleanly */
+.stack .grid-2 .input-row > input {
+  width: 100%;
+  min-width: 0;
+}
