@@ -1,3 +1,60 @@
+const STORAGE_KEY = 'lt_pnl_v5_session_v1';
+type SessionSnapshot = {
+  region: Region;
+  scenario: Scenario;
+  avgNetFee: number;
+  taxPrepReturns: number;
+  taxRushReturns: number;
+  discountsPct: number;
+  salariesPct: number;
+  rentPct: number;
+  suppliesPct: number;
+  royaltiesPct: number;
+  advRoyaltiesPct: number;
+  miscPct: number;
+  thresholds: Thresholds;
+};
+
+useEffect(() => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data: SessionSnapshot = JSON.parse(raw);
+    // hydrate
+    setRegion(data.region);
+    setScenario(data.scenario);
+    setANF(data.avgNetFee);
+    setReturns(data.taxPrepReturns);
+    setTaxRush(data.taxRushReturns);
+    setDisc(data.discountsPct);
+    setSal(data.salariesPct);
+    setRent(data.rentPct);
+    setSup(data.suppliesPct);
+    setRoy(data.royaltiesPct);
+    setAdvRoy(data.advRoyaltiesPct);
+    setMisc(data.miscPct);
+    setThr(data.thresholds);
+  } catch {}
+}, []);
+
+useEffect(() => {
+  const snapshot: SessionSnapshot = {
+    region, scenario, avgNetFee, taxPrepReturns, taxRushReturns,
+    discountsPct, salariesPct, rentPct, suppliesPct, royaltiesPct, advRoyaltiesPct, miscPct,
+    thresholds: thr
+  };
+  const id = setTimeout(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+  }, 400); // debounce
+  return () => clearTimeout(id);
+}, [region, scenario, avgNetFee, taxPrepReturns, taxRushReturns, discountsPct, salariesPct, rentPct, suppliesPct, royaltiesPct, advRoyaltiesPct, miscPct, thr]);
+
+function resetSession() {
+  localStorage.removeItem(STORAGE_KEY);
+  window.location.reload();
+}
+
+
 import React, { useMemo, useState, useEffect } from 'react'
 import { calc, statusForCPR, statusForMargin, statusForNetIncome, type Inputs, type Region, type Thresholds } from './lib/calcs'
 import KPIStoplight from './components/KPIStoplight'
