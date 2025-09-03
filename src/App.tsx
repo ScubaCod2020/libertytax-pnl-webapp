@@ -42,7 +42,10 @@ const defaultThresholds: Thresholds = {
 /* ──────────────────────────────────────────────────────────────────────────────
    3) Persistence schema (versioned envelope)
    ────────────────────────────────────────────────────────────────────────────── */
-const STORAGE_KEY = 'lt_pnl_v5_session_v1'
+const STORAGE_KEY = `lt_pnl_v5_session_v1_${APP_VERSION}`
+// add just under STORAGE_KEY
+const APP_VERSION = 'v0.5-preview'
+const ORIGIN = typeof window !== 'undefined' ? window.location.origin : 'ssr'
 
 type SessionState = {
   region: Region
@@ -167,6 +170,7 @@ export default function App() {
      ────────────────────────────────────────────────────────────────────────── */
   useEffect(() => {
   dbg('hydrate: start')
+  dbg('hydrate: start @ origin', ORIGIN, 'app', APP_VERSION)
   const env = loadEnvelope()
   const restored = env?.last ?? env?.baselines?.questionnaire
 
@@ -666,15 +670,32 @@ const savedAt = (() => {
   <div style={{ position:'fixed', right:12, bottom:12, padding:12, background:'#111', color:'#eee', borderRadius:8 }}>
     <div style={{ fontWeight:700, marginBottom:6 }}>Debug</div>
     <div style={{ fontSize:12, opacity:.8 }}>key: {STORAGE_KEY}</div>
+    <div style={{ fontSize:12, opacity:.8 }}>origin: {ORIGIN}</div>
+    <div style={{ fontSize:12, opacity:.8 }}>version: {APP_VERSION}</div>
     <div style={{ fontSize:12, opacity:.8 }}>ready: {String(readyRef.current)} | hydrating: {String(hydratingRef.current)}</div>
     <div style={{ fontSize:12, opacity:.8 }}>last saved: {savedAt}</div>
     <div style={{ display:'flex', gap:8, marginTop:8 }}>
       <button onClick={() => { dbg('ui: Save Now'); saveNow() }} style={{ fontSize:12 }}>Save now</button>
-      <button onClick={() => { dbg('ui: Dump storage'); console.log('ENVELOPE', loadEnvelope()) }} style={{ fontSize:12 }}>Dump</button>
-      <button onClick={() => { dbg('ui: Clear & reset'); localStorage.removeItem(STORAGE_KEY); }} style={{ fontSize:12 }}>Clear key</button>
+      <button onClick={() => { 
+        dbg('ui: Dump storage'); 
+        const env = loadEnvelope(); 
+        console.log('ENVELOPE', env) 
+      }} style={{ fontSize:12 }}>Dump</button>
+      <button onClick={() => { 
+        try {
+          const env = loadEnvelope();
+          navigator.clipboard?.writeText(JSON.stringify(env ?? {}, null, 2));
+          dbg('ui: Copied envelope to clipboard');
+        } catch {}
+      }} style={{ fontSize:12 }}>Copy JSON</button>
+      <button onClick={() => { 
+        dbg('ui: Clear & reset'); 
+        localStorage.removeItem(STORAGE_KEY); 
+      }} style={{ fontSize:12 }}>Clear key</button>
     </div>
   </div>
 )}
+
       
       <div className="footer">
         Preview web app • Persistence enabled • Region gating (TaxRush CA-only) • Preset gating on hydration
