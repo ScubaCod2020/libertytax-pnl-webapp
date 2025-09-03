@@ -136,9 +136,6 @@ export default function App() {
     // holds the most recent *complete* snapshot so unload/save never sees defaults
   const latestSnapRef = useRef<SessionState | null>(null)
 
-    // optional: a one-time “settled” flag so autosave doesn’t write during the first ready tick
-  const settledRef = useRef(false)
-
   
   /* 4c) Snapshot helpers */
   const makeSnapshot = (): SessionState => {
