@@ -130,11 +130,19 @@ export default function App() {
   const readyRef = useRef(false)
   const settledRef = useRef(false) // first “ready” tick = no-op (prevents clobber)
   
-// NEW: mark when user hand-edits TaxRush while in CA (prevents preset overwrite)
+    // NEW: mark when user hand-edits TaxRush while in CA (prevents preset overwrite)
   const taxRushDirtyRef = useRef(false)
+
+    // holds the most recent *complete* snapshot so unload/save never sees defaults
+  const latestSnapRef = useRef<SessionState | null>(null)
+
+    // optional: a one-time “settled” flag so autosave doesn’t write during the first ready tick
+  const settledRef = useRef(false)
+
   
   /* 4c) Snapshot helpers */
-  const makeSnapshot = (): SessionState => ({
+  const makeSnapshot = (): SessionState => {
+  const snap: SessionState = {
     region,
     scenario,
     avgNetFee,
@@ -148,7 +156,11 @@ export default function App() {
     advRoyaltiesPct,
     miscPct,
     thresholds: thr,
-  })
+  }
+  latestSnapRef.current = snap
+  return snap
+}
+
 
   const applySnapshot = (s: SessionState) => {
     setRegion(s.region)
@@ -258,31 +270,33 @@ export default function App() {
   /* ──────────────────────────────────────────────────────────────────────────
      8) AUTOSAVE (debounced) — writes to envelope.last after changes
      ────────────────────────────────────────────────────────────────────────── */
-  useEffect(() => {
-  // Don’t autosave while hydrating or before the first paint after hydration
+ useEffect(() => {
   if (hydratingRef.current || !readyRef.current) {
     dbg('autosave: skipped (hydrating or not ready)')
     return
   }
 
-  // Make the first pass a NO-OP to avoid clobbering immediately after hydration
+  // first ready tick after hydration: do nothing (prevents clobber)
   if (!settledRef.current) {
     settledRef.current = true
     dbg('autosave: first-ready tick (no write)')
+    // still capture a snapshot so latestSnapRef is warm
+    latestSnapRef.current = makeSnapshot()
     return
   }
 
   dbg('autosave: scheduled')
   const id = setTimeout(() => {
-    const snap = makeSnapshot()
+    const snap = makeSnapshot() // also updates latestSnapRef
     dbg('autosave: firing snapshot', snap)
-    saveEnvelope((prev) => ({
+    saveEnvelope(prev => ({
       version: 1,
       ...prev,
       last: snap,
       meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
     }))
   }, 250)
+
   return () => clearTimeout(id)
 }, [
   region, scenario, avgNetFee, taxPrepReturns, taxRushReturns,
@@ -290,15 +304,15 @@ export default function App() {
   advRoyaltiesPct, miscPct, thr,
 ])
 
-
   /* ──────────────────────────────────────────────────────────────────────────
      8.1) NEW: Immediate save helper + beforeunload flush
           - Fixes "CA TaxRush lost on quick refresh" by flushing final write
      ────────────────────────────────────────────────────────────────────────── */
-  function saveNow() {
-  const snap = makeSnapshot()
+function saveNow() {
+  // prefer the most recent known-good snapshot; fall back to building one
+  const snap = latestSnapRef.current ?? makeSnapshot()
   dbg('saveNow: writing immediately (snapshot)', snap)
-  saveEnvelope((prev) => ({
+  saveEnvelope(prev => ({
     version: 1,
     ...prev,
     last: snap,
@@ -309,7 +323,10 @@ export default function App() {
 // beforeunload flush
 useEffect(() => {
   const handleBeforeUnload = () => {
-    if (readyRef.current) { dbg('beforeunload: flush'); saveNow() }
+    if (readyRef.current) {
+      dbg('beforeunload: flush (using latestSnapRef)')
+      saveNow()
+    }
   }
   window.addEventListener('beforeunload', handleBeforeUnload)
   return () => window.removeEventListener('beforeunload', handleBeforeUnload)
@@ -319,13 +336,14 @@ useEffect(() => {
 useEffect(() => {
   const handleVis = () => {
     if (document.visibilityState === 'hidden' && readyRef.current) {
-      dbg('visibilitychange: hidden -> flush')
+      dbg('visibilitychange: hidden -> flush (using latestSnapRef)')
       saveNow()
     }
   }
   document.addEventListener('visibilitychange', handleVis)
   return () => document.removeEventListener('visibilitychange', handleVis)
 }, [])
+
   
   /* ──────────────────────────────────────────────────────────────────────────
      9) RESET — clear storage and revert to defaults (no hard reload)
