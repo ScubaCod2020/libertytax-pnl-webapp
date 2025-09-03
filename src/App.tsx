@@ -15,6 +15,11 @@ import KPIStoplight from './components/KPIStoplight'
 import ScenarioSelector from './components/ScenarioSelector'
 import { presets, type Scenario } from './data/presets'
 
+// DEV logging toggle — set to false to silence
+const DEBUG = true
+const dbg = (...args: any[]) => { if (DEBUG) console.log('[persist]', ...args) }
+
+
 /* ──────────────────────────────────────────────────────────────────────────────
    1) Formatting helpers
    ────────────────────────────────────────────────────────────────────────────── */
@@ -70,19 +75,23 @@ type PersistEnvelopeV1 = {
 
 function loadEnvelope(): PersistEnvelopeV1 | undefined {
   try {
+    dbg('loadEnvelope()', STORAGE_KEY)
     const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return
+    if (!raw) { dbg('loadEnvelope: no key'); return }
     const parsed = JSON.parse(raw) as PersistEnvelopeV1
+    dbg('loadEnvelope: parsed', parsed?.meta?.savedAtISO ?? '(no meta)')
     if (parsed && parsed.version === 1) return parsed
-  } catch { /* ignore */ }
+  } catch (e) { dbg('loadEnvelope: ERROR', e) }
   return
 }
 
 function saveEnvelope(mutator: (prev: PersistEnvelopeV1) => PersistEnvelopeV1) {
   const prev = loadEnvelope() ?? ({ version: 1 } as PersistEnvelopeV1)
   const next = mutator(prev)
+  dbg('saveEnvelope()', next?.meta?.savedAtISO ?? '(no meta)')
   localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
 }
+
 
 function clearEnvelope() {
   localStorage.removeItem(STORAGE_KEY)
@@ -153,34 +162,33 @@ export default function App() {
      5) HYDRATION — restore last (or questionnaire baseline), then mark ready
      ────────────────────────────────────────────────────────────────────────── */
   useEffect(() => {
-    const env = loadEnvelope()
-    const restored =
-      env?.last ??
-      env?.baselines?.questionnaire // future: onboarding baseline
-    if (restored) applySnapshot(restored)
+  dbg('hydrate: start')
+  const env = loadEnvelope()
+  const restored = env?.last ?? env?.baselines?.questionnaire
+  if (restored) { dbg('hydrate: restoring snapshot', { region: restored.region, scenario: restored.scenario, taxRush: restored.taxRushReturns }) ; applySnapshot(restored) }
+  else { dbg('hydrate: nothing to restore; using defaults') }
 
-    hydratingRef.current = false
-    setTimeout(() => { readyRef.current = true }, 0)
-  }, [])
+  hydratingRef.current = false
+  setTimeout(() => {
+    readyRef.current = true
+    dbg('hydrate: readyRef -> true')
+  }, 0)
+}, [])
+
 
   /* ──────────────────────────────────────────────────────────────────────────
      6) PRESETS — apply only when user changes scenario AFTER hydration
      ────────────────────────────────────────────────────────────────────────── */
   useEffect(() => {
-    if (hydratingRef.current) return
-    if (scenario === 'Custom') return
-    const p = presets[scenario]
-    setANF(p.avgNetFee)
-    setReturns(p.taxPrepReturns)
-    setTaxRush(p.taxRushReturns)
-    setDisc(p.discountsPct)
-    setSal(p.salariesPct)
-    setRent(p.rentPct)
-    setSup(p.suppliesPct)
-    setRoy(p.royaltiesPct)
-    setAdvRoy(p.advRoyaltiesPct)
-    setMisc(p.miscPct)
-  }, [scenario])
+  if (hydratingRef.current || !readyRef.current) { dbg('preset: skipped (hydrating or not ready)'); return }
+  if (scenario === 'Custom') { dbg('preset: Custom (no template applied)'); return }
+  const p = presets[scenario]
+  dbg('preset: applying', scenario)
+  setANF(p.avgNetFee); setReturns(p.taxPrepReturns); setTaxRush(p.taxRushReturns)
+  setDisc(p.discountsPct); setSal(p.salariesPct); setRent(p.rentPct)
+  setSup(p.suppliesPct); setRoy(p.royaltiesPct); setAdvRoy(p.advRoyaltiesPct); setMisc(p.miscPct)
+}, [scenario])
+
 
   /* ──────────────────────────────────────────────────────────────────────────
      7) REGION GATING — Canada-only TaxRush (US forces 0)
@@ -197,28 +205,10 @@ export default function App() {
      8) AUTOSAVE (debounced) — writes to envelope.last after changes
      ────────────────────────────────────────────────────────────────────────── */
   useEffect(() => {
-    if (!readyRef.current) return
-    const id = setTimeout(() => {
-      const snap = makeSnapshot()
-      saveEnvelope((prev) => ({
-        version: 1,
-        ...prev,
-        last: snap,
-        meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
-      }))
-    }, 400)
-    return () => clearTimeout(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    region, scenario, avgNetFee, taxPrepReturns, taxRushReturns,
-    discountsPct, salariesPct, rentPct, suppliesPct, royaltiesPct, advRoyaltiesPct, miscPct, thr,
-  ])
-
-  /* ──────────────────────────────────────────────────────────────────────────
-     8.1) NEW: Immediate save helper + beforeunload flush
-          - Fixes "CA TaxRush lost on quick refresh" by flushing final write
-     ────────────────────────────────────────────────────────────────────────── */
-  function saveNow() {
+  if (!readyRef.current) { dbg('autosave: skipped (not ready)'); return }
+  dbg('autosave: scheduled')
+  const id = setTimeout(() => {
+    dbg('autosave: firing', { region, scenario, taxRushReturns })
     const snap = makeSnapshot()
     saveEnvelope((prev) => ({
       version: 1,
@@ -226,16 +216,50 @@ export default function App() {
       last: snap,
       meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
     }))
+  }, 250) // TEMP: 250ms while debugging; switch back to 400 later
+  return () => clearTimeout(id)
+}, [
+  region, scenario, avgNetFee, taxPrepReturns, taxRushReturns,
+  discountsPct, salariesPct, rentPct, suppliesPct, royaltiesPct,
+  advRoyaltiesPct, miscPct, thr,
+])
+
+  /* ──────────────────────────────────────────────────────────────────────────
+     8.1) NEW: Immediate save helper + beforeunload flush
+          - Fixes "CA TaxRush lost on quick refresh" by flushing final write
+     ────────────────────────────────────────────────────────────────────────── */
+  function saveNow() {
+  const snap = makeSnapshot()
+  dbg('saveNow: writing immediately', { region: snap.region, scenario: snap.scenario, taxRushReturns: snap.taxRushReturns })
+  saveEnvelope((prev) => ({
+    version: 1,
+    ...prev,
+    last: snap,
+    meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
+  }))
+}
+
+// beforeunload flush
+useEffect(() => {
+  const handleBeforeUnload = () => {
+    if (readyRef.current) { dbg('beforeunload: flush'); saveNow() }
   }
+  window.addEventListener('beforeunload', handleBeforeUnload)
+  return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+}, [])
 
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      if (readyRef.current) saveNow()
+// visibilitychange flush (helps mobile / tab switches)
+useEffect(() => {
+  const handleVis = () => {
+    if (document.visibilityState === 'hidden' && readyRef.current) {
+      dbg('visibilitychange: hidden -> flush')
+      saveNow()
     }
-    window.addEventListener('beforeunload', handleBeforeUnload)
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
-  }, [])
-
+  }
+  document.addEventListener('visibilitychange', handleVis)
+  return () => document.removeEventListener('visibilitychange', handleVis)
+}, [])
+  
   /* ──────────────────────────────────────────────────────────────────────────
      9) RESET — clear storage and revert to defaults (no hard reload)
      ────────────────────────────────────────────────────────────────────────── */
@@ -282,10 +306,27 @@ export default function App() {
   /* ──────────────────────────────────────────────────────────────────────────
      11) UI
      ────────────────────────────────────────────────────────────────────────── */
+ // Debug panel state (place ABOVE return)
+const showDebug =
+  DEBUG ||
+  (typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('debug') === '1')
+
+const savedAt = (() => {
+  try {
+    const env = loadEnvelope()
+    return env?.meta?.savedAtISO
+      ? new Date(env.meta.savedAtISO).toLocaleTimeString()
+      : '—'
+  } catch {
+    return '—'
+  }
+})()
+
   return (
     <div>
       <div className="header">
-        <div className="brand">Liberty Tax • P&L Budget & Forecast (v0.4 preview)</div>
+        <div className="brand">Liberty Tax • P&L Budget & Forecast (v0.5 preview)</div>
         <div className="small">
           Region:&nbsp;
           <select
@@ -325,7 +366,7 @@ export default function App() {
                 type="number"
                 value={avgNetFee}
                 onChange={(e) => setANF(+e.target.value)}
-                onBlur={() => readyRef.current && saveNow()}
+                onBlur={() => { if (readyRef.current) saveNow() }}
               />
             </div>
             <div className="input-row">
@@ -334,7 +375,7 @@ export default function App() {
                 type="number"
                 value={taxPrepReturns}
                 onChange={(e) => setReturns(+e.target.value)}
-                onBlur={() => readyRef.current && saveNow()}
+                onBlur={() => { if (readyRef.current) saveNow() }}
               />
             </div>
             <div className="input-row">
@@ -343,11 +384,12 @@ export default function App() {
                 type="number"
                 value={region === 'CA' ? taxRushReturns : 0}
                 disabled={region !== 'CA'}
-                onChange={(e) => setTaxRush(+e.target.value)}
-                onBlur={() => {
-                  // Immediate save on field exit to survive fast refreshes
-                  if (region === 'CA' && readyRef.current) saveNow()
-                }}
+                onChange={(e) => {
+                  const raw = e.target.value
+                  const n = raw === '' ? 0 : +raw
+                  setTaxRush(n)
+                  }}
+                onBlur={() => { if (region === 'CA' && readyRef.current) { dbg('blur: TaxRush -> saveNow'); saveNow() } }}
               />
             </div>
 
@@ -549,9 +591,23 @@ export default function App() {
               </ul>
             </div>
           </div>
-        </div>
+        </div>    
       </div>
 
+{showDebug && (
+  <div style={{ position:'fixed', right:12, bottom:12, padding:12, background:'#111', color:'#eee', borderRadius:8 }}>
+    <div style={{ fontWeight:700, marginBottom:6 }}>Debug</div>
+    <div style={{ fontSize:12, opacity:.8 }}>key: {STORAGE_KEY}</div>
+    <div style={{ fontSize:12, opacity:.8 }}>ready: {String(readyRef.current)} | hydrating: {String(hydratingRef.current)}</div>
+    <div style={{ fontSize:12, opacity:.8 }}>last saved: {savedAt}</div>
+    <div style={{ display:'flex', gap:8, marginTop:8 }}>
+      <button onClick={() => { dbg('ui: Save Now'); saveNow() }} style={{ fontSize:12 }}>Save now</button>
+      <button onClick={() => { dbg('ui: Dump storage'); console.log('ENVELOPE', loadEnvelope()) }} style={{ fontSize:12 }}>Dump</button>
+      <button onClick={() => { dbg('ui: Clear & reset'); localStorage.removeItem(STORAGE_KEY); }} style={{ fontSize:12 }}>Clear key</button>
+    </div>
+  </div>
+)}
+      
       <div className="footer">
         Preview web app • Persistence enabled • Region gating (TaxRush CA-only) • Preset gating on hydration
       </div>
