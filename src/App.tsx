@@ -168,7 +168,7 @@ export default function App() {
   dbg('hydrate: start')
   const env = loadEnvelope()
   const restored = env?.last ?? env?.baselines?.questionnaire
-  if (restored) { dbg('hydrate: restoring snapshot', { region: restored.region, scenario: restored.scenario, taxRush: restored.taxRushReturns }) ; applySnapshot(restored) }
+  if (restored) { dbg('hydrate: restoring snapshot', restored) }
   else { dbg('hydrate: nothing to restore; using defaults') }
 
   hydratingRef.current = false
@@ -208,8 +208,8 @@ export default function App() {
     setANF(p.avgNetFee)
     setReturns(p.taxPrepReturns)
 
-    // NEW: only apply preset TaxRush if user hasn't hand-edited it
-    if (region === 'CA' && taxRushDirtyRef.current) {
+    // only apply preset’s TaxRush if we’re in Canada; otherwise preserve 0
+if (region === 'CA') setTaxRush(p.taxRushReturns) {
       dbg('preset: skip TaxRush (user-edited, sticky)')
     } else {
       setTaxRush(region === 'CA' ? p.taxRushReturns : 0)
@@ -241,14 +241,15 @@ export default function App() {
   if (!readyRef.current) { dbg('autosave: skipped (not ready)'); return }
   dbg('autosave: scheduled')
   const id = setTimeout(() => {
-    dbg('autosave: firing', { region, scenario, taxRushReturns })
     const snap = makeSnapshot()
-    saveEnvelope((prev) => ({
-      version: 1,
-      ...prev,
-      last: snap,
-      meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
-    }))
+  dbg('autosave: firing snapshot', snap)
+  saveEnvelope((prev) => ({
+  version: 1,
+  ...prev,
+  last: snap,
+  meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
+}))
+
   }, 250) // TEMP: 250ms while debugging; switch back to 400 later
   return () => clearTimeout(id)
 }, [
@@ -263,7 +264,7 @@ export default function App() {
      ────────────────────────────────────────────────────────────────────────── */
   function saveNow() {
   const snap = makeSnapshot()
-  dbg('saveNow: writing immediately', { region: snap.region, scenario: snap.scenario, taxRushReturns: snap.taxRushReturns })
+  dbg('saveNow: writing immediately (snapshot)', snap)
   saveEnvelope((prev) => ({
     version: 1,
     ...prev,
@@ -365,7 +366,11 @@ const savedAt = (() => {
           Region:&nbsp;
           <select
             value={region}
-            onChange={(e) => setRegion(e.target.value as Region)}
+            onChange={(e) => {
+            const next = e.target.value as Region
+            dbg('ui: region ->', next)
+            setRegion(next)
+              }}
             aria-label="Region"
           >
             <option value="US">U.S.</option>
