@@ -175,41 +175,37 @@ export default function App() {
     setThr(s.thresholds)
   }
 
-  /* ──────────────────────────────────────────────────────────────────────────
-     5) HYDRATION — restore last (or questionnaire baseline), then mark ready
-     ────────────────────────────────────────────────────────────────────────── */
-  useEffect(() => {
+ /* ──────────────────────────────────────────────────────────────────────────
+   5) HYDRATION — restore last (or questionnaire baseline), then mark ready
+   ────────────────────────────────────────────────────────────────────────── */
+useEffect(() => {
   dbg('hydrate: start')
   dbg('hydrate: start @ origin', ORIGIN, 'app', APP_VERSION)
+
   const env = loadEnvelope()
   const restored = env?.last ?? env?.baselines?.questionnaire
 
   if (restored) {
-  dbg('hydrate: restoring snapshot', restored)
-  applySnapshot(restored)
+    dbg('hydrate: restoring snapshot', restored)
+    applySnapshot(restored)
 
-  // NEW: if we restored a CA value that looks user-edited, make it sticky
-  
-  // Option B (stricter): treat as sticky if it differs from the preset for that scenario
-   const presetTR = presets[restored.scenario]?.taxRushReturns ?? 0
-  if (restored.region === 'CA' && restored.taxRushReturns !== presetTR) {
-  taxRushDirtyRef.current = true
-  dbg('hydrate: taxRushDirtyRef -> true (restored != preset)')
+    // If we restored a CA value that looks user-edited, make it sticky
+    const presetTR = presets[restored.scenario]?.taxRushReturns ?? 0
+    if (restored.region === 'CA' && restored.taxRushReturns !== presetTR) {
+      taxRushDirtyRef.current = true
+      dbg('hydrate: taxRushDirtyRef -> true (restored != preset)')
+    }
+  } else {
+    dbg('hydrate: nothing to restore; using defaults')
+  }
 
-} else {
-  dbg('hydrate: nothing to restore; using defaults')
-}
-
-
-  // Defer both flags to AFTER React has applied setState
-  // This ensures no other effect (like autosave or presets) runs "between" default state and restored state
+  // Defer both flags to AFTER React applies setState
   requestAnimationFrame(() => {
     hydratingRef.current = false
     readyRef.current = true
     dbg('hydrate: readyRef -> true (post RAF)')
- 
+  })
 }, [])
-
 
   /* ──────────────────────────────────────────────────────────────────────────
      6) PRESETS — apply only when user changes scenario AFTER hydration
