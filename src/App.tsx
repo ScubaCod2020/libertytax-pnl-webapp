@@ -42,10 +42,11 @@ const defaultThresholds: Thresholds = {
 /* ──────────────────────────────────────────────────────────────────────────────
    3) Persistence schema (versioned envelope)
    ────────────────────────────────────────────────────────────────────────────── */
-const STORAGE_KEY = `lt_pnl_v5_session_v1_${APP_VERSION}`
-// add just under STORAGE_KEY
+// 3) Persistence schema (versioned envelope)
 const APP_VERSION = 'v0.5-preview'
 const ORIGIN = typeof window !== 'undefined' ? window.location.origin : 'ssr'
+const STORAGE_KEY = `lt_pnl_v5_session_v1_${APP_VERSION}`
+
 
 type SessionState = {
   region: Region
