@@ -209,11 +209,11 @@ export default function App() {
     setReturns(p.taxPrepReturns)
 
     // only apply preset’s TaxRush if we’re in Canada; otherwise preserve 0
-if (region === 'CA') setTaxRush(p.taxRushReturns) {
-      dbg('preset: skip TaxRush (user-edited, sticky)')
-    } else {
-      setTaxRush(region === 'CA' ? p.taxRushReturns : 0)
-    }
+if (region === 'CA') {
+    setTaxRush(p.taxRushReturns)
+  } else {
+    setTaxRush(0)
+  }
 
   setDisc(p.discountsPct); setSal(p.salariesPct); setRent(p.rentPct)
   setSup(p.suppliesPct); setRoy(p.royaltiesPct); setAdvRoy(p.advRoyaltiesPct); setMisc(p.miscPct)
