@@ -125,6 +125,9 @@ export default function App() {
   const hydratingRef = useRef(true)
   const readyRef = useRef(false)
 
+// NEW: mark when user hand-edits TaxRush while in CA (prevents preset overwrite)
+  const taxRushDirtyRef = useRef(false)
+  
   /* 4c) Snapshot helpers */
   const makeSnapshot = (): SessionState => ({
     region,
@@ -172,7 +175,7 @@ export default function App() {
   setTimeout(() => {
     readyRef.current = true
     dbg('hydrate: readyRef -> true')
-  }, 0)
+  }, 10) // was 0; small delay lets state setters settle on first paint
 }, [])
 
 
@@ -180,11 +183,38 @@ export default function App() {
      6) PRESETS — apply only when user changes scenario AFTER hydration
      ────────────────────────────────────────────────────────────────────────── */
   useEffect(() => {
-  if (hydratingRef.current || !readyRef.current) { dbg('preset: skipped (hydrating or not ready)'); return }
-  if (scenario === 'Custom') { dbg('preset: Custom (no template applied)'); return }
-  const p = presets[scenario]
-  dbg('preset: applying', scenario)
-  setANF(p.avgNetFee); setReturns(p.taxPrepReturns); setTaxRush(p.taxRushReturns)
+    if (hydratingRef.current || !readyRef.current) { dbg('preset: skipped (hydrating or not ready)'); return }
+    if (scenario === 'Custom') { dbg('preset: Custom (no template applied)'); return }
+
+    const p = presets[scenario]
+
+    // Optional: quick no-op check for all NON-TaxRush fields
+    if (
+      avgNetFee === p.avgNetFee &&
+      taxPrepReturns === p.taxPrepReturns &&
+      discountsPct === p.discountsPct &&
+      salariesPct === p.salariesPct &&
+      rentPct === p.rentPct &&
+      suppliesPct === p.suppliesPct &&
+      royaltiesPct === p.royaltiesPct &&
+      advRoyaltiesPct === p.advRoyaltiesPct &&
+      miscPct === p.miscPct
+    ) {
+      dbg('preset: values already match (ignoring TaxRush for stickiness); skipping')
+    return
+    }
+  
+    dbg('preset: applying', scenario)
+    setANF(p.avgNetFee)
+    setReturns(p.taxPrepReturns)
+
+    // NEW: only apply preset TaxRush if user hasn't hand-edited it
+    if (region === 'CA' && taxRushDirtyRef.current) {
+      dbg('preset: skip TaxRush (user-edited, sticky)')
+    } else {
+      setTaxRush(region === 'CA' ? p.taxRushReturns : 0)
+    }
+
   setDisc(p.discountsPct); setSal(p.salariesPct); setRent(p.rentPct)
   setSup(p.suppliesPct); setRoy(p.royaltiesPct); setAdvRoy(p.advRoyaltiesPct); setMisc(p.miscPct)
 }, [scenario])
@@ -196,6 +226,9 @@ export default function App() {
   useEffect(() => {
     if (region === 'US' && taxRushReturns !== 0) {
       setTaxRush(0)
+    }
+    if (region === 'US') {
+    taxRushDirtyRef.current = false // NEW: not sticky when US
     }
     // do not depend on taxRushReturns to avoid loops
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -265,6 +298,7 @@ useEffect(() => {
      ────────────────────────────────────────────────────────────────────────── */
   function resetSession() {
     clearEnvelope()
+    taxRushDirtyRef.current = false // NEW: clear sticky on reset
     setRegion('US')
     setScenario('Custom')
     setANF(125)
@@ -388,7 +422,8 @@ const savedAt = (() => {
                   const raw = e.target.value
                   const n = raw === '' ? 0 : +raw
                   setTaxRush(n)
-                  }}
+                  if (region === 'CA') taxRushDirtyRef.current = true // NEW: mark sticky
+                }}
                 onBlur={() => { if (region === 'CA' && readyRef.current) { dbg('blur: TaxRush -> saveNow'); saveNow() } }}
               />
             </div>
