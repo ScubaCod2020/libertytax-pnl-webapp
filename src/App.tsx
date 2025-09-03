@@ -124,7 +124,8 @@ export default function App() {
      - readyRef: true after first paint (prevents autosave clobber on load) */
   const hydratingRef = useRef(true)
   const readyRef = useRef(false)
-
+  const settledRef = useRef(false) // first “ready” tick = no-op (prevents clobber)
+  
 // NEW: mark when user hand-edits TaxRush while in CA (prevents preset overwrite)
   const taxRushDirtyRef = useRef(false)
   
@@ -168,14 +169,21 @@ export default function App() {
   dbg('hydrate: start')
   const env = loadEnvelope()
   const restored = env?.last ?? env?.baselines?.questionnaire
-  if (restored) { dbg('hydrate: restoring snapshot', restored) }
-  else { dbg('hydrate: nothing to restore; using defaults') }
 
-  hydratingRef.current = false
-  setTimeout(() => {
+  if (restored) {
+    dbg('hydrate: restoring snapshot', restored)
+    applySnapshot(restored)
+  } else {
+    dbg('hydrate: nothing to restore; using defaults')
+  }
+
+  // Defer both flags to AFTER React has applied setState
+  // This ensures no other effect (like autosave or presets) runs "between" default state and restored state
+  requestAnimationFrame(() => {
+    hydratingRef.current = false
     readyRef.current = true
-    dbg('hydrate: readyRef -> true')
-  }, 10) // was 0; small delay lets state setters settle on first paint
+    dbg('hydrate: readyRef -> true (post RAF)')
+  })
 }, [])
 
 
@@ -208,12 +216,20 @@ export default function App() {
     setANF(p.avgNetFee)
     setReturns(p.taxPrepReturns)
 
-    // only apply preset’s TaxRush if we’re in Canada; otherwise preserve 0
-if (region === 'CA') {
-    setTaxRush(p.taxRushReturns)
-  } else {
-    setTaxRush(0)
-  }
+    // only touch TaxRush if appropriate
+    if (region === 'CA') {
+      if (taxRushDirtyRef.current) {
+        dbg('preset: CA taxRush STICKY — user-edited; leaving at', taxRushReturns)
+      } else {
+        dbg('preset: CA taxRush from preset ->', p.taxRushReturns)
+        setTaxRush(p.taxRushReturns)
+      }
+    } else {
+  // US: always force 0 and clear stickiness
+  if (taxRushReturns !== 0) dbg('preset: US forces taxRush -> 0')
+  setTaxRush(0)
+  taxRushDirtyRef.current = false
+}
 
   setDisc(p.discountsPct); setSal(p.salariesPct); setRent(p.rentPct)
   setSup(p.suppliesPct); setRoy(p.royaltiesPct); setAdvRoy(p.advRoyaltiesPct); setMisc(p.miscPct)
@@ -238,25 +254,37 @@ if (region === 'CA') {
      8) AUTOSAVE (debounced) — writes to envelope.last after changes
      ────────────────────────────────────────────────────────────────────────── */
   useEffect(() => {
-  if (!readyRef.current) { dbg('autosave: skipped (not ready)'); return }
+  // Don’t autosave while hydrating or before the first paint after hydration
+  if (hydratingRef.current || !readyRef.current) {
+    dbg('autosave: skipped (hydrating or not ready)')
+    return
+  }
+
+  // Make the first pass a NO-OP to avoid clobbering immediately after hydration
+  if (!settledRef.current) {
+    settledRef.current = true
+    dbg('autosave: first-ready tick (no write)')
+    return
+  }
+
   dbg('autosave: scheduled')
   const id = setTimeout(() => {
     const snap = makeSnapshot()
-  dbg('autosave: firing snapshot', snap)
-  saveEnvelope((prev) => ({
-  version: 1,
-  ...prev,
-  last: snap,
-  meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
-}))
-
-  }, 250) // TEMP: 250ms while debugging; switch back to 400 later
+    dbg('autosave: firing snapshot', snap)
+    saveEnvelope((prev) => ({
+      version: 1,
+      ...prev,
+      last: snap,
+      meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
+    }))
+  }, 250)
   return () => clearTimeout(id)
 }, [
   region, scenario, avgNetFee, taxPrepReturns, taxRushReturns,
   discountsPct, salariesPct, rentPct, suppliesPct, royaltiesPct,
   advRoyaltiesPct, miscPct, thr,
 ])
+
 
   /* ──────────────────────────────────────────────────────────────────────────
      8.1) NEW: Immediate save helper + beforeunload flush
