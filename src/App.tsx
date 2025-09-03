@@ -185,11 +185,26 @@ export default function App() {
   const restored = env?.last ?? env?.baselines?.questionnaire
 
   if (restored) {
-    dbg('hydrate: restoring snapshot', restored)
-    applySnapshot(restored)
-  } else {
-    dbg('hydrate: nothing to restore; using defaults')
+  dbg('hydrate: restoring snapshot', restored)
+  applySnapshot(restored)
+
+  // NEW: if we restored a CA value that looks user-edited, make it sticky
+  // Option A (simple): any positive CA TaxRush means "user-edited"
+  if (restored.region === 'CA' && restored.taxRushReturns > 0) {
+    taxRushDirtyRef.current = true
+    dbg('hydrate: taxRushDirtyRef -> true (restored CA user value)')
   }
+
+  // Option B (stricter): treat as sticky if it differs from the preset for that scenario
+  // const presetTR = presets[restored.scenario]?.taxRushReturns ?? 0
+  // if (restored.region === 'CA' && restored.taxRushReturns !== presetTR) {
+  //   taxRushDirtyRef.current = true
+  //   dbg('hydrate: taxRushDirtyRef -> true (restored != preset)')
+  // }
+} else {
+  dbg('hydrate: nothing to restore; using defaults')
+}
+
 
   // Defer both flags to AFTER React has applied setState
   // This ensures no other effect (like autosave or presets) runs "between" default state and restored state
