@@ -505,27 +505,35 @@ const savedAt = (() => {
     - Region locking note: US disables TaxRush; CA enables & preserves it.
    ──────────────────────────────────────────────────────────────────────── */}
 {/* Only render the main app when wizard is closed */}
-{!showWizard && (
+{/* ── Wizard overlay (first-run or when “Wizard” is clicked) ─────────────── */}
+{showWizard && (
+  <WizardShell
+    region={region}
+    setRegion={setRegion}
+    onConfirmBaseline={seedFromWizard}
+    onCancel={() => setShowWizard(false)}
+  />
+)}
+
+    {!showWizard && (
   <div className="container">
     {/* Left: Wizard + Inputs */}
     <div className="stack">
       <div className="card">
         <div className="card-title">Quick Inputs</div>
+
+        {/* Scenario selector drives presets (guarded during hydration) */}
         <ScenarioSelector scenario={scenario} setScenario={setScenario} />
-        {/* …rest of your left-rail inputs… */}
+
+        {/* …the rest of your real left-rail inputs… */}
+        …
       </div>
     </div>
 
     {/* Right: Results Dashboard */}
     <div className="card">
       <div className="card-title">Dashboard</div>
-      {/* …KPI blocks + totals + pro-tips… */}
-    </div>
-  </div>
-)}
-
-
-      
+      {/* KPIs, Totals, Pro-Tips */}  
       <div className="container">
         {/* Left: Wizard + Inputs */}
         <div className="stack">
@@ -770,7 +778,10 @@ const savedAt = (() => {
           </div>
         </div>    
       </div>
-
+   </div>
+  </div>
+)}
+      
 {showDebug && (
   <div style={{ position:'fixed', right:12, bottom:12, padding:12, background:'#111', color:'#eee', borderRadius:8 }}>
     <div style={{ fontWeight:700, marginBottom:6 }}>Debug</div>
