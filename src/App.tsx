@@ -190,11 +190,20 @@ useEffect(() => {
     applySnapshot(restored)
 
     // Mark CA TaxRush as "user-sticky" if it differs from the scenario preset we restored into.
-    const presetTR = presets[restored.scenario]?.taxRushReturns ?? 0
-    if (restored.region === 'CA' && restored.taxRushReturns !== presetTR) {
-      taxRushDirtyRef.current = true
-      dbg('hydrate: taxRushDirtyRef -> true (restored != preset)')
-    }
+   const presetTR = presets[restored.scenario]?.taxRushReturns ?? 0
+    dbg('hydrate: restored snapshot scenario=%s region=%s taxRush=%s (presetTR=%s)',
+    restored.scenario, restored.region, restored.taxRushReturns, presetTR)
+
+// Treat any non-zero CA TaxRush as user-sticky (simplest and robust)
+if (restored.region === 'CA' && restored.taxRushReturns !== 0) {
+  taxRushDirtyRef.current = true
+    dbg('hydrate: taxRushDirtyRef -> true (restored CA non-zero)')
+  }
+// (Optional stricter variant you can keep as a comment)
+// else if (restored.region === 'CA' && restored.taxRushReturns !== presetTR) {
+//   taxRushDirtyRef.current = true
+//   dbg('hydrate: taxRushDirtyRef -> true (restored != preset)')
+// }
   } else {
     dbg('hydrate: nothing to restore; using defaults')
   }
@@ -208,50 +217,49 @@ useEffect(() => {
 }, [])
 
 
-  /* ──────────────────────────────────────────────────────────────────────────
-     6) PRESETS — apply only when user changes scenario AFTER hydration
-     ────────────────────────────────────────────────────────────────────────── */
-  useEffect(() => {
-    if (hydratingRef.current || !readyRef.current) { dbg('preset: skipped (hydrating or not ready)'); return }
-    if (scenario === 'Custom') { dbg('preset: Custom (no template applied)'); return }
+ /* ──────────────────────────────────────────────────────────────────────────
+   6) PRESETS — apply only when user changes scenario AFTER hydration
+   ────────────────────────────────────────────────────────────────────────── */
+useEffect(() => {
+  if (hydratingRef.current || !readyRef.current) { dbg('preset: skipped (hydrating or not ready)'); return }
+  if (scenario === 'Custom') { dbg('preset: Custom (no template applied)'); return }
 
-    const p = presets[scenario]
+  const p = presets[scenario]
 
-    // Optional: quick no-op check for all NON-TaxRush fields
-    if (
-      avgNetFee === p.avgNetFee &&
-      taxPrepReturns === p.taxPrepReturns &&
-      discountsPct === p.discountsPct &&
-      salariesPct === p.salariesPct &&
-      rentPct === p.rentPct &&
-      suppliesPct === p.suppliesPct &&
-      royaltiesPct === p.royaltiesPct &&
-      advRoyaltiesPct === p.advRoyaltiesPct &&
-      miscPct === p.miscPct
-    ) {
-      dbg('preset: values already match (ignoring TaxRush for stickiness); skipping')
+  // Optional: quick no-op check for all NON-TaxRush fields
+  if (
+    avgNetFee === p.avgNetFee &&
+    taxPrepReturns === p.taxPrepReturns &&
+    discountsPct === p.discountsPct &&
+    salariesPct === p.salariesPct &&
+    rentPct === p.rentPct &&
+    suppliesPct === p.suppliesPct &&
+    royaltiesPct === p.royaltiesPct &&
+    advRoyaltiesPct === p.advRoyaltiesPct &&
+    miscPct === p.miscPct
+  ) {
+    dbg('preset: values already match (ignoring TaxRush for stickiness); skipping')
     return
-    }
-  
-    dbg('preset: applying', scenario)
-    setANF(p.avgNetFee)
-    setReturns(p.taxPrepReturns)
-
-    // only touch TaxRush if appropriate
-if (region === 'CA') {
-  if (taxRushDirtyRef.current) {
-    dbg('preset: CA taxRush STICKY — user-edited; leaving at', taxRushReturns)
-  } else {
-    dbg('preset: CA taxRush from preset ->', p.taxRushReturns)
-    setTaxRush(p.taxRushReturns)
   }
-} else {
-  // US: always force 0 and clear stickiness
-  if (taxRushReturns !== 0) dbg('preset: US forces taxRush -> 0')
-  setTaxRush(0)
-  taxRushDirtyRef.current = false
-}
 
+  dbg('preset: applying', scenario)
+  setANF(p.avgNetFee)
+  setReturns(p.taxPrepReturns)
+
+  // only touch TaxRush if appropriate
+  if (region === 'CA') {
+    if (taxRushDirtyRef.current) {
+      dbg('preset: CA taxRush STICKY — user-edited; leaving at', taxRushReturns)
+    } else {
+      dbg('preset: CA taxRush from preset ->', p.taxRushReturns)
+      setTaxRush(p.taxRushReturns)
+    }
+  } else {
+    // US: always force 0 and clear stickiness
+    if (taxRushReturns !== 0) dbg('preset: US forces taxRush -> 0')
+    setTaxRush(0)
+    taxRushDirtyRef.current = false
+  }
 
   setDisc(p.discountsPct); setSal(p.salariesPct); setRent(p.rentPct)
   setSup(p.suppliesPct); setRoy(p.royaltiesPct); setAdvRoy(p.advRoyaltiesPct); setMisc(p.miscPct)
