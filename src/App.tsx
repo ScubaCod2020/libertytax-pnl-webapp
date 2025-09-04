@@ -205,6 +205,7 @@ if (restored.region === 'CA' && restored.taxRushReturns !== 0) {
 //   dbg('hydrate: taxRushDirtyRef -> true (restored != preset)')
 // }
   } else {
+    taxRushDirtyRef.current = false
     dbg('hydrate: nothing to restore; using defaults')
   }
 
@@ -226,7 +227,7 @@ useEffect(() => {
 
   const p = presets[scenario]
 
-  // Optional: quick no-op check for all NON-TaxRush fields
+  // Quick no-op check for NON-TaxRush fields
   if (
     avgNetFee === p.avgNetFee &&
     taxPrepReturns === p.taxPrepReturns &&
@@ -245,25 +246,20 @@ useEffect(() => {
   dbg('preset: applying', scenario)
   setANF(p.avgNetFee)
   setReturns(p.taxPrepReturns)
+  setDisc(p.discountsPct); setSal(p.salariesPct); setRent(p.rentPct)
+  setSup(p.suppliesPct); setRoy(p.royaltiesPct); setAdvRoy(p.advRoyaltiesPct); setMisc(p.miscPct)
 
-  // only touch TaxRush if appropriate
-  if (region === 'CA') {
-    if (taxRushDirtyRef.current) {
-      dbg('preset: CA taxRush STICKY — user-edited; leaving at', taxRushReturns)
-    } else {
-      dbg('preset: CA taxRush from preset ->', p.taxRushReturns)
-      setTaxRush(p.taxRushReturns)
-    }
-  } else {
+  if (region === 'US') {
     // US: always force 0 and clear stickiness
     if (taxRushReturns !== 0) dbg('preset: US forces taxRush -> 0')
     setTaxRush(0)
     taxRushDirtyRef.current = false
+  } else {
+    // CA: DO NOT touch taxRush — leave user value sticky across scenario changes
+    dbg('preset: CA — leaving taxRush untouched (sticky)')
   }
+}, [scenario, region])  // include region so US/CA rule runs correctly
 
-  setDisc(p.discountsPct); setSal(p.salariesPct); setRent(p.rentPct)
-  setSup(p.suppliesPct); setRoy(p.royaltiesPct); setAdvRoy(p.advRoyaltiesPct); setMisc(p.miscPct)
-}, [scenario])
 
 
   /* ──────────────────────────────────────────────────────────────────────────
