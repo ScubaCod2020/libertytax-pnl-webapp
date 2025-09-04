@@ -1,5 +1,6 @@
 // App.tsx — Liberty Tax P&L (Sprint 1: Session Persistence + Region Gating + Preset Gating)
 // Includes: saveNow() + beforeunload flush, onBlur save for TaxRush
+//adding Wizard callouts and integrating 
 
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
@@ -14,6 +15,13 @@ import {
 import KPIStoplight from './components/KPIStoplight'
 import ScenarioSelector from './components/ScenarioSelector'
 import { presets, type Scenario } from './data/presets'
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Wizard (Welcome → Inputs → Review)
+// This shell uses your existing <Wizard/> as the Welcome step and adds the Inputs & Review steps.
+// ──────────────────────────────────────────────────────────────────────────────
+import WizardShell, { type WizardAnswers } from './component/WizardShell'
+
 
 // DEV logging toggle — set to false to silence
 const DEBUG = true
@@ -123,6 +131,48 @@ export default function App() {
 
   const [thr, setThr] = useState<Thresholds>(defaultThresholds)
 
+  /* ──────────────────────────────────────────────────────────────────────────
+   Wizard state — show on first run, seed baseline on confirm
+   - We consider "first run" if there is no saved "last" AND no questionnaire baseline.
+   - You can always bring it back later from a debug button (future).
+   ────────────────────────────────────────────────────────────────────────── */
+
+// Show the wizard if nothing has been saved yet.
+// (The arrow function form runs once on mount and uses your existing loadEnvelope().)
+const [showWizard, setShowWizard] = useState<boolean>(() => {
+  const env = loadEnvelope()
+  const nothingSaved = !env?.last && !env?.baselines?.questionnaire
+  return Boolean(nothingSaved)
+})
+
+/**
+ * Seed app state from Wizard answers and persist immediately.
+ * This writes into your existing state variables, then calls saveNow()
+ * (which you already implemented for an immediate flush).
+ * - Region gating: US forces TaxRush = 0, CA keeps the entered value.
+ */
+function seedFromWizard(a: WizardAnswers) {
+  // 1) Respect Region rules you already enforce elsewhere.
+  setRegion(a.region)
+
+  // 2) Copy over Income Driver values.
+  setANF(a.avgNetFee ?? 0)
+  setReturns(a.taxPrepReturns ?? 0)
+  setDisc(a.discountsPct ?? 0)
+
+  // 3) Canada-only TaxRush (US forced zero per your gating).
+  const nextTR = a.region === 'US' ? 0 : (a.taxRushReturns ?? 0)
+  setTaxRush(nextTR)
+
+  // 4) Persist immediately so refresh won’t lose baseline.
+  //    We wait a tick so React state updates are applied first.
+  requestAnimationFrame(() => {
+    if (readyRef.current) saveNow()    // uses your existing immediate writer
+    setShowWizard(false)               // close the wizard, show dashboard
+  })
+}
+
+  
   /* 4b) Hydration + autosave guards
      - hydratingRef: true while restoring from storage
      - readyRef: true after first paint (prevents autosave clobber on load) */
@@ -401,7 +451,7 @@ useEffect(() => {
   /* ──────────────────────────────────────────────────────────────────────────
      11) UI
      ────────────────────────────────────────────────────────────────────────── */
- // Debug panel state (place ABOVE return)
+ // Debug panel state 
 const showDebug =
   DEBUG ||
   (typeof window !== 'undefined' &&
@@ -449,6 +499,21 @@ const savedAt = (() => {
         </div>
       </div>
 
+      {/* ────────────────────────────────────────────────────────────────────────
+    Wizard overlay — shown on first run or when manually toggled.
+    - Uses your <Wizard/> (Welcome) plus Inputs + Review steps.
+    - Region locking note: US disables TaxRush; CA enables & preserves it.
+   ──────────────────────────────────────────────────────────────────────── */}
+{showWizard && (
+  <WizardShell
+    region={region}                 // ← current region value
+    setRegion={setRegion}           // ← your existing setter
+    onConfirmBaseline={seedFromWizard}
+    onCancel={() => setShowWizard(false)}   // "Skip wizard" path
+  />
+)}
+
+      
       <div className="container">
         {/* Left: Wizard + Inputs */}
         <div className="stack">
@@ -720,6 +785,12 @@ const savedAt = (() => {
         dbg('ui: Clear & reset'); 
         localStorage.removeItem(STORAGE_KEY); 
       }} style={{ fontSize:12 }}>Clear key</button>
+<button onClick={() => { 
+  dbg('ui: Reopen wizard'); 
+  setShowWizard(true);
+}} style={{ fontSize:12 }}>Wizard</button>
+
+      
     </div>
   </div>
 )}
