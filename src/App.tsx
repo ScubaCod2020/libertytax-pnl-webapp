@@ -189,7 +189,7 @@ useEffect(() => {
     dbg('hydrate: restoring snapshot', restored)
     applySnapshot(restored)
 
-    // If we restored a CA value that looks user-edited, make it sticky
+    // Mark CA TaxRush as "user-sticky" if it differs from the scenario preset we restored into.
     const presetTR = presets[restored.scenario]?.taxRushReturns ?? 0
     if (restored.region === 'CA' && restored.taxRushReturns !== presetTR) {
       taxRushDirtyRef.current = true
@@ -199,13 +199,14 @@ useEffect(() => {
     dbg('hydrate: nothing to restore; using defaults')
   }
 
-  // Defer both flags to AFTER React applies setState
+  // Defer ready flags until state is applied to avoid a clobber window
   requestAnimationFrame(() => {
     hydratingRef.current = false
     readyRef.current = true
     dbg('hydrate: readyRef -> true (post RAF)')
   })
 }, [])
+
 
   /* ──────────────────────────────────────────────────────────────────────────
      6) PRESETS — apply only when user changes scenario AFTER hydration
@@ -237,19 +238,20 @@ useEffect(() => {
     setReturns(p.taxPrepReturns)
 
     // only touch TaxRush if appropriate
-    if (region === 'CA') {
-      if (taxRushDirtyRef.current) {
-        dbg('preset: CA taxRush STICKY — user-edited; leaving at', taxRushReturns)
-      } else {
-        dbg('preset: CA taxRush from preset ->', p.taxRushReturns)
-        setTaxRush(p.taxRushReturns)
-      }
-    } else {
+if (region === 'CA') {
+  if (taxRushDirtyRef.current) {
+    dbg('preset: CA taxRush STICKY — user-edited; leaving at', taxRushReturns)
+  } else {
+    dbg('preset: CA taxRush from preset ->', p.taxRushReturns)
+    setTaxRush(p.taxRushReturns)
+  }
+} else {
   // US: always force 0 and clear stickiness
   if (taxRushReturns !== 0) dbg('preset: US forces taxRush -> 0')
   setTaxRush(0)
   taxRushDirtyRef.current = false
 }
+
 
   setDisc(p.discountsPct); setSal(p.salariesPct); setRent(p.rentPct)
   setSup(p.suppliesPct); setRoy(p.royaltiesPct); setAdvRoy(p.advRoyaltiesPct); setMisc(p.miscPct)
