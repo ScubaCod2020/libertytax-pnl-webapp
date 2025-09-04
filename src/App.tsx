@@ -504,14 +504,26 @@ const savedAt = (() => {
     - Uses your <Wizard/> (Welcome) plus Inputs + Review steps.
     - Region locking note: US disables TaxRush; CA enables & preserves it.
    ──────────────────────────────────────────────────────────────────────── */}
-{showWizard && (
-  <WizardShell
-    region={region}                 // ← current region value
-    setRegion={setRegion}           // ← your existing setter
-    onConfirmBaseline={seedFromWizard}
-    onCancel={() => setShowWizard(false)}   // "Skip wizard" path
-  />
+{/* Only render the main app when wizard is closed */}
+{!showWizard && (
+  <div className="container">
+    {/* Left: Wizard + Inputs */}
+    <div className="stack">
+      <div className="card">
+        <div className="card-title">Quick Inputs</div>
+        <ScenarioSelector scenario={scenario} setScenario={setScenario} />
+        {/* …rest of your left-rail inputs… */}
+      </div>
+    </div>
+
+    {/* Right: Results Dashboard */}
+    <div className="card">
+      <div className="card-title">Dashboard</div>
+      {/* …KPI blocks + totals + pro-tips… */}
+    </div>
+  </div>
 )}
+
 
       
       <div className="container">
