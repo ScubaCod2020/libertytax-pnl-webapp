@@ -72,7 +72,6 @@ export default function InputsPanel(props: InputsPanelProps) {
     <div className="card">
       <div className="card-title">Inputs</div>
 
-      {/* Scenario Selector */}
       <div>
         <label>
           Scenario:&nbsp;
@@ -89,7 +88,6 @@ export default function InputsPanel(props: InputsPanelProps) {
         </label>
       </div>
 
-      {/* Basic Income Fields */}
       <div className="section">
         <div className="section-title">💰 Income Drivers</div>
         
@@ -139,9 +137,8 @@ export default function InputsPanel(props: InputsPanelProps) {
             step="0.1"
           />
         </label>
-      </div> {/* income drivers */}
+      </div>
 
-      {/* Personnel Expenses */}
       <div className="section">
         <div className="section-title">👥 Personnel</div>
         
@@ -168,9 +165,8 @@ export default function InputsPanel(props: InputsPanelProps) {
             step="0.1"
           />
         </label>
-      </div> {/* personnel */}
+      </div>
 
-      {/* Facility Expenses */}
       <div className="section">
         <div className="section-title">🏢 Facility</div>
         
@@ -207,9 +203,8 @@ export default function InputsPanel(props: InputsPanelProps) {
             step="1"
           />
         </label>
-      </div> {/* facility */}
+      </div>
 
-      {/* Operations Expenses */}
       <div className="section">
         <div className="section-title">⚙️ Operations</div>
         
@@ -301,9 +296,8 @@ export default function InputsPanel(props: InputsPanelProps) {
             step="1"
           />
         </label>
-      </div> {/* operations */}
+      </div>
 
-      {/* Franchise Expenses */}
       <div className="section">
         <div className="section-title">🏪 Franchise</div>
         
@@ -344,9 +338,8 @@ export default function InputsPanel(props: InputsPanelProps) {
             />
           </label>
         )}
-      </div> {/* franchise */}
+      </div>
 
-      {/* Miscellaneous */}
       <div className="section">
         <div className="section-title">📝 Miscellaneous</div>
         
@@ -361,7 +354,7 @@ export default function InputsPanel(props: InputsPanelProps) {
             step="0.1"
           />
         </label>
-      </div> {/* miscellaneous */}
-    </div> {/* inputs card */}
+      </div>
+    </div>
   )
 }

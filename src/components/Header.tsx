@@ -58,7 +58,7 @@ export default function Header({ region, setRegion, onReset, onShowWizard }: Hea
         >
           🚀 Launch Setup Wizard
         </button>
-      </div> {/* small */}
-    </div> {/* header */}
+      </div>
+    </div>
   )
 }

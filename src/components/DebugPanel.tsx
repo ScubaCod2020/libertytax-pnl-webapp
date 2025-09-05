@@ -80,7 +80,7 @@ export default function DebugPanel(props: DebugPanelProps) {
         >
           Wizard
         </button>
-      </div> {/* debug buttons */}
-    </div> {/* debug panel */}
+      </div>
+    </div>
   )
 }
