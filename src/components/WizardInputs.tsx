@@ -147,7 +147,7 @@ export default function WizardInputs({
         
         <div className="grid-2">
           <div className="input-row" style={{ marginBottom: '0.75rem' }}>
-            <label>Average Net Fee ($)</label>
+            <label>Average Net Fee ($) {answers.storeType === 'existing' && '📋'}</label>
             <input
               type="number"
               min={50}
@@ -157,14 +157,18 @@ export default function WizardInputs({
               onChange={e => updateAnswers({ avgNetFee: +e.target.value || undefined })}
               placeholder="125"
               required
+              style={answers.storeType === 'existing' ? { backgroundColor: '#f0f9ff', borderColor: '#0ea5e9' } : {}}
             />
             <div className="small" style={{ opacity: 0.7, marginTop: '0.25rem' }}>
-              Average fee per tax return after discounts
+              {answers.storeType === 'existing' ? 
+                '📋 Carried forward from page 1 (you can adjust)' : 
+                'Average fee per tax return after discounts'
+              }
             </div>
           </div>
 
           <div className="input-row" style={{ marginBottom: '0.75rem' }}>
-            <label>Tax Prep Returns (#)</label>
+            <label>Tax Prep Returns (#) {answers.storeType === 'existing' && '📋'}</label>
             <input
               type="number"
               min={100}
@@ -174,15 +178,19 @@ export default function WizardInputs({
               onChange={e => updateAnswers({ taxPrepReturns: +e.target.value || undefined })}
               placeholder="1600"
               required
+              style={answers.storeType === 'existing' ? { backgroundColor: '#f0f9ff', borderColor: '#0ea5e9' } : {}}
             />
             <div className="small" style={{ opacity: 0.7, marginTop: '0.25rem' }}>
-              Expected number of tax returns for the season
+              {answers.storeType === 'existing' ? 
+                '📋 Carried forward from page 1 (you can adjust)' : 
+                'Expected number of tax returns for the season'
+              }
             </div>
           </div>
 
           {answers.region === 'CA' && (
             <div className="input-row" style={{ marginBottom: '0.75rem' }}>
-              <label>TaxRush Returns (#)</label>
+              <label>TaxRush Returns (#) {answers.storeType === 'existing' && '📋'}</label>
               <input
                 type="number"
                 min={0}
@@ -191,9 +199,13 @@ export default function WizardInputs({
                 value={answers.taxRushReturns || ''}
                 onChange={e => updateAnswers({ taxRushReturns: +e.target.value || undefined })}
                 placeholder="0"
+                style={answers.storeType === 'existing' ? { backgroundColor: '#f0f9ff', borderColor: '#0ea5e9' } : {}}
               />
               <div className="small" style={{ opacity: 0.7, marginTop: '0.25rem' }}>
-                Expected TaxRush returns (Canada only)
+                {answers.storeType === 'existing' ? 
+                  '📋 Carried forward from page 1 (you can adjust)' : 
+                  'Expected TaxRush returns (Canada only)'
+                }
               </div>
             </div>
           )}

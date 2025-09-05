@@ -226,9 +226,11 @@ function WelcomeStep({
           <option value="US">United States</option>
           <option value="CA">Canada</option>
         </select>
-        <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
-          TaxRush franchise fees apply only to Canadian offices
-        </div>
+        {region === 'CA' && (
+          <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
+            TaxRush franchise fees apply only to Canadian offices
+          </div>
+        )}
       </div>
 
       <div className="input-row" style={{ marginBottom: '1rem' }}>
@@ -242,79 +244,186 @@ function WelcomeStep({
           <option value="existing">Existing Store</option>
         </select>
         <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
-          New stores use industry benchmarks, existing stores use your historical data
+          New stores use regional stats, existing stores use your historical data
         </div>
       </div>
 
       {answers.storeType === 'existing' && (
         <>
-          <div className="input-row" style={{ marginBottom: '1rem' }}>
-            <label>Last Year's Total Revenue ($)</label>
-            <input
-              type="number"
-              placeholder="250000"
-              value={answers.lastYearRevenue || ''}
-              onChange={e => updateAnswers({ lastYearRevenue: parseFloat(e.target.value) || undefined })}
-            />
-            <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
-              Your total gross revenue from last year (before discounts)
-            </div>
-          </div>
+          {/* Performance Comparison Section */}
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: '1fr 1fr', 
+            gap: '1.5rem',
+            marginBottom: '1rem',
+            padding: '1rem',
+            backgroundColor: '#f8fafc',
+            border: '1px solid #e2e8f0',
+            borderRadius: '8px'
+          }}>
+            {/* Last Year Performance */}
+            <div>
+              <h4 style={{ 
+                margin: '0 0 0.75rem 0', 
+                fontSize: '1rem', 
+                fontWeight: 600, 
+                color: '#374151',
+                borderBottom: '2px solid #6b7280',
+                paddingBottom: '0.25rem'
+              }}>
+                Last Year Performance
+              </h4>
+              
+              <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+                <label>Tax Prep Income ($)</label>
+                <input
+                  type="number"
+                  placeholder="200000"
+                  value={answers.lastYearRevenue || ''}
+                  onChange={e => updateAnswers({ lastYearRevenue: parseFloat(e.target.value) || undefined })}
+                />
+                <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                  Total tax prep revenue (before discounts)
+                </div>
+              </div>
 
-          <div className="input-row" style={{ marginBottom: '1rem' }}>
-            <label>Expected Performance Change</label>
-            <select 
-              value={answers.expectedGrowthPct?.toString() || ''} 
-              onChange={e => {
-                const val = e.target.value
-                if (val === 'custom') {
-                  // Don't set a value, let user input custom
-                } else {
-                  updateAnswers({ expectedGrowthPct: parseFloat(val) })
-                }
-              }}
-            >
-              <option value="">Select expected change...</option>
-              {growthOptions.map(opt => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-            <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
-              How do you expect this year to compare to last year?
-            </div>
-          </div>
+              <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+                <label>Average Net Fee ($)</label>
+                <input
+                  type="number"
+                  placeholder="125"
+                  value={answers.avgNetFee || ''}
+                  onChange={e => updateAnswers({ avgNetFee: parseFloat(e.target.value) || undefined })}
+                />
+                <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                  Average fee per return after discounts
+                </div>
+              </div>
 
-          {(answers.expectedGrowthPct === undefined || answers.expectedGrowthPct.toString() === 'custom') && (
-            <div className="input-row" style={{ marginBottom: '1rem' }}>
-              <label>Custom Growth Percentage (%)</label>
-              <input
-                type="number"
-                step="0.1"
-                placeholder="10"
-                value={answers.expectedGrowthPct || ''}
-                onChange={e => updateAnswers({ expectedGrowthPct: parseFloat(e.target.value) || undefined })}
-              />
-              <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
-                Enter your custom growth percentage (positive for growth, negative for decline)
+              <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+                <label>Tax Prep Returns (#)</label>
+                <input
+                  type="number"
+                  placeholder="1600"
+                  value={answers.taxPrepReturns || ''}
+                  onChange={e => updateAnswers({ taxPrepReturns: parseFloat(e.target.value) || undefined })}
+                />
+                <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                  Number of tax returns completed
+                </div>
+              </div>
+
+              {answers.region === 'CA' && (
+                <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+                  <label>TaxRush Returns (#)</label>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    value={answers.taxRushReturns || ''}
+                    onChange={e => updateAnswers({ taxRushReturns: parseFloat(e.target.value) || undefined })}
+                  />
+                  <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                    TaxRush returns completed (Canada only)
+                  </div>
+                </div>
+              )}
+
+              <div style={{ 
+                padding: '0.5rem', 
+                backgroundColor: '#e5e7eb', 
+                borderRadius: '4px',
+                fontWeight: 600,
+                fontSize: '0.9rem'
+              }}>
+                Total Revenue: ${answers.lastYearRevenue?.toLocaleString() || '—'}
               </div>
             </div>
-          )}
 
-          <div className="input-row" style={{ marginBottom: '1rem' }}>
-            <label>Expected Revenue ($)</label>
-            <input
-              type="number"
-              placeholder="275000"
-              value={answers.expectedRevenue || ''}
-              onChange={e => updateAnswers({ expectedRevenue: parseFloat(e.target.value) || undefined })}
-            />
-            <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
-              {answers.lastYearRevenue && answers.expectedGrowthPct !== undefined ? 
-                `Calculated: $${(answers.lastYearRevenue * (1 + answers.expectedGrowthPct / 100)).toLocaleString()} (you can override)` :
-                'Your expected total revenue for this year'
-              }
+            {/* Projected Performance */}
+            <div>
+              <h4 style={{ 
+                margin: '0 0 0.75rem 0', 
+                fontSize: '1rem', 
+                fontWeight: 600, 
+                color: '#374151',
+                borderBottom: '2px solid #059669',
+                paddingBottom: '0.25rem'
+              }}>
+                Projected Performance
+              </h4>
+
+              <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+                <label>Expected Performance Change</label>
+                <select 
+                  value={answers.expectedGrowthPct !== undefined ? answers.expectedGrowthPct.toString() : ''} 
+                  onChange={e => {
+                    const val = e.target.value
+                    if (val === 'custom') {
+                      updateAnswers({ expectedGrowthPct: undefined }) // Clear to show custom input
+                    } else {
+                      updateAnswers({ expectedGrowthPct: parseFloat(val) })
+                    }
+                  }}
+                >
+                  <option value="">Select expected change...</option>
+                  {growthOptions.map(opt => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+                <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                  How do you expect this year to compare?
+                </div>
+              </div>
+
+              {answers.expectedGrowthPct === undefined && (
+                <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+                  <label>Custom Growth Percentage (%)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    placeholder="10"
+                    onChange={e => updateAnswers({ expectedGrowthPct: parseFloat(e.target.value) || undefined })}
+                  />
+                  <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                    Enter custom percentage (+ for growth, - for decline)
+                  </div>
+                </div>
+              )}
+
+              <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+                <label>Expected Revenue ($)</label>
+                <input
+                  type="number"
+                  placeholder="220000"
+                  value={answers.expectedRevenue || ''}
+                  onChange={e => updateAnswers({ expectedRevenue: parseFloat(e.target.value) || undefined })}
+                />
+                <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                  {answers.lastYearRevenue && answers.expectedGrowthPct !== undefined ? 
+                    `Calculated: $${(answers.lastYearRevenue * (1 + answers.expectedGrowthPct / 100)).toLocaleString()} (you can override)` :
+                    'Your expected total revenue for this year'
+                  }
+                </div>
+              </div>
+
+              <div style={{ 
+                padding: '0.5rem', 
+                backgroundColor: '#d1fae5', 
+                borderRadius: '4px',
+                fontWeight: 600,
+                fontSize: '0.9rem',
+                color: '#065f46'
+              }}>
+                Expected Revenue: ${answers.expectedRevenue?.toLocaleString() || '—'}
+                {answers.lastYearRevenue && answers.expectedRevenue && (
+                  <div style={{ fontSize: '0.8rem', fontWeight: 'normal' }}>
+                    ({answers.expectedRevenue > answers.lastYearRevenue ? '+' : ''}
+                    {(((answers.expectedRevenue - answers.lastYearRevenue) / answers.lastYearRevenue) * 100).toFixed(1)}% change)
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </>
@@ -332,7 +441,7 @@ function WelcomeStep({
             🏪 New Store Setup
           </div>
           <div className="small" style={{ color: '#0369a1' }}>
-            Since this is a new store, we'll use industry benchmarks and help you set realistic targets 
+            Since this is a new store, we'll use regional stats and help you set realistic targets 
             in the next step. You can always adjust these values as you learn more about your market.
           </div>
         </div>
