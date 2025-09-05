@@ -3,9 +3,8 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { calc, statusForCPR, statusForMargin, statusForNetIncome } from './lib/calcs'
-import type { Region, Thresholds } from './lib/calcs'
+import type { Region, Scenario, Thresholds } from './lib/calcs'
 import { presets } from './data/presets'
-import type { Scenario } from './data/presets'
 import KPIStoplight from './components/KPIStoplight'
 import WizardShell from './components/WizardShell'
 import type { WizardAnswers } from './components/WizardShell'
@@ -120,35 +119,35 @@ export default function App() {
 
   // Persistence functions
   const loadEnvelope = (): PersistEnvelopeV1 | undefined => {
-  try {
-    dbg('loadEnvelope()', STORAGE_KEY)
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) { dbg('loadEnvelope: no key'); return }
-    const parsed = JSON.parse(raw) as PersistEnvelopeV1
-    dbg('loadEnvelope: parsed', parsed?.meta?.savedAtISO ?? '(no meta)')
-    if (parsed && parsed.version === 1) return parsed
-  } catch (e) { dbg('loadEnvelope: ERROR', e) }
-  return
-}
+    try {
+      dbg('loadEnvelope()', STORAGE_KEY)
+      const raw = localStorage.getItem(STORAGE_KEY)
+      if (!raw) { dbg('loadEnvelope: no key'); return }
+      const parsed = JSON.parse(raw) as PersistEnvelopeV1
+      dbg('loadEnvelope: parsed', parsed?.meta?.savedAtISO ?? '(no meta)')
+      if (parsed && parsed.version === 1) return parsed
+    } catch (e) { dbg('loadEnvelope: ERROR', e) }
+    return
+  }
 
   const saveEnvelope = (mutator: (prev: PersistEnvelopeV1) => PersistEnvelopeV1) => {
-  const prev = loadEnvelope() ?? ({ version: 1 } as PersistEnvelopeV1)
-  const next = mutator(prev)
-  dbg('saveEnvelope()', next?.meta?.savedAtISO ?? '(no meta)')
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-}
+    const prev = loadEnvelope() ?? ({ version: 1 } as PersistEnvelopeV1)
+    const next = mutator(prev)
+    dbg('saveEnvelope()', next?.meta?.savedAtISO ?? '(no meta)')
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+  }
 
   const makeSnapshot = (): SessionState => {
-  const snap: SessionState = {
+    const snap: SessionState = {
       region, scenario, avgNetFee, taxPrepReturns, taxRushReturns, discountsPct,
       salariesPct, empDeductionsPct, rentPct, telephoneAmt, utilitiesAmt,
       localAdvAmt, insuranceAmt, postageAmt, suppliesPct, duesAmt, bankFeesAmt,
       maintenanceAmt, travelEntAmt, royaltiesPct, advRoyaltiesPct, taxRushRoyaltiesPct, miscPct,
-    thresholds: thr,
+      thresholds: thr,
+    }
+    latestSnapRef.current = snap
+    return snap
   }
-  latestSnapRef.current = snap
-  return snap
-}
 
   const saveNow = () => {
     const snap = latestSnapRef.current ?? makeSnapshot()
@@ -264,53 +263,53 @@ export default function App() {
       const s = envelope.last
       dbg('hydrate: restoring session', s)
       
-    setRegion(s.region)
-    setScenario(s.scenario)
-    setANF(s.avgNetFee)
-    setReturns(s.taxPrepReturns)
-    setTaxRush(s.taxRushReturns)
-    setDisc(s.discountsPct)
+      setRegion(s.region)
+      setScenario(s.scenario)
+      setANF(s.avgNetFee)
+      setReturns(s.taxPrepReturns)
+      setTaxRush(s.taxRushReturns)
+      setDisc(s.discountsPct)
       
       // Restore all 17 expense fields
-    setSal(s.salariesPct)
+      setSal(s.salariesPct)
       setEmpDeductions(s.empDeductionsPct)
-    setRent(s.rentPct)
+      setRent(s.rentPct)
       setTelephone(s.telephoneAmt)
       setUtilities(s.utilitiesAmt)
       setLocalAdv(s.localAdvAmt)
       setInsurance(s.insuranceAmt)
       setPostage(s.postageAmt)
-    setSup(s.suppliesPct)
+      setSup(s.suppliesPct)
       setDues(s.duesAmt)
       setBankFees(s.bankFeesAmt)
       setMaintenance(s.maintenanceAmt)
       setTravelEnt(s.travelEntAmt)
-    setRoy(s.royaltiesPct)
-    setAdvRoy(s.advRoyaltiesPct)
+      setRoy(s.royaltiesPct)
+      setAdvRoy(s.advRoyaltiesPct)
       setTaxRushRoy(s.taxRushRoyaltiesPct)
-    setMisc(s.miscPct)
+      setMisc(s.miscPct)
       
-    setThr(s.thresholds)
+      setThr(s.thresholds)
       
       if (s.region === 'CA' && s.taxRushReturns !== 0) {
-  taxRushDirtyRef.current = true
-    dbg('hydrate: taxRushDirtyRef -> true (restored CA non-zero)')
-  }
-  } else {
-    taxRushDirtyRef.current = false
-    dbg('hydrate: nothing to restore; using defaults')
-  }
+        taxRushDirtyRef.current = true
+        dbg('hydrate: taxRushDirtyRef -> true (restored CA non-zero)')
+      }
+    } else {
+      taxRushDirtyRef.current = false
+      dbg('hydrate: nothing to restore; using defaults')
+    }
 
     // Mark as ready
-  requestAnimationFrame(() => {
-    hydratingRef.current = false
-    readyRef.current = true
+    requestAnimationFrame(() => {
+      hydratingRef.current = false
+      readyRef.current = true
       dbg('hydrate: complete, ready=true')
-  })
-}, [])
+    })
+  }, [])
 
   // Preset application effect
-useEffect(() => {
+  useEffect(() => {
     if (hydratingRef.current || !readyRef.current) return
     if (scenario === 'Custom') return
 
@@ -320,10 +319,10 @@ useEffect(() => {
     // Check if key values already match
     if (preset.avgNetFee === avgNetFee && preset.taxPrepReturns === taxPrepReturns) {
       dbg('preset: key values already match; skipping')
-    return
-  }
+      return
+    }
 
-  dbg('preset: applying', scenario)
+    dbg('preset: applying', scenario)
     setANF(preset.avgNetFee)
     setReturns(preset.taxPrepReturns)
     setDisc(preset.discountsPct)
@@ -347,7 +346,7 @@ useEffect(() => {
     setTaxRushRoy(preset.taxRushRoyaltiesPct)
     setMisc(preset.miscPct)
 
-  if (region === 'US') {
+    if (region === 'US') {
       dbg('preset: US — leaving taxRush untouched (sticky)')
     }
   }, [scenario, region])
@@ -363,61 +362,61 @@ useEffect(() => {
   }, [region])
 
   // Autosave effect
- useEffect(() => {
-  if (hydratingRef.current || !readyRef.current) {
-    dbg('autosave: skipped (hydrating or not ready)')
-    return
-  }
+  useEffect(() => {
+    if (hydratingRef.current || !readyRef.current) {
+      dbg('autosave: skipped (hydrating or not ready)')
+      return
+    }
 
-  if (!settledRef.current) {
-    settledRef.current = true
-    latestSnapRef.current = makeSnapshot()
-    return
-  }
+    if (!settledRef.current) {
+      settledRef.current = true
+      latestSnapRef.current = makeSnapshot()
+      return
+    }
 
-  dbg('autosave: scheduled')
-  const id = setTimeout(() => {
+    dbg('autosave: scheduled')
+    const id = setTimeout(() => {
       const snap = makeSnapshot()
-    dbg('autosave: firing snapshot', snap)
-    saveEnvelope(prev => ({
-      version: 1,
-      ...prev,
-      last: snap,
-      meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
-    }))
-  }, 250)
+      dbg('autosave: firing snapshot', snap)
+      saveEnvelope(prev => ({
+        version: 1,
+        ...prev,
+        last: snap,
+        meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
+      }))
+    }, 250)
 
-  return () => clearTimeout(id)
-}, [
-  region, scenario, avgNetFee, taxPrepReturns, taxRushReturns,
+    return () => clearTimeout(id)
+  }, [
+    region, scenario, avgNetFee, taxPrepReturns, taxRushReturns,
     discountsPct, salariesPct, empDeductionsPct, rentPct, telephoneAmt, utilitiesAmt,
     localAdvAmt, insuranceAmt, postageAmt, suppliesPct, duesAmt, bankFeesAmt,
     maintenanceAmt, travelEntAmt, royaltiesPct, advRoyaltiesPct, taxRushRoyaltiesPct, miscPct, thr,
   ])
 
   // Beforeunload flush
-useEffect(() => {
-  const handleBeforeUnload = () => {
-    if (readyRef.current) {
-      dbg('beforeunload: flush (using latestSnapRef)')
-      saveNow()
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (readyRef.current) {
+        dbg('beforeunload: flush (using latestSnapRef)')
+        saveNow()
+      }
     }
-  }
-  window.addEventListener('beforeunload', handleBeforeUnload)
-  return () => window.removeEventListener('beforeunload', handleBeforeUnload)
-}, [])
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [])
 
   // Visibility change flush
-useEffect(() => {
-  const handleVis = () => {
-    if (document.visibilityState === 'hidden' && readyRef.current) {
-      dbg('visibilitychange: hidden -> flush (using latestSnapRef)')
-      saveNow()
+  useEffect(() => {
+    const handleVis = () => {
+      if (document.visibilityState === 'hidden' && readyRef.current) {
+        dbg('visibilitychange: hidden -> flush (using latestSnapRef)')
+        saveNow()
+      }
     }
-  }
-  document.addEventListener('visibilitychange', handleVis)
-  return () => document.removeEventListener('visibilitychange', handleVis)
-}, [])
+    document.addEventListener('visibilitychange', handleVis)
+    return () => document.removeEventListener('visibilitychange', handleVis)
+  }, [])
 
   // Calculations
   const results = useMemo(() => calc({
@@ -425,7 +424,7 @@ useEffect(() => {
     salariesPct, empDeductionsPct, rentPct, telephoneAmt, utilitiesAmt,
     localAdvAmt, insuranceAmt, postageAmt, suppliesPct, duesAmt, bankFeesAmt,
     maintenanceAmt, travelEntAmt, royaltiesPct, advRoyaltiesPct, taxRushRoyaltiesPct, miscPct,
-      thresholds: thr,
+    thresholds: thr,
   }), [
     region, scenario, avgNetFee, taxPrepReturns, taxRushReturns, discountsPct,
     salariesPct, empDeductionsPct, rentPct, telephoneAmt, utilitiesAmt,
@@ -440,16 +439,16 @@ useEffect(() => {
 
   // Debug panel configuration
   const showDebug = DEBUG || (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('debug') === '1')
-
-const savedAt = (() => {
-  try {
-    const env = loadEnvelope()
+  
+  const savedAt = (() => {
+    try {
+      const env = loadEnvelope()
       const iso = env?.meta?.savedAtISO
       return iso ? new Date(iso).toLocaleString() : '(never)'
-  } catch {
-    return '—'
-  }
-})()
+    } catch {
+      return '—'
+    }
+  })()
 
   // Debug panel handlers
   const handleSaveNow = () => { dbg('ui: Save Now'); saveNow() }
@@ -479,8 +478,6 @@ const savedAt = (() => {
 
       {showWizard ? (
         <WizardShell
-          region={region}
-          setRegion={setRegion}
           onComplete={handleWizardComplete}
           onCancel={handleWizardCancel}
         />
