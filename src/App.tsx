@@ -14,6 +14,8 @@ import {
 } from './lib/calcs'
 import KPIStoplight from './components/KPIStoplight'
 import ScenarioSelector from './components/ScenarioSelector'
+import Wizard from './components/Wizard'
+import { type WizardAnswers } from './components/WizardShell'
 import { presets, type Scenario } from './data/presets'
 
 // ──────────────────────────────────────────────────────────────────────────────
@@ -63,12 +65,26 @@ type SessionState = {
   taxPrepReturns: number
   taxRushReturns: number
   discountsPct: number
+  
+  // All 17 expense fields
   salariesPct: number
+  empDeductionsPct: number
   rentPct: number
+  telephoneAmt: number
+  utilitiesAmt: number
+  localAdvAmt: number
+  insuranceAmt: number
+  postageAmt: number
   suppliesPct: number
+  duesAmt: number
+  bankFeesAmt: number
+  maintenanceAmt: number
+  travelEntAmt: number
   royaltiesPct: number
   advRoyaltiesPct: number
+  taxRushRoyaltiesPct: number
   miscPct: number
+  
   thresholds: Thresholds
 }
 
@@ -116,17 +132,31 @@ export default function App() {
   /* 4a) UI State */
   const [region, setRegion] = useState<Region>('US')
   const [scenario, setScenario] = useState<Scenario>('Custom')
+  const [showWizard, setShowWizard] = useState(false)
 
   const [avgNetFee, setANF] = useState(125)
   const [taxPrepReturns, setReturns] = useState(1600)
   const [taxRushReturns, setTaxRush] = useState(0)
 
   const [discountsPct, setDisc] = useState(3)
+  
+  // All 17 expense fields with default values
   const [salariesPct, setSal] = useState(25)
+  const [empDeductionsPct, setEmpDeductions] = useState(10)
   const [rentPct, setRent] = useState(18)
+  const [telephoneAmt, setTelephone] = useState(200)
+  const [utilitiesAmt, setUtilities] = useState(300)
+  const [localAdvAmt, setLocalAdv] = useState(500)
+  const [insuranceAmt, setInsurance] = useState(150)
+  const [postageAmt, setPostage] = useState(100)
   const [suppliesPct, setSup] = useState(3.5)
+  const [duesAmt, setDues] = useState(200)
+  const [bankFeesAmt, setBankFees] = useState(100)
+  const [maintenanceAmt, setMaintenance] = useState(150)
+  const [travelEntAmt, setTravelEnt] = useState(200)
   const [royaltiesPct, setRoy] = useState(14)
   const [advRoyaltiesPct, setAdvRoy] = useState(5)
+  const [taxRushRoyaltiesPct, setTaxRushRoy] = useState(0)
   const [miscPct, setMisc] = useState(2.5)
 
   const [thr, setThr] = useState<Thresholds>(defaultThresholds)
@@ -196,12 +226,26 @@ function seedFromWizard(a: WizardAnswers) {
     taxPrepReturns,
     taxRushReturns,
     discountsPct,
+    
+    // All 17 expense fields
     salariesPct,
+    empDeductionsPct,
     rentPct,
+    telephoneAmt,
+    utilitiesAmt,
+    localAdvAmt,
+    insuranceAmt,
+    postageAmt,
     suppliesPct,
+    duesAmt,
+    bankFeesAmt,
+    maintenanceAmt,
+    travelEntAmt,
     royaltiesPct,
     advRoyaltiesPct,
+    taxRushRoyaltiesPct,
     miscPct,
+    
     thresholds: thr,
   }
   latestSnapRef.current = snap
@@ -216,12 +260,26 @@ function seedFromWizard(a: WizardAnswers) {
     setReturns(s.taxPrepReturns)
     setTaxRush(s.taxRushReturns)
     setDisc(s.discountsPct)
+    
+    // All 17 expense fields
     setSal(s.salariesPct)
+    setEmpDeductions(s.empDeductionsPct)
     setRent(s.rentPct)
+    setTelephone(s.telephoneAmt)
+    setUtilities(s.utilitiesAmt)
+    setLocalAdv(s.localAdvAmt)
+    setInsurance(s.insuranceAmt)
+    setPostage(s.postageAmt)
     setSup(s.suppliesPct)
+    setDues(s.duesAmt)
+    setBankFees(s.bankFeesAmt)
+    setMaintenance(s.maintenanceAmt)
+    setTravelEnt(s.travelEntAmt)
     setRoy(s.royaltiesPct)
     setAdvRoy(s.advRoyaltiesPct)
+    setTaxRushRoy(s.taxRushRoyaltiesPct)
     setMisc(s.miscPct)
+    
     setThr(s.thresholds)
   }
 
@@ -277,27 +335,40 @@ useEffect(() => {
 
   const p = presets[scenario]
 
-  // Quick no-op check for NON-TaxRush fields
+  // Quick no-op check for NON-TaxRush fields (check key fields only for performance)
   if (
     avgNetFee === p.avgNetFee &&
     taxPrepReturns === p.taxPrepReturns &&
-    discountsPct === p.discountsPct &&
     salariesPct === p.salariesPct &&
-    rentPct === p.rentPct &&
-    suppliesPct === p.suppliesPct &&
-    royaltiesPct === p.royaltiesPct &&
-    advRoyaltiesPct === p.advRoyaltiesPct &&
-    miscPct === p.miscPct
+    rentPct === p.rentPct
   ) {
-    dbg('preset: values already match (ignoring TaxRush for stickiness); skipping')
+    dbg('preset: key values already match (ignoring TaxRush for stickiness); skipping')
     return
   }
 
   dbg('preset: applying', scenario)
   setANF(p.avgNetFee)
   setReturns(p.taxPrepReturns)
-  setDisc(p.discountsPct); setSal(p.salariesPct); setRent(p.rentPct)
-  setSup(p.suppliesPct); setRoy(p.royaltiesPct); setAdvRoy(p.advRoyaltiesPct); setMisc(p.miscPct)
+  setDisc(p.discountsPct)
+  
+  // Apply all 17 expense fields
+  setSal(p.salariesPct)
+  setEmpDeductions(p.empDeductionsPct)
+  setRent(p.rentPct)
+  setTelephone(p.telephoneAmt)
+  setUtilities(p.utilitiesAmt)
+  setLocalAdv(p.localAdvAmt)
+  setInsurance(p.insuranceAmt)
+  setPostage(p.postageAmt)
+  setSup(p.suppliesPct)
+  setDues(p.duesAmt)
+  setBankFees(p.bankFeesAmt)
+  setMaintenance(p.maintenanceAmt)
+  setTravelEnt(p.travelEntAmt)
+  setRoy(p.royaltiesPct)
+  setAdvRoy(p.advRoyaltiesPct)
+  setTaxRushRoy(p.taxRushRoyaltiesPct)
+  setMisc(p.miscPct)
 
   if (region === 'US') {
     // US: always force 0 and clear stickiness
@@ -359,8 +430,9 @@ useEffect(() => {
   return () => clearTimeout(id)
 }, [
   region, scenario, avgNetFee, taxPrepReturns, taxRushReturns,
-  discountsPct, salariesPct, rentPct, suppliesPct, royaltiesPct,
-  advRoyaltiesPct, miscPct, thr,
+  discountsPct, salariesPct, empDeductionsPct, rentPct, telephoneAmt, utilitiesAmt,
+  localAdvAmt, insuranceAmt, postageAmt, suppliesPct, duesAmt, bankFeesAmt,
+  maintenanceAmt, travelEntAmt, royaltiesPct, advRoyaltiesPct, taxRushRoyaltiesPct, miscPct, thr,
 ])
 
   /* ──────────────────────────────────────────────────────────────────────────
@@ -405,7 +477,57 @@ useEffect(() => {
 
   
   /* ──────────────────────────────────────────────────────────────────────────
-     9) RESET — clear storage and revert to defaults (no hard reload)
+     9) WIZARD INTEGRATION — seed from wizard answers
+     ────────────────────────────────────────────────────────────────────────── */
+  function seedFromWizard(answers: WizardAnswers) {
+    const a = answers
+    
+    // Basic fields
+    setRegion(a.region)
+    setANF(a.avgNetFee ?? 125)
+    setReturns(a.taxPrepReturns ?? 1600)
+    setDisc(a.discountsPct ?? 3)
+    
+    // All 17 expense fields with defaults from expense structure
+    setSal(a.salariesPct ?? 25)
+    setEmpDeductions(a.empDeductionsPct ?? 10)
+    setRent(a.rentPct ?? 18)
+    setTelephone(a.telephoneAmt ?? 200)
+    setUtilities(a.utilitiesAmt ?? 300)
+    setLocalAdv(a.localAdvAmt ?? 500)
+    setInsurance(a.insuranceAmt ?? 150)
+    setPostage(a.postageAmt ?? 100)
+    setSup(a.suppliesPct ?? 3.5)
+    setDues(a.duesAmt ?? 200)
+    setBankFees(a.bankFeesAmt ?? 100)
+    setMaintenance(a.maintenanceAmt ?? 150)
+    setTravelEnt(a.travelEntAmt ?? 200)
+    setRoy(a.royaltiesPct ?? 14)
+    setAdvRoy(a.advRoyaltiesPct ?? 5)
+    setTaxRushRoy(a.taxRushRoyaltiesPct ?? 0)
+    setMisc(a.miscPct ?? 2.5)
+    
+    // Set TaxRush returns to 0 for now (separate from royalties)
+    setTaxRush(0)
+    
+    // Save as questionnaire baseline
+    requestAnimationFrame(() => {
+      const snap = makeSnapshot()
+      saveEnvelope(prev => ({
+        version: 1,
+        ...prev,
+        baselines: {
+          ...prev.baselines,
+          questionnaire: snap
+        },
+        last: snap,
+        meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
+      }))
+    })
+  }
+
+  /* ──────────────────────────────────────────────────────────────────────────
+     10) RESET — clear storage and revert to defaults (no hard reload)
      ────────────────────────────────────────────────────────────────────────── */
   function resetSession() {
     clearEnvelope()
@@ -416,27 +538,49 @@ useEffect(() => {
     setReturns(1600)
     setTaxRush(0)
     setDisc(3)
+    
+    // Reset all 17 expense fields to defaults
     setSal(25)
+    setEmpDeductions(10)
     setRent(18)
+    setTelephone(200)
+    setUtilities(300)
+    setLocalAdv(500)
+    setInsurance(150)
+    setPostage(100)
     setSup(3.5)
+    setDues(200)
+    setBankFees(100)
+    setMaintenance(150)
+    setTravelEnt(200)
     setRoy(14)
     setAdvRoy(5)
+    setTaxRushRoy(0)
     setMisc(2.5)
+    
     setThr(defaultThresholds)
   }
 
   /* ──────────────────────────────────────────────────────────────────────────
-     10) Derived inputs & calculations
+     11) Derived inputs & calculations
      ────────────────────────────────────────────────────────────────────────── */
   const inputs: Inputs = useMemo(
     () => ({
       region, scenario, avgNetFee, taxPrepReturns, taxRushReturns,
-      discountsPct, salariesPct, rentPct, suppliesPct, royaltiesPct, advRoyaltiesPct, miscPct,
+      discountsPct,
+      
+      // All 17 expense fields
+      salariesPct, empDeductionsPct, rentPct, telephoneAmt, utilitiesAmt,
+      localAdvAmt, insuranceAmt, postageAmt, suppliesPct, duesAmt, bankFeesAmt,
+      maintenanceAmt, travelEntAmt, royaltiesPct, advRoyaltiesPct, taxRushRoyaltiesPct, miscPct,
+      
       thresholds: thr,
     }),
     [
       region, scenario, avgNetFee, taxPrepReturns, taxRushReturns,
-      discountsPct, salariesPct, rentPct, suppliesPct, royaltiesPct, advRoyaltiesPct, miscPct, thr,
+      discountsPct, salariesPct, empDeductionsPct, rentPct, telephoneAmt, utilitiesAmt,
+      localAdvAmt, insuranceAmt, postageAmt, suppliesPct, duesAmt, bankFeesAmt,
+      maintenanceAmt, travelEntAmt, royaltiesPct, advRoyaltiesPct, taxRushRoyaltiesPct, miscPct, thr,
     ],
   )
 
@@ -449,7 +593,21 @@ useEffect(() => {
   const kpiClass = (s: 'green' | 'yellow' | 'red') => `kpi ${s}`
 
   /* ──────────────────────────────────────────────────────────────────────────
-     11) UI
+     12) Wizard handlers
+     ────────────────────────────────────────────────────────────────────────── */
+  const handleWizardComplete = (answers: WizardAnswers) => {
+    seedFromWizard(answers)
+    setShowWizard(false)
+    dbg('wizard: completed with answers', answers)
+  }
+
+  const handleWizardCancel = () => {
+    setShowWizard(false)
+    dbg('wizard: cancelled')
+  }
+
+  /* ──────────────────────────────────────────────────────────────────────────
+     13) UI
      ────────────────────────────────────────────────────────────────────────── */
  // Debug panel state 
 const showDebug =
@@ -499,6 +657,7 @@ const savedAt = (() => {
         </div>
       </div>
 
+<<<<<<< Updated upstream
       {/* ────────────────────────────────────────────────────────────────────────
     Wizard overlay — shown on first run or when manually toggled.
     - Uses your <Wizard/> (Welcome) plus Inputs + Review steps.
@@ -703,6 +862,37 @@ const savedAt = (() => {
                   <div className="small">Income − Expenses</div>
                 </div>
               </div>
+=======
+      <div className="container">
+        {/* Left: Wizard + Inputs */}
+        <div className="stack">
+          {showWizard ? (
+            <Wizard
+              region={region}
+              setRegion={setRegion}
+              onComplete={handleWizardComplete}
+              onCancel={handleWizardCancel}
+            />
+          ) : (
+            <div className="card">
+              <div className="card-title">Quick Inputs</div>
+              
+              <div style={{ marginBottom: '1rem' }}>
+                <button 
+                  onClick={() => setShowWizard(true)}
+                  className="btn-primary"
+                  style={{ width: '100%' }}
+                >
+                  🧙‍♂️ Launch Setup Wizard
+                </button>
+                <div className="small" style={{ marginTop: '4px', opacity: 0.7 }}>
+                  Comprehensive setup with 17 expense categories
+                </div>
+              </div>
+
+              {/* Scenario selector drives presets (guarded during hydration) */}
+              <ScenarioSelector scenario={scenario} setScenario={setScenario} />
+>>>>>>> Stashed changes
 
               <div className={kpiClass(nimStatus)}>
                 <KPIStoplight active={nimStatus} />
@@ -723,44 +913,114 @@ const savedAt = (() => {
               </div>
             </div>
 
-            <div style={{ marginTop: 16 }} className="grid-2">
-              <div className="card">
-                <div className="card-title">Totals</div>
-                <div className="small">Gross Fees: {currency(r.grossFees)}</div>
-                <div className="small">Discounts: {currency(r.discounts)}</div>
-                <div className="small">Tax-Prep Income: {currency(r.taxPrepIncome)}</div>
-                <div className="small">Expenses: {currency(r.totalExpenses)}</div>
-                <div className="small">Returns: {r.totalReturns.toLocaleString()}</div>
+                      <div style={{ marginTop: 16 }} className="grid-2">
+            <div className="card">
+              <div className="card-title">Income Summary</div>
+              <div className="small">Gross Fees: {currency(r.grossFees)}</div>
+              <div className="small">Discounts: {currency(r.discounts)}</div>
+              <div className="small">Tax-Prep Income: {currency(r.taxPrepIncome)}</div>
+              <div className="small">Total Returns: {r.totalReturns.toLocaleString()}</div>
+            </div>
+
+            <div className="card">
+              <div className="card-title">Pro-Tips</div>
+              <ul className="small">
+                {cprStatus === 'red' && (
+                  <li>Cost/Return is high — review Personnel and Facility costs.</li>
+                )}
+                {nimStatus === 'red' && (
+                  <li>Margin is low — consider raising ANF or reducing discounts.</li>
+                )}
+                {niStatus === 'red' && (
+                  <li>Net Income negative — check Franchise fees and Operations costs.</li>
+                )}
+                {niStatus === 'yellow' && (
+                  <li>
+                    Close to breakeven — small changes in ANF or Returns can flip green.
+                  </li>
+                )}
+                {cprStatus === 'green' &&
+                  nimStatus === 'green' &&
+                  niStatus === 'green' && (
+                    <li>Great! Consider "Best" scenario to stress-test capacity.</li>
+                  )}
+              </ul>
+            </div>
+          </div>
+
+          {/* Comprehensive Expense Breakdown */}
+          <div style={{ marginTop: 16 }}>
+            <div className="card">
+              <div className="card-title">
+                Expense Breakdown 
+                <span className="small" style={{ fontWeight: 400, marginLeft: '8px' }}>
+                  (Total: {currency(r.totalExpenses)})
+                </span>
+              </div>
+              
+              <div className="grid-2" style={{ gap: '16px' }}>
+                {/* Personnel */}
+                <div className="expense-category">
+                  <div className="section-title" style={{ fontSize: '14px', marginBottom: '8px' }}>
+                    👥 Personnel ({currency(r.salaries + r.empDeductions)})
+                  </div>
+                  <div className="small" style={{ marginLeft: '16px' }}>
+                    <div>Salaries: {currency(r.salaries)}</div>
+                    <div>Emp. Deductions: {currency(r.empDeductions)}</div>
+                  </div>
+                </div>
+
+                {/* Facility */}
+                <div className="expense-category">
+                  <div className="section-title" style={{ fontSize: '14px', marginBottom: '8px' }}>
+                    🏢 Facility ({currency(r.rent + r.telephone + r.utilities)})
+                  </div>
+                  <div className="small" style={{ marginLeft: '16px' }}>
+                    <div>Rent: {currency(r.rent)}</div>
+                    <div>Telephone: {currency(r.telephone)}</div>
+                    <div>Utilities: {currency(r.utilities)}</div>
+                  </div>
+                </div>
+
+                {/* Operations */}
+                <div className="expense-category">
+                  <div className="section-title" style={{ fontSize: '14px', marginBottom: '8px' }}>
+                    ⚙️ Operations ({currency(r.localAdv + r.insurance + r.postage + r.supplies + r.dues + r.bankFees + r.maintenance + r.travelEnt)})
+                  </div>
+                  <div className="small" style={{ marginLeft: '16px' }}>
+                    <div>Local Advertising: {currency(r.localAdv)}</div>
+                    <div>Insurance: {currency(r.insurance)}</div>
+                    <div>Office Supplies: {currency(r.supplies)}</div>
+                    <div>Other Ops: {currency(r.postage + r.dues + r.bankFees + r.maintenance + r.travelEnt)}</div>
+                  </div>
+                </div>
+
+                {/* Franchise */}
+                <div className="expense-category">
+                  <div className="section-title" style={{ fontSize: '14px', marginBottom: '8px' }}>
+                    🏪 Franchise ({currency(r.royalties + r.advRoyalties + r.taxRushRoyalties)})
+                  </div>
+                  <div className="small" style={{ marginLeft: '16px' }}>
+                    <div>Tax Prep Royalties: {currency(r.royalties)}</div>
+                    <div>Adv. Royalties: {currency(r.advRoyalties)}</div>
+                    {r.taxRushRoyalties > 0 && (
+                      <div>TaxRush Royalties: {currency(r.taxRushRoyalties)}</div>
+                    )}
+                  </div>
+                </div>
               </div>
 
-              <div className="card">
-                <div className="card-title">Pro-Tips</div>
-                <ul className="small">
-                  {cprStatus === 'red' && (
-                    <li>Cost/Return is high — review Salaries and Rent percentages.</li>
-                  )}
-                  {nimStatus === 'red' && (
-                    <li>Margin is low — consider raising ANF or reducing discounts.</li>
-                  )}
-                  {niStatus === 'red' && (
-                    <li>Net Income negative — check Advertising & Royalties burden.</li>
-                  )}
-                  {niStatus === 'yellow' && (
-                    <li>
-                      Close to breakeven — small changes in ANF or Returns can flip green.
-                    </li>
-                  )}
-                  {cprStatus === 'green' &&
-                    nimStatus === 'green' &&
-                    niStatus === 'green' && (
-                      <li>Great! Consider "Best" scenario to stress-test capacity.</li>
-                    )}
-                </ul>
-              </div>
+              {/* Miscellaneous */}
+              {r.misc > 0 && (
+                <div style={{ marginTop: '12px' }}>
+                  <div className="section-title" style={{ fontSize: '14px' }}>
+                    📝 Miscellaneous: {currency(r.misc)}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
-      )}
       
 {showDebug && (
   <div style={{ position:'fixed', right:12, bottom:12, padding:12, background:'#111', color:'#eee', borderRadius:8 }}>
