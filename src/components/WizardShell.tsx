@@ -15,8 +15,8 @@ import Wizard from './Wizard'
 import WizardInputs from './WizardInputs'
 import WizardReview from './WizardReview'
 
-// If you already have a Region type somewhere (e.g., ../lib/calcs), import that instead.
-export type Region = 'US' | 'CA'
+// Import Region from your existing calcs module
+import type { Region } from '../lib/calcs'
 
 // The data we collect across the steps.
 // Keep this minimal now; add fields later as needed.
