@@ -132,7 +132,6 @@ export default function App() {
   /* 4a) UI State */
   const [region, setRegion] = useState<Region>('US')
   const [scenario, setScenario] = useState<Scenario>('Custom')
-  const [showWizard, setShowWizard] = useState(false)
 
   const [avgNetFee, setANF] = useState(125)
   const [taxPrepReturns, setReturns] = useState(1600)
@@ -161,46 +160,63 @@ export default function App() {
 
   const [thr, setThr] = useState<Thresholds>(defaultThresholds)
 
-  /* ──────────────────────────────────────────────────────────────────────────
-   Wizard state — show on first run, seed baseline on confirm
-   - We consider "first run" if there is no saved "last" AND no questionnaire baseline.
-   - You can always bring it back later from a debug button (future).
-   ────────────────────────────────────────────────────────────────────────── */
-
-// Show the wizard if nothing has been saved yet.
-// (The arrow function form runs once on mount and uses your existing loadEnvelope().)
-const [showWizard, setShowWizard] = useState<boolean>(() => {
-  const env = loadEnvelope()
-  const nothingSaved = !env?.last && !env?.baselines?.questionnaire
-  return Boolean(nothingSaved)
-})
-
-/**
- * Seed app state from Wizard answers and persist immediately.
- * This writes into your existing state variables, then calls saveNow()
- * (which you already implemented for an immediate flush).
- * - Region gating: US forces TaxRush = 0, CA keeps the entered value.
- */
-function seedFromWizard(a: WizardAnswers) {
-  // 1) Respect Region rules you already enforce elsewhere.
-  setRegion(a.region)
-
-  // 2) Copy over Income Driver values.
-  setANF(a.avgNetFee ?? 0)
-  setReturns(a.taxPrepReturns ?? 0)
-  setDisc(a.discountsPct ?? 0)
-
-  // 3) Canada-only TaxRush (US forced zero per your gating).
-  const nextTR = a.region === 'US' ? 0 : (a.taxRushReturns ?? 0)
-  setTaxRush(nextTR)
-
-  // 4) Persist immediately so refresh won’t lose baseline.
-  //    We wait a tick so React state updates are applied first.
-  requestAnimationFrame(() => {
-    if (readyRef.current) saveNow()    // uses your existing immediate writer
-    setShowWizard(false)               // close the wizard, show dashboard
+  /* 4b) Wizard state — show on first run, seed baseline on confirm */
+  const [showWizard, setShowWizard] = useState<boolean>(() => {
+    const env = loadEnvelope()
+    const nothingSaved = !env?.last && !env?.baselines?.questionnaire
+    return Boolean(nothingSaved)
   })
-}
+
+  /**
+   * Seed app state from Wizard answers and persist immediately.
+   */
+  function seedFromWizard(answers: WizardAnswers) {
+    const a = answers
+    
+    // Basic fields
+    setRegion(a.region)
+    setANF(a.avgNetFee ?? 125)
+    setReturns(a.taxPrepReturns ?? 1600)
+    setDisc(a.discountsPct ?? 3)
+    
+    // All 17 expense fields with defaults from expense structure
+    setSal(a.salariesPct ?? 25)
+    setEmpDeductions(a.empDeductionsPct ?? 10)
+    setRent(a.rentPct ?? 18)
+    setTelephone(a.telephoneAmt ?? 200)
+    setUtilities(a.utilitiesAmt ?? 300)
+    setLocalAdv(a.localAdvAmt ?? 500)
+    setInsurance(a.insuranceAmt ?? 150)
+    setPostage(a.postageAmt ?? 100)
+    setSup(a.suppliesPct ?? 3.5)
+    setDues(a.duesAmt ?? 200)
+    setBankFees(a.bankFeesAmt ?? 100)
+    setMaintenance(a.maintenanceAmt ?? 150)
+    setTravelEnt(a.travelEntAmt ?? 200)
+    setRoy(a.royaltiesPct ?? 14)
+    setAdvRoy(a.advRoyaltiesPct ?? 5)
+    setTaxRushRoy(a.taxRushRoyaltiesPct ?? 0)
+    setMisc(a.miscPct ?? 2.5)
+    
+    // Set TaxRush returns to 0 for now (separate from royalties)
+    setTaxRush(0)
+    
+    // Save as questionnaire baseline
+    requestAnimationFrame(() => {
+      const snap = makeSnapshot()
+      saveEnvelope(prev => ({
+        version: 1,
+        ...prev,
+        baselines: {
+          ...prev.baselines,
+          questionnaire: snap
+        },
+        last: snap,
+        meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
+      }))
+      setShowWizard(false)
+    })
+  }
 
   
   /* 4b) Hydration + autosave guards
@@ -657,29 +673,37 @@ const savedAt = (() => {
         </div>
       </div>
 
-<<<<<<< Updated upstream
-      {/* ────────────────────────────────────────────────────────────────────────
-    Wizard overlay — shown on first run or when manually toggled.
-    - Uses your <Wizard/> (Welcome) plus Inputs + Review steps.
-    - Region locking note: US disables TaxRush; CA enables & preserves it.
-   ──────────────────────────────────────────────────────────────────────── */}
-{/* Only render the main app when wizard is closed */}
-{/* ── Wizard overlay (first-run or when “Wizard” is clicked) ─────────────── */}
-{showWizard && (
-  <WizardShell
-    region={region}
-    setRegion={setRegion}
-    onConfirmBaseline={seedFromWizard}
-    onCancel={() => setShowWizard(false)}
-  />
-)}
-
-{!showWizard && (
+      {/* Wizard overlay - shown on first run or when manually toggled */}
+      {showWizard ? (
         <div className="container">
-          {/* Left: Inputs */}
+          <div className="stack">
+            <Wizard
+              region={region}
+              setRegion={setRegion}
+              onComplete={seedFromWizard}
+              onCancel={() => setShowWizard(false)}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="container">
+          {/* Left: Wizard + Inputs */}
           <div className="stack">
             <div className="card">
               <div className="card-title">Quick Inputs</div>
+              
+              <div style={{ marginBottom: '1rem' }}>
+                <button 
+                  onClick={() => setShowWizard(true)}
+                  className="btn-primary"
+                  style={{ width: '100%' }}
+                >
+                  🧙‍♂️ Launch Setup Wizard
+                </button>
+                <div className="small" style={{ marginTop: '4px', opacity: 0.7 }}>
+                  Comprehensive setup with 17 expense categories
+                </div>
+              </div>
 
               {/* Scenario selector drives presets (guarded during hydration) */}
               <ScenarioSelector scenario={scenario} setScenario={setScenario} />
@@ -1058,6 +1082,7 @@ const savedAt = (() => {
   </div>
 )}
 
+      )}
       
       <div className="footer">
         Preview web app • Persistence enabled • Region gating (TaxRush CA-only) • Preset gating on hydration
