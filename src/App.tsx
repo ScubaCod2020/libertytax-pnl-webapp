@@ -469,7 +469,7 @@ const savedAt = (() => {
 
   // Main render
   return (
-    <div> {/* main container */}
+    <div>
       <Header
         region={region}
         setRegion={setRegion}
@@ -485,7 +485,7 @@ const savedAt = (() => {
           onCancel={handleWizardCancel}
         />
       ) : (
-        <div className="container"> {/* main content */}
+        <div className="container">
           <InputsPanel
             region={region}
             scenario={scenario}
@@ -535,8 +535,8 @@ const savedAt = (() => {
           />
 
           <Dashboard results={enhancedResults} />
-  </div>
-)}
+        </div>
+      )}
 
       <DebugPanel
         show={showDebug}
@@ -554,6 +554,6 @@ const savedAt = (() => {
       />
 
       <Footer />
-    </div> {/* main container */}
+    </div>
   )
 }
