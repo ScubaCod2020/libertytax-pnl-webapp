@@ -5,13 +5,13 @@ import { useState, useEffect, useRef } from 'react'
 import type { Region, Thresholds } from '../lib/calcs'
 import type { Scenario } from '../data/presets'
 
-const APP_VERSION = 'v0.5-preview'
-const ORIGIN = typeof window !== 'undefined' ? window.location.origin : 'ssr'
-const STORAGE_KEY = `lt_pnl_v5_session_v1_${APP_VERSION}`
+export const APP_VERSION = 'v0.5-preview'
+export const ORIGIN = typeof window !== 'undefined' ? window.location.origin : 'ssr'
+export const STORAGE_KEY = `lt_pnl_v5_session_v1_${APP_VERSION}`
 
 // DEV logging toggle
-const DEBUG = true
-const dbg = (...args: any[]) => { if (DEBUG) console.log('[persist]', ...args) }
+export const DEBUG = true
+export const dbg = (...args: any[]) => { if (DEBUG) console.log('[persist]', ...args) }
 
 export type SessionState = {
   region: Region
@@ -230,8 +230,10 @@ export function usePersistence() {
     setupAutosave,
     setupFlushHandlers,
     
-    // Debug info
+    // Constants
     STORAGE_KEY,
+    ORIGIN,
+    APP_VERSION,
     DEBUG,
     dbg,
   }

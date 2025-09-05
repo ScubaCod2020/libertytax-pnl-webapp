@@ -30,11 +30,14 @@ export default function DebugPanel(props: DebugPanelProps) {
     <div style={{ 
       position: 'fixed', 
       right: 12, 
-      bottom: 12, 
-      padding: 12, 
+      top: 12, 
+      padding: 8, 
       background: '#111', 
       color: '#eee', 
-      borderRadius: 8 
+      borderRadius: 6,
+      fontSize: 11,
+      zIndex: 1000,
+      maxWidth: 200
     }}>
       <div style={{ fontWeight: 700, marginBottom: 6 }}>Debug</div>
       <div style={{ fontSize: 12, opacity: 0.8 }}>key: {storageKey}</div>

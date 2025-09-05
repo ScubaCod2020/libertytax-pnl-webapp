@@ -7,8 +7,7 @@ import type { WizardAnswers } from './components/WizardShell'
 import Header from './components/Header'
 import InputsPanel from './components/InputsPanel'
 import Dashboard from './components/Dashboard/Dashboard'
-import DebugToggle from './components/DebugSystem/DebugToggle'
-import DebugSidebar from './components/DebugSystem/DebugSidebar'
+import DebugPanel from './components/DebugPanel'
 import Footer from './components/Footer'
 import { useAppState } from './hooks/useAppState'
 import { useCalculations } from './hooks/useCalculations'
@@ -21,9 +20,6 @@ export default function App() {
   const calculations = useCalculations(appState)
   const persistence = usePersistence(appState)
   const presets = usePresets(appState)
-  
-  // Debug system state
-  const [debugOpen, setDebugOpen] = React.useState(false)
 
   // Wizard handlers
   const handleWizardComplete = (answers: WizardAnswers) => {
@@ -72,16 +68,16 @@ export default function App() {
 
   // Debug panel configuration
   const showDebug = persistence.DEBUG || (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('debug') === '1')
-
-const savedAt = (() => {
-  try {
+  
+  const savedAt = (() => {
+    try {
       const env = persistence.loadEnvelope()
       const iso = env?.meta?.savedAtISO
       return iso ? new Date(iso).toLocaleString() : '(never)'
-  } catch {
-    return '—'
-  }
-})()
+    } catch {
+      return '—'
+    }
+  })()
 
   // Main render - clean and focused
   return (
@@ -151,34 +147,25 @@ const savedAt = (() => {
           />
 
           <Dashboard results={calculations} />
-  </div>
-)}
+        </div>
+      )}
 
-             <DebugToggle
-         show={showDebug}
-         isOpen={debugOpen}
-         onToggle={() => setDebugOpen(!debugOpen)}
-       />
+      <DebugPanel
+        show={showDebug}
+        storageKey={persistence.STORAGE_KEY}
+        origin={persistence.ORIGIN}
+        appVersion={persistence.APP_VERSION}
+        isReady={persistence.readyRef.current}
+        isHydrating={persistence.hydratingRef.current}
+        savedAt={savedAt}
+        onSaveNow={handleSaveNow}
+        onDumpStorage={handleDumpStorage}
+        onCopyJSON={handleCopyJSON}
+        onClearStorage={handleClearStorage}
+        onShowWizard={() => appState.setShowWizard(true)}
+      />
 
-       <DebugSidebar
-         isOpen={debugOpen}
-         onClose={() => setDebugOpen(false)}
-         storageKey={persistence.STORAGE_KEY}
-         origin={persistence.ORIGIN}
-         appVersion={persistence.APP_VERSION}
-         isReady={persistence.readyRef.current}
-         isHydrating={persistence.hydratingRef.current}
-         savedAt={savedAt}
-         onSaveNow={handleSaveNow}
-         onDumpStorage={handleDumpStorage}
-         onCopyJSON={handleCopyJSON}
-         onClearStorage={handleClearStorage}
-         onShowWizard={() => appState.setShowWizard(true)}
-         calculations={calculations}
-         appState={appState}
-       />
-
-       <Footer />
+      <Footer />
     </div>
   )
 }

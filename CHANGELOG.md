@@ -8,23 +8,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **🏗️ Clean Hooks Architecture**: Extracted state, persistence, calculations, and presets into reusable custom hooks
+- **🔧 Professional Debug System**: Collapsible sidebar with multiple views (Storage, Calculations, State, Performance)
+- **📊 Enhanced Dashboard**: Improved spacing and visual organization of expense breakdown
+- **⚡ Local Development**: Full npm build pipeline working with 44+ modules
 - Comprehensive 17-category expense system
 - Multi-step setup wizard with Welcome, Inputs, and Review stages
 - Enhanced expense breakdown with visual categorization
-- Modular hook system for calculations and persistence
 - Detailed commit message template for consistent documentation
 
 ### Changed
+- **🚀 MAJOR: App.tsx reduced from 1,268 to 185 lines (85% reduction)**
+- **Clean Architecture**: Separated concerns into focused, testable hooks
+- **Debug System**: Replaced intrusive debug panel with professional sidebar system
+- **UI Improvements**: Better dashboard spacing and field organization
 - Expanded expense structure from basic categories to 17 detailed fields
-- Updated calculation engine to handle varied expense bases (% of gross, % of salaries, fixed amounts, % of tax prep income)
+- Updated calculation engine to handle varied expense bases
 - Enhanced wizard integration with baseline saving functionality
-- Improved dashboard UI with comprehensive expense breakdown
 
 ### Fixed
 - JSX structure errors causing deployment failures
 - Git merge conflict markers in component files
 - Duplicate variable declarations in App.tsx
 - Missing closing tags and mismatched braces
+- Debug panel covering wizard navigation buttons
+- Dashboard fields bleeding together visually
+
+### Technical Architecture
+- **useAppState.ts**: Centralized state management (250 lines)
+- **usePersistence.ts**: Storage and hydration logic (240 lines)  
+- **useCalculations.ts**: Calculation and KPI logic (100 lines)
+- **usePresets.ts**: Preset and region gating logic (50 lines)
+- **DebugSystem/**: Professional debug infrastructure with toggle and sidebar
+- **Modular Components**: Header, InputsPanel, Dashboard, Footer all extracted
 
 ### Technical Details
 - **New Files**: 

@@ -46,7 +46,7 @@ export default function Dashboard({ results }: DashboardProps) {
         </div>
       </div>
 
-      <div style={{ marginTop: 16 }} className="grid-2">
+      <div style={{ marginTop: 20, gap: '16px' }} className="grid-2">
         <div className="card">
           <div className="card-title">Income Summary</div>
           <div className="small">Gross Fees: {currency(results.grossFees)}</div>
@@ -91,7 +91,7 @@ export default function Dashboard({ results }: DashboardProps) {
             </span>
           </div>
           
-          <div className="grid-2" style={{ gap: '16px' }}>
+          <div className="grid-2" style={{ gap: '20px', marginTop: '12px' }}>
             {/* Personnel */}
             <div className="expense-category">
               <div className="section-title" style={{ fontSize: '14px', marginBottom: '8px' }}>
