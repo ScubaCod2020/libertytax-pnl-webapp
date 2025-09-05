@@ -8,6 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- (Future enhancements will be listed here)
+
+### Changed
+- (Future changes will be listed here)
+
+### Fixed
+- (Future fixes will be listed here)
+
+---
+
+## [0.5.0-preview.3] - 2025-01-05
+
+🚧 **PREVIEW RELEASE: Complete Wizard Transformation with Performance-Based Business Planning**
+
+*Note: This is a preview release. Full v0.5.0 will be released when branch merges to main.*
+
+### Added
 - **🧙‍♂️ Enhanced Setup Wizard**: Performance-based business planning with new/existing store types
 - **📊 Store Performance Analysis**: Last year revenue, growth projections, and expected revenue calculations
 - **💰 Comprehensive Income Modeling**: TaxRush returns count, other income streams, real-time revenue breakdown
@@ -71,6 +88,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ✅ **EXCEEDED**: Results & KPI Calculations with real-time revenue breakdown
 - ✅ **EXCEEDED**: Dashboard with professional debug system and modular architecture
 - ✅ **SCOPE COMPLETE**: All v0.5 requirements met and significantly enhanced
+
+---
+
+## Version History
+
+### [0.5.0-preview.3] - 2025-01-05 🚧 **PREVIEW RELEASE**
+- **Complete wizard transformation** with performance-based business planning
+- **Professional architecture** with clean hooks and modular components  
+- **Enhanced regional support** with intelligent TaxRush integration
+- **Comprehensive income modeling** with 17-category expense system
+- **Enterprise-grade debugging** with collapsible sidebar system
+- **Bundle**: 48 modules, 200.82 kB (production optimized)
+- **Scope**: EXCEEDED all original v0.5 requirements
+
+### [0.4.0] - Previous Release
+- Basic wizard and dashboard functionality
+- Initial expense system implementation
+- Core calculation engine
+- **Bundle**: 44 modules, 182.22 kB
+
+### Upcoming Releases
+- **v0.6.0**: Monthly breakdown analysis, advanced reporting
+- **v0.7.0**: Multi-location consolidation, enhanced analytics
+- **v1.0.0**: Production-ready with full feature set
 
 ### Technical Details
 - **New Files**: 
