@@ -535,8 +535,8 @@ const savedAt = (() => {
           />
 
           <Dashboard results={enhancedResults} />
-        </div> {/* main content */}
-      )}
+  </div>
+)}
 
       <DebugPanel
         show={showDebug}
