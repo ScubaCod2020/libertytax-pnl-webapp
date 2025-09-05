@@ -1251,18 +1251,16 @@ const savedAt = (() => {
         dbg('ui: Clear & reset'); 
         localStorage.removeItem(STORAGE_KEY); 
       }} style={{ fontSize:12 }}>Clear key</button>
-<button onClick={() => { 
-  dbg('ui: Reopen wizard'); 
-  setShowWizard(true);
-}} style={{ fontSize:12 }}>Wizard</button>
-
-      
-          </div>
-        )}
-
-      <div className="footer">
-        Preview web app • Persistence enabled • Region gating (TaxRush CA-only) • Preset gating on hydration
+      <button onClick={() => { 
+        dbg('ui: Reopen wizard'); 
+        setShowWizard(true);
+      }} style={{ fontSize:12 }}>Wizard</button>
       </div>
+    )}
+
+    <div className="footer">
+      Preview web app • Persistence enabled • Region gating (TaxRush CA-only) • Preset gating on hydration
     </div>
+  </div>
   )
 }
