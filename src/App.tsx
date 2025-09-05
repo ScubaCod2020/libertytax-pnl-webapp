@@ -1257,12 +1257,9 @@ const savedAt = (() => {
 }} style={{ fontSize:12 }}>Wizard</button>
 
       
-    </div>
-  </div>
-)}
+          </div>
+        )}
 
-      )}
-      
       <div className="footer">
         Preview web app • Persistence enabled • Region gating (TaxRush CA-only) • Preset gating on hydration
       </div>
