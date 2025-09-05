@@ -916,9 +916,188 @@ const savedAt = (() => {
 
               {/* Scenario selector drives presets (guarded during hydration) */}
               <ScenarioSelector scenario={scenario} setScenario={setScenario} />
->>>>>>> Stashed changes
 
-              <div className={kpiClass(nimStatus)}>
+              <div className="section-title">Income Drivers</div>
+              <div className="input-row">
+                <label>Average Net Fee ($)</label>
+                <input
+                  type="number"
+                  value={avgNetFee}
+                  onChange={(e) => setANF(+e.target.value)}
+                  onBlur={() => { if (readyRef.current) saveNow() }}
+                />
+              </div>
+              <div className="input-row">
+                <label>Tax Prep Returns (#)</label>
+                <input
+                  type="number"
+                  value={taxPrepReturns}
+                  onChange={(e) => setReturns(+e.target.value)}
+                  onBlur={() => { if (readyRef.current) saveNow() }}
+                />
+              </div>
+              <div className="input-row">
+                <label>TaxRush Returns (CA only)</label>
+                <input
+                  type="number"
+                  value={region === 'CA' ? taxRushReturns : 0}
+                  disabled={region !== 'CA'}
+                  onChange={(e) => {
+                    const raw = e.target.value
+                    const n = raw === '' ? 0 : +raw
+                    setTaxRush(n)
+                    if (region === 'CA') taxRushDirtyRef.current = true // NEW: mark sticky
+                  }}
+                  onBlur={() => { if (region === 'CA' && readyRef.current) { dbg('blur: TaxRush -> saveNow'); saveNow() } }}
+                />
+              </div>
+
+              <div className="section-title">Expense Percentages</div>
+              <div className="grid-2">
+                <div className="input-row">
+                  <label>Discounts %</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={discountsPct}
+                    onChange={(e) => setDisc(+e.target.value)}
+                    onBlur={() => readyRef.current && saveNow()}
+                  />
+                </div>
+                <div className="input-row">
+                  <label>Salaries %</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={salariesPct}
+                    onChange={(e) => setSal(+e.target.value)}
+                    onBlur={() => readyRef.current && saveNow()}
+                  />
+                </div>
+                <div className="input-row">
+                  <label>Rent %</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={rentPct}
+                    onChange={(e) => setRent(+e.target.value)}
+                    onBlur={() => readyRef.current && saveNow()}
+                  />
+                </div>
+                <div className="input-row">
+                  <label>Supplies %</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={suppliesPct}
+                    onChange={(e) => setSup(+e.target.value)}
+                    onBlur={() => readyRef.current && saveNow()}
+                  />
+                </div>
+                <div className="input-row">
+                  <label>Royalties %</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={royaltiesPct}
+                    onChange={(e) => setRoy(+e.target.value)}
+                    onBlur={() => readyRef.current && saveNow()}
+                  />
+                </div>
+                <div className="input-row">
+                  <label>Adv. Royalties %</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={advRoyaltiesPct}
+                    onChange={(e) => setAdvRoy(+e.target.value)}
+                    onBlur={() => readyRef.current && saveNow()}
+                  />
+                </div>
+                <div className="input-row">
+                  <label>Misc/Shortages %</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={miscPct}
+                    onChange={(e) => setMisc(+e.target.value)}
+                    onBlur={() => readyRef.current && saveNow()}
+                  />
+                </div>
+              </div>
+
+              <div className="section-title">KPI Thresholds</div>
+              <div className="grid-2">
+                <div className="input-row">
+                  <label>Cost/Return – Green ≤</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={thr.cprGreen}
+                    onChange={(e) => setThr({ ...thr, cprGreen: +e.target.value })}
+                    onBlur={() => readyRef.current && saveNow()}
+                  />
+                </div>
+                <div className="input-row">
+                  <label>Cost/Return – Yellow ≤</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={thr.cprYellow}
+                    onChange={(e) => setThr({ ...thr, cprYellow: +e.target.value })}
+                    onBlur={() => readyRef.current && saveNow()}
+                  />
+                </div>
+                <div className="input-row">
+                  <label>Net Margin – Green ≥ %</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={thr.nimGreen}
+                    onChange={(e) => setThr({ ...thr, nimGreen: +e.target.value })}
+                    onBlur={() => readyRef.current && saveNow()}
+                  />
+                </div>
+                <div className="input-row">
+                  <label>Net Margin – Yellow ≥ %</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={thr.nimYellow}
+                    onChange={(e) => setThr({ ...thr, nimYellow: +e.target.value })}
+                    onBlur={() => readyRef.current && saveNow()}
+                  />
+                </div>
+                <div className="input-row">
+                  <label>Net Income – Red at or below</label>
+                  <input
+                    type="number"
+                    step="100"
+                    value={thr.netIncomeWarn}
+                    onChange={(e) => setThr({ ...thr, netIncomeWarn: +e.target.value })}
+                    onBlur={() => readyRef.current && saveNow()}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right: Results Dashboard */}
+        <div className="card">
+          <div className="card-title">Dashboard</div>
+
+          <div className="kpi-vertical">
+            <div className={kpiClass(niStatus)}>
+              <KPIStoplight active={niStatus} />
+              <div>
+                <div>Net Income</div>
+                <div className="value">{currency(r.netIncome)}</div>
+                <div className="small">Income − Expenses</div>
+              </div>
+            </div>
+
+            <div className={kpiClass(nimStatus)}>
                 <KPIStoplight active={nimStatus} />
                 <div>
                   <div>Net Margin</div>
