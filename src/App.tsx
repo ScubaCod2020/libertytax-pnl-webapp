@@ -20,7 +20,7 @@ import { presets, type Scenario } from './data/presets'
 // Wizard (Welcome → Inputs → Review)
 // This shell uses your existing <Wizard/> as the Welcome step and adds the Inputs & Review steps.
 // ──────────────────────────────────────────────────────────────────────────────
-import WizardShell, { type WizardAnswers } from './component/WizardShell'
+import WizardShell, { type WizardAnswers } from './components/WizardShell'
 
 
 // DEV logging toggle — set to false to silence
