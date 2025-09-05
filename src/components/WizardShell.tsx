@@ -15,8 +15,10 @@ export interface WizardAnswers {
   // Business performance (new fields)
   storeType?: 'new' | 'existing'
   lastYearRevenue?: number
+  lastYearExpenses?: number
   expectedGrowthPct?: number
   expectedRevenue?: number // calculated or overridden
+  projectedExpenses?: number // calculated or overridden
   
   // Income drivers (enhanced)
   avgNetFee?: number
@@ -328,6 +330,19 @@ function WelcomeStep({
                 </div>
               )}
 
+              <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+                <label>Total Expenses ($)</label>
+                <input
+                  type="number"
+                  placeholder="120000"
+                  value={answers.lastYearExpenses || ''}
+                  onChange={e => updateAnswers({ lastYearExpenses: parseFloat(e.target.value) || undefined })}
+                />
+                <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                  Your total expenses from last year
+                </div>
+              </div>
+
               <div style={{ 
                 padding: '0.5rem', 
                 backgroundColor: '#e5e7eb', 
@@ -353,19 +368,25 @@ function WelcomeStep({
               </h4>
 
               <div className="input-row" style={{ marginBottom: '0.75rem' }}>
-                <label>Expected Performance Change</label>
+                <label>Projected Performance Change</label>
                 <select 
-                  value={answers.expectedGrowthPct !== undefined ? answers.expectedGrowthPct.toString() : ''} 
+                  value={
+                    answers.expectedGrowthPct !== undefined 
+                      ? (growthOptions.find(opt => opt.value === answers.expectedGrowthPct) ? answers.expectedGrowthPct.toString() : 'custom')
+                      : ''
+                  } 
                   onChange={e => {
                     const val = e.target.value
                     if (val === 'custom') {
-                      updateAnswers({ expectedGrowthPct: undefined }) // Clear to show custom input
+                      // Don't clear the value, just trigger custom input
+                    } else if (val === '') {
+                      updateAnswers({ expectedGrowthPct: undefined })
                     } else {
                       updateAnswers({ expectedGrowthPct: parseFloat(val) })
                     }
                   }}
                 >
-                  <option value="">Select expected change...</option>
+                  <option value="">Select projected change...</option>
                   {growthOptions.map(opt => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}
@@ -373,17 +394,18 @@ function WelcomeStep({
                   ))}
                 </select>
                 <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
-                  How do you expect this year to compare?
+                  How do you project this year to compare?
                 </div>
               </div>
 
-              {answers.expectedGrowthPct === undefined && (
+              {(answers.expectedGrowthPct !== undefined && !growthOptions.find(opt => opt.value === answers.expectedGrowthPct)) && (
                 <div className="input-row" style={{ marginBottom: '0.75rem' }}>
                   <label>Custom Growth Percentage (%)</label>
                   <input
                     type="number"
                     step="0.1"
                     placeholder="10"
+                    value={answers.expectedGrowthPct || ''}
                     onChange={e => updateAnswers({ expectedGrowthPct: parseFloat(e.target.value) || undefined })}
                   />
                   <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
@@ -392,18 +414,105 @@ function WelcomeStep({
                 </div>
               )}
 
+              {/* Projected fields based on last year + growth */}
               <div className="input-row" style={{ marginBottom: '0.75rem' }}>
-                <label>Expected Revenue ($)</label>
+                <label>Tax Prep Income ($)</label>
                 <input
                   type="number"
                   placeholder="220000"
-                  value={answers.expectedRevenue || ''}
+                  value={
+                    answers.lastYearRevenue && answers.expectedGrowthPct !== undefined 
+                      ? Math.round(answers.lastYearRevenue * (1 + answers.expectedGrowthPct / 100))
+                      : (answers.expectedRevenue || '')
+                  }
                   onChange={e => updateAnswers({ expectedRevenue: parseFloat(e.target.value) || undefined })}
                 />
                 <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
                   {answers.lastYearRevenue && answers.expectedGrowthPct !== undefined ? 
-                    `Calculated: $${(answers.lastYearRevenue * (1 + answers.expectedGrowthPct / 100)).toLocaleString()} (you can override)` :
-                    'Your expected total revenue for this year'
+                    `Calculated from last year + ${answers.expectedGrowthPct}% growth (you can override)` :
+                    'Your projected tax prep revenue for this year'
+                  }
+                </div>
+              </div>
+
+              <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+                <label>Average Net Fee ($)</label>
+                <input
+                  type="number"
+                  placeholder="130"
+                  value={
+                    answers.avgNetFee && answers.expectedGrowthPct !== undefined 
+                      ? Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100))
+                      : (answers.avgNetFee || '')
+                  }
+                  onChange={e => updateAnswers({ avgNetFee: parseFloat(e.target.value) || undefined })}
+                />
+                <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                  {answers.avgNetFee && answers.expectedGrowthPct !== undefined ? 
+                    `Calculated from last year + ${answers.expectedGrowthPct}% growth (you can override)` :
+                    'Your projected average net fee per return'
+                  }
+                </div>
+              </div>
+
+              <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+                <label>Tax Prep Returns (#)</label>
+                <input
+                  type="number"
+                  placeholder="1680"
+                  value={
+                    answers.taxPrepReturns && answers.expectedGrowthPct !== undefined 
+                      ? Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100))
+                      : (answers.taxPrepReturns || '')
+                  }
+                  onChange={e => updateAnswers({ taxPrepReturns: parseFloat(e.target.value) || undefined })}
+                />
+                <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                  {answers.taxPrepReturns && answers.expectedGrowthPct !== undefined ? 
+                    `Calculated from last year + ${answers.expectedGrowthPct}% growth (you can override)` :
+                    'Your projected number of tax returns'
+                  }
+                </div>
+              </div>
+
+              {answers.region === 'CA' && (
+                <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+                  <label>TaxRush Returns (#)</label>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    value={
+                      answers.taxRushReturns && answers.expectedGrowthPct !== undefined 
+                        ? Math.round(answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100))
+                        : (answers.taxRushReturns || '')
+                    }
+                    onChange={e => updateAnswers({ taxRushReturns: parseFloat(e.target.value) || undefined })}
+                  />
+                  <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                    {answers.taxRushReturns && answers.expectedGrowthPct !== undefined ? 
+                      `Calculated from last year + ${answers.expectedGrowthPct}% growth (you can override)` :
+                      'Your projected TaxRush returns (Canada only)'
+                    }
+                  </div>
+                </div>
+              )}
+
+              <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+                <label>Total Expenses ($)</label>
+                <input
+                  type="number"
+                  placeholder="130000"
+                  value={
+                    answers.lastYearExpenses && answers.expectedGrowthPct !== undefined 
+                      ? Math.round(answers.lastYearExpenses * (1 + answers.expectedGrowthPct / 100))
+                      : (answers.projectedExpenses || '')
+                  }
+                  onChange={e => updateAnswers({ projectedExpenses: parseFloat(e.target.value) || undefined })}
+                />
+                <div className="small" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                  {answers.lastYearExpenses && answers.expectedGrowthPct !== undefined ? 
+                    `Calculated from last year + ${answers.expectedGrowthPct}% growth (you can override)` :
+                    'Your projected total expenses for this year'
                   }
                 </div>
               </div>
@@ -416,7 +525,11 @@ function WelcomeStep({
                 fontSize: '0.9rem',
                 color: '#065f46'
               }}>
-                Expected Revenue: ${answers.expectedRevenue?.toLocaleString() || '—'}
+                Projected Revenue: ${
+                  answers.expectedRevenue 
+                    ? Math.round(answers.expectedRevenue).toLocaleString() 
+                    : '—'
+                }
                 {answers.lastYearRevenue && answers.expectedRevenue && (
                   <div style={{ fontSize: '0.8rem', fontWeight: 'normal' }}>
                     ({answers.expectedRevenue > answers.lastYearRevenue ? '+' : ''}
@@ -424,6 +537,23 @@ function WelcomeStep({
                   </div>
                 )}
               </div>
+              
+              {answers.projectedExpenses && answers.expectedRevenue && (
+                <div style={{ 
+                  padding: '0.5rem', 
+                  backgroundColor: '#fef3c7', 
+                  borderRadius: '4px',
+                  fontWeight: 600,
+                  fontSize: '0.9rem',
+                  color: '#92400e',
+                  marginTop: '0.5rem'
+                }}>
+                  Projected Net Income: ${Math.round(answers.expectedRevenue - answers.projectedExpenses).toLocaleString()}
+                  <div style={{ fontSize: '0.8rem', fontWeight: 'normal' }}>
+                    Net Margin: {(((answers.expectedRevenue - answers.projectedExpenses) / answers.expectedRevenue) * 100).toFixed(1)}%
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </>

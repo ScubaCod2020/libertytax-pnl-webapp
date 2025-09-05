@@ -17,8 +17,8 @@ export default function Dashboard({ results }: DashboardProps) {
     <div className="card">
       <div className="card-title">Dashboard</div>
 
-      <div className="kpi-vertical">
-        <div className={getKpiClass(niStatus)}>
+      <div className="kpi-vertical" style={{ marginBottom: '1rem' }}>
+        <div className={getKpiClass(niStatus)} style={{ minHeight: '60px', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <KPIStoplight active={niStatus} />
           <div>
             <div>Net Income</div>
@@ -27,7 +27,7 @@ export default function Dashboard({ results }: DashboardProps) {
           </div>
         </div>
 
-        <div className={getKpiClass(nimStatus)}>
+        <div className={getKpiClass(nimStatus)} style={{ minHeight: '60px', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <KPIStoplight active={nimStatus} />
           <div>
             <div>Net Margin</div>
@@ -36,7 +36,7 @@ export default function Dashboard({ results }: DashboardProps) {
           </div>
         </div>
 
-        <div className={getKpiClass(cprStatus)}>
+        <div className={getKpiClass(cprStatus)} style={{ minHeight: '60px', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <KPIStoplight active={cprStatus} />
           <div>
             <div>Cost / Return</div>

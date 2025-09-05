@@ -184,6 +184,10 @@ const savedAt = (() => {
         onShowWizard={() => appState.setShowWizard(true)}
         calculations={calculations}
         appState={appState}
+        thresholds={appState.thresholds}
+        onUpdateThresholds={appState.setThr}
+        onApplyPreset={appState.applyPreset}
+        onResetDefaults={appState.resetToDefaults}
       />
     </div>
   )

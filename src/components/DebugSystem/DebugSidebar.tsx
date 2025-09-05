@@ -2,6 +2,9 @@
 // Professional debug interface that doesn't interfere with main UI
 
 import React, { useState } from 'react'
+import type { Thresholds } from '../../lib/calcs'
+import { presets } from '../../data/presets'
+import type { Scenario } from '../../data/presets'
 
 interface DebugSidebarProps {
   isOpen: boolean
@@ -25,15 +28,23 @@ interface DebugSidebarProps {
   // Additional debug data
   calculations?: any
   appState?: any
+  
+  // Thresholds data and actions
+  thresholds?: Thresholds
+  onUpdateThresholds?: (thresholds: Thresholds) => void
+  
+  // Preset controls
+  onApplyPreset?: (preset: any) => void
+  onResetDefaults?: () => void
 }
 
-type DebugView = 'storage' | 'calculations' | 'state' | 'performance'
+type DebugView = 'storage' | 'calculations' | 'state' | 'performance' | 'thresholds'
 
 export default function DebugSidebar(props: DebugSidebarProps) {
   const {
     isOpen, onClose, storageKey, origin, appVersion, isReady, isHydrating, savedAt,
     onSaveNow, onDumpStorage, onCopyJSON, onClearStorage, onShowWizard,
-    calculations, appState
+    calculations, appState, thresholds, onUpdateThresholds, onApplyPreset, onResetDefaults
   } = props
 
   const [activeView, setActiveView] = useState<DebugView>('storage')
@@ -220,12 +231,269 @@ export default function DebugSidebar(props: DebugSidebarProps) {
     </div>
   )
 
+  const renderThresholdsView = () => {
+    const [expandedSection, setExpandedSection] = useState<string | null>('kpi')
+
+    // Common styles
+    const inputStyle: React.CSSProperties = {
+      width: '70px',
+      padding: '3px 5px',
+      background: '#374151',
+      border: '1px solid #4b5563',
+      borderRadius: '3px',
+      color: '#f9fafb',
+      fontSize: '10px',
+      fontFamily: 'monospace'
+    }
+
+    const labelStyle: React.CSSProperties = {
+      display: 'block',
+      marginBottom: '3px',
+      fontSize: '10px',
+      color: '#d1d5db'
+    }
+
+    const sectionStyle: React.CSSProperties = {
+      marginBottom: '16px',
+      background: '#1f2937',
+      borderRadius: '6px',
+      border: '1px solid #374151'
+    }
+
+    const headerStyle: React.CSSProperties = {
+      padding: '8px 12px',
+      background: '#111827',
+      borderRadius: '6px 6px 0 0',
+      cursor: 'pointer',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      fontSize: '11px',
+      fontWeight: 'bold'
+    }
+
+    const contentStyle: React.CSSProperties = {
+      padding: '12px',
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '8px',
+      fontSize: '10px'
+    }
+
+    const buttonStyle: React.CSSProperties = {
+      padding: '4px 8px',
+      background: '#374151',
+      border: '1px solid #4b5563',
+      borderRadius: '4px',
+      color: '#f9fafb',
+      cursor: 'pointer',
+      fontSize: '10px',
+      fontFamily: 'monospace'
+    }
+
+    // Section toggle
+    const toggleSection = (section: string) => {
+      setExpandedSection(expandedSection === section ? null : section)
+    }
+
+    return (
+      <div>
+        <div style={{ fontWeight: 'bold', marginBottom: 16, color: '#10b981' }}>🎯 Advanced Controls</div>
+        <div style={{ fontSize: 10, color: '#9ca3af', marginBottom: 16 }}>
+          💡 <strong>Power User Controls:</strong> Modify thresholds, presets, and defaults to test different scenarios.
+        </div>
+
+        {/* KPI Thresholds Section */}
+        <div style={sectionStyle}>
+          <div 
+            style={{ ...headerStyle, color: '#fbbf24' }}
+            onClick={() => toggleSection('kpi')}
+          >
+            <span>🎯 KPI Color Thresholds</span>
+            <span>{expandedSection === 'kpi' ? '▼' : '▶'}</span>
+          </div>
+          {expandedSection === 'kpi' && thresholds && onUpdateThresholds && (
+            <div style={contentStyle}>
+              <div>
+                <label style={labelStyle}>Cost/Return Green ≤ $</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={thresholds.cprGreen}
+                  onChange={(e) => onUpdateThresholds({
+                    ...thresholds,
+                    cprGreen: parseFloat(e.target.value) || 0
+                  })}
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>Cost/Return Yellow ≤ $</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={thresholds.cprYellow}
+                  onChange={(e) => onUpdateThresholds({
+                    ...thresholds,
+                    cprYellow: parseFloat(e.target.value) || 0
+                  })}
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>Net Margin Green ≥ %</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={thresholds.nimGreen}
+                  onChange={(e) => onUpdateThresholds({
+                    ...thresholds,
+                    nimGreen: parseFloat(e.target.value) || 0
+                  })}
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>Net Margin Yellow ≥ %</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={thresholds.nimYellow}
+                  onChange={(e) => onUpdateThresholds({
+                    ...thresholds,
+                    nimYellow: parseFloat(e.target.value) || 0
+                  })}
+                  style={inputStyle}
+                />
+              </div>
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label style={labelStyle}>Net Income Warning ≤ $</label>
+                <input
+                  type="number"
+                  step="100"
+                  value={thresholds.netIncomeWarn}
+                  onChange={(e) => onUpdateThresholds({
+                    ...thresholds,
+                    netIncomeWarn: parseFloat(e.target.value) || 0
+                  })}
+                  style={inputStyle}
+                />
+                <div style={{ fontSize: 9, color: '#9ca3af', marginTop: 2 }}>
+                  Usually negative (e.g., -5000)
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Scenario Presets Section */}
+        <div style={sectionStyle}>
+          <div 
+            style={{ ...headerStyle, color: '#06b6d4' }}
+            onClick={() => toggleSection('presets')}
+          >
+            <span>📊 Scenario Presets</span>
+            <span>{expandedSection === 'presets' ? '▼' : '▶'}</span>
+          </div>
+          {expandedSection === 'presets' && (
+            <div style={{ padding: '12px' }}>
+              <div style={{ marginBottom: 12, fontSize: 10, color: '#9ca3af' }}>
+                Quick-apply Good/Better/Best scenarios to see different performance levels.
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px', marginBottom: 12 }}>
+                {(['Good', 'Better', 'Best'] as const).map(scenario => (
+                  <button
+                    key={scenario}
+                    style={{
+                      ...buttonStyle,
+                      background: scenario === 'Good' ? '#065f46' : 
+                                 scenario === 'Better' ? '#1e40af' : '#7c2d12'
+                    }}
+                    onClick={() => onApplyPreset && onApplyPreset(presets[scenario])}
+                  >
+                    {scenario}
+                  </button>
+                ))}
+              </div>
+              <div style={{ fontSize: 9, color: '#9ca3af' }}>
+                <strong>Good:</strong> ANF $130, 1680 returns, 26% salaries<br/>
+                <strong>Better:</strong> ANF $135, 1840 returns, 24% salaries<br/>
+                <strong>Best:</strong> ANF $140, 2000 returns, 22% salaries
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Expense Defaults Section */}
+        <div style={sectionStyle}>
+          <div 
+            style={{ ...headerStyle, color: '#10b981' }}
+            onClick={() => toggleSection('expenses')}
+          >
+            <span>💼 Expense Defaults</span>
+            <span>{expandedSection === 'expenses' ? '▼' : '▶'}</span>
+          </div>
+          {expandedSection === 'expenses' && appState && (
+            <div style={{ padding: '12px' }}>
+              <div style={{ marginBottom: 12, fontSize: 10, color: '#9ca3af' }}>
+                Current expense values. Changes update the main UI instantly.
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: 9 }}>
+                <div>
+                  <strong>Personnel</strong>
+                  <div>Salaries: {appState.salariesPct}%</div>
+                  <div>Emp. Deductions: {appState.empDeductionsPct}%</div>
+                </div>
+                <div>
+                  <strong>Facility</strong>
+                  <div>Rent: {appState.rentPct}%</div>
+                  <div>Phone: ${appState.telephoneAmt}</div>
+                  <div>Utilities: ${appState.utilitiesAmt}</div>
+                </div>
+                <div>
+                  <strong>Operations</strong>
+                  <div>Supplies: {appState.suppliesPct}%</div>
+                  <div>Insurance: ${appState.insuranceAmt}</div>
+                  <div>Postage: ${appState.postageAmt}</div>
+                </div>
+                <div>
+                  <strong>Franchise</strong>
+                  <div>Royalties: {appState.royaltiesPct}%</div>
+                  <div>Adv. Roy: {appState.advRoyaltiesPct}%</div>
+                  <div>Misc: {appState.miscPct}%</div>
+                </div>
+              </div>
+              <div style={{ marginTop: 12 }}>
+                <button
+                  style={buttonStyle}
+                  onClick={() => onResetDefaults && onResetDefaults()}
+                >
+                  🔄 Reset All to Factory Defaults
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Help Section */}
+        <div style={{ marginTop: 16, padding: '8px', background: '#0f172a', borderRadius: '4px', fontSize: 9, color: '#94a3b8' }}>
+          <strong>💡 Usage Tips:</strong>
+          <br />• <strong>KPI Thresholds:</strong> Lower = easier green status
+          <br />• <strong>Scenarios:</strong> Test Good/Better/Best performance levels  
+          <br />• <strong>Expenses:</strong> View current values, reset if needed
+          <br />• All changes auto-save and update UI instantly
+        </div>
+      </div>
+    )
+  }
+
   const renderContent = () => {
     switch (activeView) {
       case 'storage': return renderStorageView()
       case 'calculations': return renderCalculationsView()
       case 'state': return renderStateView()
       case 'performance': return renderPerformanceView()
+      case 'thresholds': return renderThresholdsView()
       default: return renderStorageView()
     }
   }
@@ -286,6 +554,13 @@ export default function DebugSidebar(props: DebugSidebarProps) {
           title="⚡ System Status - App performance and loading states"
         >
           ⚡ Perf
+        </button>
+        <button 
+          style={tabStyle(activeView === 'thresholds')} 
+          onClick={() => setActiveView('thresholds')}
+          title="🎯 Thresholds - Adjust KPI thresholds, scenario defaults, and expense defaults"
+        >
+          🎯 Thresholds
         </button>
       </div>
 

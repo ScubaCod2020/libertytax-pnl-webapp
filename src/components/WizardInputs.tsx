@@ -31,30 +31,102 @@ export default function WizardInputs({
   // Get fields appropriate for current region
   const relevantFields = getFieldsForRegion(answers.region)
   
-  const renderExpenseInput = (field: ExpenseField) => {
-    const value = (answers as any)[field.id] ?? field.defaultValue
+  const renderDualExpenseInput = (field: ExpenseField) => {
+    const percentageValue = (answers as any)[field.id] ?? field.defaultValue
     const isFixed = field.calculationBase === 'fixed_amount'
+    const isDisabled = field.regionSpecific === 'CA' && answers.region !== 'CA'
+    
+    // Calculate the base for dollar conversion
+    const getCalculationBase = () => {
+      switch (field.calculationBase) {
+        case 'percentage_gross':
+          // Use projected revenue if available, otherwise use current inputs
+          return answers.expectedRevenue || (answers.avgNetFee && answers.taxPrepReturns ? answers.avgNetFee * answers.taxPrepReturns / (1 - (answers.discountsPct || 3) / 100) : 0)
+        case 'percentage_tp_income':
+          return answers.expectedRevenue || (answers.avgNetFee && answers.taxPrepReturns ? answers.avgNetFee * answers.taxPrepReturns : 0)
+        case 'percentage_salaries':
+          const grossFees = answers.expectedRevenue || (answers.avgNetFee && answers.taxPrepReturns ? answers.avgNetFee * answers.taxPrepReturns / (1 - (answers.discountsPct || 3) / 100) : 0)
+          return grossFees * ((answers as any).salariesPct || 25) / 100
+        case 'fixed_amount':
+          return 1 // For fixed amounts, percentage doesn't apply
+        default:
+          return 0
+      }
+    }
+
+    const calculationBase = getCalculationBase()
+    const dollarValue = isFixed ? percentageValue : Math.round(calculationBase * percentageValue / 100)
+    
+    const handlePercentageChange = (newPercentage: number) => {
+      const validPercentage = Math.max(0, Math.min(100, newPercentage))
+      updateAnswers({ [field.id]: validPercentage })
+    }
+    
+    const handleDollarChange = (newDollar: number) => {
+      const validDollar = Math.max(0, newDollar)
+      if (isFixed) {
+        updateAnswers({ [field.id]: validDollar })
+      } else if (calculationBase > 0) {
+        const newPercentage = Math.round((validDollar / calculationBase * 100) * 10) / 10 // Round to 1 decimal
+        const cappedPercentage = Math.max(0, Math.min(100, newPercentage))
+        updateAnswers({ [field.id]: cappedPercentage })
+      }
+    }
     
     return (
       <div key={field.id} className="input-row" style={{ marginBottom: '0.75rem' }}>
         <label title={field.description}>
           {field.label}
-          {isFixed ? ' ($)' : ' (%)'}
           {field.regionSpecific === 'CA' && ' (CA only)'}
         </label>
-        <input
-          type="number"
-          min={field.min}
-          max={field.max}
-          step={field.step}
-          value={value}
-          onChange={e => updateAnswers({ [field.id]: +e.target.value })}
-          disabled={field.regionSpecific === 'CA' && answers.region !== 'CA'}
-          placeholder={field.defaultValue.toString()}
-        />
+        
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+          {/* Percentage Input */}
+          <div>
+            <input
+              type="number"
+              min={0}
+              max={isFixed ? undefined : 100}
+              step={isFixed ? 1 : 0.1}
+              value={percentageValue}
+              onChange={e => handlePercentageChange(+e.target.value || 0)}
+              disabled={isDisabled}
+              placeholder={field.defaultValue.toString()}
+              style={{ textAlign: 'right' }}
+            />
+            <div className="small" style={{ opacity: 0.7, marginTop: '0.1rem', textAlign: 'center' }}>
+              {isFixed ? '$' : '%'}
+            </div>
+          </div>
+          
+          {/* Dollar Input - only show for percentage-based fields */}
+          {!isFixed && (
+            <div>
+              <input
+                type="number"
+                min={0}
+                step={1}
+                value={dollarValue || ''}
+                onChange={e => handleDollarChange(+e.target.value || 0)}
+                disabled={isDisabled || calculationBase === 0}
+                placeholder="0"
+                style={{ textAlign: 'right' }}
+              />
+              <div className="small" style={{ opacity: 0.7, marginTop: '0.1rem', textAlign: 'center' }}>
+                $
+              </div>
+            </div>
+          )}
+        </div>
+        
         {field.description && (
           <div className="small" style={{ opacity: 0.7, marginTop: '0.25rem' }}>
             {field.description}
+            {!isFixed && calculationBase > 0 && (
+              <span style={{ color: '#059669' }}>
+                {' '}• Base: ${calculationBase.toLocaleString()}
+              </span>
+            )}
           </div>
         )}
       </div>
@@ -93,7 +165,7 @@ export default function WizardInputs({
         </div>
         
         <div className={categoryFields.length > 2 ? 'grid-2' : ''}>
-          {categoryFields.map(renderExpenseInput)}
+          {categoryFields.map(renderDualExpenseInput)}
         </div>
       </div>
     )

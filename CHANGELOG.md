@@ -8,13 +8,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- (Future enhancements will be listed here)
+- **🧙‍♂️ Major Wizard Enhancement**: Complete business planning system with performance-based setup
+  - New/Existing Store selection with tailored workflows
+  - Last Year Performance tracking (Tax Prep Income, Average Net Fee, Tax Prep Returns, TaxRush Returns, Total Expenses)
+  - Projected Performance calculation with growth percentage dropdown (-20% to +25% with custom input)
+  - Side-by-side performance comparison (Last Year vs Projected)
+  - Real-time Net Income and Net Margin preview
+  - Other Income field for additional revenue streams
+- **💼 Dual-Entry Expense System**: Revolutionary input system for all 17 expense categories
+  - Enter either dollar amounts OR percentages with auto-synchronization
+  - Dynamic calculation bases (projected revenue, tax prep income, salaries, fixed amounts)
+  - Real-time conversion with proper validation and rounding
+  - Visual indicators for carried-forward values from wizard page 1
+  - Transparent calculation base display for user understanding
+- **🎯 Enhanced Thresholds Control Panel**: Comprehensive power-user controls in debug panel
+  - KPI color threshold adjustments (Cost/Return, Net Margin, Net Income warning)
+  - One-click Good/Better/Best scenario presets with instant UI updates
+  - Live expense defaults overview with factory reset capability
+- **📊 Advanced Testing Interface**: Collapsible sections for organized control access
+- **🔧 Power User Features**: Real-time threshold testing without cluttering main UI
+- **✅ Dashboard KPI Cards**: Fixed visibility and styling issues with proper spacing
 
 ### Changed
-- (Future changes will be listed here)
+- **🎯 Debug Panel Enhancement**: Renamed "KPI" tab to "Thresholds" with expanded functionality
+- **📋 Organized Control Layout**: Three collapsible sections (KPI Thresholds, Scenario Presets, Expense Defaults)
+- **⚡ Improved Testing Workflow**: All controls auto-save and update UI instantly
+- **🎨 Wizard UI Improvements**: Reduced excessive spacing, better field organization
+- **📝 Terminology Updates**: "Baseline" → "Dashboard" throughout wizard for consistency
+- **💰 Revenue Rounding**: All projected revenue amounts rounded to nearest dollar
+- **🇨🇦 Regional Messaging**: TaxRush fields only show for Canada with contextual help
 
 ### Fixed
-- (Future fixes will be listed here)
+- **🐛 Custom Growth Dropdown**: Fixed reversion issue when selecting "Custom percentage..."
+- **📊 Dashboard KPI Cards**: Restored proper visibility with enhanced styling and spacing
+- **🎯 Excel Parity**: Confirmed all 17 expense categories match Excel workbook exactly
 
 ---
 
