@@ -36,7 +36,7 @@ export default function WizardInputs({
     const isFixed = field.calculationBase === 'fixed_amount'
     
     return (
-      <div key={field.id} className="input-row">
+      <div key={field.id} className="input-row" style={{ marginBottom: '0.75rem' }}>
         <label title={field.description}>
           {field.label}
           {isFixed ? ' ($)' : ' (%)'}
@@ -53,7 +53,7 @@ export default function WizardInputs({
           placeholder={field.defaultValue.toString()}
         />
         {field.description && (
-          <div className="small" style={{ opacity: 0.7, marginTop: '2px' }}>
+          <div className="small" style={{ opacity: 0.7, marginTop: '0.25rem' }}>
             {field.description}
           </div>
         )}
@@ -108,7 +108,7 @@ export default function WizardInputs({
       </p>
 
       {/* Income Drivers Section */}
-      <div className="expense-section" style={{ marginBottom: '2rem' }}>
+      <div className="expense-section" style={{ marginBottom: '1.5rem' }}>
         <div className="section-title" style={{ 
           display: 'flex', 
           alignItems: 'center', 
@@ -119,9 +119,34 @@ export default function WizardInputs({
         }}>
           💰 Income Drivers
         </div>
+
+        {/* Performance-based calculations for existing stores */}
+        {answers.expectedRevenue && (
+          <div style={{ 
+            padding: '0.75rem', 
+            backgroundColor: '#f0f9ff', 
+            border: '1px solid #0ea5e9', 
+            borderRadius: '6px',
+            marginBottom: '1rem',
+            fontSize: '0.9rem'
+          }}>
+            <div style={{ fontWeight: 'bold', color: '#0369a1', marginBottom: '0.5rem' }}>
+              📊 Performance-Based Targets
+            </div>
+            <div style={{ color: '#0369a1' }}>
+              Expected Revenue: <strong>${answers.expectedRevenue.toLocaleString()}</strong>
+              {answers.lastYearRevenue && answers.expectedGrowthPct !== undefined && (
+                <span> ({answers.expectedGrowthPct > 0 ? '+' : ''}{answers.expectedGrowthPct}% vs last year)</span>
+              )}
+            </div>
+            <div className="small" style={{ color: '#0369a1', marginTop: '0.25rem' }}>
+              Use the fields below to break down how you'll achieve this target
+            </div>
+          </div>
+        )}
         
         <div className="grid-2">
-          <div className="input-row">
+          <div className="input-row" style={{ marginBottom: '0.75rem' }}>
             <label>Average Net Fee ($)</label>
             <input
               type="number"
@@ -133,12 +158,12 @@ export default function WizardInputs({
               placeholder="125"
               required
             />
-            <div className="small" style={{ opacity: 0.7, marginTop: '2px' }}>
+            <div className="small" style={{ opacity: 0.7, marginTop: '0.25rem' }}>
               Average fee per tax return after discounts
             </div>
           </div>
 
-          <div className="input-row">
+          <div className="input-row" style={{ marginBottom: '0.75rem' }}>
             <label>Tax Prep Returns (#)</label>
             <input
               type="number"
@@ -150,12 +175,46 @@ export default function WizardInputs({
               placeholder="1600"
               required
             />
-            <div className="small" style={{ opacity: 0.7, marginTop: '2px' }}>
+            <div className="small" style={{ opacity: 0.7, marginTop: '0.25rem' }}>
               Expected number of tax returns for the season
             </div>
           </div>
 
-          <div className="input-row">
+          {answers.region === 'CA' && (
+            <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+              <label>TaxRush Returns (#)</label>
+              <input
+                type="number"
+                min={0}
+                max={5000}
+                step={25}
+                value={answers.taxRushReturns || ''}
+                onChange={e => updateAnswers({ taxRushReturns: +e.target.value || undefined })}
+                placeholder="0"
+              />
+              <div className="small" style={{ opacity: 0.7, marginTop: '0.25rem' }}>
+                Expected TaxRush returns (Canada only)
+              </div>
+            </div>
+          )}
+
+          <div className="input-row" style={{ marginBottom: '0.75rem' }}>
+            <label>Other Income ($)</label>
+            <input
+              type="number"
+              min={0}
+              max={100000}
+              step={100}
+              value={answers.otherIncome || ''}
+              onChange={e => updateAnswers({ otherIncome: +e.target.value || undefined })}
+              placeholder="0"
+            />
+            <div className="small" style={{ opacity: 0.7, marginTop: '0.25rem' }}>
+              Additional revenue (bookkeeping, notary, etc.)
+            </div>
+          </div>
+
+          <div className="input-row" style={{ marginBottom: '0.75rem' }}>
             <label>Discounts (%)</label>
             <input
               type="number"
@@ -166,13 +225,13 @@ export default function WizardInputs({
               onChange={e => updateAnswers({ discountsPct: +e.target.value })}
               placeholder="3"
             />
-            <div className="small" style={{ opacity: 0.7, marginTop: '2px' }}>
+            <div className="small" style={{ opacity: 0.7, marginTop: '0.25rem' }}>
               Percentage of gross fees given as discounts
             </div>
           </div>
 
           {answers.region === 'CA' && (
-            <div className="input-row">
+            <div className="input-row" style={{ marginBottom: '0.75rem' }}>
               <label>TaxRush Royalties % (CA only)</label>
               <input
                 type="number"
@@ -183,12 +242,40 @@ export default function WizardInputs({
                 onChange={e => updateAnswers({ taxRushRoyaltiesPct: +e.target.value })}
                 placeholder="0"
               />
-              <div className="small" style={{ opacity: 0.7, marginTop: '2px' }}>
+              <div className="small" style={{ opacity: 0.7, marginTop: '0.25rem' }}>
                 TaxRush franchise fee percentage (Canada only)
               </div>
             </div>
           )}
         </div>
+
+        {/* Revenue calculation display */}
+        {(answers.avgNetFee && answers.taxPrepReturns) && (
+          <div style={{ 
+            marginTop: '1rem',
+            padding: '0.5rem', 
+            backgroundColor: '#f9fafb', 
+            border: '1px solid #d1d5db', 
+            borderRadius: '4px',
+            fontSize: '0.85rem'
+          }}>
+            <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>Projected Revenue Breakdown:</div>
+            <div>Tax Prep: ${((answers.avgNetFee * answers.taxPrepReturns) / (1 - (answers.discountsPct || 3) / 100)).toLocaleString()}</div>
+            {answers.region === 'CA' && answers.taxRushReturns && (
+              <div>TaxRush: ${(answers.avgNetFee * answers.taxRushReturns).toLocaleString()}</div>
+            )}
+            {answers.otherIncome && (
+              <div>Other Income: ${answers.otherIncome.toLocaleString()}</div>
+            )}
+            <div style={{ fontWeight: 'bold', borderTop: '1px solid #d1d5db', paddingTop: '0.25rem', marginTop: '0.25rem' }}>
+              Total: ${(
+                (answers.avgNetFee * answers.taxPrepReturns) / (1 - (answers.discountsPct || 3) / 100) +
+                (answers.region === 'CA' && answers.taxRushReturns ? answers.avgNetFee * answers.taxRushReturns : 0) +
+                (answers.otherIncome || 0)
+              ).toLocaleString()}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Expense Categories */}

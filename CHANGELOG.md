@@ -8,23 +8,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **🧙‍♂️ Enhanced Setup Wizard**: Performance-based business planning with new/existing store types
+- **📊 Store Performance Analysis**: Last year revenue, growth projections, and expected revenue calculations
+- **💰 Comprehensive Income Modeling**: TaxRush returns count, other income streams, real-time revenue breakdown
+- **🎯 Smart Business Planning**: Dropdown growth options (-20% to +25%) with custom input capability
 - **🏗️ Clean Hooks Architecture**: Extracted state, persistence, calculations, and presets into reusable custom hooks
 - **🔧 Professional Debug System**: Collapsible sidebar with multiple views (Storage, Calculations, State, Performance)
 - **📊 Enhanced Dashboard**: Improved spacing and visual organization of expense breakdown
-- **⚡ Local Development**: Full npm build pipeline working with 44+ modules
+- **⚡ Local Development**: Full npm build pipeline working with 48+ modules
 - Comprehensive 17-category expense system
 - Multi-step setup wizard with Welcome, Inputs, and Review stages
 - Enhanced expense breakdown with visual categorization
 - Detailed commit message template for consistent documentation
 
 ### Changed
+- **🎉 MAJOR WIZARD UPGRADE**: Performance-based planning with historical data integration
+- **📈 Income Driver Enhancement**: Added TaxRush returns count, other income, revenue calculations
+- **✨ Improved UX**: Reduced excessive spacing, better field organization, professional terminology
 - **🚀 MAJOR: App.tsx reduced from 1,268 to 185 lines (85% reduction)**
 - **Clean Architecture**: Separated concerns into focused, testable hooks
 - **Debug System**: Replaced intrusive debug panel with professional sidebar system
 - **UI Improvements**: Better dashboard spacing and field organization
+- **Terminology**: "Baseline" → "Dashboard" throughout wizard for consistency
 - Expanded expense structure from basic categories to 17 detailed fields
 - Updated calculation engine to handle varied expense bases
-- Enhanced wizard integration with baseline saving functionality
+- Enhanced wizard integration with dashboard saving functionality
 
 ### Fixed
 - JSX structure errors causing deployment failures
@@ -33,8 +41,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Missing closing tags and mismatched braces
 - Debug panel covering wizard navigation buttons
 - Dashboard fields bleeding together visually
+- Excessive spacing between form fields and descriptions
 
 ### Technical Architecture
+- **Enhanced WizardAnswers**: Added storeType, lastYearRevenue, expectedGrowthPct, expectedRevenue, taxRushReturns, otherIncome
+- **Smart Calculations**: Auto-calculating expected revenue with manual override capability
+- **Performance Integration**: Welcome page data flows into income drivers section
 - **useAppState.ts**: Centralized state management (250 lines)
 - **usePersistence.ts**: Storage and hydration logic (240 lines)  
 - **useCalculations.ts**: Calculation and KPI logic (100 lines)

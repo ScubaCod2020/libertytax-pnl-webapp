@@ -1,5 +1,5 @@
 // WizardShell.tsx - Enhanced wizard with comprehensive expense data collection
-// Multi-step flow: Welcome → Inputs → Review → Confirm & Create Baseline
+// Multi-step flow: Welcome → Inputs → Review → Confirm & Create Dashboard
 
 import React, { useState } from 'react'
 import type { Region } from '../lib/calcs'
@@ -12,9 +12,17 @@ export interface WizardAnswers {
   // Basic info
   region: Region
   
-  // Income drivers
+  // Business performance (new fields)
+  storeType?: 'new' | 'existing'
+  lastYearRevenue?: number
+  expectedGrowthPct?: number
+  expectedRevenue?: number // calculated or overridden
+  
+  // Income drivers (enhanced)
   avgNetFee?: number
   taxPrepReturns?: number
+  taxRushReturns?: number // for Canada
+  otherIncome?: number // new field for additional revenue streams
   discountsPct?: number
   
   // All 17 expense fields
@@ -132,6 +140,8 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel }:
         <WelcomeStep 
           region={region}
           setRegion={setRegion}
+          answers={answers}
+          updateAnswers={updateAnswers}
           onNext={handleNext}
           onCancel={onCancel}
         />
@@ -166,39 +176,179 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel }:
 function WelcomeStep({ 
   region, 
   setRegion, 
+  answers,
+  updateAnswers,
   onNext, 
   onCancel 
 }: {
   region: Region
   setRegion: (region: Region) => void
+  answers: WizardAnswers
+  updateAnswers: (updates: Partial<WizardAnswers>) => void
   onNext: () => void
   onCancel: () => void
 }) {
+  const growthOptions = [
+    { value: -20, label: '-20% (Decline)' },
+    { value: -10, label: '-10% (Slight decline)' },
+    { value: 0, label: '0% (Same as last year)' },
+    { value: 5, label: '+5% (Conservative growth)' },
+    { value: 10, label: '+10% (Moderate growth)' },
+    { value: 15, label: '+15% (Strong growth)' },
+    { value: 20, label: '+20% (Aggressive growth)' },
+    { value: 25, label: '+25% (Very aggressive)' },
+    { value: 'custom', label: 'Custom percentage...' }
+  ]
+
+  // Calculate expected revenue when inputs change
+  React.useEffect(() => {
+    if (answers.lastYearRevenue && answers.expectedGrowthPct !== undefined) {
+      const calculated = answers.lastYearRevenue * (1 + answers.expectedGrowthPct / 100)
+      updateAnswers({ expectedRevenue: calculated })
+    }
+  }, [answers.lastYearRevenue, answers.expectedGrowthPct])
+
+  const canProceed = () => {
+    if (answers.storeType === 'new') return true
+    return !!(answers.lastYearRevenue && answers.expectedRevenue)
+  }
+
   return (
     <>
       <div className="card-title">Welcome – Quick Start Wizard</div>
-      <p style={{ marginBottom: '1rem' }}>
-        This wizard will help you set up your P&L baseline with comprehensive income and expense data.
+      <p style={{ marginBottom: '1.2rem' }}>
+        This wizard will help you set up your P&L dashboard with comprehensive income and expense data.
       </p>
       
-      <div className="input-row">
+      <div className="input-row" style={{ marginBottom: '1rem' }}>
         <label>Region</label>
         <select value={region} onChange={e => setRegion(e.target.value as Region)}>
           <option value="US">United States</option>
           <option value="CA">Canada</option>
         </select>
+        <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
+          TaxRush franchise fees apply only to Canadian offices
+        </div>
       </div>
-      
-      <p className="small" style={{ marginBottom: '1.5rem' }}>
-        TaxRush franchise fees apply only to Canadian offices. 
-        Selecting U.S. will disable TaxRush in calculations.
-      </p>
 
-      <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+      <div className="input-row" style={{ marginBottom: '1rem' }}>
+        <label>Store Type</label>
+        <select 
+          value={answers.storeType || ''} 
+          onChange={e => updateAnswers({ storeType: e.target.value as 'new' | 'existing' })}
+        >
+          <option value="">Select store type...</option>
+          <option value="new">New Store (First year)</option>
+          <option value="existing">Existing Store</option>
+        </select>
+        <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
+          New stores use industry benchmarks, existing stores use your historical data
+        </div>
+      </div>
+
+      {answers.storeType === 'existing' && (
+        <>
+          <div className="input-row" style={{ marginBottom: '1rem' }}>
+            <label>Last Year's Total Revenue ($)</label>
+            <input
+              type="number"
+              placeholder="250000"
+              value={answers.lastYearRevenue || ''}
+              onChange={e => updateAnswers({ lastYearRevenue: parseFloat(e.target.value) || undefined })}
+            />
+            <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
+              Your total gross revenue from last year (before discounts)
+            </div>
+          </div>
+
+          <div className="input-row" style={{ marginBottom: '1rem' }}>
+            <label>Expected Performance Change</label>
+            <select 
+              value={answers.expectedGrowthPct?.toString() || ''} 
+              onChange={e => {
+                const val = e.target.value
+                if (val === 'custom') {
+                  // Don't set a value, let user input custom
+                } else {
+                  updateAnswers({ expectedGrowthPct: parseFloat(val) })
+                }
+              }}
+            >
+              <option value="">Select expected change...</option>
+              {growthOptions.map(opt => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+            <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
+              How do you expect this year to compare to last year?
+            </div>
+          </div>
+
+          {(answers.expectedGrowthPct === undefined || answers.expectedGrowthPct.toString() === 'custom') && (
+            <div className="input-row" style={{ marginBottom: '1rem' }}>
+              <label>Custom Growth Percentage (%)</label>
+              <input
+                type="number"
+                step="0.1"
+                placeholder="10"
+                value={answers.expectedGrowthPct || ''}
+                onChange={e => updateAnswers({ expectedGrowthPct: parseFloat(e.target.value) || undefined })}
+              />
+              <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
+                Enter your custom growth percentage (positive for growth, negative for decline)
+              </div>
+            </div>
+          )}
+
+          <div className="input-row" style={{ marginBottom: '1rem' }}>
+            <label>Expected Revenue ($)</label>
+            <input
+              type="number"
+              placeholder="275000"
+              value={answers.expectedRevenue || ''}
+              onChange={e => updateAnswers({ expectedRevenue: parseFloat(e.target.value) || undefined })}
+            />
+            <div className="small" style={{ marginTop: '0.3rem', opacity: 0.7 }}>
+              {answers.lastYearRevenue && answers.expectedGrowthPct !== undefined ? 
+                `Calculated: $${(answers.lastYearRevenue * (1 + answers.expectedGrowthPct / 100)).toLocaleString()} (you can override)` :
+                'Your expected total revenue for this year'
+              }
+            </div>
+          </div>
+        </>
+      )}
+
+      {answers.storeType === 'new' && (
+        <div style={{ 
+          padding: '1rem', 
+          backgroundColor: '#f0f9ff', 
+          border: '1px solid #0ea5e9', 
+          borderRadius: '6px',
+          marginBottom: '1rem'
+        }}>
+          <div style={{ fontWeight: 'bold', color: '#0369a1', marginBottom: '0.5rem' }}>
+            🏪 New Store Setup
+          </div>
+          <div className="small" style={{ color: '#0369a1' }}>
+            Since this is a new store, we'll use industry benchmarks and help you set realistic targets 
+            in the next step. You can always adjust these values as you learn more about your market.
+          </div>
+        </div>
+      )}
+
+      <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
         <button type="button" onClick={onCancel} className="btn-secondary">
           Skip Wizard
         </button>
-        <button type="button" onClick={onNext} className="btn-primary">
+        <button 
+          type="button" 
+          onClick={onNext} 
+          className="btn-primary"
+          disabled={!canProceed()}
+          style={{ opacity: canProceed() ? 1 : 0.5 }}
+        >
           Continue →
         </button>
       </div>
@@ -254,9 +404,9 @@ function ReviewStep({
 function CompleteStep({ onCancel }: { onCancel: () => void }) {
   return (
     <>
-      <div className="card-title">✅ Baseline Created</div>
+      <div className="card-title">✅ Dashboard Created</div>
       <p style={{ marginBottom: '1.5rem' }}>
-        Your P&L baseline has been successfully created with comprehensive income and expense data. 
+        Your P&L dashboard has been successfully created with comprehensive income and expense data. 
         You can now use the main dashboard to explore scenarios and make adjustments.
       </p>
       

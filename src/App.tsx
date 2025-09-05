@@ -85,100 +85,106 @@ const savedAt = (() => {
 
   // Main render - clean and focused
   return (
-    <div>
-      <Header
-        region={appState.region}
-        setRegion={appState.setRegion}
-        onReset={handleReset}
-        onShowWizard={() => appState.setShowWizard(true)}
-      />
-
-      {appState.showWizard ? (
-        <WizardShell
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <div style={{ 
+        flex: 1, 
+        transition: 'margin-right 0.3s ease',
+        marginRight: debugOpen ? '350px' : '0'
+      }}>
+        <Header
           region={appState.region}
           setRegion={appState.setRegion}
-          onComplete={handleWizardComplete}
-          onCancel={handleWizardCancel}
+          onReset={handleReset}
+          onShowWizard={() => appState.setShowWizard(true)}
         />
-      ) : (
-        <div className="container">
-          <InputsPanel
+
+        {appState.showWizard ? (
+          <WizardShell
             region={appState.region}
-            scenario={appState.scenario}
-            setScenario={appState.setScenario}
-            avgNetFee={appState.avgNetFee}
-            setANF={appState.setANF}
-            taxPrepReturns={appState.taxPrepReturns}
-            setReturns={appState.setReturns}
-            taxRushReturns={appState.taxRushReturns}
-            setTaxRush={appState.setTaxRush}
-            discountsPct={appState.discountsPct}
-            setDisc={appState.setDisc}
-            salariesPct={appState.salariesPct}
-            setSal={appState.setSal}
-            empDeductionsPct={appState.empDeductionsPct}
-            setEmpDeductions={appState.setEmpDeductions}
-            rentPct={appState.rentPct}
-            setRent={appState.setRent}
-            telephoneAmt={appState.telephoneAmt}
-            setTelephone={appState.setTelephone}
-            utilitiesAmt={appState.utilitiesAmt}
-            setUtilities={appState.setUtilities}
-            localAdvAmt={appState.localAdvAmt}
-            setLocalAdv={appState.setLocalAdv}
-            insuranceAmt={appState.insuranceAmt}
-            setInsurance={appState.setInsurance}
-            postageAmt={appState.postageAmt}
-            setPostage={appState.setPostage}
-            suppliesPct={appState.suppliesPct}
-            setSup={appState.setSup}
-            duesAmt={appState.duesAmt}
-            setDues={appState.setDues}
-            bankFeesAmt={appState.bankFeesAmt}
-            setBankFees={appState.setBankFees}
-            maintenanceAmt={appState.maintenanceAmt}
-            setMaintenance={appState.setMaintenance}
-            travelEntAmt={appState.travelEntAmt}
-            setTravelEnt={appState.setTravelEnt}
-            royaltiesPct={appState.royaltiesPct}
-            setRoy={appState.setRoy}
-            advRoyaltiesPct={appState.advRoyaltiesPct}
-            setAdvRoy={appState.setAdvRoy}
-            taxRushRoyaltiesPct={appState.taxRushRoyaltiesPct}
-            setTaxRushRoy={appState.setTaxRushRoy}
-            miscPct={appState.miscPct}
-            setMisc={appState.setMisc}
+            setRegion={appState.setRegion}
+            onComplete={handleWizardComplete}
+            onCancel={handleWizardCancel}
           />
+        ) : (
+          <div className="container">
+            <InputsPanel
+              region={appState.region}
+              scenario={appState.scenario}
+              setScenario={appState.setScenario}
+              avgNetFee={appState.avgNetFee}
+              setANF={appState.setANF}
+              taxPrepReturns={appState.taxPrepReturns}
+              setReturns={appState.setReturns}
+              taxRushReturns={appState.taxRushReturns}
+              setTaxRush={appState.setTaxRush}
+              discountsPct={appState.discountsPct}
+              setDisc={appState.setDisc}
+              salariesPct={appState.salariesPct}
+              setSal={appState.setSal}
+              empDeductionsPct={appState.empDeductionsPct}
+              setEmpDeductions={appState.setEmpDeductions}
+              rentPct={appState.rentPct}
+              setRent={appState.setRent}
+              telephoneAmt={appState.telephoneAmt}
+              setTelephone={appState.setTelephone}
+              utilitiesAmt={appState.utilitiesAmt}
+              setUtilities={appState.setUtilities}
+              localAdvAmt={appState.localAdvAmt}
+              setLocalAdv={appState.setLocalAdv}
+              insuranceAmt={appState.insuranceAmt}
+              setInsurance={appState.setInsurance}
+              postageAmt={appState.postageAmt}
+              setPostage={appState.setPostage}
+              suppliesPct={appState.suppliesPct}
+              setSup={appState.setSup}
+              duesAmt={appState.duesAmt}
+              setDues={appState.setDues}
+              bankFeesAmt={appState.bankFeesAmt}
+              setBankFees={appState.setBankFees}
+              maintenanceAmt={appState.maintenanceAmt}
+              setMaintenance={appState.setMaintenance}
+              travelEntAmt={appState.travelEntAmt}
+              setTravelEnt={appState.setTravelEnt}
+              royaltiesPct={appState.royaltiesPct}
+              setRoy={appState.setRoy}
+              advRoyaltiesPct={appState.advRoyaltiesPct}
+              setAdvRoy={appState.setAdvRoy}
+              taxRushRoyaltiesPct={appState.taxRushRoyaltiesPct}
+              setTaxRushRoy={appState.setTaxRushRoy}
+              miscPct={appState.miscPct}
+              setMisc={appState.setMisc}
+            />
 
-          <Dashboard results={calculations} />
-  </div>
-)}
+            <Dashboard results={calculations} />
+          </div>
+        )}
 
-             <DebugToggle
-         show={showDebug}
-         isOpen={debugOpen}
-         onToggle={() => setDebugOpen(!debugOpen)}
-       />
+        <Footer />
+      </div>
 
-       <DebugSidebar
-         isOpen={debugOpen}
-         onClose={() => setDebugOpen(false)}
-         storageKey={persistence.STORAGE_KEY}
-         origin={persistence.ORIGIN}
-         appVersion={persistence.APP_VERSION}
-         isReady={persistence.readyRef.current}
-         isHydrating={persistence.hydratingRef.current}
-         savedAt={savedAt}
-         onSaveNow={handleSaveNow}
-         onDumpStorage={handleDumpStorage}
-         onCopyJSON={handleCopyJSON}
-         onClearStorage={handleClearStorage}
-         onShowWizard={() => appState.setShowWizard(true)}
-         calculations={calculations}
-         appState={appState}
-       />
+      <DebugToggle
+        show={showDebug}
+        isOpen={debugOpen}
+        onToggle={() => setDebugOpen(!debugOpen)}
+      />
 
-       <Footer />
+      <DebugSidebar
+        isOpen={debugOpen}
+        onClose={() => setDebugOpen(false)}
+        storageKey={persistence.STORAGE_KEY}
+        origin={persistence.ORIGIN}
+        appVersion={persistence.APP_VERSION}
+        isReady={persistence.readyRef.current}
+        isHydrating={persistence.hydratingRef.current}
+        savedAt={savedAt}
+        onSaveNow={handleSaveNow}
+        onDumpStorage={handleDumpStorage}
+        onCopyJSON={handleCopyJSON}
+        onClearStorage={handleClearStorage}
+        onShowWizard={() => appState.setShowWizard(true)}
+        calculations={calculations}
+        appState={appState}
+      />
     </div>
   )
 }

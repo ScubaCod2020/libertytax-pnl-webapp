@@ -1,4 +1,4 @@
-// WizardReview.tsx - Comprehensive review of all wizard data before baseline creation
+// WizardReview.tsx - Comprehensive review of all wizard data before dashboard creation
 // Shows income drivers, all expense categories, and calculated projections
 
 import React from 'react'
@@ -182,7 +182,7 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
         marginBottom: '1.5rem'
       }}>
         <div style={{ fontWeight: 600, marginBottom: '8px', color: '#374151' }}>
-          Baseline Summary
+          Dashboard Summary
         </div>
         
         <div className="review-grid" style={{ 
@@ -224,10 +224,10 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
 
   return (
     <>
-      <div className="card-title">Review Your Baseline</div>
+      <div className="card-title">Review Your Dashboard</div>
       <p className="small" style={{ marginBottom: '1.5rem' }}>
-        Review all your inputs before creating the baseline. You can go back to make changes, 
-        or proceed to create your P&L baseline with this data.
+        Review all your inputs before creating the dashboard. You can go back to make changes, 
+        or proceed to create your P&L dashboard with this data.
       </p>
 
       {renderSummaryStats()}
@@ -262,7 +262,7 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
           📝 Note
         </div>
         <div className="small" style={{ color: '#92400e' }}>
-          This baseline will be saved and used as your starting point. You can always 
+          This dashboard will be saved and used as your starting point. You can always 
           adjust individual values later using the main dashboard controls.
         </div>
       </div>
@@ -279,7 +279,7 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
           ← Back to Edit
         </button>
         <button type="button" onClick={onNext} className="btn-primary">
-          ✅ Confirm & Create Baseline
+          ✅ Confirm & Create Dashboard
         </button>
       </div>
     </>
