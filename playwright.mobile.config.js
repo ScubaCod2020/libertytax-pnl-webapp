@@ -1,11 +1,11 @@
 // @ts-check
-const { defineConfig, devices } = require('@playwright/test');
+import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Mobile-focused Playwright configuration
  * @see https://playwright.dev/docs/test-configuration
  */
-module.exports = defineConfig({
+export default defineConfig({
   testDir: './tests/mobile',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
