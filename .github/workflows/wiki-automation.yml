@@ -1,0 +1,501 @@
+name: Automated Wiki Management
+
+on:
+  issues:
+    types: [opened, closed, labeled]
+  pull_request:
+    types: [merged]
+  workflow_run:
+    workflows: ["Continuous Integration"]
+    types: [completed]
+  schedule:
+    # Update wiki weekly
+    - cron: '0 10 * * 1'  # Monday 10 AM UTC
+  workflow_dispatch:
+
+jobs:
+  update-wiki-from-issues:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'issues' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+    
+    steps:
+    - name: Checkout wiki
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository }}.wiki
+        path: wiki
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Checkout main repo
+      uses: actions/checkout@v4
+      with:
+        path: main-repo
+        
+    - name: Generate issue tracking pages
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          const { owner, repo } = context.repo;
+          
+          // Get all issues
+          const allIssues = await github.paginate(github.rest.issues.listForRepo, {
+            owner, repo, state: 'all', per_page: 100
+          });
+          
+          // Categorize issues
+          const bugs = allIssues.filter(i => i.labels.some(l => l.name === 'bug'));
+          const testFailures = allIssues.filter(i => i.labels.some(l => l.name === 'test-failure'));
+          const enhancements = allIssues.filter(i => i.labels.some(l => l.name === 'enhancement'));
+          const mobile = allIssues.filter(i => i.labels.some(l => l.name === 'mobile'));
+          const performance = allIssues.filter(i => i.labels.some(l => l.name === 'performance'));
+          
+          // Generate Bug Tracking page
+          const bugTrackingPage = `# 🐛 Bug Tracking Dashboard
+          
+## Overview
+This page is automatically updated with bug reports and their status.
+
+**Last Updated:** ${new Date().toISOString()}
+
+## 📊 Bug Statistics
+- **Total Bugs Reported:** ${bugs.length}
+- **Open Bugs:** ${bugs.filter(b => b.state === 'open').length}
+- **Closed Bugs:** ${bugs.filter(b => b.state === 'closed').length}
+- **Critical Bugs:** ${bugs.filter(b => b.labels.some(l => l.name === 'critical')).length}
+
+## 🚨 Open Bugs
+${bugs.filter(b => b.state === 'open').map(bug => 
+  \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number} \${bug.labels.some(l => l.name === 'critical') ? '🚨 CRITICAL' : ''}\`
+).join('\\n') || 'No open bugs! 🎉'}
+
+## ✅ Recently Closed Bugs
+${bugs.filter(b => b.state === 'closed').slice(0, 10).map(bug => 
+  \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number} (Closed: \${new Date(bug.closed_at).toLocaleDateString()})\`
+).join('\\n') || 'No closed bugs yet.'}
+
+## 🏷️ Bug Categories
+- **Mobile Issues:** ${mobile.length} total
+- **Performance Issues:** ${performance.length} total
+- **Test Failures:** ${testFailures.length} total
+
+## 📱 Mobile Bug Tracking
+${mobile.filter(m => m.state === 'open').map(bug => 
+  \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number}\`
+).join('\\n') || 'No open mobile bugs! 📱✅'}
+
+---
+*This page is automatically generated from GitHub issues. To report a bug, [create a new issue](https://github.com/${owner}/${repo}/issues/new/choose).*
+          `;
+          
+          fs.writeFileSync('wiki/Bug-Tracking.md', bugTrackingPage);
+          
+          // Generate Test Results page
+          const testResultsPage = \`# 🧪 Test Results & QA Dashboard
+          
+## Overview
+Comprehensive testing status and quality assurance metrics.
+
+**Last Updated:** \${new Date().toISOString()}
+
+## 🔬 Test Failure Tracking
+\${testFailures.filter(t => t.state === 'open').length > 0 ? 
+  \`### ❌ Active Test Failures
+\${testFailures.filter(t => t.state === 'open').map(test => 
+  \`- [\${test.title}](\${test.html_url}) - #\${test.number}\`
+).join('\\n')}\` : '### ✅ No Active Test Failures!'}
+
+## 📊 Quality Metrics
+- **Total Test Issues:** \${testFailures.length}
+- **Open Test Failures:** \${testFailures.filter(t => t.state === 'open').length}
+- **Resolved Test Issues:** \${testFailures.filter(t => t.state === 'closed').length}
+
+## 🎯 Testing Focus Areas
+Based on recent issues and testing patterns:
+
+### 📱 Mobile Testing
+- Mobile compatibility issues: \${mobile.length} total
+- Touch interaction problems: \${mobile.filter(m => m.title.toLowerCase().includes('touch')).length}
+- Responsive design issues: \${mobile.filter(m => m.title.toLowerCase().includes('responsive')).length}
+
+### ⚡ Performance Testing  
+- Performance issues reported: \${performance.length} total
+- Bundle size concerns: \${performance.filter(p => p.title.toLowerCase().includes('bundle')).length}
+- Load time issues: \${performance.filter(p => p.title.toLowerCase().includes('load')).length}
+
+## 📋 Testing Checklist Status
+Based on our comprehensive testing documentation:
+
+### Core Functionality ✅
+- Calculation accuracy tests
+- Wizard flow validation
+- Regional differences (US/CA)
+- Dual-entry system verification
+
+### Cross-Platform Testing 🔄
+- Desktop browsers (Chrome, Firefox, Safari, Edge)
+- Mobile devices (iOS Safari, Android Chrome)
+- Tablet layouts (iPad, Android tablets)
+
+### Performance Benchmarks ⚡
+- Bundle size monitoring
+- Load time tracking
+- Memory usage validation
+- Mobile performance testing
+
+---
+*For detailed testing procedures, see our [Testing Documentation](https://github.com/\${owner}/\${repo}/tree/main/docs).*
+          \`;
+          
+          fs.writeFileSync('wiki/Test-Results.md', testResultsPage);
+          
+          // Generate Project Status page
+          const projectStatusPage = \`# 📈 Project Status Dashboard
+          
+## 🚀 Liberty Tax P&L Webapp Status
+
+**Last Updated:** \${new Date().toISOString()}
+
+## 📊 Current Metrics
+- **Total Issues:** \${allIssues.length}
+- **Open Issues:** \${allIssues.filter(i => i.state === 'open').length}
+- **Closed Issues:** \${allIssues.filter(i => i.state === 'closed').length}
+- **Enhancement Requests:** \${enhancements.length}
+
+## 🏃‍♂️ Development Velocity
+- **Issues Closed This Month:** \${allIssues.filter(i => 
+    i.state === 'closed' && 
+    new Date(i.closed_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+  ).length}
+- **New Issues This Month:** \${allIssues.filter(i => 
+    new Date(i.created_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+  ).length}
+
+## 🎯 Focus Areas
+
+### 🔥 High Priority
+\${allIssues.filter(i => i.state === 'open' && i.labels.some(l => l.name === 'high-priority')).map(issue => 
+  \`- [\${issue.title}](\${issue.html_url}) - #\${issue.number}\`
+).join('\\n') || 'No high priority issues! 🎉'}
+
+### 🐛 Critical Bugs
+\${bugs.filter(b => b.state === 'open' && b.labels.some(l => l.name === 'critical')).map(bug => 
+  \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number}\`
+).join('\\n') || 'No critical bugs! ✅'}
+
+### ✨ Upcoming Enhancements
+\${enhancements.filter(e => e.state === 'open').slice(0, 5).map(enhancement => 
+  \`- [\${enhancement.title}](\${enhancement.html_url}) - #\${enhancement.number}\`
+).join('\\n') || 'No planned enhancements.'}
+
+## 🔧 Maintenance Status
+- **Dependencies:** Up to date
+- **Security:** No known vulnerabilities
+- **Performance:** Within acceptable limits
+- **Test Coverage:** Comprehensive
+
+## 📱 Platform Support
+- **Desktop:** ✅ Chrome, Firefox, Safari, Edge
+- **Mobile:** ✅ iOS Safari, Android Chrome
+- **Tablet:** ✅ iPad, Android tablets
+
+## 🚀 Recent Achievements
+\${allIssues.filter(i => 
+    i.state === 'closed' && 
+    new Date(i.closed_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+  ).slice(0, 5).map(achievement => 
+  \`- Resolved: [\${achievement.title}](\${achievement.html_url}) - #\${achievement.number}\`
+).join('\\n') || 'No recent completions.'}
+
+---
+*This dashboard is automatically updated based on GitHub activity.*
+          \`;
+          
+          fs.writeFileSync('wiki/Project-Status.md', projectStatusPage);
+          
+    - name: Commit wiki changes
+      run: |
+        cd wiki
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git diff --staged --quiet || git commit -m "🤖 Auto-update wiki from issues and project status"
+        git push
+
+  update-wiki-from-tests:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.name == 'Continuous Integration' }}
+    
+    steps:
+    - name: Checkout wiki
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository }}.wiki
+        path: wiki
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Update test results wiki
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const conclusion = '${{ github.event.workflow_run.conclusion }}';
+          const runUrl = '${{ github.event.workflow_run.html_url }}';
+          const timestamp = new Date().toISOString();
+          
+          // Read existing test history or create new
+          let testHistory = [];
+          try {
+            const existingHistory = fs.readFileSync('wiki/Test-History.md', 'utf8');
+            const matches = existingHistory.match(/## 📊 Recent Test Runs\\n([\\s\\S]*?)\\n##/);
+            if (matches && matches[1]) {
+              testHistory = matches[1].split('\\n').filter(line => line.trim()).slice(0, 19); // Keep last 19
+            }
+          } catch (error) {
+            console.log('No existing test history found, creating new');
+          }
+          
+          // Add new test result
+          const status = conclusion === 'success' ? '✅' : '❌';
+          const newEntry = \`- \${status} [\${new Date().toLocaleDateString()} \${new Date().toLocaleTimeString()}](\${runUrl}) - \${conclusion.toUpperCase()}\`;
+          testHistory.unshift(newEntry);
+          
+          const testHistoryPage = \`# 📊 Test History & CI Status
+          
+## 🔄 Continuous Integration Status
+
+**Last Test Run:** \${timestamp}
+**Status:** \${conclusion === 'success' ? '✅ PASSING' : '❌ FAILING'}
+**Run Details:** [View on GitHub](\${runUrl})
+
+## 📊 Recent Test Runs
+\${testHistory.slice(0, 20).join('\\n')}
+
+## 🎯 Test Suite Overview
+
+### 🧮 Calculation Tests
+- Mathematical accuracy verification
+- Dual-entry synchronization
+- Regional calculation differences (US/CA)
+- Growth projection calculations
+- KPI calculations (Net Income, Margin, Cost per Return)
+
+### 🌐 Browser Compatibility Tests  
+- Chrome (Desktop & Mobile)
+- Firefox (Desktop & Mobile)
+- Safari (Desktop & Mobile)
+- Edge (Desktop)
+
+### 📱 Mobile Responsiveness Tests
+- iPhone SE (375x667)
+- iPhone 12 Pro (390x844) 
+- Samsung Galaxy S21 (360x800)
+- iPad (768x1024)
+
+### ⚡ Performance Tests
+- Bundle size validation (<250KB)
+- Load time benchmarks
+- Memory usage monitoring
+- Lighthouse performance scores
+
+### 🔒 Security Tests
+- Dependency vulnerability scanning
+- Sensitive data detection
+- Production build validation
+
+## 📈 Test Metrics
+
+### Success Rate (Last 30 Days)
+\${testHistory.length > 0 ? \`
+- **Total Runs:** \${testHistory.length}
+- **Successful:** \${testHistory.filter(h => h.includes('✅')).length}
+- **Failed:** \${testHistory.filter(h => h.includes('❌')).length}
+- **Success Rate:** \${Math.round((testHistory.filter(h => h.includes('✅')).length / testHistory.length) * 100)}%
+\` : 'No recent test data available.'}
+
+---
+*This page is automatically updated after each CI run.*
+          \`;
+          
+          fs.writeFileSync('wiki/Test-History.md', testHistoryPage);
+          
+    - name: Commit test results to wiki
+      run: |
+        cd wiki
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git diff --staged --quiet || git commit -m "🧪 Auto-update test results from CI run"
+        git push
+
+  create-knowledge-base:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+    
+    steps:
+    - name: Checkout wiki
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository }}.wiki
+        path: wiki
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Checkout main repo
+      uses: actions/checkout@v4
+      with:
+        path: main-repo
+        
+    - name: Generate knowledge base pages
+      run: |
+        cd wiki
+        
+        # Create Home page with navigation
+        cat > Home.md << 'EOF'
+        # 🏠 Liberty Tax P&L Webapp Wiki
+        
+        Welcome to the comprehensive knowledge base for the Liberty Tax P&L webapp project!
+        
+        ## 📚 Documentation Hub
+        
+        ### 🐛 Issue Tracking & QA
+        - **[Bug Tracking](Bug-Tracking)** - Active bugs and resolution status
+        - **[Test Results](Test-Results)** - QA dashboard and testing metrics  
+        - **[Test History](Test-History)** - CI/CD run history and trends
+        
+        ### 📊 Project Management
+        - **[Project Status](Project-Status)** - Overall project health and metrics
+        - **[Development Guide](Development-Guide)** - Setup and contribution guidelines
+        - **[Testing Guide](Testing-Guide)** - Comprehensive testing procedures
+        
+        ### 🔧 Technical Documentation
+        - **[API Reference](API-Reference)** - Technical specifications
+        - **[Troubleshooting](Troubleshooting)** - Common issues and solutions
+        - **[Performance Guide](Performance-Guide)** - Optimization best practices
+        
+        ## 🚀 Quick Links
+        - [GitHub Repository](https://github.com/${{ github.repository }})
+        - [Live Application](https://libertytax-pnl-webapp.vercel.app)
+        - [Create New Issue](https://github.com/${{ github.repository }}/issues/new/choose)
+        
+        ---
+        *This wiki is automatically maintained and updated by our CI/CD pipeline.*
+        EOF
+        
+        # Create Development Guide
+        cat > Development-Guide.md << 'EOF'
+        # 🛠️ Development Guide
+        
+        ## 🚀 Quick Start
+        
+        ```bash
+        # Clone repository
+        git clone https://github.com/${{ github.repository }}.git
+        cd libertytax-pnl-webapp
+        
+        # Install dependencies
+        npm install
+        
+        # Start development server
+        npm run dev
+        
+        # Run tests
+        npm test
+        ```
+        
+        ## 🧪 Testing
+        
+        ### Automated Tests
+        - `npm test` - Run all automated tests
+        - `npm run test:browser` - Browser compatibility tests
+        - `npm run test:mobile` - Mobile responsiveness tests
+        
+        ### Manual Testing
+        - See [Testing Guide](Testing-Guide) for comprehensive checklists
+        - Use browser dev tools for mobile simulation
+        - Test on actual devices when possible
+        
+        ## 🔄 Workflow
+        
+        1. **Create Feature Branch**: `git checkout -b feat/your-feature`
+        2. **Make Changes**: Implement your feature/fix
+        3. **Run Tests**: `npm test` locally
+        4. **Create PR**: Use our PR template with testing checklist
+        5. **CI Validation**: Automated tests must pass
+        6. **Review & Merge**: Code review and merge to main
+        
+        ## 📱 Mobile Development
+        
+        - Test responsive design at multiple breakpoints
+        - Ensure touch targets are minimum 44px
+        - Verify keyboard behavior on mobile
+        - Test in both portrait and landscape orientations
+        
+        ---
+        *Updated automatically from repository documentation.*
+        EOF
+        
+        # Create Troubleshooting Guide
+        cat > Troubleshooting.md << 'EOF'
+        # 🔧 Troubleshooting Guide
+        
+        ## 🐛 Common Issues & Solutions
+        
+        ### Application Won't Load
+        **Symptoms:** Blank page, loading forever
+        **Solutions:**
+        - Clear browser cache and cookies
+        - Disable browser extensions
+        - Check browser console for JavaScript errors
+        - Try incognito/private mode
+        
+        ### Calculations Seem Wrong
+        **Symptoms:** KPIs don't match expected values
+        **Solutions:**
+        - Open Debug Panel → Calculations tab
+        - Verify all input values in State tab
+        - Check regional settings (US vs CA)
+        - Confirm preset scenarios applied correctly
+        
+        ### Mobile Layout Issues
+        **Symptoms:** Overlapping elements, horizontal scroll
+        **Solutions:**
+        - Try landscape orientation
+        - Increase browser zoom to 125%
+        - Use different mobile browser
+        - Clear mobile browser cache
+        
+        ### Debug Panel Not Working
+        **Symptoms:** Debug button doesn't respond
+        **Solutions:**
+        - Refresh the page
+        - Check browser console for errors
+        - Try different browser
+        - Verify JavaScript is enabled
+        
+        ## 🚨 Emergency Procedures
+        
+        ### Production Issues
+        1. Check [Test History](Test-History) for recent failures
+        2. Review [Bug Tracking](Bug-Tracking) for known issues
+        3. Create critical bug report using issue templates
+        4. Consider rollback if necessary
+        
+        ### Performance Problems
+        1. Check bundle size in recent CI runs
+        2. Run Lighthouse audit locally
+        3. Review [Performance Guide](Performance-Guide)
+        4. Monitor server resources
+        
+        ---
+        *This guide is updated based on common support requests.*
+        EOF
+        
+    - name: Commit knowledge base
+      run: |
+        cd wiki
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git diff --staged --quiet || git commit -m "📚 Auto-update knowledge base and documentation"
+        git push

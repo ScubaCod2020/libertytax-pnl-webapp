@@ -1,0 +1,177 @@
+name: 🧪 Testing Scenario Report
+description: Report results from comprehensive testing scenarios
+title: "[TEST] "
+labels: ["testing", "qa"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to report comprehensive testing results, edge cases, or testing scenario outcomes.
+
+  - type: dropdown
+    id: test-type
+    attributes:
+      label: Test Type
+      description: What type of testing was performed?
+      options:
+        - Comprehensive Testing Checklist
+        - Edge Case Testing
+        - Mobile/Responsive Testing
+        - Browser Compatibility Testing
+        - Performance Testing
+        - Accessibility Testing
+        - Regression Testing
+        - User Acceptance Testing
+    validations:
+      required: true
+
+  - type: textarea
+    id: test-scope
+    attributes:
+      label: Test Scope
+      description: What specific areas/features were tested?
+      placeholder: |
+        - Wizard flow (US/CA regions)
+        - Dual-entry calculations
+        - Debug panel functionality
+        - KPI thresholds
+        - etc.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: test-result
+    attributes:
+      label: Overall Test Result
+      description: What was the overall result?
+      options:
+        - ✅ PASS - All tests passed
+        - ⚠️ PASS WITH ISSUES - Mostly passed with minor issues
+        - ❌ FAIL - Critical issues found
+        - 🔄 IN PROGRESS - Testing not complete
+    validations:
+      required: true
+
+  - type: textarea
+    id: passed-tests
+    attributes:
+      label: ✅ Tests That Passed
+      description: List the tests/scenarios that passed successfully
+      placeholder: |
+        - Wizard navigation works correctly
+        - Dual-entry calculations sync properly
+        - KPI colors update correctly
+        - etc.
+
+  - type: textarea
+    id: failed-tests
+    attributes:
+      label: ❌ Tests That Failed
+      description: List the tests/scenarios that failed (if any)
+      placeholder: |
+        - Issue with mobile layout on iPhone SE
+        - Debug panel overlaps content on tablet
+        - etc.
+
+  - type: textarea
+    id: edge-cases
+    attributes:
+      label: 🔍 Edge Cases Tested
+      description: Specific edge cases that were tested
+      placeholder: |
+        - Zero percentage values
+        - Maximum percentage (100%)
+        - Very large numbers (999,999,999)
+        - Negative growth scenarios
+        - etc.
+
+  - type: checkboxes
+    id: browser-matrix
+    attributes:
+      label: Browser Testing Matrix
+      description: Which browsers were tested?
+      options:
+        - label: Chrome Desktop
+        - label: Firefox Desktop
+        - label: Safari Desktop
+        - label: Edge Desktop
+        - label: Chrome Mobile (iOS)
+        - label: Safari Mobile (iOS)
+        - label: Chrome Mobile (Android)
+        - label: Samsung Internet
+
+  - type: checkboxes
+    id: device-matrix
+    attributes:
+      label: Device Testing Matrix
+      description: Which devices/screen sizes were tested?
+      options:
+        - label: iPhone SE (375x667)
+        - label: iPhone 12 Pro (390x844)
+        - label: iPad (768x1024)
+        - label: Desktop 1920x1080
+        - label: Desktop 4K (3840x2160)
+
+  - type: checkboxes
+    id: feature-matrix
+    attributes:
+      label: Feature Testing Matrix
+      description: Which features were thoroughly tested?
+      options:
+        - label: Complete wizard flow (Welcome → Inputs → Review → Dashboard)
+        - label: All dual-entry expense fields (17 categories)
+        - label: Regional differences (US vs CA)
+        - label: All preset scenarios (Good, Better, Best)
+        - label: Debug panel functionality
+        - label: KPI threshold changes
+        - label: Data persistence across page refresh
+        - label: All dropdown options
+        - label: Field validation boundaries
+        - label: Button interaction sequences
+
+  - type: textarea
+    id: performance-metrics
+    attributes:
+      label: 📊 Performance Metrics (if applicable)
+      description: Performance testing results
+      placeholder: |
+        - Initial load time: X seconds
+        - Wizard transition time: X ms
+        - Calculation update time: X ms
+        - Bundle size: X KB
+        - Memory usage: X MB
+
+  - type: textarea
+    id: recommendations
+    attributes:
+      label: 💡 Recommendations
+      description: Recommendations based on testing results
+      placeholder: |
+        - Areas that need improvement
+        - Suggested fixes for failed tests
+        - Additional testing needed
+        - etc.
+
+  - type: textarea
+    id: test-data
+    attributes:
+      label: 🔢 Test Data Used
+      description: What test data scenarios were used?
+      placeholder: |
+        Conservative Store: ANF $120, Returns 1500, Growth 5%
+        Aggressive Store: ANF $150, Returns 2000, Growth 20%
+        Edge Cases: Zero values, maximum percentages, etc.
+
+  - type: input
+    id: test-duration
+    attributes:
+      label: ⏱️ Test Duration
+      description: How long did the testing take?
+      placeholder: "e.g., 45 minutes, 2 hours"
+
+  - type: textarea
+    id: additional-notes
+    attributes:
+      label: 📝 Additional Notes
+      description: Any other observations or notes from testing

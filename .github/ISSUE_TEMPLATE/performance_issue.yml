@@ -1,0 +1,166 @@
+name: ⚡ Performance Issue
+description: Report performance, speed, or resource usage problems
+title: "[PERFORMANCE] "
+labels: ["performance", "optimization"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report issues related to app performance, loading speed, memory usage, or responsiveness.
+
+  - type: dropdown
+    id: performance-type
+    attributes:
+      label: Performance Issue Type
+      description: What type of performance issue?
+      options:
+        - Slow initial loading
+        - Slow wizard transitions
+        - Slow calculation updates
+        - Memory usage too high
+        - Unresponsive interactions
+        - Bundle size too large
+        - Network requests slow
+        - Browser freezing/crashing
+    validations:
+      required: true
+
+  - type: textarea
+    id: performance-description
+    attributes:
+      label: Performance Issue Description
+      description: Describe the performance problem in detail
+      placeholder: |
+        - What specific action is slow?
+        - How long does it take?
+        - When does it occur?
+        - Does it get worse over time?
+    validations:
+      required: true
+
+  - type: input
+    id: load-time
+    attributes:
+      label: Load Time (if applicable)
+      description: How long does the slow operation take?
+      placeholder: "e.g., 5 seconds, 30 seconds, > 1 minute"
+
+  - type: dropdown
+    id: device-performance
+    attributes:
+      label: Device Performance Level
+      description: What type of device are you using?
+      options:
+        - High-end desktop
+        - Standard desktop
+        - High-end laptop
+        - Standard laptop
+        - High-end mobile
+        - Standard mobile
+        - Older/low-end mobile
+    validations:
+      required: true
+
+  - type: dropdown
+    id: connection-speed
+    attributes:
+      label: Internet Connection
+      description: What's your connection speed?
+      options:
+        - High-speed broadband
+        - Standard broadband
+        - Mobile 4G/5G
+        - Mobile 3G
+        - Slow connection
+        - Offline (localStorage only)
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Steps to Reproduce Performance Issue
+      description: Specific steps that trigger the performance problem
+      placeholder: |
+        1. Open the app
+        2. Navigate to specific section
+        3. Perform specific action
+        4. Notice slow performance
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: performance-areas
+    attributes:
+      label: Affected Performance Areas
+      description: Which areas show performance issues?
+      options:
+        - label: Initial app loading
+        - label: Wizard page transitions
+        - label: Dual-entry field calculations
+        - label: Debug panel opening
+        - label: Preset application
+        - label: KPI threshold changes
+        - label: Data persistence/saving
+        - label: Browser refresh/reload
+
+  - type: textarea
+    id: browser-metrics
+    attributes:
+      label: Browser Performance Metrics
+      description: If available, provide browser performance metrics
+      placeholder: |
+        From browser dev tools (F12 → Performance/Network tab):
+        - Load time: X seconds
+        - Memory usage: X MB
+        - CPU usage: X%
+        - Network requests: X requests, X MB
+        - Bundle size: X KB
+
+  - type: dropdown
+    id: performance-impact
+    attributes:
+      label: Performance Impact
+      description: How does this impact usability?
+      options:
+        - Critical - App unusable
+        - High - Significantly impacts workflow
+        - Medium - Noticeable but manageable
+        - Low - Minor annoyance
+    validations:
+      required: true
+
+  - type: textarea
+    id: performance-comparison
+    attributes:
+      label: Performance Comparison
+      description: How does performance compare across different scenarios?
+      placeholder: |
+        - Different browsers
+        - Different devices
+        - Different data amounts
+        - Over time (gets worse with use?)
+        - Compared to previous versions
+
+  - type: checkboxes
+    id: performance-testing
+    attributes:
+      label: Performance Testing Done
+      description: What performance testing have you done?
+      options:
+        - label: Tested on multiple devices
+        - label: Tested with different data sizes
+        - label: Tested in incognito/private mode
+        - label: Checked browser dev tools metrics
+        - label: Compared with other browsers
+        - label: Tested with extensions disabled
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Performance Context
+      description: Any other relevant performance information
+      placeholder: |
+        - Screenshots of performance metrics
+        - Comparison with similar apps
+        - Specific use cases where it's worse
+        - etc.

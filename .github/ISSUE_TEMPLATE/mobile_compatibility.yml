@@ -1,0 +1,151 @@
+name: 📱 Mobile/Device Compatibility Issue
+description: Report mobile, tablet, or device-specific issues
+title: "[MOBILE] "
+labels: ["mobile", "responsive", "compatibility"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report issues specific to mobile devices, tablets, or responsive design problems.
+
+  - type: input
+    id: device-model
+    attributes:
+      label: Device Model
+      description: Specific device model experiencing the issue
+      placeholder: "e.g., iPhone 12 Pro, Samsung Galaxy S21, iPad Air"
+    validations:
+      required: true
+
+  - type: input
+    id: screen-size
+    attributes:
+      label: Screen Size/Resolution
+      description: Screen dimensions or resolution
+      placeholder: "e.g., 390x844, 360x800, 768x1024"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: orientation
+    attributes:
+      label: Screen Orientation
+      description: Which orientation has the issue?
+      options:
+        - Portrait
+        - Landscape
+        - Both orientations
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mobile-browser
+    attributes:
+      label: Mobile Browser
+      description: Which mobile browser?
+      options:
+        - Safari Mobile (iOS)
+        - Chrome Mobile (iOS)
+        - Chrome Mobile (Android)
+        - Firefox Mobile (Android)
+        - Samsung Internet
+        - Other (specify in description)
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: Issue Description
+      description: Describe the mobile-specific issue
+      placeholder: |
+        - Elements overlapping or cut off
+        - Buttons too small to tap
+        - Text too small to read
+        - Scrolling issues
+        - Keyboard behavior problems
+        - etc.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: affected-areas
+    attributes:
+      label: Affected Areas
+      description: Which parts of the app are affected?
+      options:
+        - label: Wizard navigation buttons
+        - label: Debug panel layout
+        - label: Dual-entry input fields
+        - label: Dropdown menus
+        - label: KPI cards display
+        - label: Error messages
+        - label: Footer elements
+        - label: Overall page layout
+
+  - type: checkboxes
+    id: interaction-issues
+    attributes:
+      label: Interaction Issues
+      description: What interaction problems occur?
+      options:
+        - label: Buttons too small to tap (< 44px)
+        - label: Dropdown extends off-screen
+        - label: Keyboard obscures input fields
+        - label: Scrolling doesn't work properly
+        - label: Touch gestures interfere
+        - label: Double-tap causes unwanted zoom
+        - label: Text selection issues
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity Level
+      description: How severe is this mobile issue?
+      options:
+        - Critical - App unusable on mobile
+        - High - Major functionality broken
+        - Medium - Usability impacted
+        - Low - Minor layout issue
+    validations:
+      required: true
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround (if any)
+      description: Is there a temporary workaround?
+      placeholder: |
+        - Use landscape orientation
+        - Zoom browser to 125%
+        - Use different browser
+        - etc.
+
+  - type: textarea
+    id: expected-mobile-behavior
+    attributes:
+      label: Expected Mobile Behavior
+      description: How should it work on mobile?
+      placeholder: Describe the expected mobile experience...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: testing-verification
+    attributes:
+      label: Testing Verification
+      description: Please confirm you've tested these scenarios
+      options:
+        - label: Tested in both portrait and landscape
+        - label: Tested with different zoom levels
+        - label: Tested keyboard interactions
+        - label: Tested on actual device (not just browser dev tools)
+        - label: Compared with desktop version
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Screenshots, videos, or other helpful context
+      placeholder: Please attach screenshots or describe other relevant details...
