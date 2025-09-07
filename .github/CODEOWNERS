@@ -1,0 +1,64 @@
+# Code Owners for Liberty Tax P&L Webapp
+# These users/teams will be automatically requested for review
+# when someone opens a pull request that modifies matching files.
+
+# Global ownership - require at least one review
+*                                @team-lead
+
+# Frontend Components and UI
+/src/components/                 @frontend-team
+/src/styles.css                  @frontend-team
+/src/main.tsx                    @frontend-team
+/src/App.tsx                     @frontend-team @calculation-team
+
+# Calculation Logic - Critical Path
+/src/lib/calcs.ts               @calculation-team @team-lead
+/src/lib/calcs.test.ts          @calculation-team @qa-team
+
+# Data and Presets
+/src/data/                      @calculation-team
+/src/types/                     @calculation-team @frontend-team
+
+# Python Excel Tools
+/src/build_pnl_tool_v5.py       @backend-team
+/requirements.txt               @backend-team
+
+# Testing Infrastructure
+/tests/                         @qa-team
+/src/**/*.test.ts               @qa-team
+/src/**/*.test.tsx              @qa-team
+/playwright*.config.*           @qa-team
+/vitest*.config.*               @qa-team
+
+# GitHub Actions and CI/CD
+/.github/workflows/             @devops-team
+/.github/ISSUE_TEMPLATE/        @team-lead
+/.github/pull_request_template.md @team-lead
+/.github/CODEOWNERS             @team-lead
+
+# Configuration Files
+/package.json                   @devops-team @frontend-team
+/tsconfig.json                  @frontend-team
+/vite.config.ts                 @frontend-team @devops-team
+/vercel.json                    @devops-team
+/.eslintrc.cjs                  @frontend-team
+/.prettierrc                    @frontend-team
+/lighthouserc.js               @devops-team @qa-team
+
+# Documentation
+/README.md                      @team-lead
+/docs/                          @team-lead
+/**/*.md                        @team-lead
+
+# Security and Compliance
+/.github/dependabot.yml         @security-team @devops-team
+/.gitignore                     @devops-team
+
+# Team Definitions (replace with actual GitHub usernames/teams)
+# @team-lead           - Project/Technical Lead
+# @frontend-team       - Frontend developers
+# @backend-team        - Backend/Python developers  
+# @calculation-team    - Business logic/calculation specialists
+# @qa-team             - QA engineers and test specialists
+# @devops-team         - DevOps and infrastructure engineers
+# @security-team       - Security specialists
