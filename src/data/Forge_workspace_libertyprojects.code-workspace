@@ -1,11 +1,8 @@
 {
-	"folders": [
-		{
-			"path": "../.."
-		},
-		{
-			"path": "D:/Downloads/logs_44908337775"
-		}
-	],
-	"settings": {}
+    "folders": [
+        {
+            "path": "../.."
+        }
+    ],
+    "settings": {}
 }
