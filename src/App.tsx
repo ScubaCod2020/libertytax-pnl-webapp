@@ -19,7 +19,7 @@ export default function App() {
   // Custom hooks for clean separation of concerns
   const appState = useAppState()
   const calculations = useCalculations(appState)
-  const persistence = usePersistence(appState)
+  const persistence = usePersistence()
   const presets = usePresets(appState)
   
   // Debug system state

@@ -92,8 +92,8 @@ export function usePersistence() {
     
     dbg('saveNow: writing immediately (snapshot)', snap)
     saveEnvelope(prev => ({
-      version: 1,
       ...prev,
+      version: 1,
       last: snap,
       meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
     }))
@@ -144,8 +144,8 @@ export function usePersistence() {
   const saveBaseline = (state: Partial<SessionState>) => {
     const snap = makeSnapshot(state)
     saveEnvelope(prev => ({
-      version: 1,
       ...prev,
+      version: 1,
       baselines: {
         ...prev.baselines,
         questionnaire: snap
