@@ -552,6 +552,9 @@ function WelcomeStep({
                   <div style={{ fontSize: '0.8rem', fontWeight: 'normal' }}>
                     Net Margin: {(((answers.expectedRevenue - answers.projectedExpenses) / answers.expectedRevenue) * 100).toFixed(1)}%
                   </div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 'normal', opacity: 0.8, marginTop: '0.25rem' }}>
+                    Based on Tax Prep Income (after discounts) minus expenses
+                  </div>
                 </div>
               )}
             </div>

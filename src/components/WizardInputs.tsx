@@ -36,17 +36,23 @@ export default function WizardInputs({
     const isFixed = field.calculationBase === 'fixed_amount'
     const isDisabled = field.regionSpecific === 'CA' && answers.region !== 'CA'
     
-    // Calculate the base for dollar conversion
+    // Calculate the base for dollar conversion - CORRECTED to match main engine
     const getCalculationBase = () => {
+      // Calculate base amounts using same logic as main engine (calcs.ts)
+      const grossFees = answers.avgNetFee && answers.taxPrepReturns ? answers.avgNetFee * answers.taxPrepReturns : 0
+      const discounts = grossFees * ((answers.discountsPct || 3) / 100)
+      const taxPrepIncome = grossFees - discounts
+      
       switch (field.calculationBase) {
         case 'percentage_gross':
-          // Use projected revenue if available, otherwise use current inputs
-          return answers.expectedRevenue || (answers.avgNetFee && answers.taxPrepReturns ? answers.avgNetFee * answers.taxPrepReturns / (1 - (answers.discountsPct || 3) / 100) : 0)
+          // Use projected revenue if available, otherwise calculate gross fees
+          return answers.expectedRevenue ? answers.expectedRevenue / (1 - (answers.discountsPct || 3) / 100) : grossFees
         case 'percentage_tp_income':
-          return answers.expectedRevenue || (answers.avgNetFee && answers.taxPrepReturns ? answers.avgNetFee * answers.taxPrepReturns : 0)
+          // Use projected revenue if available, otherwise calculate tax prep income (after discounts)
+          return answers.expectedRevenue || taxPrepIncome
         case 'percentage_salaries':
-          const grossFees = answers.expectedRevenue || (answers.avgNetFee && answers.taxPrepReturns ? answers.avgNetFee * answers.taxPrepReturns / (1 - (answers.discountsPct || 3) / 100) : 0)
-          return grossFees * ((answers as any).salariesPct || 25) / 100
+          const baseGrossFees = answers.expectedRevenue ? answers.expectedRevenue / (1 - (answers.discountsPct || 3) / 100) : grossFees
+          return baseGrossFees * ((answers as any).salariesPct || 25) / 100
         case 'fixed_amount':
           return 1 // For fixed amounts, percentage doesn't apply
         default:
@@ -333,7 +339,7 @@ export default function WizardInputs({
           )}
         </div>
 
-        {/* Revenue calculation display */}
+        {/* Revenue calculation display - CORRECTED to match main engine flow */}
         {(answers.avgNetFee && answers.taxPrepReturns) && (
           <div style={{ 
             marginTop: '1rem',
@@ -343,17 +349,19 @@ export default function WizardInputs({
             borderRadius: '4px',
             fontSize: '0.85rem'
           }}>
-            <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>Projected Revenue Breakdown:</div>
-            <div>Tax Prep: ${((answers.avgNetFee * answers.taxPrepReturns) / (1 - (answers.discountsPct || 3) / 100)).toLocaleString()}</div>
+            <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>Revenue Flow (matches main engine):</div>
+            <div>Gross Fees: ${(answers.avgNetFee * answers.taxPrepReturns).toLocaleString()}</div>
+            <div style={{ color: '#dc2626' }}>Less Discounts ({answers.discountsPct || 3}%): -${((answers.avgNetFee * answers.taxPrepReturns) * (answers.discountsPct || 3) / 100).toLocaleString()}</div>
+            <div style={{ fontWeight: 'bold', color: '#059669' }}>Tax Prep Income: ${((answers.avgNetFee * answers.taxPrepReturns) * (1 - (answers.discountsPct || 3) / 100)).toLocaleString()}</div>
             {answers.region === 'CA' && answers.taxRushReturns && (
-              <div>TaxRush: ${(answers.avgNetFee * answers.taxRushReturns).toLocaleString()}</div>
+              <div>TaxRush Income: ${(answers.avgNetFee * answers.taxRushReturns).toLocaleString()}</div>
             )}
             {answers.otherIncome && (
               <div>Other Income: ${answers.otherIncome.toLocaleString()}</div>
             )}
             <div style={{ fontWeight: 'bold', borderTop: '1px solid #d1d5db', paddingTop: '0.25rem', marginTop: '0.25rem' }}>
-              Total: ${(
-                (answers.avgNetFee * answers.taxPrepReturns) / (1 - (answers.discountsPct || 3) / 100) +
+              Total Net Income: ${(
+                (answers.avgNetFee * answers.taxPrepReturns) * (1 - (answers.discountsPct || 3) / 100) +
                 (answers.region === 'CA' && answers.taxRushReturns ? answers.avgNetFee * answers.taxRushReturns : 0) +
                 (answers.otherIncome || 0)
               ).toLocaleString()}
