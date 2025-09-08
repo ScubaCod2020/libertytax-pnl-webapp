@@ -77,8 +77,8 @@ describe('P&L Calculation Engine', () => {
       const usInputs = { ...baseInputs, region: 'US' as const, taxRushReturns: 100 }
       const result = calc(usInputs)
       
-      // TaxRush should be included in total returns calculation
-      expect(result.totalReturns).toBe(1600 + 100)
+      // TaxRush should NOT be included in total returns calculation for US
+      expect(result.totalReturns).toBe(1600)
     })
 
     it('should handle CA region (with TaxRush)', () => {
