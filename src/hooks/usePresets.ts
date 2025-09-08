@@ -34,17 +34,35 @@ export function usePresets(appState: AppState) {
       return
     }
 
-    console.log('[presets] applying', appState.scenario)
+    console.log('🎯 PRESETS DEBUG - Applying preset:', {
+      scenario: appState.scenario,
+      preset: preset,
+      previousValues: {
+        avgNetFee: appState.avgNetFee,
+        taxPrepReturns: appState.taxPrepReturns,
+        salariesPct: appState.salariesPct,
+        rentPct: appState.rentPct
+      },
+      region: appState.region
+    })
+    
     appState.applyPreset(preset)
 
     if (appState.region === 'US') {
-      console.log('[presets] US — leaving taxRush untouched (sticky)')
+      console.log('🎯 PRESETS DEBUG - US region: leaving taxRush untouched (sticky)')
     }
   }, [appState.scenario, appState.region])
 
   // Region gating effect
   useEffect(() => {
+    console.log('🌍 REGION DEBUG - Region changed:', {
+      region: appState.region,
+      taxRushReturns: appState.taxRushReturns,
+      willResetTaxRush: appState.region === 'US' && appState.taxRushReturns !== 0
+    })
+    
     if (appState.region === 'US' && appState.taxRushReturns !== 0) {
+      console.log('🌍 REGION DEBUG - Resetting TaxRush to 0 for US region')
       appState.setTaxRush(0)
     }
     if (appState.region === 'US') {

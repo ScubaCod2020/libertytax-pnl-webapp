@@ -12,6 +12,7 @@ export interface Inputs {
   avgNetFee: number
   taxPrepReturns: number
   taxRushReturns: number
+  otherIncome?: number // Other revenue streams (bookkeeping, notary, etc.)
   discountsPct: number
   
   // All 17 expense fields
@@ -39,6 +40,7 @@ export interface Results {
   grossFees: number
   discounts: number
   taxPrepIncome: number
+  totalRevenue: number // Tax prep income + other income sources
   
   // Personnel expenses
   salaries: number
@@ -75,10 +77,48 @@ export interface Results {
   netMarginPct: number
 }
 export function calc(inputs: Inputs): Results {
+  // 🐛 DEBUG: Log key calculations for debugging
   const taxRush = inputs.region==='CA' ? inputs.taxRushReturns : 0
   const grossFees = inputs.avgNetFee * inputs.taxPrepReturns
   const discounts = grossFees * (inputs.discountsPct/100)
   const taxPrepIncome = grossFees - discounts
+  
+  // Calculate total revenue including all income sources
+  const taxRushIncome = inputs.region === 'CA' ? (inputs.avgNetFee * taxRush) : 0
+  const otherIncome = inputs.otherIncome || 0
+  const totalRevenue = taxPrepIncome + taxRushIncome + otherIncome
+  
+  // 🔧 CURSOR TERMINAL DEBUG - This will show in Cursor's terminal
+  if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
+    console.log('🧮 CALC DEBUG (Server):', {
+      region: inputs.region,
+      avgNetFee: inputs.avgNetFee,
+      taxPrepReturns: inputs.taxPrepReturns,
+      taxRushReturns: taxRush,
+      otherIncome: inputs.otherIncome || 0,
+      grossFees,
+      discountsPct: inputs.discountsPct,
+      discounts,
+      taxPrepIncome,
+      taxRushIncome,
+      totalRevenue
+    })
+  }
+  
+  // 🌐 BROWSER DEBUG - This shows in browser console  
+  console.log('🧮 CALC DEBUG (Browser):', {
+    region: inputs.region,
+    avgNetFee: inputs.avgNetFee,
+    taxPrepReturns: inputs.taxPrepReturns,
+    taxRushReturns: taxRush,
+    otherIncome: inputs.otherIncome || 0,
+    grossFees,
+    discountsPct: inputs.discountsPct,
+    discounts,
+    taxPrepIncome,
+    taxRushIncome,
+    totalRevenue
+  })
 
   // Personnel expenses
   const salaries = grossFees * (inputs.salariesPct/100)
@@ -116,13 +156,20 @@ export function calc(inputs: Inputs): Results {
     royalties + advRoyalties + taxRushRoyalties +
     misc
     
-  const netIncome = taxPrepIncome - totalExpenses
+  const netIncome = totalRevenue - totalExpenses
   const totalReturns = inputs.taxPrepReturns + taxRush
   const costPerReturn = totalReturns > 0 ? totalExpenses/totalReturns : 0
-  const netMarginPct = taxPrepIncome !== 0 ? (netIncome/taxPrepIncome)*100 : 0
+  const netMarginPct = totalRevenue !== 0 ? (netIncome/totalRevenue)*100 : 0
+  
+  console.log('🧮 FINAL RESULTS:', {
+    totalRevenue,
+    totalExpenses,
+    netIncome,
+    netMarginPct: `${netMarginPct.toFixed(1)}%`
+  })
   
   return { 
-    grossFees, discounts, taxPrepIncome,
+    grossFees, discounts, taxPrepIncome, totalRevenue,
     salaries, empDeductions,
     rent, telephone, utilities,
     localAdv, insurance, postage, supplies, dues, bankFees, maintenance, travelEnt,

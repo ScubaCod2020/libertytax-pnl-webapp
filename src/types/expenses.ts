@@ -78,61 +78,61 @@ export const expenseFields: ExpenseField[] = [
     description: 'Office rent as % of gross fees'
   },
   {
-    id: 'telephoneAmt',
+    id: 'telephonePct',
     label: 'Telephone',
     category: 'facility',
-    calculationBase: 'fixed_amount',
-    defaultValue: 200,
+    calculationBase: 'percentage_gross',
+    defaultValue: 0.5,
     min: 0,
-    max: 1000,
-    step: 10,
-    description: 'Monthly phone/internet costs'
+    max: 3,
+    step: 0.1,
+    description: 'Phone/internet costs as % of gross fees'
   },
   {
-    id: 'utilitiesAmt',
+    id: 'utilitiesPct',
     label: 'Utilities', 
     category: 'facility',
-    calculationBase: 'fixed_amount',
-    defaultValue: 300,
+    calculationBase: 'percentage_gross',
+    defaultValue: 1.2,
     min: 0,
-    max: 1500,
-    step: 10,
-    description: 'Monthly utilities (electric, gas, water)'
+    max: 5,
+    step: 0.1,
+    description: 'Utilities (electric, gas, water) as % of gross fees'
   },
 
   // Operations (8 fields)
   {
-    id: 'localAdvAmt',
+    id: 'localAdvPct',
     label: 'Local Advertising',
     category: 'operations',
-    calculationBase: 'fixed_amount', 
-    defaultValue: 500,
+    calculationBase: 'percentage_gross', 
+    defaultValue: 2,
     min: 0,
-    max: 5000,
-    step: 50,
-    description: 'Local marketing and advertising costs'
+    max: 8,
+    step: 0.1,
+    description: 'Local marketing and advertising as % of gross fees'
   },
   {
-    id: 'insuranceAmt',
+    id: 'insurancePct',
     label: 'Insurance',
     category: 'operations',
-    calculationBase: 'fixed_amount',
-    defaultValue: 150,
+    calculationBase: 'percentage_gross',
+    defaultValue: 0.6,
     min: 0,
-    max: 1000,
-    step: 10,
-    description: 'Business insurance premiums'
+    max: 3,
+    step: 0.1,
+    description: 'Business insurance premiums as % of gross fees'
   },
   {
-    id: 'postageAmt',
+    id: 'postagePct',
     label: 'Postage',
     category: 'operations',
-    calculationBase: 'fixed_amount',
-    defaultValue: 100,
+    calculationBase: 'percentage_gross',
+    defaultValue: 0.4,
     min: 0,
-    max: 500,
-    step: 10,
-    description: 'Mailing and shipping costs'
+    max: 2,
+    step: 0.1,
+    description: 'Mailing and shipping costs as % of gross fees'
   },
   {
     id: 'suppliesPct',
@@ -146,48 +146,48 @@ export const expenseFields: ExpenseField[] = [
     description: 'Office supplies as % of gross fees'
   },
   {
-    id: 'duesAmt',
+    id: 'duesPct',
     label: 'Dues',
     category: 'operations',
-    calculationBase: 'fixed_amount',
-    defaultValue: 200,
+    calculationBase: 'percentage_gross',
+    defaultValue: 0.8,
     min: 0,
-    max: 1000,
-    step: 10,
-    description: 'Professional dues and subscriptions'
+    max: 3,
+    step: 0.1,
+    description: 'Professional dues and subscriptions as % of gross fees'
   },
   {
-    id: 'bankFeesAmt',
+    id: 'bankFeesPct',
     label: 'Bank Fees',
     category: 'operations',
-    calculationBase: 'fixed_amount',
-    defaultValue: 100,
+    calculationBase: 'percentage_gross',
+    defaultValue: 0.4,
     min: 0,
-    max: 500,
-    step: 10,
-    description: 'Banking and credit card fees'
+    max: 2,
+    step: 0.1,
+    description: 'Banking and credit card fees as % of gross fees'
   },
   {
-    id: 'maintenanceAmt',
+    id: 'maintenancePct',
     label: 'Maintenance',
     category: 'operations',
-    calculationBase: 'fixed_amount',
-    defaultValue: 150,
+    calculationBase: 'percentage_gross',
+    defaultValue: 0.6,
     min: 0,
-    max: 1000,
-    step: 10,
-    description: 'Equipment and facility maintenance'
+    max: 3,
+    step: 0.1,
+    description: 'Equipment and facility maintenance as % of gross fees'
   },
   {
-    id: 'travelEntAmt',
+    id: 'travelEntPct',
     label: 'Travel/Entertainment',
     category: 'operations',
-    calculationBase: 'fixed_amount',
-    defaultValue: 200,
+    calculationBase: 'percentage_gross',
+    defaultValue: 0.8,
     min: 0,
-    max: 2000,
-    step: 25,
-    description: 'Business travel and entertainment'
+    max: 4,
+    step: 0.1,
+    description: 'Business travel and entertainment as % of gross fees'
   },
 
   // Franchise (3 fields)
@@ -232,11 +232,11 @@ export const expenseFields: ExpenseField[] = [
     label: 'Miscellaneous',
     category: 'misc',
     calculationBase: 'percentage_gross',
-    defaultValue: 2.5,
+    defaultValue: 1,
     min: 0,
-    max: 10,
+    max: 5,
     step: 0.1,
-    description: 'Other miscellaneous expenses'
+    description: 'Other miscellaneous expenses as % of gross fees'
   }
 ]
 
@@ -263,18 +263,18 @@ export type ExpenseValues = {
   
   // Facility  
   rentPct: number
-  telephoneAmt: number
-  utilitiesAmt: number
+  telephonePct: number
+  utilitiesPct: number
   
   // Operations
-  localAdvAmt: number
-  insuranceAmt: number
-  postageAmt: number
+  localAdvPct: number
+  insurancePct: number
+  postagePct: number
   suppliesPct: number
-  duesAmt: number
-  bankFeesAmt: number
-  maintenanceAmt: number
-  travelEntAmt: number
+  duesPct: number
+  bankFeesPct: number
+  maintenancePct: number
+  travelEntPct: number
   
   // Franchise
   royaltiesPct: number

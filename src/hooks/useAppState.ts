@@ -152,6 +152,9 @@ export function useAppState(): AppState & AppStateActions {
     setMisc(2.5)
     
     setThr(defaultThresholds)
+    
+    // Reset wizard state - close wizard if open
+    setShowWizard(false)
   }
 
   const applyPreset = (preset: any) => {

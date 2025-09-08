@@ -11,7 +11,7 @@ export const STORAGE_KEY = `lt_pnl_v5_session_v1_${APP_VERSION}`
 
 // DEV logging toggle
 export const DEBUG = true
-export const dbg = (...args: any[]) => { if (DEBUG) console.log('[persist]', ...args) }
+export const dbg = (...args: any[]) => { if (DEBUG) console.log('💾 PERSISTENCE DEBUG:', ...args) }
 
 export type SessionState = {
   region: Region
@@ -64,13 +64,22 @@ export function usePersistence() {
   // Storage utilities
   const loadEnvelope = (): PersistEnvelopeV1 | undefined => {
     try {
-      dbg('loadEnvelope()', STORAGE_KEY)
+      dbg('Loading envelope from localStorage', { key: STORAGE_KEY })
       const raw = localStorage.getItem(STORAGE_KEY)
-      if (!raw) { dbg('loadEnvelope: no key'); return }
+      if (!raw) { 
+        dbg('No data found in localStorage for key:', STORAGE_KEY); 
+        return 
+      }
       const parsed = JSON.parse(raw) as PersistEnvelopeV1
-      dbg('loadEnvelope: parsed', parsed?.meta?.savedAtISO ?? '(no meta)')
+      dbg('Successfully loaded data:', { 
+        savedAt: parsed?.meta?.savedAtISO ?? '(no meta)',
+        version: parsed?.version,
+        hasLastSession: !!parsed?.last
+      })
       if (parsed && parsed.version === 1) return parsed
-    } catch (e) { dbg('loadEnvelope: ERROR', e) }
+    } catch (e) { 
+      console.error('💾 PERSISTENCE ERROR - Failed to load:', e) 
+    }
     return
   }
 

@@ -24,6 +24,9 @@ export default function App() {
   
   // Debug system state
   const [debugOpen, setDebugOpen] = React.useState(false)
+  
+  // Reset counter to force wizard remount when reset happens
+  const [resetCounter, setResetCounter] = React.useState(0)
 
   // Wizard handlers
   const handleWizardComplete = (answers: WizardAnswers) => {
@@ -38,11 +41,12 @@ export default function App() {
     persistence.dbg('wizard: cancelled')
   }
 
-  // Reset handler
+  // Reset handler - now forces wizard remount
   const handleReset = () => {
-    persistence.dbg('ui: Reset session')
+    persistence.dbg('ui: Reset session - forcing wizard remount')
     appState.resetToDefaults()
     localStorage.removeItem(persistence.STORAGE_KEY)
+    setResetCounter(prev => prev + 1) // Force wizard remount by changing key
   }
 
   // Debug panel handlers
@@ -67,7 +71,8 @@ export default function App() {
   
   const handleClearStorage = () => { 
     persistence.dbg('ui: Clear & reset')
-    localStorage.removeItem(persistence.STORAGE_KEY) 
+    localStorage.removeItem(persistence.STORAGE_KEY)
+    setResetCounter(prev => prev + 1) // Force wizard remount to clear state
   }
 
   // Debug panel configuration
@@ -100,6 +105,7 @@ const savedAt = (() => {
 
         {appState.showWizard ? (
           <WizardShell
+            key={resetCounter} // Force remount on reset to clear wizard state
             region={appState.region}
             setRegion={appState.setRegion}
             onComplete={handleWizardComplete}

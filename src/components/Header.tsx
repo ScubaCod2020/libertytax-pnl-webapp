@@ -31,14 +31,14 @@ export default function Header({ region, setRegion, onReset, onShowWizard }: Hea
           <option value="CA">Canada</option>
         </select>
 
-        {/* Reset — clears storage and reverts to defaults */}
+        {/* Full Reset — clears ALL data and reverts to defaults */}
         <button
           onClick={onReset}
           className="ml-3 text-xs underline opacity-80 hover:opacity-100"
-          aria-label="Reset to defaults"
-          title="Reset to defaults"
+          aria-label="Reset entire application to defaults"
+          title="Reset entire application - clears ALL data and starts fresh"
         >
-          Reset
+          🔄 Reset All Data
         </button>
 
         {/* Launch Setup Wizard */}
