@@ -18,10 +18,21 @@ describe('P&L Calculation Engine', () => {
     taxRushReturns: 0,
     discountsPct: 3,
     salariesPct: 25,
+    empDeductionsPct: 10,
     rentPct: 18,
+    telephoneAmt: 200,
+    utilitiesAmt: 300,
+    localAdvAmt: 500,
+    insuranceAmt: 400,
+    postageAmt: 100,
     suppliesPct: 3.5,
+    duesAmt: 150,
+    bankFeesAmt: 50,
+    maintenanceAmt: 200,
+    travelEntAmt: 300,
     royaltiesPct: 14,
     advRoyaltiesPct: 5,
+    taxRushRoyaltiesPct: 2,
     miscPct: 2.5,
     thresholds: defaultThresholds,
   }
@@ -49,8 +60,22 @@ describe('P&L Calculation Engine', () => {
 
     it('should calculate total expenses correctly', () => {
       const result = calc(baseInputs)
-      const taxPrepIncome = 194000 // from previous calculation
-      const expectedExpenses = taxPrepIncome * (25 + 18 + 3.5 + 14 + 5 + 2.5) / 100
+      const grossFees = 1600 * 125 // 200000
+      const taxPrepIncome = grossFees - (grossFees * 0.03) // 194000
+      
+      // Calculate expected expenses
+      const salaries = grossFees * 0.25 // 50000
+      const empDeductions = salaries * 0.10 // 5000
+      const rent = grossFees * 0.18 // 36000
+      const supplies = grossFees * 0.035 // 7000
+      const royalties = taxPrepIncome * 0.14 // 27160
+      const advRoyalties = taxPrepIncome * 0.05 // 9700
+      const misc = grossFees * 0.025 // 5000
+      
+      // Fixed amounts
+      const fixedExpenses = 200 + 300 + 500 + 400 + 100 + 150 + 50 + 200 + 300 // 2200
+      
+      const expectedExpenses = salaries + empDeductions + rent + supplies + royalties + advRoyalties + misc + fixedExpenses
       expect(result.totalExpenses).toBeCloseTo(expectedExpenses, 2)
     })
 
@@ -77,8 +102,8 @@ describe('P&L Calculation Engine', () => {
       const usInputs = { ...baseInputs, region: 'US' as const, taxRushReturns: 100 }
       const result = calc(usInputs)
       
-      // TaxRush should be included in total returns calculation
-      expect(result.totalReturns).toBe(1600 + 100)
+      // TaxRush should NOT be included in total returns calculation for US
+      expect(result.totalReturns).toBe(1600)
     })
 
     it('should handle CA region (with TaxRush)', () => {

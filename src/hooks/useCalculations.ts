@@ -114,9 +114,13 @@ export function getKpiClass(status: 'green' | 'yellow' | 'red'): string {
 }
 
 // Currency formatting helper
-export const currency = (n: number) =>
-  n.toLocaleString(undefined, { style: 'currency', currency: 'USD' })
+export const currency = (n: number) => {
+  if (typeof n !== 'number' || isNaN(n)) return '$0.00'
+  return n.toLocaleString(undefined, { style: 'currency', currency: 'USD' })
+}
 
 // Percentage formatting helper  
-export const pct = (n: number) =>
-  n.toLocaleString(undefined, { maximumFractionDigits: 1 }) + '%'
+export const pct = (n: number) => {
+  if (typeof n !== 'number' || isNaN(n)) return '0.0%'
+  return n.toLocaleString(undefined, { maximumFractionDigits: 1 }) + '%'
+}

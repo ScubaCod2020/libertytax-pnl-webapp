@@ -118,8 +118,7 @@ export function calc(inputs: Inputs): Results {
     
   const netIncome = taxPrepIncome - totalExpenses
   const totalReturns = inputs.taxPrepReturns + taxRush
-  const denom = Math.max(totalReturns, 1)
-  const costPerReturn = totalExpenses/denom
+  const costPerReturn = totalReturns > 0 ? totalExpenses/totalReturns : 0
   const netMarginPct = taxPrepIncome !== 0 ? (netIncome/taxPrepIncome)*100 : 0
   
   return { 
