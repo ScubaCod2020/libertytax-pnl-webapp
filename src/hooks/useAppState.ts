@@ -93,8 +93,26 @@ export function useAppState(): AppState & AppStateActions {
   // UI state
   const [showWizard, setShowWizard] = useState(false)
 
+  // Load initial region from persistence if available
+  const getInitialRegion = (): Region => {
+    try {
+      const saved = localStorage.getItem('libertytax-pnl-webapp-v1')
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        const region = parsed?.last?.region || parsed?.wizardAnswers?.region
+        if (region === 'CA' || region === 'US') {
+          console.log(`🌍 Loading saved region: ${region}`)
+          return region
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to load saved region, defaulting to US')
+    }
+    return 'US'
+  }
+
   // Basic state
-  const [region, setRegion] = useState<Region>('US')
+  const [region, setRegion] = useState<Region>(getInitialRegion())
   const [scenario, setScenario] = useState<Scenario>('Custom')
   const [avgNetFee, setANF] = useState(125)
   const [taxPrepReturns, setReturns] = useState(1600)

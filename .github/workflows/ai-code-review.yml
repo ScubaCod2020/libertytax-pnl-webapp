@@ -109,48 +109,7 @@ jobs:
           const isPR = context.payload.issue.pull_request !== undefined;
           
           if (isPR) {
-            const testingGuidance = `## 🧪 AI Testing Assistant Activated!
-            
-Since you mentioned testing, here's our comprehensive testing context for @codex:
-
-### 🎯 Testing Checklist for This Project
-- [ ] **Calculation Tests:** Run \\\`node scripts/test-calculations.js\\\`
-- [ ] **Regression Tests:** Run \\\`node scripts/regression-test.js\\\`  
-- [ ] **Edge Cases:** Run \\\`node scripts/comprehensive-edge-case-tests.js\\\`
-- [ ] **Browser Tests:** Run \\\`npm run test:browser\\\`
-- [ ] **Mobile Tests:** Run \\\`npm run test:mobile\\\`
-
-### 📱 Manual Testing Focus
-- **Wizard Flow:** Welcome → Inputs → Review → Dashboard
-- **Dual-Entry:** Test percentage ↔ dollar sync on all 17 expense fields
-- **Regional:** Test US vs CA differences (TaxRush fields)
-- **Mobile:** Test on iPhone SE, iPhone 12 Pro, iPad
-- **Debug Panel:** Verify all tabs work (Storage, Calc, State, Perf, Thresholds)
-
-### 🧮 Calculation Verification
-Key formulas to verify:
-\\\`\\\`\\\`javascript
-// Gross Fees = Tax Prep Income / (1 - Discount %)
-grossFees = taxPrepIncome / (1 - discountsPct / 100)
-
-// Net Income = Gross Fees - Discounts - Total Expenses  
-netIncome = grossFees - (grossFees * discountsPct / 100) - totalExpenses
-
-// Net Margin = Net Income / Tax Prep Income * 100
-netMargin = (netIncome / taxPrepIncome) * 100
-
-// Cost per Return = Total Expenses / Tax Prep Returns
-costPerReturn = totalExpenses / taxPrepReturns
-\\\`\\\`\\\`
-
-### 🔍 Edge Cases to Test
-- Zero values (0%, $0)
-- Maximum values (100%, large numbers)
-- Invalid inputs (negative, non-numeric)
-- Division by zero scenarios
-- Regional switching (US ↔ CA)
-
-**@codex** - What specific testing scenarios would you recommend for this change?`;
+            const testingGuidance = "🧪 AI Testing Assistant Activated! Since you mentioned testing, here are key test areas for this project: Calculation Tests (run node scripts/test-calculations.js), Browser Tests (npm run test:browser), Mobile Tests (npm run test:mobile). Focus on wizard flow, dual-entry fields, and regional differences (US vs CA). What specific testing scenarios would you recommend?";
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -169,71 +128,7 @@ costPerReturn = totalExpenses / taxPrepReturns
       uses: actions/github-script@v7
       with:
         script: |
-          const calculationContext = `## 🧮 AI Calculation Expert Activated!
-
-@codex - Here's the complete calculation context for the Liberty Tax P&L webapp:
-
-### 💰 Core Financial Formulas
-
-#### Revenue Calculations
-\\\`\\\`\\\`javascript
-// Tax Prep Income = Average Net Fee × Tax Prep Returns
-taxPrepIncome = avgNetFee * taxPrepReturns
-
-// TaxRush Income = TaxRush ANF × TaxRush Returns (Canada only)
-taxRushIncome = taxRushANF * taxRushReturns  // CA only, 0 for US
-
-// Total Income = Tax Prep + TaxRush + Other Income
-totalIncome = taxPrepIncome + taxRushIncome + otherIncome
-\\\`\\\`\\\`
-
-#### Expense Calculations (Dual-Entry System)
-\\\`\\\`\\\`javascript
-// Percentage to Dollar
-dollarAmount = (percentage / 100) * calculationBase
-
-// Dollar to Percentage  
-percentage = (dollarAmount / calculationBase) * 100
-
-// Different calculation bases:
-// - Salaries, Rent, Royalties: Use Gross Fees as base
-// - Employee Deductions: Use Salaries amount as base
-// - Fixed amounts (Telephone, Utilities): No percentage conversion
-\\\`\\\`\\\`
-
-#### Key Performance Indicators
-\\\`\\\`\\\`javascript
-// Gross Fees (includes discount adjustment)
-grossFees = taxPrepIncome / (1 - discountsPct / 100)
-
-// Net Income
-netIncome = grossFees - (grossFees * discountsPct / 100) - totalExpenses
-
-// Net Margin
-netMargin = (netIncome / taxPrepIncome) * 100
-
-// Cost per Return
-costPerReturn = totalExpenses / taxPrepReturns
-\\\`\\\`\\\`
-
-### 🎯 Regional Differences
-- **US:** TaxRush fields hidden, TaxRush income = 0
-- **Canada:** TaxRush fields visible, included in calculations
-
-### ⚠️ Edge Cases to Handle
-- Division by zero (0 returns, 0 revenue)
-- Negative growth percentages
-- 100% expense percentages
-- Very large numbers (999,999,999)
-- Floating point precision issues
-
-### 🔍 Validation Rules
-- Percentages: 0% to 100% (reject >100%)
-- Dollar amounts: $0 to $999,999,999
-- Return counts: Positive integers only
-- Growth rates: -99% to +999%
-
-**What specific calculation logic would you like me to analyze or verify?**`;
+          const calculationContext = "🧮 AI Calculation Expert Activated! Key formulas: Tax Prep Income = Avg Net Fee × Returns, Net Income = Gross Fees - Discounts - Expenses, Net Margin = (Net Income / Tax Prep Income) × 100. Regional differences: US (no TaxRush), Canada (includes TaxRush). Watch for division by zero, percentage validation (0-100%), and dual-entry sync. What calculation logic would you like me to analyze?";
 
           await github.rest.issues.createComment({
             owner: context.repo.owner,
@@ -251,69 +146,7 @@ costPerReturn = totalExpenses / taxPrepReturns
       uses: actions/github-script@v7
       with:
         script: |
-          const mobileContext = `## 📱 AI Mobile Expert Activated!
-
-@codex - Here's the mobile-specific context for the Liberty Tax P&L webapp:
-
-### 🎯 Critical Mobile Requirements
-- **Touch Targets:** Minimum 44px (Apple guidelines)
-- **No Horizontal Scroll:** Content must fit viewport width
-- **Keyboard Behavior:** Must not obscure input fields
-- **Orientation:** Support both portrait and landscape
-
-### 📐 Target Devices & Viewports
-\\\`\\\`\\\`javascript
-const mobileViewports = [
-  { name: 'iPhone SE', width: 375, height: 667 },      // Smallest target
-  { name: 'iPhone 12 Pro', width: 390, height: 844 },  // Standard mobile
-  { name: 'Galaxy S21', width: 360, height: 800 },     // Android standard
-  { name: 'iPad', width: 768, height: 1024 }           // Tablet
-];
-\\\`\\\`\\\`
-
-### 🧪 Mobile Testing Checklist
-- [ ] **Wizard Navigation:** All buttons tappable on mobile
-- [ ] **Dual-Entry Fields:** Easy to switch between % and $ on touch
-- [ ] **Debug Panel:** Doesn't break mobile layout when opened
-- [ ] **Dropdowns:** Don't extend off-screen
-- [ ] **Keyboard:** Numeric keypad for number fields
-- [ ] **Scrolling:** Vertical only, no horizontal scroll
-
-### 🎨 Mobile-Specific CSS Considerations
-\\\`\\\`\\\`css
-/* Touch targets */
-button, input, select {
-  min-height: 44px;
-  min-width: 44px;
-}
-
-/* Prevent zoom on input focus */
-input[type="number"] {
-  font-size: 16px; /* Prevents zoom on iOS */
-}
-
-/* Mobile-first responsive design */
-@media (max-width: 768px) {
-  /* Stack elements vertically */
-  /* Increase spacing for touch */
-  /* Hide non-essential elements */
-}
-\\\`\\\`\\\`
-
-### 📱 Mobile Performance Targets
-- **Load Time:** < 5 seconds on 3G
-- **Bundle Size:** < 250KB for mobile
-- **Memory Usage:** < 50MB on mobile devices
-- **Touch Response:** < 300ms
-
-### 🔍 Common Mobile Issues
-- Buttons too small to tap
-- Horizontal scrolling
-- Keyboard obscuring inputs
-- Layout breaking on orientation change
-- Touch gestures interfering with app functionality
-
-**What specific mobile aspects would you like me to analyze for this change?**`;
+          const mobileContext = "📱 AI Mobile Expert Activated! Key mobile requirements: 44px minimum touch targets, no horizontal scroll, proper keyboard behavior. Test devices: iPhone SE (375x667), iPhone 12 Pro (390x844), Galaxy S21 (360x800), iPad (768x1024). Focus on wizard navigation, dual-entry fields, debug panel layout. Performance targets: <5s load time, <250KB bundle, <300ms touch response. What mobile aspects should I analyze?";
 
           await github.rest.issues.createComment({
             owner: context.repo.owner,

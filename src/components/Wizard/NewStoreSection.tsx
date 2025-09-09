@@ -24,6 +24,45 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
         </div>
       </div>
 
+      {/* TaxRush Toggle Question (Canada only) */}
+      {region === 'CA' && (
+        <div style={{ marginBottom: '1rem', padding: '0.75rem', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+          <div style={{ marginBottom: '0.5rem' }}>
+            <label style={{ fontWeight: 600, color: '#1e40af' }}>TaxRush Returns</label>
+          </div>
+          <div style={{ marginBottom: '0.5rem', fontSize: '0.9rem', color: '#475569' }}>
+            Will your office handle TaxRush returns? (TaxRush is Liberty Tax's same-day refund service)
+          </div>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+              <input
+                type="radio"
+                name="handlesTaxRush"
+                checked={answers.handlesTaxRush === true}
+                onChange={() => updateAnswers({ handlesTaxRush: true })}
+                style={{ marginRight: '0.25rem' }}
+              />
+              <span style={{ fontWeight: 500 }}>Yes, we will handle TaxRush returns</span>
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+              <input
+                type="radio"
+                name="handlesTaxRush"
+                checked={answers.handlesTaxRush === false}
+                onChange={() => updateAnswers({ 
+                  handlesTaxRush: false,
+                  // Clear TaxRush-related fields when disabled
+                  taxRushReturns: undefined,
+                  taxRushReturnsPct: undefined
+                })}
+                style={{ marginRight: '0.25rem' }}
+              />
+              <span style={{ fontWeight: 500 }}>No, we won't handle TaxRush</span>
+            </label>
+          </div>
+        </div>
+      )}
+
       {/* Target Performance Goals Box */}
       <div style={{
         marginBottom: '1rem',
@@ -47,10 +86,11 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
           {/* Average Net Fee - Manual entry */}
           <div style={{ marginBottom: '0.75rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '120px', fontWeight: 500 }}>Average Net Fee</label>
+              <label htmlFor="avg-net-fee" style={{ minWidth: '120px', fontWeight: 500 }}>Average Net Fee</label>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                 <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
                 <input
+                  id="avg-net-fee"
                   type="text"
                   placeholder="e.g., 130"
                   value={formatCurrency(answers.avgNetFee)}
@@ -76,10 +116,11 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
           {/* Tax Prep Returns - Manual entry */}
           <div style={{ marginBottom: '0.75rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '120px', fontWeight: 500 }}>Tax Prep Returns</label>
+              <label htmlFor="tax-prep-returns" style={{ minWidth: '120px', fontWeight: 500 }}>Tax Prep Returns</label>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                 <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
                 <input
+                  id="tax-prep-returns"
                   type="number"
                   placeholder="e.g., 1,680"
                   value={answers.taxPrepReturns || ''}
@@ -101,17 +142,18 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
             </div>
           </div>
 
-          {/* TaxRush Returns (Canada only) */}
-          {region === 'CA' && (
+          {/* TaxRush Returns (Canada only - conditional) */}
+          {region === 'CA' && answers.handlesTaxRush && (
             <div style={{ marginBottom: '0.75rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-                <label style={{ minWidth: '120px', fontWeight: 500 }}>TaxRush Returns</label>
+                <label htmlFor="taxrush-returns" style={{ minWidth: '120px', fontWeight: 500 }}>TaxRush Returns</label>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                   <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
                   <input
+                    id="taxrush-returns"
                     type="number"
                     placeholder="0"
-                    value={answers.taxRushReturns || ''}
+                    value={answers.taxRushReturns || (answers.taxPrepReturns ? Math.round(answers.taxPrepReturns * 0.15) : '')}
                     onChange={e => updateAnswers({ 
                       taxRushReturns: parseFloat(e.target.value) || undefined 
                     })}
@@ -126,7 +168,69 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
                 </div>
               </div>
               <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-                Your target TaxRush returns (Canada only)
+                Your target TaxRush returns for this year (typically ~15% of total returns)
+              </div>
+            </div>
+          )}
+
+          {/* TaxRush Gross Fees (Canada only - conditional) */}
+          {region === 'CA' && answers.handlesTaxRush && (
+            <div style={{ marginBottom: '0.75rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+                <label htmlFor="taxrush-gross-fees" style={{ minWidth: '120px', fontWeight: 500 }}>TaxRush Gross Fees</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+                  <input
+                    id="taxrush-gross-fees"
+                    type="number"
+                    placeholder="0"
+                    value={answers.taxRushGrossFees || ''}
+                    onChange={e => updateAnswers({ 
+                      taxRushGrossFees: parseFloat(e.target.value) || undefined 
+                    })}
+                    style={{ 
+                      width: '140px', 
+                      textAlign: 'right', 
+                      border: '1px solid #d1d5db', 
+                      borderRadius: '4px', 
+                      padding: '0.5rem' 
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
+                Your target gross fees from TaxRush returns (separate from tax prep fees)
+              </div>
+            </div>
+          )}
+
+          {/* TaxRush Average Net Fee (Canada only - conditional) */}
+          {region === 'CA' && answers.handlesTaxRush && (
+            <div style={{ marginBottom: '0.75rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+                <label htmlFor="taxrush-avg-net-fee" style={{ minWidth: '120px', fontWeight: 500 }}>TaxRush Avg Net Fee</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+                  <input
+                    id="taxrush-avg-net-fee"
+                    type="number"
+                    placeholder="0"
+                    value={answers.taxRushAvgNetFee || ''}
+                    onChange={e => updateAnswers({ 
+                      taxRushAvgNetFee: parseFloat(e.target.value) || undefined 
+                    })}
+                    style={{ 
+                      width: '140px', 
+                      textAlign: 'right', 
+                      border: '1px solid #d1d5db', 
+                      borderRadius: '4px', 
+                      padding: '0.5rem' 
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
+                Your target average net fee per TaxRush return (separate from tax prep average)
               </div>
             </div>
           )}
@@ -134,10 +238,11 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
           {/* Gross Tax Prep Fees - Auto-calculated */}
           <div style={{ marginBottom: '0.75rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '120px', fontWeight: 500 }}>Gross Tax Prep Fees</label>
+              <label htmlFor="gross-tax-prep-fees" style={{ minWidth: '120px', fontWeight: 500 }}>Gross Tax Prep Fees</label>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                 <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
                 <input
+                  id="gross-tax-prep-fees"
                   type="text"
                   value={(() => {
                     if (answers.avgNetFee && answers.taxPrepReturns) {
@@ -166,10 +271,11 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
           {/* Total Expenses - Auto-calculated with override */}
           <div style={{ marginBottom: '0.75rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '120px', fontWeight: 500 }}>Total Expenses</label>
+              <label htmlFor="total-expenses" style={{ minWidth: '120px', fontWeight: 500 }}>Total Expenses</label>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                 <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
                 <input
+                  id="total-expenses"
                   type="text"
                   value={(() => {
                     if (answers.avgNetFee && answers.taxPrepReturns) {

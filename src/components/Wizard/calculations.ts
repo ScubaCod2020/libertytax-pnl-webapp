@@ -133,10 +133,13 @@ export const calculateExpectedRevenue = (answers: WizardAnswers): number | undef
   const lastYearOtherIncome = answers.lastYearOtherIncome || 0
   const projectedOtherIncome = lastYearOtherIncome * (1 + answers.expectedGrowthPct / 100)
   
-  const lastYearTaxRushIncome = answers.region === 'CA' && answers.avgNetFee && answers.lastYearTaxRushReturns 
-    ? answers.avgNetFee * answers.lastYearTaxRushReturns 
-    : 0
-  const projectedTaxRushIncome = lastYearTaxRushIncome * (1 + answers.expectedGrowthPct / 100)
+  // TaxRush income disabled until TaxRush fields are properly configured
+  const projectedTaxRushIncome = 0
+  // TODO: Re-enable when TaxRush gross fees and average net fee are properly set up
+  // const lastYearTaxRushIncome = answers.region === 'CA' && answers.handlesTaxRush && answers.taxRushAvgNetFee && answers.lastYearTaxRushReturns 
+  //   ? answers.taxRushAvgNetFee * answers.lastYearTaxRushReturns 
+  //   : 0
+  // const projectedTaxRushIncome = lastYearTaxRushIncome * (1 + answers.expectedGrowthPct / 100)
   
   // Calculate total revenue (should match Page 2)
   return projectedTaxPrepIncome + projectedOtherIncome + projectedTaxRushIncome
@@ -181,5 +184,5 @@ export const parseCurrencyInput = (value: string): number | undefined => {
 
 // Format currency for display
 export const formatCurrency = (value: number | undefined): string => {
-  return value ? value.toLocaleString() : ''
+  return value !== undefined ? value.toLocaleString() : ''
 }

@@ -41,6 +41,10 @@ export type SessionState = {
   miscPct: number
   
   thresholds: Thresholds
+  
+  // Wizard state
+  wizardCompleted?: boolean
+  showWizard?: boolean
 }
 
 type PersistEnvelopeV1 = {
@@ -49,6 +53,7 @@ type PersistEnvelopeV1 = {
   baselines?: {
     questionnaire?: SessionState
   }
+  wizardAnswers?: any // Store complete wizard answers for review mode
   meta?: {
     lastScenario?: SessionState['scenario']
     savedAtISO?: string
@@ -221,6 +226,67 @@ export function usePersistence() {
     }, [])
   }
 
+  // Wizard state management
+  const markWizardCompleted = () => {
+    dbg('markWizardCompleted: wizard completed - updating persistence')
+    saveEnvelope(prev => ({
+      ...prev,
+      version: 1,
+      last: {
+        ...prev.last,
+        wizardCompleted: true,
+        showWizard: false
+      } as SessionState,
+      meta: { 
+        ...prev.meta, 
+        savedAtISO: new Date().toISOString() 
+      }
+    }))
+  }
+
+  const saveWizardAnswers = (answers: any) => {
+    dbg('saveWizardAnswers: saving wizard answers for review mode', answers)
+    saveEnvelope(prev => ({
+      ...prev,
+      version: 1,
+      wizardAnswers: answers,
+      meta: { 
+        ...prev.meta, 
+        savedAtISO: new Date().toISOString() 
+      }
+    }))
+  }
+
+  const loadWizardAnswers = (): any => {
+    const envelope = loadEnvelope()
+    const answers = envelope?.wizardAnswers
+    dbg('loadWizardAnswers:', answers ? 'found saved answers' : 'no saved answers')
+    return answers || null
+  }
+
+  const shouldShowWizardOnStartup = (): boolean => {
+    const envelope = loadEnvelope()
+    const hasCompletedWizard = envelope?.last?.wizardCompleted === true
+    const hasBasicData = !!(envelope?.last?.avgNetFee && envelope?.last?.taxPrepReturns)
+    
+    dbg('shouldShowWizardOnStartup:', { 
+      hasCompletedWizard, 
+      hasBasicData, 
+      decision: !hasCompletedWizard || !hasBasicData 
+    })
+    
+    // Show wizard if never completed OR if missing basic data (corrupted state)
+    return !hasCompletedWizard || !hasBasicData
+  }
+
+  const getWizardState = (): { showWizard: boolean; wizardCompleted: boolean } => {
+    const envelope = loadEnvelope()
+    return {
+      showWizard: shouldShowWizardOnStartup(),
+      wizardCompleted: envelope?.last?.wizardCompleted === true
+    }
+  }
+
   return {
     // State refs
     hydratingRef,
@@ -238,6 +304,13 @@ export function usePersistence() {
     // Setup functions
     setupAutosave,
     setupFlushHandlers,
+    
+    // Wizard state management
+    markWizardCompleted,
+    saveWizardAnswers,
+    loadWizardAnswers,
+    shouldShowWizardOnStartup,
+    getWizardState,
     
     // Constants
     STORAGE_KEY,

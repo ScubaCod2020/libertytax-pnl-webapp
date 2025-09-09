@@ -9,11 +9,14 @@ import InputsPanel from './components/InputsPanel'
 import Dashboard from './components/Dashboard/Dashboard'
 import DebugToggle from './components/DebugSystem/DebugToggle'
 import DebugSidebar from './components/DebugSystem/DebugSidebar'
+import DebugErrorBoundary from './components/DebugSystem/DebugErrorBoundary'
 import Footer from './components/Footer'
 import { useAppState } from './hooks/useAppState'
 import { useCalculations } from './hooks/useCalculations'
 import { usePersistence } from './hooks/usePersistence'
 import { usePresets } from './hooks/usePresets'
+import { useBranding } from './hooks/useBranding'
+import BrandWatermark from './components/BrandWatermark'
 
 export default function App() {
   // Custom hooks for clean separation of concerns
@@ -21,6 +24,16 @@ export default function App() {
   const calculations = useCalculations(appState)
   const persistence = usePersistence()
   const presets = usePresets(appState)
+  const branding = useBranding(appState.region) // Apply regional branding
+  
+  // Initialize wizard state from persistence on app startup
+  React.useEffect(() => {
+    const wizardState = persistence.getWizardState()
+    if (wizardState.showWizard && !appState.showWizard) {
+      console.log('🧙‍♂️ Restoring incomplete wizard session')
+      appState.setShowWizard(true)
+    }
+  }, [persistence, appState])
   
   // Debug system state
   const [debugOpen, setDebugOpen] = React.useState(false)
@@ -32,6 +45,8 @@ export default function App() {
   const handleWizardComplete = (answers: WizardAnswers) => {
     appState.applyWizardAnswers(answers)
     persistence.saveBaseline(appState)
+    persistence.saveWizardAnswers(answers) // Save wizard answers for review mode
+    persistence.markWizardCompleted() // Mark wizard as completed in storage
     appState.setShowWizard(false)
     persistence.dbg('wizard: completed with answers', answers)
   }
@@ -41,12 +56,13 @@ export default function App() {
     persistence.dbg('wizard: cancelled')
   }
 
-  // Reset handler - now forces wizard remount
+  // Reset handler - now forces wizard remount and shows wizard
   const handleReset = () => {
     persistence.dbg('ui: Reset session - forcing wizard remount')
     appState.resetToDefaults()
     localStorage.removeItem(persistence.STORAGE_KEY)
     setResetCounter(prev => prev + 1) // Force wizard remount by changing key
+    appState.setShowWizard(true) // Always show wizard after reset
   }
 
   // Debug panel handlers
@@ -91,25 +107,42 @@ const savedAt = (() => {
   // Main render - clean and focused
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
+      {/* Regional Brand Watermark */}
+      <BrandWatermark region={appState.region} />
+      
       <div style={{ 
         flex: 1, 
         transition: 'margin-right 0.3s ease',
-        marginRight: debugOpen ? '350px' : '0'
+        marginRight: debugOpen ? '350px' : '0',
+        position: 'relative',
+        zIndex: 1 // Ensure content is above watermark
       }}>
-        <Header
-          region={appState.region}
-          setRegion={appState.setRegion}
-          onReset={handleReset}
+        <Header 
+          region={appState.region} 
+          setRegion={(newRegion) => {
+            appState.setRegion(newRegion)
+            // Save region change immediately to persistence
+            persistence.saveBaseline({ ...appState, region: newRegion })
+          }}
+          onReset={handleReset} 
           onShowWizard={() => appState.setShowWizard(true)}
+          onShowDashboard={() => appState.setShowWizard(false)}
+          wizardCompleted={persistence.getWizardState().wizardCompleted}
+          showWizard={appState.showWizard}
         />
 
         {appState.showWizard ? (
           <WizardShell
             key={resetCounter} // Force remount on reset to clear wizard state
             region={appState.region}
-            setRegion={appState.setRegion}
+            setRegion={(newRegion) => {
+              appState.setRegion(newRegion)
+              // Save region change immediately to persistence
+              persistence.saveBaseline({ ...appState, region: newRegion })
+            }}
             onComplete={handleWizardComplete}
             onCancel={handleWizardCancel}
+            persistence={persistence} // Pass persistence for loading saved answers
           />
         ) : (
           <div className="container">
@@ -174,27 +207,29 @@ const savedAt = (() => {
         onToggle={() => setDebugOpen(!debugOpen)}
       />
 
-      <DebugSidebar
-        isOpen={debugOpen}
-        onClose={() => setDebugOpen(false)}
-        storageKey={persistence.STORAGE_KEY}
-        origin={persistence.ORIGIN}
-        appVersion={persistence.APP_VERSION}
-        isReady={persistence.readyRef.current}
-        isHydrating={persistence.hydratingRef.current}
-        savedAt={savedAt}
-        onSaveNow={handleSaveNow}
-        onDumpStorage={handleDumpStorage}
-        onCopyJSON={handleCopyJSON}
-        onClearStorage={handleClearStorage}
-        onShowWizard={() => appState.setShowWizard(true)}
-        calculations={calculations}
-        appState={appState}
-        thresholds={appState.thresholds}
-        onUpdateThresholds={appState.setThr}
-        onApplyPreset={appState.applyPreset}
-        onResetDefaults={appState.resetToDefaults}
-      />
+      <DebugErrorBoundary onClose={() => setDebugOpen(false)}>
+        <DebugSidebar
+          isOpen={debugOpen}
+          onClose={() => setDebugOpen(false)}
+          storageKey={persistence.STORAGE_KEY}
+          origin={persistence.ORIGIN}
+          appVersion={persistence.APP_VERSION}
+          isReady={persistence.readyRef.current}
+          isHydrating={persistence.hydratingRef.current}
+          savedAt={savedAt}
+          onSaveNow={handleSaveNow}
+          onDumpStorage={handleDumpStorage}
+          onCopyJSON={handleCopyJSON}
+          onClearStorage={handleClearStorage}
+          onShowWizard={() => appState.setShowWizard(true)}
+          calculations={calculations}
+          appState={appState}
+          thresholds={appState.thresholds}
+          onUpdateThresholds={appState.setThr}
+          onApplyPreset={appState.applyPreset}
+          onResetDefaults={appState.resetToDefaults}
+        />
+      </DebugErrorBoundary>
     </div>
   )
 }

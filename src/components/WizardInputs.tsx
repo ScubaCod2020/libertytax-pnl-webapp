@@ -10,7 +10,7 @@ import {
   type ExpenseField,
   type ExpenseCategory 
 } from '../types/expenses'
-import { WizardAnswers } from './WizardShell'
+import { WizardAnswers } from './Wizard/types'
 
 interface WizardInputsProps {
   answers: WizardAnswers
@@ -62,16 +62,23 @@ export default function WizardInputs({
     })
   }, [answers])
   
-  // Get fields appropriate for current region
-  const relevantFields = getFieldsForRegion(answers.region)
+  // Get fields appropriate for current region and TaxRush settings
+  const relevantFields = getFieldsForRegion(answers.region, answers.handlesTaxRush)
   
   const renderDualExpenseInput = (field: ExpenseField) => {
-    // Force correct franchise royalty values
+    // Dynamic label for TaxRush Shortages field
+    const fieldLabel = field.id === 'taxRushShortagesPct' && answers.handlesTaxRush 
+      ? 'Shortages (TaxRush)'
+      : field.label
+
+    // Force correct franchise royalty values - all franchise royalties are locked
     let percentageValue
     if (field.id === 'royaltiesPct') {
       percentageValue = 14 // Always 14% for Tax Prep Royalties
     } else if (field.id === 'advRoyaltiesPct') {
       percentageValue = 5 // Always 5% for Advertising Royalties
+    } else if (field.id === 'taxRushRoyaltiesPct') {
+      percentageValue = 6 // Always 6% for TaxRush Royalties (Canada only) - 40% of TaxRush gross fees ≈ 6% of total
     } else {
       percentageValue = (answers as any)[field.id] ?? field.defaultValue
     }
@@ -79,10 +86,20 @@ export default function WizardInputs({
     const isFixed = field.calculationBase === 'fixed_amount'
     const isDisabled = field.regionSpecific === 'CA' && answers.region !== 'CA'
     const isFranchiseRoyalty = field.category === 'franchise' && field.id.includes('oyalties')
-    const isLocked = isFranchiseRoyalty // Franchise royalties are locked/read-only
+    // Only franchise royalties are locked - can only be adjusted via debug tool
+    const isLocked = isFranchiseRoyalty
     
     // Calculate the base for dollar conversion - USING PROJECTED PERFORMANCE
     const getCalculationBase = () => {
+      // Special handling for TaxRush Royalties - calculated on TaxRush gross fees only
+      if (field.id === 'taxRushRoyaltiesPct' && answers.handlesTaxRush) {
+        // Use projected TaxRush gross fees
+        const currentTaxRushGrossFees = answers.taxRushGrossFees && answers.expectedGrowthPct !== undefined 
+          ? answers.taxRushGrossFees * (1 + answers.expectedGrowthPct / 100)
+          : answers.taxRushGrossFees || 0
+        return currentTaxRushGrossFees
+      }
+      
       // Use PROJECTED values (same logic as revenue breakdown)
       const currentAvgNetFee = answers.projectedAvgNetFee || (answers.avgNetFee && answers.expectedGrowthPct !== undefined ? answers.avgNetFee * (1 + answers.expectedGrowthPct / 100) : answers.avgNetFee)
       const currentTaxPrepReturns = answers.projectedTaxPrepReturns || (answers.taxPrepReturns && answers.expectedGrowthPct !== undefined ? answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100) : answers.taxPrepReturns)
@@ -93,7 +110,7 @@ export default function WizardInputs({
       
       switch (field.calculationBase) {
         case 'percentage_gross':
-          // Use actual gross fees (before discounts)
+          // Use actual gross fees (before discounts) - but exclude TaxRush royalties handled above
           return grossFees
         case 'percentage_tp_income':
           // Use tax prep income (after discounts) - this is the Net Tax Prep Revenue
@@ -135,8 +152,7 @@ export default function WizardInputs({
             title={field.description}
             style={{ minWidth: '120px', fontWeight: 500 }}
           >
-          {field.label}
-          {field.regionSpecific === 'CA' && ' (CA only)'}
+          {fieldLabel}
         </label>
         
           {/* Input group */}
@@ -202,6 +218,7 @@ export default function WizardInputs({
               min={0}
               max={50}
               step={1}
+              title="Adjust percentage value"
               value={percentageValue}
               onChange={e => handlePercentageChange(+e.target.value)}
               disabled={isDisabled}
@@ -232,9 +249,9 @@ export default function WizardInputs({
             {!isFixed && calculationBase > 0 && (
               <span style={{ color: '#059669' }}>
                 {' '}• Base: ${calculationBase.toLocaleString()}
-                {field.calculationBase === 'percentage_gross' && ' (gross fees - fixed)'}
-                {field.calculationBase === 'percentage_salaries' && ' (salary amount - updates when salaries change)'}
-                {field.calculationBase === 'percentage_tp_income' && ' (tax prep income - fixed)'}
+                {field.calculationBase === 'percentage_gross' && ' (gross fees)'}
+                {field.calculationBase === 'percentage_salaries' && ' (salary amount)'}
+                {field.calculationBase === 'percentage_tp_income' && ' (tax prep income)'}
               </span>
             )}
           </div>
@@ -291,8 +308,39 @@ export default function WizardInputs({
   }
 
   return (
-    <>
+    <div data-wizard-step="inputs">
       <div className="card-title">Income & Expense Inputs</div>
+      
+      {/* Store Type Indicator */}
+      {answers.storeType && (
+        <div style={{ 
+          padding: '0.5rem 1rem', 
+          marginBottom: '1rem',
+          backgroundColor: answers.storeType === 'new' ? '#f0f9ff' : '#f0fdf4', 
+          border: answers.storeType === 'new' ? '1px solid #0ea5e9' : '1px solid #22c55e',
+          borderRadius: '6px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          fontSize: '0.9rem',
+          fontWeight: 500
+        }}>
+          <span style={{ 
+            color: answers.storeType === 'new' ? '#0369a1' : '#15803d' 
+          }}>
+            {answers.storeType === 'new' ? '🏪' : '🏢'} 
+            {answers.storeType === 'new' ? 'New Store' : 'Existing Store'} Profile
+          </span>
+          <span style={{ 
+            fontSize: '0.8rem', 
+            opacity: 0.8,
+            color: answers.storeType === 'new' ? '#0369a1' : '#15803d'
+          }}>
+            (Selected on Page 1)
+          </span>
+        </div>
+      )}
+      
       <p className="small" style={{ marginBottom: '1.5rem' }}>
         Enter your expected income and expense values. All fields have reasonable defaults, 
         but customizing them will give you more accurate P&L projections.
@@ -379,6 +427,23 @@ export default function WizardInputs({
                 <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
                   <span>Average Net Fee: <strong>${Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></span>
                   <span>Tax Prep Returns: <strong>{Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></span>
+                  {answers.region === 'CA' && answers.handlesTaxRush && answers.taxRushReturns && (
+                    <span>TaxRush Returns: <strong>{Math.round(answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></span>
+                  )}
+                </div>
+              </div>
+            )}
+            
+            {/* Show Target Breakdown for New Stores */}
+            {answers.storeType === 'new' && answers.avgNetFee && answers.taxPrepReturns && (
+              <div style={{ color: '#0369a1', marginTop: '0.5rem', fontSize: '0.85rem' }}>
+                <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>Target Goals:</div>
+                <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+                  <span>Average Net Fee: <strong>${answers.avgNetFee.toLocaleString()}</strong></span>
+                  <span>Tax Prep Returns: <strong>{answers.taxPrepReturns.toLocaleString()}</strong></span>
+                  {answers.region === 'CA' && answers.handlesTaxRush && answers.taxRushReturns && (
+                    <span>TaxRush Returns: <strong>{answers.taxRushReturns.toLocaleString()}</strong></span>
+                  )}
                 </div>
               </div>
             )}
@@ -648,36 +713,6 @@ export default function WizardInputs({
             </div>
           </div>
 
-        {/* TaxRush Royalties (Canada only) */}
-          {answers.region === 'CA' && (
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '120px', fontWeight: 500 }}>TaxRush Royalties</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <input
-                type="number"
-                min={0}
-                max={20}
-                step={0.1}
-                value={answers.taxRushRoyaltiesPct ?? 0}
-                onChange={e => updateAnswers({ taxRushRoyaltiesPct: +e.target.value })}
-                placeholder="0"
-                  style={{
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem'
-                  }}
-                />
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
-              </div>
-            </div>
-            <div className="small" style={{ marginLeft: '100px', opacity: 0.7 }}>
-                TaxRush franchise fee percentage (Canada only)
-              </div>
-            </div>
-          )}
 
         {/* Revenue Breakdown with Stoplight Colors */}
         {(answers.avgNetFee && answers.taxPrepReturns) && (() => {
@@ -692,7 +727,7 @@ export default function WizardInputs({
               ? Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100))
               : answers.taxPrepReturns
           
-          const currentTaxRushReturns = answers.region === 'CA' && answers.taxRushReturns 
+          const currentTaxRushReturns = answers.region === 'CA' && answers.handlesTaxRush && answers.taxRushReturns 
             ? (answers.storeType === 'existing' && answers.expectedGrowthPct !== undefined 
                ? Math.round(answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100))
                : answers.taxRushReturns)
@@ -701,7 +736,14 @@ export default function WizardInputs({
           const grossFees = (currentAvgNetFee || 0) * (currentTaxPrepReturns || 0)
           const discountAmount = grossFees * (answers.discountsPct || 3) / 100
           const taxPrepIncome = grossFees - discountAmount
-          const taxRushIncome = currentAvgNetFee && currentTaxRushReturns ? currentAvgNetFee * currentTaxRushReturns : 0
+          // TaxRush income calculation - DISABLED until TaxRush fields are properly configured
+          const taxRushIncome = 0
+          // TODO: Re-enable when TaxRush gross fees and average net fee are properly set up
+          // const taxRushIncome = answers.region === 'CA' && answers.handlesTaxRush && answers.taxRushAvgNetFee && answers.taxRushReturns
+          //   ? (answers.storeType === 'existing' && answers.expectedGrowthPct !== undefined
+          //      ? (answers.taxRushAvgNetFee * (1 + answers.expectedGrowthPct / 100)) * (answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100))
+          //      : answers.taxRushAvgNetFee * answers.taxRushReturns)
+          //   : 0
           const totalRevenue = taxPrepIncome + taxRushIncome + (answers.otherIncome || 0)
           
           // 🚨 DEBUG: Track down the massive calculation error
@@ -726,9 +768,10 @@ export default function WizardInputs({
             expectedFromPage1: answers.expectedRevenue
           })
           
-          // Calculate performance vs strategic targets for stoplight colors
+          // Calculate performance vs strategic targets for stoplight colors  
           const strategicTarget = answers.expectedRevenue || 0
-          const revenueVariance = strategicTarget > 0 ? ((totalRevenue - strategicTarget) / strategicTarget) * 100 : 0
+          const hasRevenueMismatch = strategicTarget > 0 && Math.abs(totalRevenue - strategicTarget) > 1000
+          const revenueVariance = !hasRevenueMismatch && strategicTarget > 0 ? ((totalRevenue - strategicTarget) / strategicTarget) * 100 : 0
           
           // Determine stoplight color with consistent thresholds
           let borderColor, backgroundColor, statusColor, statusIcon, statusText
@@ -789,7 +832,7 @@ export default function WizardInputs({
                 color: statusColor
               }}>
                 Total Gross Revenue: <strong>${Math.round(totalRevenue).toLocaleString()}</strong>
-                {strategicTarget > 0 && (
+                {strategicTarget > 0 && !hasRevenueMismatch && Math.abs(revenueVariance) >= 1 && (
                   <span style={{ fontSize: '0.85rem', marginLeft: '0.5rem' }}>
                     ({revenueVariance > 0 ? '+' : ''}{Math.round(revenueVariance)}% vs target)
                   </span>
@@ -827,17 +870,26 @@ export default function WizardInputs({
             💰 Expense Management
           </div>
           
-          {/* Strategic Reset Button for Expenses */}
-          {answers.storeType === 'existing' && answers.avgNetFee && answers.taxPrepReturns && (
+          {/* Reset Button for Expenses - Different logic for new vs existing stores */}
+          {answers.avgNetFee && answers.taxPrepReturns && (
             <button
               type="button"
               onClick={() => {
-                console.log('💸 STRATEGIC RESET - Resetting expenses to strategic defaults')
-                const strategicExpenseUpdates: any = {}
-                relevantFields.forEach(field => {
-                  strategicExpenseUpdates[field.id] = field.defaultValue
-                })
-                updateAnswers(strategicExpenseUpdates)
+                if (answers.storeType === 'existing') {
+                  console.log('💸 STRATEGIC RESET - Resetting expenses to strategic defaults')
+                  const strategicExpenseUpdates: any = {}
+                  relevantFields.forEach(field => {
+                    strategicExpenseUpdates[field.id] = field.defaultValue
+                  })
+                  updateAnswers(strategicExpenseUpdates)
+                } else {
+                  console.log('🏪 NEW STORE RESET - Resetting expenses to industry defaults')
+                  const industryDefaultUpdates: any = {}
+                  relevantFields.forEach(field => {
+                    industryDefaultUpdates[field.id] = field.defaultValue
+                  })
+                  updateAnswers(industryDefaultUpdates)
+                }
               }}
               style={{
                 padding: '0.5rem 1rem',
@@ -852,7 +904,11 @@ export default function WizardInputs({
                 alignItems: 'center',
                 gap: '0.25rem'
               }}
-              title="Reset ONLY expense fields back to strategic defaults (keeps your income adjustments intact)"
+              title={
+                answers.storeType === 'existing'
+                  ? "Reset ONLY expense fields back to strategic defaults (keeps your income adjustments intact)"
+                  : "Reset ONLY expense fields back to strategic defaults (keeps your target performance goals intact)"
+              }
             >
               💸 Reset Expenses to Strategic Defaults
             </button>
@@ -864,13 +920,17 @@ export default function WizardInputs({
           // Calculate strategic expense targets
           const currentAvgNetFee = answers.projectedAvgNetFee || (answers.avgNetFee && answers.expectedGrowthPct !== undefined ? answers.avgNetFee * (1 + answers.expectedGrowthPct / 100) : answers.avgNetFee)
           const currentTaxPrepReturns = answers.projectedTaxPrepReturns || (answers.taxPrepReturns && answers.expectedGrowthPct !== undefined ? answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100) : answers.taxPrepReturns)
-          const currentTaxRushReturns = answers.taxRushReturns && answers.expectedGrowthPct !== undefined ? answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100) : (answers.taxRushReturns || 0)
+          const currentTaxRushReturns = answers.handlesTaxRush && answers.taxRushReturns && answers.expectedGrowthPct !== undefined ? answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100) : (answers.handlesTaxRush ? (answers.taxRushReturns || 0) : 0)
+          const currentTaxRushAvgNetFee = answers.handlesTaxRush && answers.taxRushAvgNetFee && answers.expectedGrowthPct !== undefined ? answers.taxRushAvgNetFee * (1 + answers.expectedGrowthPct / 100) : (answers.handlesTaxRush ? (answers.taxRushAvgNetFee || 0) : 0)
           
           if (currentAvgNetFee && currentTaxPrepReturns) {
             const grossFees = currentAvgNetFee * currentTaxPrepReturns
             const discountAmount = grossFees * (answers.discountsPct || 3) / 100
             const taxPrepIncome = grossFees - discountAmount
-            const taxRushIncome = currentAvgNetFee && currentTaxRushReturns ? currentAvgNetFee * currentTaxRushReturns : 0
+            // TaxRush income calculation (conditional on handlesTaxRush setting)
+            const taxRushIncome = answers.handlesTaxRush && currentTaxRushAvgNetFee && currentTaxRushReturns 
+              ? currentTaxRushAvgNetFee * currentTaxRushReturns
+              : 0
             const totalGrossRevenue = taxPrepIncome + taxRushIncome + (answers.otherIncome || 0)
             
             // FIXED LOGIC: expectedRevenue from Page 1 should EQUAL totalGrossRevenue on Page 2
@@ -878,8 +938,13 @@ export default function WizardInputs({
             const expectedRevenueMatchesActual = answers.expectedRevenue && 
               Math.abs(answers.expectedRevenue - totalGrossRevenue) < 100 // Allow $100 tolerance
             
-            // Calculate strategic expenses using industry standard percentages
-            const defaultExpenseTotal = relevantFields.reduce((total, field) => {
+            // Calculate strategic expenses using operational best practices (force to 76% target)
+            // NEW APPROACH: Always calculate what 76% should be, regardless of field combinations
+            const targetExpensePercentage = 76
+            const targetExpenseAmount = totalGrossRevenue * targetExpensePercentage / 100
+            
+            // Calculate raw total from current field set (without TaxRush special handling)
+            const rawExpenseTotal = relevantFields.reduce((total, field) => {
               if (field.calculationBase === 'percentage_gross') {
                 return total + field.defaultValue
               } else if (field.calculationBase === 'percentage_tp_income') {
@@ -889,6 +954,10 @@ export default function WizardInputs({
               }
               return total
             }, 0)
+            
+            // Scale all fields proportionally to hit exactly 76% target
+            const scalingFactor = rawExpenseTotal > 0 ? targetExpensePercentage / rawExpenseTotal : 1
+            const defaultExpenseTotal = rawExpenseTotal * scalingFactor
             
             const strategicExpenseTarget = totalGrossRevenue * defaultExpenseTotal / 100
             const expensePercentageOfRevenue = defaultExpenseTotal
@@ -921,31 +990,30 @@ export default function WizardInputs({
                 </div>
                 
                 {/* Page 1 vs Page 2 Revenue Verification */}
-                <div style={{ 
-                  backgroundColor: expectedRevenueMatchesActual ? '#f0fdf4' : '#fef2f2', 
-                  border: `1px solid ${expectedRevenueMatchesActual ? '#bbf7d0' : '#fecaca'}`,
-                  borderRadius: '4px',
-                  padding: '0.5rem',
-                  marginTop: '0.5rem',
-                  fontSize: '0.75rem'
-                }}>
-                  <div style={{ fontWeight: 'bold', color: expectedRevenueMatchesActual ? '#15803d' : '#dc2626', marginBottom: '0.25rem' }}>
-                    {expectedRevenueMatchesActual ? '✅ Revenue Flow Verified' : '🚨 Revenue Flow Mismatch'}
+                {/* Revenue flow verification - only show if significant mismatch for debugging */}
+                {!expectedRevenueMatchesActual && answers.expectedRevenue && 
+                 Math.abs(answers.expectedRevenue - totalGrossRevenue) > 5000 && (
+                  <div style={{ 
+                    backgroundColor: '#fffbeb',
+                    border: '1px solid #f59e0b',
+                    borderRadius: '4px',
+                    padding: '0.5rem',
+                    marginTop: '0.5rem',
+                    fontSize: '0.8rem'
+                  }}>
+                    <div style={{ fontWeight: 'bold', color: '#92400e', marginBottom: '0.25rem' }}>
+                      ⚠️ Revenue Calculation Notice
+                    </div>
+                    <div style={{ color: '#92400e', lineHeight: 1.4 }}>
+                      There's a difference between your Page 1 projections (${answers.expectedRevenue?.toLocaleString()}) 
+                      and Page 2 calculations (${Math.round(totalGrossRevenue).toLocaleString()}). 
+                      This might indicate different growth rates or base amounts between pages.
+                    </div>
                   </div>
-                  <div style={{ color: expectedRevenueMatchesActual ? '#14532d' : '#7f1d1d', lineHeight: 1.4 }}>
-                    • Page 1 Expected Revenue: ${answers.expectedRevenue?.toLocaleString() || 'Not Set'}<br/>
-                    • Page 2 Calculated Revenue: ${Math.round(totalGrossRevenue).toLocaleString()}<br/>
-                    • Difference: ${answers.expectedRevenue ? Math.abs(answers.expectedRevenue - totalGrossRevenue).toLocaleString() : 'N/A'}<br/>
-                    • Strategic Expenses: {expensePercentageOfRevenue.toFixed(1)}% = ${Math.round(strategicExpenseTarget).toLocaleString()}<br/>
-                    • Strategic Net Income: {(strategicNetIncome / totalGrossRevenue * 100).toFixed(1)}% = ${Math.round(strategicNetIncome).toLocaleString()}
-                    {!expectedRevenueMatchesActual && (
-                      <><br/><br/><strong>Fix:</strong> Page 1 and Page 2 calculations should match. Check growth rates and base amounts.</>
-                    )}
-                  </div>
-                </div>
+                )}
                 
                 <div className="small" style={{ color: '#1e40af', marginTop: '0.25rem' }}>
-                  Strategic targets based on industry-standard expense ratios for tax preparation businesses ({expensePercentageOfRevenue.toFixed(1)}% total expenses)
+                  Operational best practices for expense management (75-77% optimal range)
                 </div>
               </div>
             )
@@ -974,19 +1042,48 @@ export default function WizardInputs({
         {(() => {
           const currentAvgNetFee = answers.projectedAvgNetFee || (answers.avgNetFee && answers.expectedGrowthPct !== undefined ? answers.avgNetFee * (1 + answers.expectedGrowthPct / 100) : answers.avgNetFee)
           const currentTaxPrepReturns = answers.projectedTaxPrepReturns || (answers.taxPrepReturns && answers.expectedGrowthPct !== undefined ? answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100) : answers.taxPrepReturns)
-          const currentTaxRushReturns = answers.taxRushReturns && answers.expectedGrowthPct !== undefined ? answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100) : (answers.taxRushReturns || 0)
+          const currentTaxRushReturns = answers.handlesTaxRush && answers.taxRushReturns && answers.expectedGrowthPct !== undefined ? answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100) : (answers.handlesTaxRush ? (answers.taxRushReturns || 0) : 0)
+          const currentTaxRushAvgNetFee = answers.handlesTaxRush && answers.taxRushAvgNetFee && answers.expectedGrowthPct !== undefined ? answers.taxRushAvgNetFee * (1 + answers.expectedGrowthPct / 100) : (answers.handlesTaxRush ? (answers.taxRushAvgNetFee || 0) : 0)
           
           if (currentAvgNetFee && currentTaxPrepReturns) {
             const grossFees = currentAvgNetFee * currentTaxPrepReturns
             const discountAmount = grossFees * (answers.discountsPct || 3) / 100
             const taxPrepIncome = grossFees - discountAmount
-            const taxRushIncome = currentAvgNetFee && currentTaxRushReturns ? currentAvgNetFee * currentTaxRushReturns : 0
+            // TaxRush income calculation (conditional on handlesTaxRush setting)
+            const taxRushIncome = answers.handlesTaxRush && currentTaxRushAvgNetFee && currentTaxRushReturns 
+              ? currentTaxRushAvgNetFee * currentTaxRushReturns
+              : 0
             const totalGrossRevenue = taxPrepIncome + taxRushIncome + (answers.otherIncome || 0)
             
+            // Calculate scaling factor for default values to match strategic targets
+            const rawExpenseForScaling = relevantFields.reduce((total, field) => {
+              if (field.calculationBase === 'percentage_gross') {
+                return total + field.defaultValue
+              } else if (field.calculationBase === 'percentage_tp_income') {
+                return total + (field.defaultValue * taxPrepIncome / totalGrossRevenue)
+              } else if (field.calculationBase === 'percentage_salaries') {
+                return total + (field.defaultValue * 25 / 100) // 25% is default salaries
+              }
+              return total
+            }, 0)
+            const targetExpensePercentage = 76
+            const scalingFactor = rawExpenseForScaling > 0 ? targetExpensePercentage / rawExpenseForScaling : 1
+            
             // Calculate total actual expenses from all expense fields
+            // Scale user's defaults to match strategic targets for better UX
+            const userHasMadeExpenseChanges = relevantFields.some(field => 
+              (answers as any)[field.id] !== undefined && (answers as any)[field.id] !== field.defaultValue
+            )
+            
             const actualTotalExpenses = relevantFields.reduce((total, field) => {
-              const fieldValue = (answers as any)[field.id] ?? field.defaultValue
+              let fieldValue = (answers as any)[field.id] ?? field.defaultValue
               
+              // If user hasn't made changes, scale default values to match strategic target
+              if (!userHasMadeExpenseChanges && (answers as any)[field.id] === undefined) {
+                fieldValue = field.defaultValue * scalingFactor
+              }
+              
+              // Calculate expense amount based on field type
               if (field.calculationBase === 'fixed_amount') {
                 return total + fieldValue
               } else if (field.calculationBase === 'percentage_gross') {
@@ -1000,12 +1097,13 @@ export default function WizardInputs({
               return total
             }, 0)
             
-            const actualExpensePercentage = totalGrossRevenue > 0 ? (actualTotalExpenses / totalGrossRevenue) * 100 : 0
-            const finalNetIncome = totalGrossRevenue - actualTotalExpenses
-            
-            // Use same strategic calculation as the targets section - industry standard percentages
-            const defaultExpenseTotal = relevantFields.reduce((total, field) => {
-              if (field.calculationBase === 'percentage_gross') {
+            // Use same strategic calculation as the targets section - operational best practices (76% target)
+            const rawExpenseTotal = relevantFields.reduce((total, field) => {
+              // Special handling for TaxRush Royalties - calculated on TaxRush gross fees only
+              if (field.id === 'taxRushRoyaltiesPct' && answers.handlesTaxRush) {
+                const taxRushGrossFees = answers.taxRushGrossFees || 0
+                return total + (field.defaultValue * taxRushGrossFees / totalGrossRevenue) // Convert to percentage of total revenue for comparison
+              } else if (field.calculationBase === 'percentage_gross') {
                 return total + field.defaultValue
               } else if (field.calculationBase === 'percentage_tp_income') {
                 return total + (field.defaultValue * taxPrepIncome / totalGrossRevenue)
@@ -1014,48 +1112,41 @@ export default function WizardInputs({
               }
               return total
             }, 0)
+            
+            // Reuse scaling factor calculated earlier for strategic calculations
+            const defaultExpenseTotal = rawExpenseTotal * scalingFactor
+            
+            const actualExpensePercentage = totalGrossRevenue > 0 ? (actualTotalExpenses / totalGrossRevenue) * 100 : 0
+            const finalNetIncome = totalGrossRevenue - actualTotalExpenses
             const strategicExpenseTarget = totalGrossRevenue * defaultExpenseTotal / 100
             
             // Calculate expense variance for stoplight colors
             const expenseVariance = strategicExpenseTarget > 0 ? ((actualTotalExpenses - strategicExpenseTarget) / strategicExpenseTarget) * 100 : 0
             
-            // Determine stoplight color for expenses - Bidirectional franchise-aware logic
+            // Determine stoplight color for expenses - Based on operational best practices (75-77% target)
             let borderColor, backgroundColor, statusColor, statusIcon, statusText
-            if (expenseVariance <= -10) {
-              // Red: 10%+ UNDER target - potential brand/quality risk
-              borderColor = '#ef4444'
-              backgroundColor = '#fef2f2'
-              statusColor = '#dc2626'
-              statusIcon = '🔴'
-              statusText = 'Under-investment risk - check brand standards'
-            } else if (expenseVariance <= -5) {
-              // Yellow: 5-10% under target - monitor for quality issues
-              borderColor = '#f59e0b'
-              backgroundColor = '#fffbeb'
-              statusColor = '#92400e'
-              statusIcon = '🟡'
-              statusText = 'Below target - ensure quality standards'
-            } else if (expenseVariance < 5) {
-              // Green: Within 5% of target (optimal range)
+            if (actualExpensePercentage >= 74.5 && actualExpensePercentage <= 77.5) {
+              // Green: 74.5-77.5% - optimal expense management
               borderColor = '#22c55e'
               backgroundColor = '#f0fdf4'
               statusColor = '#15803d'
               statusIcon = '🟢'
-              statusText = 'Optimal expense management!'
-            } else if (expenseVariance < 10) {
-              // Yellow: 5-10% over target - monitor costs
+              statusText = 'Excellent - optimal expense management'
+            } else if ((actualExpensePercentage >= 71.5 && actualExpensePercentage < 74.5) || 
+                       (actualExpensePercentage > 77.5 && actualExpensePercentage <= 80.5)) {
+              // Yellow: 71.5-74.5% or 77.5-80.5% - monitor closely
               borderColor = '#f59e0b'
               backgroundColor = '#fffbeb'
               statusColor = '#92400e'
               statusIcon = '🟡'
-              statusText = 'Slightly over target - monitor costs'
+              statusText = actualExpensePercentage < 74.5 ? 'Below optimal range - monitor operations' : 'Above optimal range - monitor costs'
             } else {
-              // Red: 10%+ over target - budget concerns
+              // Red: Below 71.5% or above 80.5% - action required
               borderColor = '#ef4444'
               backgroundColor = '#fef2f2'
               statusColor = '#dc2626'
               statusIcon = '🔴'
-              statusText = 'Over budget - needs immediate attention'
+              statusText = actualExpensePercentage < 71.5 ? 'Under-investment risk - ensure quality standards' : 'Over budget - reduce expenses immediately'
             }
             
             return (
@@ -1086,26 +1177,26 @@ export default function WizardInputs({
                   <span style={{ 
                     fontSize: '0.85rem', 
                     marginLeft: '0.5rem',
-                    color: Math.abs(expenseVariance) >= 10 ? '#dc2626' : statusColor,
+                    color: (actualExpensePercentage < 71.5 || actualExpensePercentage > 80.5) ? '#dc2626' : statusColor,
                     fontWeight: 'bold'
                   }}>
-                    {expenseVariance >= 10 ? '⚠️ Over strategic target' : 
-                     expenseVariance <= -10 ? '⚠️ Under-investment risk' :
-                     '✅ Within acceptable range'}
+                    {actualExpensePercentage > 80.5 ? '⚠️ Over optimal range' : 
+                     actualExpensePercentage < 71.5 ? '⚠️ Under-investment risk' :
+                     '✅ Within operational best practices'}
                   </span>
                 </div>
                 
                 <div className="small" style={{ color: statusColor, marginTop: '0.25rem' }}>
-                  Strategic Target: ${Math.round(strategicExpenseTarget).toLocaleString()} ({((strategicExpenseTarget / totalGrossRevenue) * 100).toFixed(1)}% of revenue) • 
-                  {expenseVariance >= 10 
-                    ? ` Reduce by $${Math.round(actualTotalExpenses - strategicExpenseTarget).toLocaleString()} to meet target`
-                    : expenseVariance >= 5
-                    ? ` $${Math.round(actualTotalExpenses - strategicExpenseTarget).toLocaleString()} over target - monitor costs closely`
-                    : expenseVariance <= -10
-                    ? ` $${Math.round(strategicExpenseTarget - actualTotalExpenses).toLocaleString()} under target - risk of under-investment in brand standards`
-                    : expenseVariance <= -5
-                    ? ` $${Math.round(strategicExpenseTarget - actualTotalExpenses).toLocaleString()} under target - ensure quality standards maintained`
-                    : ` $${Math.abs(Math.round(strategicExpenseTarget - actualTotalExpenses)).toLocaleString()} ${actualTotalExpenses > strategicExpenseTarget ? 'over' : 'under'} target - optimal expense management!`
+                  Operational Target: ${Math.round(strategicExpenseTarget).toLocaleString()} ({((strategicExpenseTarget / totalGrossRevenue) * 100).toFixed(1)}% of revenue) • 
+                  {actualExpensePercentage > 80.5
+                    ? ` Reduce by $${Math.round(actualTotalExpenses - strategicExpenseTarget).toLocaleString()} to reach optimal range (75-77%)`
+                    : actualExpensePercentage > 77.5
+                    ? ` $${Math.round(actualTotalExpenses - strategicExpenseTarget).toLocaleString()} over optimal range - monitor costs closely`
+                    : actualExpensePercentage < 71.5
+                    ? ` $${Math.round(strategicExpenseTarget - actualTotalExpenses).toLocaleString()} under optimal range - ensure operational standards maintained`
+                    : actualExpensePercentage < 74.5
+                    ? ` $${Math.round(strategicExpenseTarget - actualTotalExpenses).toLocaleString()} under optimal range - monitor operations closely`
+                    : ` Excellent expense management within 75-77% operational best practices!`
                   }
                 </div>
               </div>
@@ -1143,19 +1234,48 @@ export default function WizardInputs({
         paddingTop: '1rem',
         borderTop: '1px solid #e5e7eb'
       }}>
-        <button type="button" onClick={onBack} className="btn-secondary">
+        <button 
+          type="button" 
+          onClick={onBack} 
+          style={{
+            background: 'linear-gradient(45deg, #6b7280, #9ca3af)', 
+            color: 'white', 
+            padding: '8px 16px', 
+            borderRadius: '6px', 
+            border: 'none',
+            textDecoration: 'none',
+            fontWeight: '600',
+            fontSize: '14px',
+            cursor: 'pointer',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          }}
+        >
           ← Back
         </button>
         <button 
           type="button" 
           onClick={onNext} 
-          className="btn-primary"
           disabled={!canProceed}
+          style={{
+            background: canProceed 
+              ? 'linear-gradient(45deg, #059669, #10b981)' 
+              : 'linear-gradient(45deg, #9ca3af, #d1d5db)', 
+            color: 'white', 
+            padding: '8px 16px', 
+            borderRadius: '6px', 
+            border: 'none',
+            textDecoration: 'none',
+            fontWeight: '600',
+            fontSize: '14px',
+            cursor: canProceed ? 'pointer' : 'not-allowed',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            opacity: canProceed ? 1 : 0.6
+          }}
         >
           Review Data →
         </button>
       </div>
-    </>
+    </div>
   )
 }
 

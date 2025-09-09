@@ -17,8 +17,8 @@ export default function ScenarioSelector({scenario,setScenario}:{scenario:Scenar
   
   return (
     <div className="input-row">
-      <label>Scenario</label>
-      <select value={scenario} onChange={handleScenarioChange}>
+      <label htmlFor="scenario-select">Scenario</label>
+      <select id="scenario-select" value={scenario} onChange={handleScenarioChange}>
         <option>Custom</option>
         <option>Good</option>
         <option>Better</option>

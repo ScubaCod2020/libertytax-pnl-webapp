@@ -4,7 +4,7 @@ on:
   issues:
     types: [opened, closed, labeled]
   pull_request:
-    types: [merged]
+    types: [closed]
   workflow_run:
     workflows: ["Continuous Integration"]
     types: [completed]
@@ -264,62 +264,7 @@ jobs:
           const newEntry = \`- \${status} [\${new Date().toLocaleDateString()} \${new Date().toLocaleTimeString()}](\${runUrl}) - \${conclusion.toUpperCase()}\`;
           testHistory.unshift(newEntry);
           
-          const testHistoryPage = \`# 📊 Test History & CI Status
-          
-## 🔄 Continuous Integration Status
-
-**Last Test Run:** \${timestamp}
-**Status:** \${conclusion === 'success' ? '✅ PASSING' : '❌ FAILING'}
-**Run Details:** [View on GitHub](\${runUrl})
-
-## 📊 Recent Test Runs
-\${testHistory.slice(0, 20).join('\\n')}
-
-## 🎯 Test Suite Overview
-
-### 🧮 Calculation Tests
-- Mathematical accuracy verification
-- Dual-entry synchronization
-- Regional calculation differences (US/CA)
-- Growth projection calculations
-- KPI calculations (Net Income, Margin, Cost per Return)
-
-### 🌐 Browser Compatibility Tests  
-- Chrome (Desktop & Mobile)
-- Firefox (Desktop & Mobile)
-- Safari (Desktop & Mobile)
-- Edge (Desktop)
-
-### 📱 Mobile Responsiveness Tests
-- iPhone SE (375x667)
-- iPhone 12 Pro (390x844) 
-- Samsung Galaxy S21 (360x800)
-- iPad (768x1024)
-
-### ⚡ Performance Tests
-- Bundle size validation (<250KB)
-- Load time benchmarks
-- Memory usage monitoring
-- Lighthouse performance scores
-
-### 🔒 Security Tests
-- Dependency vulnerability scanning
-- Sensitive data detection
-- Production build validation
-
-## 📈 Test Metrics
-
-### Success Rate (Last 30 Days)
-\${testHistory.length > 0 ? \`
-- **Total Runs:** \${testHistory.length}
-- **Successful:** \${testHistory.filter(h => h.includes('✅')).length}
-- **Failed:** \${testHistory.filter(h => h.includes('❌')).length}
-- **Success Rate:** \${Math.round((testHistory.filter(h => h.includes('✅')).length / testHistory.length) * 100)}%
-\` : 'No recent test data available.'}
-
----
-*This page is automatically updated after each CI run.*
-          \`;
+          const testHistoryPage = "# 📊 Test History & CI Status\\n\\n## 🔄 CI Status\\nLast Run: " + timestamp + "\\nStatus: " + (conclusion === 'success' ? '✅ PASSING' : '❌ FAILING') + "\\nDetails: " + runUrl + "\\n\\n## 📊 Recent Test Runs\\n" + testHistory.slice(0, 20).join('\\n') + "\\n\\n## 🎯 Test Suite Overview\\nCalculation Tests, Browser Compatibility, Mobile Responsiveness, Performance, Security\\n\\n## 📈 Test Metrics\\n" + (testHistory.length > 0 ? "Total Runs: " + testHistory.length + ", Success Rate: " + Math.round((testHistory.filter(h => h.includes('✅')).length / testHistory.length) * 100) + "%" : 'No recent test data available.') + "\\n\\n---\\n*Auto-updated after each CI run.*";
           
           fs.writeFileSync('wiki/Test-History.md', testHistoryPage);
           

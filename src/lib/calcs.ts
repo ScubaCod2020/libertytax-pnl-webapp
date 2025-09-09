@@ -12,6 +12,7 @@ export interface Inputs {
   avgNetFee: number
   taxPrepReturns: number
   taxRushReturns: number
+  handlesTaxRush?: boolean // Optional - defaults to true for backward compatibility
   otherIncome?: number // Other revenue streams (bookkeeping, notary, etc.)
   discountsPct: number
   
@@ -78,13 +79,14 @@ export interface Results {
 }
 export function calc(inputs: Inputs): Results {
   // 🐛 DEBUG: Log key calculations for debugging
-  const taxRush = inputs.region==='CA' ? inputs.taxRushReturns : 0
+  const handlesTaxRush = inputs.handlesTaxRush ?? true // Default to true for backward compatibility
+  const taxRush = inputs.region==='CA' && handlesTaxRush ? inputs.taxRushReturns : 0
   const grossFees = inputs.avgNetFee * inputs.taxPrepReturns
   const discounts = grossFees * (inputs.discountsPct/100)
   const taxPrepIncome = grossFees - discounts
   
   // Calculate total revenue including all income sources
-  const taxRushIncome = inputs.region === 'CA' ? (inputs.avgNetFee * taxRush) : 0
+  const taxRushIncome = inputs.region === 'CA' && handlesTaxRush ? (inputs.avgNetFee * taxRush) : 0
   const otherIncome = inputs.otherIncome || 0
   const totalRevenue = taxPrepIncome + taxRushIncome + otherIncome
   
@@ -142,7 +144,7 @@ export function calc(inputs: Inputs): Results {
   // Franchise expenses (all % of tax prep income)
   const royalties = taxPrepIncome * (inputs.royaltiesPct/100)
   const advRoyalties = taxPrepIncome * (inputs.advRoyaltiesPct/100)
-  const taxRushRoyalties = inputs.region === 'CA' ? 
+  const taxRushRoyalties = inputs.region === 'CA' && handlesTaxRush ? 
     taxPrepIncome * (inputs.taxRushRoyaltiesPct/100) : 0
   
   // Miscellaneous

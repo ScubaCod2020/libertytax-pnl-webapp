@@ -14,14 +14,19 @@ export interface WizardAnswers {
   
   // Business performance (new fields)
   storeType?: 'new' | 'existing'
+  handlesTaxRush?: boolean // Canada only - whether office handles TaxRush returns
   
   // Last Year Performance - Complete breakdown (Page 1) - RESTRUCTURED for franchise UX
   lastYearGrossFees?: number // new field - what franchisee actually charged
   lastYearDiscountsAmt?: number // new field - dollar amount of discounts given
   lastYearDiscountsPct?: number // auto-calculated from amount/gross fees
   // lastYearTaxPrepIncome auto-calculated as grossFees - discountsAmt
+  lastYearTaxPrepReturns?: number // new field - count of returns processed last year
   lastYearOtherIncome?: number
   lastYearTaxRushReturns?: number // for Canada
+  lastYearTaxRushReturnsPct?: number // auto-calculated percentage of TaxRush returns vs total returns
+  lastYearTaxRushGrossFees?: number // for Canada - historical TaxRush gross fees
+  lastYearTaxRushAvgNetFee?: number // for Canada - historical TaxRush average net fee
   lastYearExpenses?: number
   
   // Projected Performance - Complete breakdown (Page 1)
@@ -33,12 +38,20 @@ export interface WizardAnswers {
   avgNetFee?: number
   taxPrepReturns?: number
   taxRushReturns?: number // for Canada
+  taxRushReturnsPct?: number // percentage of TaxRush returns vs total returns
+  taxRushGrossFees?: number // for Canada - separate TaxRush gross fees
+  taxRushAvgNetFee?: number // for Canada - separate TaxRush average net fee
   otherIncome?: number // new field for additional revenue streams
   discountsPct?: number
   
   // Projected values (for bidirectional wizard flow)
   projectedAvgNetFee?: number // manually adjusted projected value
   projectedTaxPrepReturns?: number // manually adjusted projected value
+  
+  // Manual override fields for auto-calculated values
+  manualAvgNetFee?: number // override for calculated average net fee
+  manualTaxPrepIncome?: number // override for calculated tax prep income
+  manualTaxRushReturns?: number // override for projected TaxRush returns
   
   // All 17 expense fields
   salariesPct?: number
@@ -57,6 +70,7 @@ export interface WizardAnswers {
   royaltiesPct?: number
   advRoyaltiesPct?: number
   taxRushRoyaltiesPct?: number
+  taxRushShortagesPct?: number
   miscPct?: number
   
   // Derived expense values for export

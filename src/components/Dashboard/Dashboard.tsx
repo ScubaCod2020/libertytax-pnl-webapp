@@ -14,7 +14,7 @@ export default function Dashboard({ results }: DashboardProps) {
   const { cprStatus, nimStatus, niStatus } = results
 
   return (
-    <div className="card">
+    <div className="card" data-dashboard>
       <div className="card-title">Dashboard</div>
 
       <div className="kpi-vertical" style={{ marginBottom: '1rem' }}>

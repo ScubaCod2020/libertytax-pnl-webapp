@@ -152,23 +152,8 @@ jobs:
                 
               await github.rest.issues.create({
                 owner, repo,
-                title: \`📦 Weekly Dependency Updates - \${new Date().toLocaleDateString()}\`,
-                body: \`
-## 🔄 Automated Dependency Update Check
-
-The following packages have updates available:
-
-\${depList}
-
-### 📋 Update Process
-- [ ] Review changelog for breaking changes
-- [ ] Update packages: \\\`npm update\\\`
-- [ ] Run full test suite
-- [ ] Test in staging environment
-- [ ] Update if tests pass
-
-**Auto-created:** \${new Date().toISOString()}
-                \`,
+                title: "📦 Weekly Dependency Updates - " + new Date().toLocaleDateString(),
+                body: "🔄 Automated Dependency Update Check\\n\\nThe following packages have updates available:\\n\\n" + depList + "\\n\\n📋 Update Process:\\n- Review changelog for breaking changes\\n- Update packages: npm update\\n- Run full test suite\\n- Test in staging environment\\n\\nAuto-created: " + new Date().toISOString(),
                 labels: ['dependencies', 'automated', 'maintenance'],
                 assignees: ['${{ github.repository_owner }}']
               });
@@ -184,28 +169,8 @@ The following packages have updates available:
             if (existingBundleIssues.data.length === 0) {
               await github.rest.issues.create({
                 owner, repo,
-                title: \`⚡ Bundle Size Alert - \${Math.round(bundleSize/1024)}KB\`,
-                body: \`
-## 📊 Bundle Size Performance Alert
-
-Current bundle size: **\${Math.round(bundleSize/1024)}KB**
-Threshold: **293KB**
-
-### 🔍 Investigation Steps
-- [ ] Analyze bundle composition
-- [ ] Check for unnecessary dependencies
-- [ ] Review code splitting opportunities
-- [ ] Consider lazy loading for non-critical features
-- [ ] Run bundle analyzer: \\\`npx vite-bundle-analyzer\\\`
-
-### 🎯 Optimization Targets
-- Remove unused dependencies
-- Implement code splitting
-- Optimize images and assets
-- Consider CDN for large libraries
-
-**Auto-created:** \${new Date().toISOString()}
-                \`,
+                title: "⚡ Bundle Size Alert - " + Math.round(bundleSize/1024) + "KB",
+                body: "📊 Bundle Size Performance Alert\\n\\nCurrent bundle size: " + Math.round(bundleSize/1024) + "KB\\nThreshold: 293KB\\n\\n🔍 Investigation Steps:\\n- Analyze bundle composition\\n- Check for unnecessary dependencies\\n- Review code splitting opportunities\\n- Consider lazy loading\\n- Run bundle analyzer: npx vite-bundle-analyzer\\n\\n🎯 Optimization Targets:\\n- Remove unused dependencies\\n- Implement code splitting\\n- Optimize images and assets\\n\\nAuto-created: " + new Date().toISOString(),
                 labels: ['performance', 'bundle-size', 'automated', 'optimization'],
                 assignees: ['${{ github.repository_owner }}']
               });
