@@ -10,7 +10,7 @@ import {
   type ExpenseField,
   type ExpenseCategory 
 } from '../types/expenses'
-import type { WizardAnswers } from './WizardShell'
+import { WizardAnswers } from './WizardShell'
 
 interface WizardInputsProps {
   answers: WizardAnswers

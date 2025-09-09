@@ -52,164 +52,167 @@ jobs:
           const performance = allIssues.filter(i => i.labels.some(l => l.name === 'performance'));
           
           // Generate Bug Tracking page
-          const bugTrackingPage = `# 🐛 Bug Tracking Dashboard
-          
-## Overview
-This page is automatically updated with bug reports and their status.
+          const bugTrackingPage = `
+          # 🐛 Bug Tracking Dashboard
 
-**Last Updated:** ${new Date().toISOString()}
+          ## Overview
+          This page is automatically updated with bug reports and their status.
 
-## 📊 Bug Statistics
-- **Total Bugs Reported:** ${bugs.length}
-- **Open Bugs:** ${bugs.filter(b => b.state === 'open').length}
-- **Closed Bugs:** ${bugs.filter(b => b.state === 'closed').length}
-- **Critical Bugs:** ${bugs.filter(b => b.labels.some(l => l.name === 'critical')).length}
+          **Last Updated:** ${new Date().toISOString()}
 
-## 🚨 Open Bugs
-${bugs.filter(b => b.state === 'open').map(bug => 
-  \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number} \${bug.labels.some(l => l.name === 'critical') ? '🚨 CRITICAL' : ''}\`
-).join('\\n') || 'No open bugs! 🎉'}
+          ## 📊 Bug Statistics
+          - **Total Bugs Reported:** ${bugs.length}
+          - **Open Bugs:** ${bugs.filter(b => b.state === 'open').length}
+          - **Closed Bugs:** ${bugs.filter(b => b.state === 'closed').length}
+          - **Critical Bugs:** ${bugs.filter(b => b.labels.some(l => l.name === 'critical')).length}
 
-## ✅ Recently Closed Bugs
-${bugs.filter(b => b.state === 'closed').slice(0, 10).map(bug => 
-  \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number} (Closed: \${new Date(bug.closed_at).toLocaleDateString()})\`
-).join('\\n') || 'No closed bugs yet.'}
+          ## 🚨 Open Bugs
+          ${bugs.filter(b => b.state === 'open').map(bug =>
+            \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number} \${bug.labels.some(l => l.name === 'critical') ? '🚨 CRITICAL' : ''}\`
+          ).join('\\n') || 'No open bugs! 🎉'}
 
-## 🏷️ Bug Categories
-- **Mobile Issues:** ${mobile.length} total
-- **Performance Issues:** ${performance.length} total
-- **Test Failures:** ${testFailures.length} total
+          ## ✅ Recently Closed Bugs
+          ${bugs.filter(b => b.state === 'closed').slice(0, 10).map(bug =>
+            \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number} (Closed: \${new Date(bug.closed_at).toLocaleDateString()})\`
+          ).join('\\n') || 'No closed bugs yet.'}
 
-## 📱 Mobile Bug Tracking
-${mobile.filter(m => m.state === 'open').map(bug => 
-  \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number}\`
-).join('\\n') || 'No open mobile bugs! 📱✅'}
+          ## 🏷️ Bug Categories
+          - **Mobile Issues:** ${mobile.length} total
+          - **Performance Issues:** ${performance.length} total
+          - **Test Failures:** ${testFailures.length} total
 
----
-*This page is automatically generated from GitHub issues. To report a bug, [create a new issue](https://github.com/${owner}/${repo}/issues/new/choose).*
+          ## 📱 Mobile Bug Tracking
+          ${mobile.filter(m => m.state === 'open').map(bug =>
+            \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number}\`
+          ).join('\\n') || 'No open mobile bugs! 📱✅'}
+
+          ---
+          *This page is automatically generated from GitHub issues. To report a bug, [create a new issue](https://github.com/${owner}/${repo}/issues/new/choose).*
           `;
           
           fs.writeFileSync('wiki/Bug-Tracking.md', bugTrackingPage);
           
           // Generate Test Results page
-          const testResultsPage = \`# 🧪 Test Results & QA Dashboard
-          
-## Overview
-Comprehensive testing status and quality assurance metrics.
+          const testResultsPage = \`
+          # 🧪 Test Results & QA Dashboard
 
-**Last Updated:** \${new Date().toISOString()}
+          ## Overview
+          Comprehensive testing status and quality assurance metrics.
 
-## 🔬 Test Failure Tracking
-\${testFailures.filter(t => t.state === 'open').length > 0 ? 
-  \`### ❌ Active Test Failures
-\${testFailures.filter(t => t.state === 'open').map(test => 
-  \`- [\${test.title}](\${test.html_url}) - #\${test.number}\`
-).join('\\n')}\` : '### ✅ No Active Test Failures!'}
+          **Last Updated:** \${new Date().toISOString()}
 
-## 📊 Quality Metrics
-- **Total Test Issues:** \${testFailures.length}
-- **Open Test Failures:** \${testFailures.filter(t => t.state === 'open').length}
-- **Resolved Test Issues:** \${testFailures.filter(t => t.state === 'closed').length}
+          ## 🔬 Test Failure Tracking
+          \${testFailures.filter(t => t.state === 'open').length > 0 ?
+            \`### ❌ Active Test Failures
+          \${testFailures.filter(t => t.state === 'open').map(test =>
+            \`- [\${test.title}](\${test.html_url}) - #\${test.number}\`
+          ).join('\\n')}\` : '### ✅ No Active Test Failures!'}
 
-## 🎯 Testing Focus Areas
-Based on recent issues and testing patterns:
+          ## 📊 Quality Metrics
+          - **Total Test Issues:** \${testFailures.length}
+          - **Open Test Failures:** \${testFailures.filter(t => t.state === 'open').length}
+          - **Resolved Test Issues:** \${testFailures.filter(t => t.state === 'closed').length}
 
-### 📱 Mobile Testing
-- Mobile compatibility issues: \${mobile.length} total
-- Touch interaction problems: \${mobile.filter(m => m.title.toLowerCase().includes('touch')).length}
-- Responsive design issues: \${mobile.filter(m => m.title.toLowerCase().includes('responsive')).length}
+          ## 🎯 Testing Focus Areas
+          Based on recent issues and testing patterns:
 
-### ⚡ Performance Testing  
-- Performance issues reported: \${performance.length} total
-- Bundle size concerns: \${performance.filter(p => p.title.toLowerCase().includes('bundle')).length}
-- Load time issues: \${performance.filter(p => p.title.toLowerCase().includes('load')).length}
+          ### 📱 Mobile Testing
+          - Mobile compatibility issues: \${mobile.length} total
+          - Touch interaction problems: \${mobile.filter(m => m.title.toLowerCase().includes('touch')).length}
+          - Responsive design issues: \${mobile.filter(m => m.title.toLowerCase().includes('responsive')).length}
 
-## 📋 Testing Checklist Status
-Based on our comprehensive testing documentation:
+          ### ⚡ Performance Testing
+          - Performance issues reported: \${performance.length} total
+          - Bundle size concerns: \${performance.filter(p => p.title.toLowerCase().includes('bundle')).length}
+          - Load time issues: \${performance.filter(p => p.title.toLowerCase().includes('load')).length}
 
-### Core Functionality ✅
-- Calculation accuracy tests
-- Wizard flow validation
-- Regional differences (US/CA)
-- Dual-entry system verification
+          ## 📋 Testing Checklist Status
+          Based on our comprehensive testing documentation:
 
-### Cross-Platform Testing 🔄
-- Desktop browsers (Chrome, Firefox, Safari, Edge)
-- Mobile devices (iOS Safari, Android Chrome)
-- Tablet layouts (iPad, Android tablets)
+          ### Core Functionality ✅
+          - Calculation accuracy tests
+          - Wizard flow validation
+          - Regional differences (US/CA)
+          - Dual-entry system verification
 
-### Performance Benchmarks ⚡
-- Bundle size monitoring
-- Load time tracking
-- Memory usage validation
-- Mobile performance testing
+          ### Cross-Platform Testing 🔄
+          - Desktop browsers (Chrome, Firefox, Safari, Edge)
+          - Mobile devices (iOS Safari, Android Chrome)
+          - Tablet layouts (iPad, Android tablets)
 
----
-*For detailed testing procedures, see our [Testing Documentation](https://github.com/\${owner}/\${repo}/tree/main/docs).*
+          ### Performance Benchmarks ⚡
+          - Bundle size monitoring
+          - Load time tracking
+          - Memory usage validation
+          - Mobile performance testing
+
+          ---
+          *For detailed testing procedures, see our [Testing Documentation](https://github.com/\${owner}/\${repo}/tree/main/docs).* 
           \`;
           
           fs.writeFileSync('wiki/Test-Results.md', testResultsPage);
           
           // Generate Project Status page
-          const projectStatusPage = \`# 📈 Project Status Dashboard
-          
-## 🚀 Liberty Tax P&L Webapp Status
+          const projectStatusPage = \`
+          # 📈 Project Status Dashboard
 
-**Last Updated:** \${new Date().toISOString()}
+          ## 🚀 Liberty Tax P&L Webapp Status
 
-## 📊 Current Metrics
-- **Total Issues:** \${allIssues.length}
-- **Open Issues:** \${allIssues.filter(i => i.state === 'open').length}
-- **Closed Issues:** \${allIssues.filter(i => i.state === 'closed').length}
-- **Enhancement Requests:** \${enhancements.length}
+          **Last Updated:** \${new Date().toISOString()}
 
-## 🏃‍♂️ Development Velocity
-- **Issues Closed This Month:** \${allIssues.filter(i => 
-    i.state === 'closed' && 
-    new Date(i.closed_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-  ).length}
-- **New Issues This Month:** \${allIssues.filter(i => 
-    new Date(i.created_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-  ).length}
+          ## 📊 Current Metrics
+          - **Total Issues:** \${allIssues.length}
+          - **Open Issues:** \${allIssues.filter(i => i.state === 'open').length}
+          - **Closed Issues:** \${allIssues.filter(i => i.state === 'closed').length}
+          - **Enhancement Requests:** \${enhancements.length}
 
-## 🎯 Focus Areas
+          ## 🏃‍♂️ Development Velocity
+          - **Issues Closed This Month:** \${allIssues.filter(i =>
+              i.state === 'closed' &&
+              new Date(i.closed_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+            ).length}
+          - **New Issues This Month:** \${allIssues.filter(i =>
+              new Date(i.created_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+            ).length}
 
-### 🔥 High Priority
-\${allIssues.filter(i => i.state === 'open' && i.labels.some(l => l.name === 'high-priority')).map(issue => 
-  \`- [\${issue.title}](\${issue.html_url}) - #\${issue.number}\`
-).join('\\n') || 'No high priority issues! 🎉'}
+          ## 🎯 Focus Areas
 
-### 🐛 Critical Bugs
-\${bugs.filter(b => b.state === 'open' && b.labels.some(l => l.name === 'critical')).map(bug => 
-  \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number}\`
-).join('\\n') || 'No critical bugs! ✅'}
+          ### 🔥 High Priority
+          \${allIssues.filter(i => i.state === 'open' && i.labels.some(l => l.name === 'high-priority')).map(issue =>
+            \`- [\${issue.title}](\${issue.html_url}) - #\${issue.number}\`
+          ).join('\\n') || 'No high priority issues! 🎉'}
 
-### ✨ Upcoming Enhancements
-\${enhancements.filter(e => e.state === 'open').slice(0, 5).map(enhancement => 
-  \`- [\${enhancement.title}](\${enhancement.html_url}) - #\${enhancement.number}\`
-).join('\\n') || 'No planned enhancements.'}
+          ### 🐛 Critical Bugs
+          \${bugs.filter(b => b.state === 'open' && b.labels.some(l => l.name === 'critical')).map(bug =>
+            \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number}\`
+          ).join('\\n') || 'No critical bugs! ✅'}
 
-## 🔧 Maintenance Status
-- **Dependencies:** Up to date
-- **Security:** No known vulnerabilities
-- **Performance:** Within acceptable limits
-- **Test Coverage:** Comprehensive
+          ### ✨ Upcoming Enhancements
+          \${enhancements.filter(e => e.state === 'open').slice(0, 5).map(enhancement =>
+            \`- [\${enhancement.title}](\${enhancement.html_url}) - #\${enhancement.number}\`
+          ).join('\\n') || 'No planned enhancements.'}
 
-## 📱 Platform Support
-- **Desktop:** ✅ Chrome, Firefox, Safari, Edge
-- **Mobile:** ✅ iOS Safari, Android Chrome
-- **Tablet:** ✅ iPad, Android tablets
+          ## 🔧 Maintenance Status
+          - **Dependencies:** Up to date
+          - **Security:** No known vulnerabilities
+          - **Performance:** Within acceptable limits
+          - **Test Coverage:** Comprehensive
 
-## 🚀 Recent Achievements
-\${allIssues.filter(i => 
-    i.state === 'closed' && 
-    new Date(i.closed_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-  ).slice(0, 5).map(achievement => 
-  \`- Resolved: [\${achievement.title}](\${achievement.html_url}) - #\${achievement.number}\`
-).join('\\n') || 'No recent completions.'}
+          ## 📱 Platform Support
+          - **Desktop:** ✅ Chrome, Firefox, Safari, Edge
+          - **Mobile:** ✅ iOS Safari, Android Chrome
+          - **Tablet:** ✅ iPad, Android tablets
 
----
-*This dashboard is automatically updated based on GitHub activity.*
+          ## 🚀 Recent Achievements
+          \${allIssues.filter(i =>
+              i.state === 'closed' &&
+              new Date(i.closed_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+            ).slice(0, 5).map(achievement =>
+            \`- Resolved: [\${achievement.title}](\${achievement.html_url}) - #\${achievement.number}\`
+          ).join('\\n') || 'No recent completions.'}
+
+          ---
+          *This dashboard is automatically updated based on GitHub activity.* 
           \`;
           
           fs.writeFileSync('wiki/Project-Status.md', projectStatusPage);

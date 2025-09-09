@@ -48,32 +48,32 @@ jobs:
           
           if (!similarIssue) {
             const issueBody = `
-## 🤖 Automated Test Failure Report
-
-**Workflow:** ${workflowName}
-**Run URL:** ${{ steps.workflow-details.outputs.run_url }}
-**Commit:** ${{ steps.workflow-details.outputs.commit_sha }}
-**Detected:** ${new Date().toISOString()}
-
-### 📋 Investigation Checklist
-- [ ] Review workflow logs
-- [ ] Identify root cause
-- [ ] Reproduce locally if needed
-- [ ] Fix underlying issue
-- [ ] Update tests if necessary
-- [ ] Verify fix with new test run
-
-### 🔍 Potential Causes
-- [ ] Code changes broke existing functionality
-- [ ] Test environment issues
-- [ ] Dependency updates
-- [ ] Performance regression
-- [ ] Browser compatibility issues
-
-### 📊 Context
-This issue was automatically created when the CI workflow failed. Please investigate and resolve.
-
-**Auto-assigned labels:** automated, test-failure, needs-investigation
+            ## 🤖 Automated Test Failure Report
+            
+            **Workflow:** ${workflowName}
+            **Run URL:** ${{ steps.workflow-details.outputs.run_url }}
+            **Commit:** ${{ steps.workflow-details.outputs.commit_sha }}
+            **Detected:** ${new Date().toISOString()}
+            
+            ### 📋 Investigation Checklist
+            - [ ] Review workflow logs
+            - [ ] Identify root cause
+            - [ ] Reproduce locally if needed
+            - [ ] Fix underlying issue
+            - [ ] Update tests if necessary
+            - [ ] Verify fix with new test run
+            
+            ### 🔍 Potential Causes
+            - [ ] Code changes broke existing functionality
+            - [ ] Test environment issues
+            - [ ] Dependency updates
+            - [ ] Performance regression
+            - [ ] Browser compatibility issues
+            
+            ### 📊 Context
+            This issue was automatically created when the CI workflow failed. Please investigate and resolve.
+            
+            **Auto-assigned labels:** automated, test-failure, needs-investigation
             `;
             
             const newIssue = await github.rest.issues.create({

@@ -47,45 +47,47 @@ jobs:
           const tsChanges = '${{ steps.analyze-changes.outputs.ts_changes }}';
           const testChanges = '${{ steps.analyze-changes.outputs.test_changes }}';
           
-          const aiReviewComment = `## 🤖 AI Code Review Assistant Ready!
-          
-Hey @codex! This PR is ready for your expert analysis. Here's what changed:
-
-### 📊 Change Summary
-- **TypeScript/React files:** ${tsChanges} modified
-- **Test files:** ${testChanges} modified
-- **Total files changed:** ${changedFiles.split('\n').filter(f => f.trim()).length}
-
-### 🎯 Key Areas for AI Review
-${tsChanges > 0 ? '- **React Components:** Check for hooks usage, performance, accessibility' : ''}
-${testChanges > 0 ? '- **Testing:** Verify test coverage and quality' : ''}
-${changedFiles.includes('package.json') ? '- **Dependencies:** Review any new packages added' : ''}
-${changedFiles.includes('vite.config') ? '- **Build Config:** Validate build configuration changes' : ''}
-
-### 🔍 Specific Questions for @codex:
-1. **Code Quality:** Any potential bugs or improvements you spot?
-2. **Performance:** Are there any performance implications?
-3. **Best Practices:** Following React/TypeScript best practices?
-4. **Testing:** Is the test coverage adequate?
-5. **Security:** Any security considerations?
-
-### 📋 Liberty Tax P&L Context
-This is a financial calculator webapp with:
-- **Dual-entry system** (percentage ↔ dollar calculations)
-- **Multi-step wizard** (Welcome → Inputs → Review → Dashboard)
-- **Regional differences** (US vs Canada)
-- **Mobile-first design** with responsive layouts
-- **Debug panel** for troubleshooting
-
-### 🧮 Critical Calculation Areas
-If this PR touches calculations, please verify:
-- Mathematical accuracy of formulas
-- Dual-entry synchronization logic
-- Regional calculation differences
-- KPI calculations (Net Income, Margin, Cost per Return)
-
----
-**@codex** - Ready for your analysis! Feel free to dive deep into any areas that catch your attention. 🚀`;
+          const aiReviewComment = `
+            ## 🤖 AI Code Review Assistant Ready!
+            
+            Hey @codex! This PR is ready for your expert analysis. Here's what changed:
+            
+            ### 📊 Change Summary
+            - **TypeScript/React files:** ${tsChanges} modified
+            - **Test files:** ${testChanges} modified
+            - **Total files changed:** ${changedFiles.split('\n').filter(f => f.trim()).length}
+            
+            ### 🎯 Key Areas for AI Review
+            ${tsChanges > 0 ? '- **React Components:** Check for hooks usage, performance, accessibility' : ''}
+            ${testChanges > 0 ? '- **Testing:** Verify test coverage and quality' : ''}
+            ${changedFiles.includes('package.json') ? '- **Dependencies:** Review any new packages added' : ''}
+            ${changedFiles.includes('vite.config') ? '- **Build Config:** Validate build configuration changes' : ''}
+            
+            ### 🔍 Specific Questions for @codex:
+            1. **Code Quality:** Any potential bugs or improvements you spot?
+            2. **Performance:** Are there any performance implications?
+            3. **Best Practices:** Following React/TypeScript best practices?
+            4. **Testing:** Is the test coverage adequate?
+            5. **Security:** Any security considerations?
+            
+            ### 📋 Liberty Tax P&L Context
+            This is a financial calculator webapp with:
+            - **Dual-entry system** (percentage ↔ dollar calculations)
+            - **Multi-step wizard** (Welcome → Inputs → Review → Dashboard)
+            - **Regional differences** (US vs Canada)
+            - **Mobile-first design** with responsive layouts
+            - **Debug panel** for troubleshooting
+            
+            ### 🧮 Critical Calculation Areas
+            If this PR touches calculations, please verify:
+            - Mathematical accuracy of formulas
+            - Dual-entry synchronization logic
+            - Regional calculation differences
+            - KPI calculations (Net Income, Margin, Cost per Return)
+            
+            ---
+            **@codex** - Ready for your analysis! Feel free to dive deep into any areas that catch your attention. 🚀
+            `;
 
           await github.rest.issues.createComment({
             owner: context.repo.owner,
