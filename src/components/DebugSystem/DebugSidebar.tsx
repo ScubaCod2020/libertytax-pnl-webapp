@@ -324,6 +324,8 @@ export default function DebugSidebar(props: DebugSidebarProps) {
                     ...thresholds,
                     cprGreen: parseFloat(e.target.value) || 0
                   })}
+                  placeholder="15.0"
+                  aria-label="Cost per Return Green threshold"
                   style={inputStyle}
                 />
               </div>
@@ -337,6 +339,8 @@ export default function DebugSidebar(props: DebugSidebarProps) {
                     ...thresholds,
                     cprYellow: parseFloat(e.target.value) || 0
                   })}
+                  placeholder="20.0"
+                  aria-label="Cost per Return Yellow threshold"
                   style={inputStyle}
                 />
               </div>
@@ -350,6 +354,8 @@ export default function DebugSidebar(props: DebugSidebarProps) {
                     ...thresholds,
                     nimGreen: parseFloat(e.target.value) || 0
                   })}
+                  placeholder="25.0"
+                  aria-label="Net Income Margin Green threshold"
                   style={inputStyle}
                 />
               </div>
@@ -363,6 +369,8 @@ export default function DebugSidebar(props: DebugSidebarProps) {
                     ...thresholds,
                     nimYellow: parseFloat(e.target.value) || 0
                   })}
+                  placeholder="15.0"
+                  aria-label="Net Income Margin Yellow threshold"
                   style={inputStyle}
                 />
               </div>
@@ -376,6 +384,8 @@ export default function DebugSidebar(props: DebugSidebarProps) {
                     ...thresholds,
                     netIncomeWarn: parseFloat(e.target.value) || 0
                   })}
+                  placeholder="-5000"
+                  aria-label="Net Income Warning threshold"
                   style={inputStyle}
                 />
                 <div style={{ fontSize: 9, color: '#9ca3af', marginTop: 2 }}>
