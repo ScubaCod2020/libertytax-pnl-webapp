@@ -114,11 +114,11 @@ jobs:
 Since you mentioned testing, here's our comprehensive testing context for @codex:
 
 ### 🎯 Testing Checklist for This Project
-- [ ] **Calculation Tests:** Run \`node scripts/test-calculations.js\`
-- [ ] **Regression Tests:** Run \`node scripts/regression-test.js\`  
-- [ ] **Edge Cases:** Run \`node scripts/comprehensive-edge-case-tests.js\`
-- [ ] **Browser Tests:** Run \`npm run test:browser\`
-- [ ] **Mobile Tests:** Run \`npm run test:mobile\`
+- [ ] **Calculation Tests:** Run \\\`node scripts/test-calculations.js\\\`
+- [ ] **Regression Tests:** Run \\\`node scripts/regression-test.js\\\`  
+- [ ] **Edge Cases:** Run \\\`node scripts/comprehensive-edge-case-tests.js\\\`
+- [ ] **Browser Tests:** Run \\\`npm run test:browser\\\`
+- [ ] **Mobile Tests:** Run \\\`npm run test:mobile\\\`
 
 ### 📱 Manual Testing Focus
 - **Wizard Flow:** Welcome → Inputs → Review → Dashboard
@@ -129,7 +129,7 @@ Since you mentioned testing, here's our comprehensive testing context for @codex
 
 ### 🧮 Calculation Verification
 Key formulas to verify:
-\`\`\`javascript
+\\\`\\\`\\\`javascript
 // Gross Fees = Tax Prep Income / (1 - Discount %)
 grossFees = taxPrepIncome / (1 - discountsPct / 100)
 
@@ -141,7 +141,7 @@ netMargin = (netIncome / taxPrepIncome) * 100
 
 // Cost per Return = Total Expenses / Tax Prep Returns
 costPerReturn = totalExpenses / taxPrepReturns
-\`\`\`
+\\\`\\\`\\\`
 
 ### 🔍 Edge Cases to Test
 - Zero values (0%, $0)
@@ -176,7 +176,7 @@ costPerReturn = totalExpenses / taxPrepReturns
 ### 💰 Core Financial Formulas
 
 #### Revenue Calculations
-\`\`\`javascript
+\\\`\\\`\\\`javascript
 // Tax Prep Income = Average Net Fee × Tax Prep Returns
 taxPrepIncome = avgNetFee * taxPrepReturns
 
@@ -185,10 +185,10 @@ taxRushIncome = taxRushANF * taxRushReturns  // CA only, 0 for US
 
 // Total Income = Tax Prep + TaxRush + Other Income
 totalIncome = taxPrepIncome + taxRushIncome + otherIncome
-\`\`\`
+\\\`\\\`\\\`
 
 #### Expense Calculations (Dual-Entry System)
-\`\`\`javascript
+\\\`\\\`\\\`javascript
 // Percentage to Dollar
 dollarAmount = (percentage / 100) * calculationBase
 
@@ -199,10 +199,10 @@ percentage = (dollarAmount / calculationBase) * 100
 // - Salaries, Rent, Royalties: Use Gross Fees as base
 // - Employee Deductions: Use Salaries amount as base
 // - Fixed amounts (Telephone, Utilities): No percentage conversion
-\`\`\`
+\\\`\\\`\\\`
 
 #### Key Performance Indicators
-\`\`\`javascript
+\\\`\\\`\\\`javascript
 // Gross Fees (includes discount adjustment)
 grossFees = taxPrepIncome / (1 - discountsPct / 100)
 
@@ -214,7 +214,7 @@ netMargin = (netIncome / taxPrepIncome) * 100
 
 // Cost per Return
 costPerReturn = totalExpenses / taxPrepReturns
-\`\`\`
+\\\`\\\`\\\`
 
 ### 🎯 Regional Differences
 - **US:** TaxRush fields hidden, TaxRush income = 0
@@ -262,14 +262,14 @@ costPerReturn = totalExpenses / taxPrepReturns
 - **Orientation:** Support both portrait and landscape
 
 ### 📐 Target Devices & Viewports
-\`\`\`javascript
+\\\`\\\`\\\`javascript
 const mobileViewports = [
   { name: 'iPhone SE', width: 375, height: 667 },      // Smallest target
   { name: 'iPhone 12 Pro', width: 390, height: 844 },  // Standard mobile
   { name: 'Galaxy S21', width: 360, height: 800 },     // Android standard
   { name: 'iPad', width: 768, height: 1024 }           // Tablet
 ];
-\`\`\`
+\\\`\\\`\\\`
 
 ### 🧪 Mobile Testing Checklist
 - [ ] **Wizard Navigation:** All buttons tappable on mobile
@@ -280,7 +280,7 @@ const mobileViewports = [
 - [ ] **Scrolling:** Vertical only, no horizontal scroll
 
 ### 🎨 Mobile-Specific CSS Considerations
-\`\`\`css
+\\\`\\\`\\\`css
 /* Touch targets */
 button, input, select {
   min-height: 44px;
@@ -298,7 +298,7 @@ input[type="number"] {
   /* Increase spacing for touch */
   /* Hide non-essential elements */
 }
-\`\`\`
+\\\`\\\`\\\`
 
 ### 📱 Mobile Performance Targets
 - **Load Time:** < 5 seconds on 3G

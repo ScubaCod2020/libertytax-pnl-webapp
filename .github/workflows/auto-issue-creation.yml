@@ -162,7 +162,7 @@ The following packages have updates available:
 
 ### 📋 Update Process
 - [ ] Review changelog for breaking changes
-- [ ] Update packages: \`npm update\`
+- [ ] Update packages: \\\`npm update\\\`
 - [ ] Run full test suite
 - [ ] Test in staging environment
 - [ ] Update if tests pass
@@ -196,7 +196,7 @@ Threshold: **293KB**
 - [ ] Check for unnecessary dependencies
 - [ ] Review code splitting opportunities
 - [ ] Consider lazy loading for non-critical features
-- [ ] Run bundle analyzer: \`npx vite-bundle-analyzer\`
+- [ ] Run bundle analyzer: \\\`npx vite-bundle-analyzer\\\`
 
 ### 🎯 Optimization Targets
 - Remove unused dependencies

@@ -68,12 +68,12 @@ jobs:
 
           ## 🚨 Open Bugs
           ${bugs.filter(b => b.state === 'open').map(bug =>
-            \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number} \${bug.labels.some(l => l.name === 'critical') ? '🚨 CRITICAL' : ''}\`
+            \\\`- [\${bug.title}](\${bug.html_url}) - #\${bug.number} \${bug.labels.some(l => l.name === 'critical') ? '🚨 CRITICAL' : ''}\\\`
           ).join('\\n') || 'No open bugs! 🎉'}
 
           ## ✅ Recently Closed Bugs
           ${bugs.filter(b => b.state === 'closed').slice(0, 10).map(bug =>
-            \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number} (Closed: \${new Date(bug.closed_at).toLocaleDateString()})\`
+            \\\`- [\${bug.title}](\${bug.html_url}) - #\${bug.number} (Closed: \${new Date(bug.closed_at).toLocaleDateString()})\\\`
           ).join('\\n') || 'No closed bugs yet.'}
 
           ## 🏷️ Bug Categories
@@ -83,7 +83,7 @@ jobs:
 
           ## 📱 Mobile Bug Tracking
           ${mobile.filter(m => m.state === 'open').map(bug =>
-            \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number}\`
+            \\\`- [\${bug.title}](\${bug.html_url}) - #\${bug.number}\\\`
           ).join('\\n') || 'No open mobile bugs! 📱✅'}
 
           ---
@@ -103,10 +103,10 @@ jobs:
 
           ## 🔬 Test Failure Tracking
           \${testFailures.filter(t => t.state === 'open').length > 0 ?
-            \`### ❌ Active Test Failures
+            \\\`### ❌ Active Test Failures
           \${testFailures.filter(t => t.state === 'open').map(test =>
-            \`- [\${test.title}](\${test.html_url}) - #\${test.number}\`
-          ).join('\\n')}\` : '### ✅ No Active Test Failures!'}
+            \\\`- [\${test.title}](\${test.html_url}) - #\${test.number}\\\`
+          ).join('\\n')}\\\` : '### ✅ No Active Test Failures!'}
 
           ## 📊 Quality Metrics
           - **Total Test Issues:** \${testFailures.length}
@@ -179,17 +179,17 @@ jobs:
 
           ### 🔥 High Priority
           \${allIssues.filter(i => i.state === 'open' && i.labels.some(l => l.name === 'high-priority')).map(issue =>
-            \`- [\${issue.title}](\${issue.html_url}) - #\${issue.number}\`
+            \\\`- [\${issue.title}](\${issue.html_url}) - #\${issue.number}\\\`
           ).join('\\n') || 'No high priority issues! 🎉'}
 
           ### 🐛 Critical Bugs
           \${bugs.filter(b => b.state === 'open' && b.labels.some(l => l.name === 'critical')).map(bug =>
-            \`- [\${bug.title}](\${bug.html_url}) - #\${bug.number}\`
+            \\\`- [\${bug.title}](\${bug.html_url}) - #\${bug.number}\\\`
           ).join('\\n') || 'No critical bugs! ✅'}
 
           ### ✨ Upcoming Enhancements
           \${enhancements.filter(e => e.state === 'open').slice(0, 5).map(enhancement =>
-            \`- [\${enhancement.title}](\${enhancement.html_url}) - #\${enhancement.number}\`
+            \\\`- [\${enhancement.title}](\${enhancement.html_url}) - #\${enhancement.number}\\\`
           ).join('\\n') || 'No planned enhancements.'}
 
           ## 🔧 Maintenance Status
@@ -208,7 +208,7 @@ jobs:
               i.state === 'closed' &&
               new Date(i.closed_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
             ).slice(0, 5).map(achievement =>
-            \`- Resolved: [\${achievement.title}](\${achievement.html_url}) - #\${achievement.number}\`
+            \\\`- Resolved: [\${achievement.title}](\${achievement.html_url}) - #\${achievement.number}\\\`
           ).join('\\n') || 'No recent completions.'}
 
           ---
