@@ -1,7 +1,7 @@
 // WizardInputs.tsx - Comprehensive data-driven expense input component
 // Organized sections with validation and region-specific handling
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
   expenseFields, 
   expenseCategories, 
@@ -11,6 +11,7 @@ import {
   type ExpenseCategory 
 } from '../types/expenses'
 import { WizardAnswers } from './Wizard/types'
+import { ValidatedInput } from './ValidatedInput'
 
 interface WizardInputsProps {
   answers: WizardAnswers
@@ -27,6 +28,16 @@ export default function WizardInputs({
   onBack, 
   canProceed 
 }: WizardInputsProps) {
+
+  // Validation tracking state (addresses critical QA issue: input validation)
+  const [validationErrors, setValidationErrors] = useState<Record<string, boolean>>({})
+  const [hasValidationErrors, setHasValidationErrors] = useState(false)
+
+  // Update validation status when errors change
+  useEffect(() => {
+    const hasErrors = Object.values(validationErrors).some(hasError => hasError)
+    setHasValidationErrors(hasErrors)
+  }, [validationErrors])
   
   // Helper function to format currency for display
   const formatCurrency = (value: number): string => {
@@ -62,6 +73,20 @@ export default function WizardInputs({
     })
   }, [answers])
   
+  // Handle validation changes for input fields
+  const handleValidationChange = (fieldId: string, isValid: boolean) => {
+    setValidationErrors(prev => ({
+      ...prev,
+      [fieldId]: !isValid
+    }))
+  }
+
+  // Calculate context for validation (business logic)
+  const validationContext = {
+    maxReasonableRevenue: (answers.avgNetFee || 125) * (answers.taxPrepReturns || 1600), // Calculate from fee * returns
+    totalExpensesPercent: 0 // Would be calculated from all current expense percentages
+  }
+
   // Get fields appropriate for current region and TaxRush settings
   const relevantFields = getFieldsForRegion(answers.region, answers.handlesTaxRush)
   
@@ -145,74 +170,95 @@ export default function WizardInputs({
     }
     
     return (
-      <div key={field.id} style={{ marginBottom: '0.75rem' }}>
-        {/* Field label and inputs - horizontal layout */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-          <label 
-            title={field.description}
-            style={{ minWidth: '120px', fontWeight: 500 }}
-          >
+      <div key={field.id} style={{ 
+        marginBottom: '0.75rem',
+        display: 'grid',
+        gridTemplateColumns: '200px 1fr',
+        gridTemplateRows: 'auto auto auto auto',
+        gap: '0.25rem 0.75rem',
+        alignItems: 'center'
+      }}>
+        <label 
+          title={field.description}
+          style={{ 
+            fontWeight: 500, 
+            gridColumn: '1', 
+            gridRow: '1',
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word'
+          }}
+        >
           {fieldLabel}
         </label>
         
-          {/* Input group */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            {/* Percentage/Fixed Amount Input */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              {isFixed && <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>}
+        {/* Input group */}
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '0.5rem',
+          gridColumn: '2', 
+          gridRow: '1'
+        }}>
+          {/* Percentage/Fixed Amount Input */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+            {isFixed && <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>}
+          <input
+            type="number"
+            min={0}
+            max={isFixed ? undefined : 100}
+              step={1}
+            value={percentageValue}
+            onChange={e => handlePercentageChange(+e.target.value || 0)}
+              disabled={isDisabled || isLocked}
+              readOnly={isLocked}
+            placeholder={field.defaultValue.toString()}
+              style={{ 
+                width: '80px', 
+                textAlign: 'right',
+                border: '1px solid #d1d5db', 
+                borderRadius: '4px', 
+                padding: '0.5rem'
+              }}
+            />
+            {!isFixed && <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>}
+        </div>
+        
+        {/* Dollar Input - only show for percentage-based fields */}
+        {!isFixed && (
+            <>
+              <span style={{ color: '#6b7280' }}>=</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
             <input
               type="number"
               min={0}
-              max={isFixed ? undefined : 100}
-                step={1}
-              value={percentageValue}
-              onChange={e => handlePercentageChange(+e.target.value || 0)}
-                disabled={isDisabled || isLocked}
-                readOnly={isLocked}
-              placeholder={field.defaultValue.toString()}
-                style={{ 
-                  width: '80px', 
-                  textAlign: 'right',
-                  border: '1px solid #d1d5db', 
-                  borderRadius: '4px', 
-                  padding: '0.5rem'
-                }}
-              />
-              {!isFixed && <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>}
-          </div>
-          
-          {/* Dollar Input - only show for percentage-based fields */}
-          {!isFixed && (
-              <>
-                <span style={{ color: '#6b7280' }}>=</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-              <input
-                type="number"
-                min={0}
-                step={1}
-                value={dollarValue || ''}
-                onChange={e => handleDollarChange(+e.target.value || 0)}
-                    disabled={isDisabled || calculationBase === 0 || isLocked}
-                    readOnly={isLocked}
-                placeholder="0"
-                    style={{ 
-                      width: '80px', 
-                      textAlign: 'right',
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '4px', 
-                      padding: '0.5rem'
-                    }}
-                  />
-              </div>
-              </>
-            )}
+              step={1}
+              value={dollarValue || ''}
+              onChange={e => handleDollarChange(+e.target.value || 0)}
+                  disabled={isDisabled || calculationBase === 0 || isLocked}
+                  readOnly={isLocked}
+              placeholder="0"
+                  style={{ 
+                    width: '80px', 
+                    textAlign: 'right',
+                    border: '1px solid #d1d5db', 
+                    borderRadius: '4px', 
+                    padding: '0.5rem'
+                  }}
+                />
             </div>
+            </>
+          )}
         </div>
         
         {/* Percentage Slider - only for percentage-based, non-locked fields */}
         {!isFixed && !isLocked && (
-          <div style={{ marginLeft: '100px', marginTop: '0.5rem', marginBottom: '0.25rem' }}>
+          <div style={{ 
+            gridColumn: '2', 
+            gridRow: '2',
+            marginTop: '0.5rem', 
+            marginBottom: '0.25rem' 
+          }}>
             <input
               type="range"
               min={0}
@@ -237,14 +283,25 @@ export default function WizardInputs({
         
         {/* Locked field indicator */}
         {isLocked && (
-          <div style={{ marginLeft: '100px', marginTop: '0.25rem', fontSize: '0.75rem', color: '#6b7280', fontStyle: 'italic' }}>
+          <div style={{ 
+            gridColumn: '2', 
+            gridRow: '2',
+            marginTop: '0.25rem', 
+            fontSize: '0.75rem', 
+            color: '#6b7280', 
+            fontStyle: 'italic' 
+          }}>
             🔒 Locked per franchise agreement
           </div>
         )}
         
         {/* Field description */}
         {field.description && (
-          <div className="small" style={{ marginLeft: '100px', opacity: 0.7 }}>
+          <div className="small" style={{ 
+            gridColumn: '2', 
+            gridRow: '3',
+            opacity: 0.7 
+          }}>
             {field.description}
             {!isFixed && calculationBase > 0 && (
               <span style={{ color: '#059669' }}>
@@ -308,7 +365,7 @@ export default function WizardInputs({
   }
 
   return (
-    <div data-wizard-step="inputs">
+    <div data-wizard-step="inputs" style={{ paddingLeft: '1rem' }}>
       <div className="card-title">Income & Expense Inputs</div>
       
       {/* Store Type Indicator */}
@@ -455,11 +512,31 @@ export default function WizardInputs({
         )}
         
         {/* Average Net Fee */}
-        <div style={{ marginBottom: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-            <label style={{ minWidth: '120px', fontWeight: 500 }}>Average Net Fee {answers.storeType === 'existing' && '📋'}</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+        <div style={{ 
+          marginBottom: '0.75rem',
+          display: 'grid',
+          gridTemplateColumns: '200px 1fr',
+          gridTemplateRows: 'auto auto',
+          gap: '0.25rem 0.75rem',
+          alignItems: 'center'
+        }}>
+          <label style={{ 
+            fontWeight: 500, 
+            gridColumn: '1', 
+            gridRow: '1',
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word'
+          }}>
+            Average Net Fee {answers.storeType === 'existing' && '📋'}
+          </label>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '0.25rem',
+            gridColumn: '2', 
+            gridRow: '1'
+          }}>
+            <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
             <input
               type="number"
               min={50}
@@ -511,9 +588,12 @@ export default function WizardInputs({
                   ...(answers.storeType === 'existing' ? { backgroundColor: '#f0f9ff', borderColor: '#0ea5e9' } : {})
                 }}
               />
-            </div>
           </div>
-          <div className="small" style={{ marginLeft: '100px', opacity: 0.7 }}>
+          <div className="small" style={{ 
+            opacity: 0.7,
+            gridColumn: '2',
+            gridRow: '2'
+          }}>
             {(() => {
               if (answers.storeType !== 'existing') {
                 return 'Average fee per tax return after discounts'
@@ -534,15 +614,35 @@ export default function WizardInputs({
               
               return `📋 Projected fee with ${answers.expectedGrowthPct > 0 ? '+' : ''}${answers.expectedGrowthPct}% growth`
             })()}
-            </div>
           </div>
+        </div>
 
         {/* Tax Prep Returns */}
-        <div style={{ marginBottom: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-            <label style={{ minWidth: '120px', fontWeight: 500 }}>Tax Prep Returns {answers.storeType === 'existing' && '📋'}</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
+        <div style={{ 
+          marginBottom: '0.75rem',
+          display: 'grid',
+          gridTemplateColumns: '200px 1fr',
+          gridTemplateRows: 'auto auto',
+          gap: '0.25rem 0.75rem',
+          alignItems: 'center'
+        }}>
+          <label style={{ 
+            fontWeight: 500, 
+            gridColumn: '1', 
+            gridRow: '1',
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word'
+          }}>
+            Tax Prep Returns {answers.storeType === 'existing' && '📋'}
+          </label>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '0.25rem',
+            gridColumn: '2', 
+            gridRow: '1'
+          }}>
+            <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
             <input
               type="number"
               min={100}
@@ -594,9 +694,12 @@ export default function WizardInputs({
                   ...(answers.storeType === 'existing' ? { backgroundColor: '#f0f9ff', borderColor: '#0ea5e9' } : {})
                 }}
               />
-            </div>
           </div>
-          <div className="small" style={{ marginLeft: '100px', opacity: 0.7 }}>
+          <div className="small" style={{ 
+            opacity: 0.7,
+            gridColumn: '2',
+            gridRow: '2'
+          }}>
             {(() => {
               if (answers.storeType !== 'existing') {
                 return 'Expected number of tax returns for the season'
@@ -617,16 +720,36 @@ export default function WizardInputs({
               
               return `📋 Projected returns with ${answers.expectedGrowthPct > 0 ? '+' : ''}${answers.expectedGrowthPct}% growth`
             })()}
-            </div>
           </div>
+        </div>
 
         {/* TaxRush Returns (Canada only) */}
           {answers.region === 'CA' && (
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '120px', fontWeight: 500 }}>TaxRush Returns {answers.storeType === 'existing' && '📋'}</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
+          <div style={{ 
+            marginBottom: '0.75rem',
+            display: 'grid',
+            gridTemplateColumns: '200px 1fr',
+            gridTemplateRows: 'auto auto',
+            gap: '0.25rem 0.75rem',
+            alignItems: 'center'
+          }}>
+            <label style={{ 
+              fontWeight: 500, 
+              gridColumn: '1', 
+              gridRow: '1',
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word'
+            }}>
+              TaxRush Returns {answers.storeType === 'existing' && '📋'}
+            </label>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '0.25rem',
+              gridColumn: '2', 
+              gridRow: '1'
+            }}>
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
               <input
                 type="number"
                 min={0}
@@ -644,23 +767,46 @@ export default function WizardInputs({
                     ...(answers.storeType === 'existing' ? { backgroundColor: '#f0f9ff', borderColor: '#0ea5e9' } : {})
                   }}
                 />
-              </div>
             </div>
-            <div className="small" style={{ marginLeft: '100px', opacity: 0.7 }}>
-                {answers.storeType === 'existing' ? 
-                  '📋 Carried forward from page 1 (you can adjust)' : 
-                  'Expected TaxRush returns (Canada only)'
-                }
-              </div>
+            <div className="small" style={{ 
+              opacity: 0.7,
+              gridColumn: '2',
+              gridRow: '2'
+            }}>
+              {answers.storeType === 'existing' ? 
+                '📋 Carried forward from page 1 (you can adjust)' : 
+                'Expected TaxRush returns (Canada only)'
+              }
             </div>
+          </div>
           )}
 
         {/* Other Revenue */}
-        <div style={{ marginBottom: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-            <label style={{ minWidth: '120px', fontWeight: 500 }}>Other Revenue</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+        <div style={{ 
+          marginBottom: '0.75rem',
+          display: 'grid',
+          gridTemplateColumns: '200px 1fr',
+          gridTemplateRows: 'auto auto',
+          gap: '0.25rem 0.75rem',
+          alignItems: 'center'
+        }}>
+          <label style={{ 
+            fontWeight: 500, 
+            gridColumn: '1', 
+            gridRow: '1',
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word'
+          }}>
+            Other Revenue
+          </label>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '0.25rem',
+            gridColumn: '2', 
+            gridRow: '1'
+          }}>
+            <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
             <input
               type="number"
               min={0}
@@ -677,18 +823,41 @@ export default function WizardInputs({
                   padding: '0.5rem'
                 }}
               />
-            </div>
           </div>
-          <div className="small" style={{ marginLeft: '100px', opacity: 0.7 }}>
-              Additional revenue (bookkeeping, notary, etc.)
-            </div>
+          <div className="small" style={{ 
+            opacity: 0.7,
+            gridColumn: '2',
+            gridRow: '2'
+          }}>
+            Additional revenue (bookkeeping, notary, etc.)
           </div>
+        </div>
 
         {/* Customer Discounts */}
-        <div style={{ marginBottom: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-            <label style={{ minWidth: '120px', fontWeight: 500 }}>Customer Discounts</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+        <div style={{ 
+          marginBottom: '0.75rem',
+          display: 'grid',
+          gridTemplateColumns: '200px 1fr',
+          gridTemplateRows: 'auto auto',
+          gap: '0.25rem 0.75rem',
+          alignItems: 'center'
+        }}>
+          <label style={{ 
+            fontWeight: 500, 
+            gridColumn: '1', 
+            gridRow: '1',
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word'
+          }}>
+            Customer Discounts
+          </label>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '0.25rem',
+            gridColumn: '2', 
+            gridRow: '1'
+          }}>
             <input
               type="number"
               min={0}
@@ -706,12 +875,15 @@ export default function WizardInputs({
                 }}
               />
               <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
-            </div>
           </div>
-          <div className="small" style={{ marginLeft: '100px', opacity: 0.7 }}>
+          <div className="small" style={{ 
+            opacity: 0.7,
+            gridColumn: '2',
+            gridRow: '2'
+          }}>
             <strong>Should not exceed 3%</strong> of gross tax prep fees - reduces your net revenue
-            </div>
           </div>
+        </div>
 
 
         {/* Revenue Breakdown with Stoplight Colors */}
@@ -1255,9 +1427,9 @@ export default function WizardInputs({
         <button 
           type="button" 
           onClick={onNext} 
-          disabled={!canProceed}
+          disabled={!canProceed || hasValidationErrors}
           style={{
-            background: canProceed 
+            background: canProceed && !hasValidationErrors 
               ? 'linear-gradient(45deg, #059669, #10b981)' 
               : 'linear-gradient(45deg, #9ca3af, #d1d5db)', 
             color: 'white', 

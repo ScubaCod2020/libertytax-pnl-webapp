@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef } from 'react'
 import type { Region, Thresholds } from '../lib/calcs'
 import type { Scenario } from '../data/presets'
+import { validatePersistenceData } from '../utils/validation'
 
 export const APP_VERSION = 'v0.5-preview'
 export const ORIGIN = typeof window !== 'undefined' ? window.location.origin : 'ssr'
@@ -75,17 +76,30 @@ export function usePersistence() {
         dbg('No data found in localStorage for key:', STORAGE_KEY); 
         return 
       }
+      
       const parsed = JSON.parse(raw) as PersistEnvelopeV1
-      dbg('Successfully loaded data:', { 
+      
+      // Critical security fix: Validate data integrity before using
+      if (!validatePersistenceData(parsed)) {
+        console.warn('💾 PERSISTENCE WARNING - Corrupted data detected, clearing storage for safety')
+        localStorage.removeItem(STORAGE_KEY)
+        return undefined
+      }
+      
+      dbg('Successfully loaded and validated data:', { 
         savedAt: parsed?.meta?.savedAtISO ?? '(no meta)',
         version: parsed?.version,
         hasLastSession: !!parsed?.last
       })
+      
       if (parsed && parsed.version === 1) return parsed
+      
     } catch (e) { 
-      console.error('💾 PERSISTENCE ERROR - Failed to load:', e) 
+      console.error('💾 PERSISTENCE ERROR - Failed to load or parse data, clearing storage:', e)
+      // Clear corrupted data to prevent repeated errors
+      localStorage.removeItem(STORAGE_KEY)
     }
-    return
+    return undefined
   }
 
   const saveEnvelope = (mutator: (prev: PersistEnvelopeV1) => PersistEnvelopeV1) => {

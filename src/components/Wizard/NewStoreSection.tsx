@@ -4,6 +4,8 @@
 import React from 'react'
 import type { WizardSectionProps } from './types'
 import { calculateNetIncome, formatCurrency, parseCurrencyInput } from './calculations'
+import FormSection from './FormSection'
+import FormField, { CurrencyInput, NumberInput } from './FormField'
 
 export default function NewStoreSection({ answers, updateAnswers, region }: WizardSectionProps) {
   return (
@@ -64,264 +66,135 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
       )}
 
       {/* Target Performance Goals Box */}
-      <div style={{
-        marginBottom: '1rem',
-        padding: '1.5rem',
-        backgroundColor: '#f8fafc',
-        border: '1px solid #e2e8f0',
-        borderRadius: '8px'
-      }}>
-        <div>
-          <h4 style={{ 
-            margin: '0 0 0.75rem 0', 
-            fontSize: '1rem', 
-            fontWeight: 600, 
-            color: '#374151',
-            borderBottom: '2px solid #059669',
-            paddingBottom: '0.25rem'
-          }}>
-            Target Performance Goals
-          </h4>
+      <FormSection 
+        title="Target Performance Goals" 
+        icon="🎯" 
+        backgroundColor="#f8fafc" 
+        borderColor="#059669"
+      >
 
-          {/* Average Net Fee - Manual entry */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label htmlFor="avg-net-fee" style={{ minWidth: '120px', fontWeight: 500 }}>Average Net Fee</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                <input
-                  id="avg-net-fee"
-                  type="text"
-                  placeholder="e.g., 130"
-                  value={formatCurrency(answers.avgNetFee)}
-                  onChange={e => {
-                    const newValue = parseCurrencyInput(e.target.value)
-                    updateAnswers({ avgNetFee: newValue })
-                  }}
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem' 
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              Your target average net fee per return
-            </div>
-          </div>
+          <FormField 
+            label="Average Net Fee" 
+            helpText="Your target average net fee per return"
+            required
+          >
+            <CurrencyInput
+              value={answers.avgNetFee}
+              placeholder="e.g., 130"
+              onChange={value => updateAnswers({ avgNetFee: value })}
+            />
+          </FormField>
 
-          {/* Tax Prep Returns - Manual entry */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label htmlFor="tax-prep-returns" style={{ minWidth: '120px', fontWeight: 500 }}>Tax Prep Returns</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
-                <input
-                  id="tax-prep-returns"
-                  type="number"
-                  placeholder="e.g., 1,680"
-                  value={answers.taxPrepReturns || ''}
-                  onChange={e => updateAnswers({ 
-                    taxPrepReturns: parseFloat(e.target.value) || undefined 
-                  })}
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem' 
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              Your target number of tax returns
-            </div>
-          </div>
+          <FormField 
+            label="Tax Prep Returns" 
+            helpText="Your target number of tax returns"
+            required
+          >
+            <NumberInput
+              value={answers.taxPrepReturns}
+              placeholder="e.g., 1,680"
+              prefix="#"
+              onChange={value => updateAnswers({ taxPrepReturns: value })}
+            />
+          </FormField>
 
           {/* TaxRush Returns (Canada only - conditional) */}
           {region === 'CA' && answers.handlesTaxRush && (
-            <div style={{ marginBottom: '0.75rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-                <label htmlFor="taxrush-returns" style={{ minWidth: '120px', fontWeight: 500 }}>TaxRush Returns</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
-                  <input
-                    id="taxrush-returns"
-                    type="number"
-                    placeholder="0"
-                    value={answers.taxRushReturns || (answers.taxPrepReturns ? Math.round(answers.taxPrepReturns * 0.15) : '')}
-                    onChange={e => updateAnswers({ 
-                      taxRushReturns: parseFloat(e.target.value) || undefined 
-                    })}
-                    style={{ 
-                      width: '140px', 
-                      textAlign: 'right', 
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '4px', 
-                      padding: '0.5rem' 
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-                Your target TaxRush returns for this year (typically ~15% of total returns)
-              </div>
-            </div>
+            <FormField 
+              label="TaxRush Returns" 
+              helpText="Your target TaxRush returns for this year (typically ~15% of total returns)"
+            >
+              <NumberInput
+                value={answers.taxRushReturns || (answers.taxPrepReturns ? Math.round(answers.taxPrepReturns * 0.15) : undefined)}
+                placeholder="0"
+                prefix="#"
+                onChange={value => updateAnswers({ taxRushReturns: value })}
+              />
+            </FormField>
           )}
 
-          {/* TaxRush Gross Fees (Canada only - conditional) */}
-          {region === 'CA' && answers.handlesTaxRush && (
-            <div style={{ marginBottom: '0.75rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-                <label htmlFor="taxrush-gross-fees" style={{ minWidth: '120px', fontWeight: 500 }}>TaxRush Gross Fees</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                  <input
-                    id="taxrush-gross-fees"
-                    type="number"
-                    placeholder="0"
-                    value={answers.taxRushGrossFees || ''}
-                    onChange={e => updateAnswers({ 
-                      taxRushGrossFees: parseFloat(e.target.value) || undefined 
-                    })}
-                    style={{ 
-                      width: '140px', 
-                      textAlign: 'right', 
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '4px', 
-                      padding: '0.5rem' 
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-                Your target gross fees from TaxRush returns (separate from tax prep fees)
-              </div>
-            </div>
-          )}
+        {/* TaxRush Gross Fees (Canada only - conditional) */}
+        {region === 'CA' && answers.handlesTaxRush && (
+          <FormField 
+            label="TaxRush Gross Fees" 
+            helpText="Your target gross fees from TaxRush returns (separate from tax prep fees)"
+          >
+            <CurrencyInput
+              value={answers.taxRushGrossFees}
+              placeholder="0"
+              onChange={value => updateAnswers({ taxRushGrossFees: value })}
+            />
+          </FormField>
+        )}
 
-          {/* TaxRush Average Net Fee (Canada only - conditional) */}
-          {region === 'CA' && answers.handlesTaxRush && (
-            <div style={{ marginBottom: '0.75rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-                <label htmlFor="taxrush-avg-net-fee" style={{ minWidth: '120px', fontWeight: 500 }}>TaxRush Avg Net Fee</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                  <input
-                    id="taxrush-avg-net-fee"
-                    type="number"
-                    placeholder="0"
-                    value={answers.taxRushAvgNetFee || ''}
-                    onChange={e => updateAnswers({ 
-                      taxRushAvgNetFee: parseFloat(e.target.value) || undefined 
-                    })}
-                    style={{ 
-                      width: '140px', 
-                      textAlign: 'right', 
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '4px', 
-                      padding: '0.5rem' 
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-                Your target average net fee per TaxRush return (separate from tax prep average)
-              </div>
-            </div>
-          )}
+        {/* TaxRush Average Net Fee (Canada only - conditional) */}
+        {region === 'CA' && answers.handlesTaxRush && (
+          <FormField 
+            label="TaxRush Avg Net Fee" 
+            helpText="Your target average net fee per TaxRush return (separate from tax prep average)"
+          >
+            <CurrencyInput
+              value={answers.taxRushAvgNetFee}
+              placeholder="0"
+              onChange={value => updateAnswers({ taxRushAvgNetFee: value })}
+            />
+          </FormField>
+        )}
 
-          {/* Gross Tax Prep Fees - Auto-calculated */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label htmlFor="gross-tax-prep-fees" style={{ minWidth: '120px', fontWeight: 500 }}>Gross Tax Prep Fees</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                <input
-                  id="gross-tax-prep-fees"
-                  type="text"
-                  value={(() => {
-                    if (answers.avgNetFee && answers.taxPrepReturns) {
-                      const grossFees = Math.round(answers.avgNetFee * answers.taxPrepReturns)
-                      return grossFees.toLocaleString()
-                    }
-                    return ''
-                  })()}
-                  readOnly
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem', 
-                    backgroundColor: '#f9fafb' 
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              Auto-calculated: Average Net Fee × Tax Prep Returns
-            </div>
+        <FormField 
+          label="Gross Tax Prep Fees" 
+          helpText="Auto-calculated: Average Net Fee × Tax Prep Returns"
+        >
+          <CurrencyInput
+            value={(() => {
+              if (answers.avgNetFee && answers.taxPrepReturns) {
+                return Math.round(answers.avgNetFee * answers.taxPrepReturns)
+              }
+              return undefined
+            })()}
+            placeholder="Auto-calculated"
+            onChange={() => {}} // Read-only
+            readOnly
+            backgroundColor="#f9fafb"
+          />
+        </FormField>
+
+        <FormField 
+          label="Total Expenses" 
+          helpText="Industry standard: 76% of Gross Tax Prep Fees (you can override)"
+        >
+          <CurrencyInput
+            value={(() => {
+              if (answers.avgNetFee && answers.taxPrepReturns) {
+                const grossFees = answers.avgNetFee * answers.taxPrepReturns
+                return Math.round(grossFees * 0.76)
+              }
+              return undefined
+            })()}
+            placeholder="Auto-calculated"
+            onChange={value => updateAnswers({ projectedExpenses: value })}
+          />
+        </FormField>
+
+      </FormSection>
+
+      {/* Target Net Income Summary */}
+      {answers.avgNetFee && answers.taxPrepReturns && (
+        <div style={{ 
+          padding: '0.5rem', 
+          backgroundColor: '#e0f2fe', 
+          borderRadius: '4px',
+          fontWeight: 600,
+          fontSize: '0.9rem',
+          color: '#0369a1',
+          marginBottom: '1rem'
+        }}>
+          Target Net Income: ${calculateNetIncome(answers).toLocaleString()}
+          <div style={{ fontSize: '0.8rem', fontWeight: 'normal' }}>
+            Net Margin: 24% (industry standard)
           </div>
-
-          {/* Total Expenses - Auto-calculated with override */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label htmlFor="total-expenses" style={{ minWidth: '120px', fontWeight: 500 }}>Total Expenses</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                <input
-                  id="total-expenses"
-                  type="text"
-                  value={(() => {
-                    if (answers.avgNetFee && answers.taxPrepReturns) {
-                      const grossFees = answers.avgNetFee * answers.taxPrepReturns
-                      const expenses = Math.round(grossFees * 0.76)
-                      return expenses.toLocaleString()
-                    }
-                    return ''
-                  })()}
-                  onChange={e => {
-                    const newValue = parseCurrencyInput(e.target.value)
-                    updateAnswers({ projectedExpenses: newValue })
-                  }}
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem' 
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              Industry standard: 76% of Gross Tax Prep Fees (you can override)
-            </div>
-          </div>
-
-          {/* Target Net Income Summary */}
-          {answers.avgNetFee && answers.taxPrepReturns && (
-            <div style={{ 
-              padding: '0.5rem', 
-              backgroundColor: '#e0f2fe', 
-              borderRadius: '4px',
-              fontWeight: 600,
-              fontSize: '0.9rem',
-              color: '#0369a1'
-            }}>
-              Target Net Income: ${calculateNetIncome(answers).toLocaleString()}
-              <div style={{ fontSize: '0.8rem', fontWeight: 'normal' }}>
-                Net Margin: 24% (industry standard)
-              </div>
-            </div>
-          )}
         </div>
-      </div>
+      )}
     </>
   )
 }

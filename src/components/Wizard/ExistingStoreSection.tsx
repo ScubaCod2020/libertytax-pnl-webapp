@@ -4,6 +4,8 @@
 import React, { useEffect } from 'react'
 import type { WizardSectionProps } from './types'
 import { GROWTH_OPTIONS, formatCurrency, parseCurrencyInput } from './calculations'
+import FormSection from './FormSection'
+import FormField, { CurrencyInput, NumberInput, PercentageInput } from './FormField'
 
 /*
 SAVED FOR FUTURE USE - Auto-calc button component:
@@ -195,295 +197,163 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
       )}
 
       {/* Last Year Performance Box */}
-      <div style={{
-        marginBottom: '1rem',
-        padding: '1.5rem',
-        backgroundColor: '#f8fafc',
-        border: '1px solid #e2e8f0',
-        borderRadius: '8px'
-      }}>
-        <div>
-          <h4 style={{ 
-            margin: '0 0 0.75rem 0', 
-            fontSize: '1rem', 
-            fontWeight: 600, 
-            color: '#374151',
-            borderBottom: '2px solid #6b7280',
-            paddingBottom: '0.25rem'
-          }}>
-            Last Year Performance
-          </h4>
+      <FormSection 
+        title="Last Year Performance" 
+        icon="📊" 
+        backgroundColor="#f8fafc" 
+        borderColor="#6b7280"
+        description="Enter your historical data for accurate projections"
+      >
           
-          {/* Tax Prep Gross Fees Input */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '140px', fontWeight: 500 }}>Tax Prep Gross Fees</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                <input
-                  type="text"
-                  placeholder="e.g., 206,000"
-                  value={formatCurrency(answers.lastYearGrossFees)}
-                  onChange={e => {
-                    const newValue = parseCurrencyInput(e.target.value)
-                    console.log('🧙‍♂️ EXISTING - Tax Prep Gross Fees changed:', { 
-                      oldValue: answers.lastYearGrossFees, 
-                      newValue 
-                    })
-                    updateAnswers({ lastYearGrossFees: newValue })
-                  }}
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem' 
-                  }}
-                />
+        <FormField 
+          label="Tax Prep Gross Fees" 
+          helpText="Total tax prep fees charged (before any discounts)"
+          required
+        >
+          <CurrencyInput
+            value={answers.lastYearGrossFees}
+            placeholder="e.g., 206,000"
+            onChange={value => {
+              console.log('🧙‍♂️ EXISTING - Tax Prep Gross Fees changed:', { 
+                oldValue: answers.lastYearGrossFees, 
+                newValue: value 
+              })
+              updateAnswers({ lastYearGrossFees: value })
+            }}
+          />
+        </FormField>
+
+        <FormField 
+          label="Customer Discounts" 
+          helpText="Total discounts given to customers (percentage auto-calculated)"
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <CurrencyInput
+              value={answers.lastYearDiscountsAmt}
+              placeholder="e.g., 6,000"
+              width="110px"
+              onChange={value => {
+                console.log('🧙‍♂️ EXISTING - Discounts Amount changed:', { 
+                  oldValue: answers.lastYearDiscountsAmt, 
+                  newValue: value 
+                })
+                updateAnswers({ lastYearDiscountsAmt: value })
+              }}
+            />
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <span style={{ color: '#6b7280' }}>= </span>
+              <div style={{ 
+                width: '50px', 
+                textAlign: 'right', 
+                padding: '0.5rem',
+                backgroundColor: '#f9fafb',
+                border: '1px solid #e5e7eb',
+                borderRadius: '4px',
+                fontWeight: 500,
+                color: '#374151'
+              }}>
+                {answers.lastYearGrossFees && answers.lastYearDiscountsAmt 
+                  ? ((answers.lastYearDiscountsAmt / answers.lastYearGrossFees) * 100).toFixed(1)
+                  : '0.0'
+                }
               </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              Total tax prep fees charged (before any discounts)
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
             </div>
           </div>
+        </FormField>
 
-          {/* Customer Discounts - Bidirectional Calculation */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '140px', fontWeight: 500 }}>Customer Discounts</label>
-              
-              {/* Dollar Amount Input */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                <input
-                  type="text"
-                  placeholder="e.g., 6,000"
-                  value={formatCurrency(answers.lastYearDiscountsAmt)}
-                  onChange={e => {
-                    const newValue = parseCurrencyInput(e.target.value)
-                    console.log('🧙‍♂️ EXISTING - Discounts Amount changed:', { 
-                      oldValue: answers.lastYearDiscountsAmt, 
-                      newValue 
-                    })
-                    updateAnswers({ lastYearDiscountsAmt: newValue })
-                  }}
-                  style={{ 
-                    width: '110px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem' 
-                  }}
-                />
-              </div>
+        <FormField 
+          label="Tax Prep Returns" 
+          helpText="Total number of tax returns you processed last year"
+          required
+        >
+          <NumberInput
+            value={answers.lastYearTaxPrepReturns}
+            placeholder="e.g., 1,680"
+            prefix="#"
+            onChange={value => updateAnswers({ lastYearTaxPrepReturns: value })}
+          />
+        </FormField>
 
-              {/* Auto-Calculated Percentage Display */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ color: '#6b7280' }}>= </span>
-                <div style={{ 
-                  width: '50px', 
-                  textAlign: 'right', 
-                  padding: '0.5rem',
-                  backgroundColor: 'var(--brand-auto-calc-display)',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '4px',
-                  fontWeight: 500,
-                  color: '#374151'
-                }}>
-                  {answers.lastYearGrossFees && answers.lastYearDiscountsAmt 
-                    ? ((answers.lastYearDiscountsAmt / answers.lastYearGrossFees) * 100).toFixed(1)
-                    : '0.0'
-                  }
-                </div>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              Total discounts given to customers (percentage auto-calculated)
-            </div>
-          </div>
-
-          {/* Tax Prep Returns Count - NEW FIELD */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '140px', fontWeight: 500 }}>Tax Prep Returns</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
-                <input
-                  type="number"
-                  placeholder="e.g., 1,680"
-                  value={answers.lastYearTaxPrepReturns || ''}
-                  onChange={e => {
-                    const newValue = parseFloat(e.target.value) || undefined
-                    updateAnswers({ lastYearTaxPrepReturns: newValue })
-                  }}
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem' 
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              Total number of tax returns you processed last year
-            </div>
-          </div>
-
-          {/* Average Net Fee - Editable with Auto-calculation */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '140px', fontWeight: 500 }}>Average Net Fee</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                <input
-                  type="text"
-                  placeholder="Auto-calculated"
-                  value={(() => {
-                    // Use manual override if set, otherwise auto-calculate
-                    if (answers.manualAvgNetFee !== undefined) {
-                      return formatCurrency(answers.manualAvgNetFee)
-                    }
-                    if (answers.lastYearGrossFees && answers.lastYearTaxPrepReturns) {
-                      return Math.round(answers.lastYearGrossFees / answers.lastYearTaxPrepReturns).toLocaleString()
-                    }
-                    return ''
-                  })()}
-                  onChange={e => {
-                    const newValue = parseCurrencyInput(e.target.value)
-                    updateAnswers({ manualAvgNetFee: newValue })
-                  }}
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem',
-                    backgroundColor: answers.manualAvgNetFee !== undefined ? 'white' : 'var(--brand-auto-calc-editable)'
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              {answers.manualAvgNetFee !== undefined ? 
-                'Manual override - clear field to auto-calculate from Gross Fees ÷ Tax Prep Returns' :
-                'Auto-calculated: Gross Fees ÷ Tax Prep Returns (you can override)'
+        <FormField 
+          label="Average Net Fee" 
+          helpText={
+            answers.manualAvgNetFee !== undefined ? 
+              'Manual override - clear field to auto-calculate from Gross Fees ÷ Tax Prep Returns' :
+              'Auto-calculated: Gross Fees ÷ Tax Prep Returns (you can override)'
+          }
+        >
+          <CurrencyInput
+            value={(() => {
+              // Use manual override if set, otherwise auto-calculate
+              if (answers.manualAvgNetFee !== undefined) {
+                return answers.manualAvgNetFee
               }
-            </div>
-          </div>
-
-          {/* Total Tax Prep Income - Editable with Auto-calculation */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '140px', fontWeight: 500 }}>Total Tax Prep Income</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                <input
-                  type="text"
-                  placeholder="Auto-calculated"
-                  value={(() => {
-                    // Use manual override if set, otherwise auto-calculate
-                    if (answers.manualTaxPrepIncome !== undefined) {
-                      return formatCurrency(answers.manualTaxPrepIncome)
-                    }
-                    if (answers.lastYearGrossFees && answers.lastYearDiscountsAmt) {
-                      return Math.round(answers.lastYearGrossFees - answers.lastYearDiscountsAmt).toLocaleString()
-                    }
-                    if (answers.lastYearGrossFees) {
-                      return Math.round(answers.lastYearGrossFees * 0.97).toLocaleString()
-                    }
-                    return ''
-                  })()}
-                  onChange={e => {
-                    const newValue = parseCurrencyInput(e.target.value)
-                    updateAnswers({ manualTaxPrepIncome: newValue })
-                  }}
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem',
-                    backgroundColor: answers.manualTaxPrepIncome !== undefined ? 'white' : 'var(--brand-auto-calc-editable)'
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              {answers.manualTaxPrepIncome !== undefined ? 
-                'Manual override - clear field to auto-calculate from Gross Fees - Customer Discounts' :
-                'Auto-calculated: Gross Fees - Customer Discounts (assumes 3% if no discount amount entered)'
+              if (answers.lastYearGrossFees && answers.lastYearTaxPrepReturns) {
+                return Math.round(answers.lastYearGrossFees / answers.lastYearTaxPrepReturns)
               }
-            </div>
-          </div>
+              return undefined
+            })()}
+            placeholder="Auto-calculated"
+            onChange={value => updateAnswers({ manualAvgNetFee: value })}
+            backgroundColor={answers.manualAvgNetFee !== undefined ? 'white' : '#f0f9ff'}
+          />
+        </FormField>
 
-          {/* Other Income */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '140px', fontWeight: 500 }}>Other Income</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                <input
-                  type="text"
-                  placeholder="e.g., 2,500"
-                  value={formatCurrency(answers.lastYearOtherIncome)}
-                  onChange={e => {
-                    const rawValue = e.target.value.replace(/[,$]/g, '')
-                    if (rawValue === '') {
-                      updateAnswers({ lastYearOtherIncome: undefined })
-                    } else {
-                      const parsedValue = parseFloat(rawValue)
-                      updateAnswers({ 
-                        lastYearOtherIncome: isNaN(parsedValue) ? undefined : parsedValue 
-                      })
-                    }
-                  }}
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem' 
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              Optional: Additional revenue streams (bookkeeping, notary, etc.) - Enter 0 or leave blank if none
-            </div>
-          </div>
 
-          {/* TaxRush Gross Fees (Canada only - conditional) */}
-          {region === 'CA' && answers.handlesTaxRush && (
-            <div style={{ marginBottom: '0.75rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-                <label style={{ minWidth: '140px', fontWeight: 500 }}>TaxRush Gross Fees</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                  <input
-                    type="number"
-                    placeholder="0"
-                    value={answers.lastYearTaxRushGrossFees || ''}
-                    onChange={e => updateAnswers({ 
-                      lastYearTaxRushGrossFees: parseFloat(e.target.value) || undefined 
-                    })}
-                    style={{ 
-                      width: '140px', 
-                      textAlign: 'right', 
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '4px', 
-                      padding: '0.5rem' 
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-                Total gross fees from TaxRush returns last year (separate from tax prep fees)
-              </div>
-            </div>
-          )}
+        <FormField 
+          label="Total Tax Prep Income" 
+          helpText={
+            answers.manualTaxPrepIncome !== undefined ? 
+              'Manual override - clear field to auto-calculate from Gross Fees - Customer Discounts' :
+              'Auto-calculated: Gross Fees - Customer Discounts (assumes 3% if no discount amount entered)'
+          }
+        >
+          <CurrencyInput
+            value={(() => {
+              // Use manual override if set, otherwise auto-calculate
+              if (answers.manualTaxPrepIncome !== undefined) {
+                return answers.manualTaxPrepIncome
+              }
+              if (answers.lastYearGrossFees && answers.lastYearDiscountsAmt) {
+                return Math.round(answers.lastYearGrossFees - answers.lastYearDiscountsAmt)
+              }
+              if (answers.lastYearGrossFees) {
+                return Math.round(answers.lastYearGrossFees * 0.97)
+              }
+              return undefined
+            })()}
+            placeholder="Auto-calculated"
+            onChange={value => updateAnswers({ manualTaxPrepIncome: value })}
+            backgroundColor={answers.manualTaxPrepIncome !== undefined ? 'white' : '#f0f9ff'}
+          />
+        </FormField>
+
+        <FormField 
+          label="Other Income" 
+          helpText="Optional: Additional revenue streams (bookkeeping, notary, etc.) - Enter 0 or leave blank if none"
+        >
+          <CurrencyInput
+            value={answers.lastYearOtherIncome}
+            placeholder="e.g., 2,500"
+            onChange={value => updateAnswers({ lastYearOtherIncome: value })}
+          />
+        </FormField>
+
+        {/* TaxRush Gross Fees (Canada only - conditional) */}
+        {region === 'CA' && answers.handlesTaxRush && (
+          <FormField 
+            label="TaxRush Gross Fees" 
+            helpText="Total gross fees from TaxRush returns last year (separate from tax prep fees)"
+          >
+            <CurrencyInput
+              value={answers.lastYearTaxRushGrossFees}
+              placeholder="0"
+              onChange={value => updateAnswers({ lastYearTaxRushGrossFees: value })}
+            />
+          </FormField>
+        )}
 
           {/* TaxRush Returns - Bidirectional Calculation (Canada only - conditional) */}
           {region === 'CA' && answers.handlesTaxRush && (
@@ -609,34 +479,18 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
             </div>
           )}
 
-          {/* Total Expenses */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '140px', fontWeight: 500 }}>Total Expenses</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                <input
-                  type="text"
-                  placeholder="e.g., 150,000"
-                  value={formatCurrency(answers.lastYearExpenses)}
-                  onChange={e => {
-                    const newValue = parseCurrencyInput(e.target.value)
-                    updateAnswers({ lastYearExpenses: newValue })
-                  }}
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem' 
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              All expenses including salaries, rent, supplies, royalties, etc.
-            </div>
-          </div>
+        <FormField 
+          label="Total Expenses" 
+          helpText="All expenses including salaries, rent, supplies, royalties, etc."
+          required
+        >
+          <CurrencyInput
+            value={answers.lastYearExpenses}
+            placeholder="e.g., 150,000"
+            onChange={value => updateAnswers({ lastYearExpenses: value })}
+          />
+        </FormField>
+      </FormSection>
 
           {/* Last Year Summary Box */}
           <div style={{ 
@@ -690,8 +544,6 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
               })()}
             </span>
           </div>
-        </div>
-      </div>
 
       {/* Projected Performance Box */}
       <div style={{

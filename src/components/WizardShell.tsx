@@ -10,6 +10,8 @@ import WizardReview from './WizardReview'
 import NewStoreSection from './Wizard/NewStoreSection'
 import ExistingStoreSection from './Wizard/ExistingStoreSection'
 import StrategicAnalysis from './Wizard/StrategicAnalysis'
+import WizardPage from './Wizard/WizardPage'
+import FormField from './Wizard/FormField'
 
 interface WizardShellProps {
   region: Region
@@ -180,7 +182,7 @@ function WelcomeStep({
   canProceed: () => boolean
 }) {
   return (
-    <div data-wizard-step="welcome">
+    <div data-wizard-step="welcome" style={{ paddingLeft: '1rem' }}>
       <div className="card-title">Welcome – Quick Start Wizard</div>
       <div className="card-subtitle">
         Create your customized P&L dashboard in just a few quick steps
@@ -216,30 +218,28 @@ function WelcomeStep({
       </div>
 
       {/* Store Type Selection */}
-      <div style={{ marginBottom: '1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-          <label htmlFor="store-type-select" style={{ minWidth: '80px', fontWeight: 500 }}>Store Type</label>
-          <select 
-            id="store-type-select"
-            value={answers.storeType || ''} 
-            onChange={e => updateAnswers({ storeType: e.target.value as 'new' | 'existing' })}
-            style={{ 
-              padding: '0.5rem',
-              border: '1px solid #d1d5db',
-              borderRadius: '4px',
-              backgroundColor: 'white',
-              minWidth: '200px'
-            }}
-          >
-            <option value="">Select store type...</option>
-            <option value="new">New Store (First year)</option>
-            <option value="existing">Existing Store</option>
-          </select>
-        </div>
-        <div className="small" style={{ marginLeft: '100px', opacity: 0.7 }}>
-          New stores use regional stats, existing stores use your historical data
-        </div>
-      </div>
+      <FormField 
+        label="Store Type" 
+        helpText="New stores use regional stats, existing stores use your historical data"
+        required
+      >
+        <select 
+          id="store-type-select"
+          value={answers.storeType || ''} 
+          onChange={e => updateAnswers({ storeType: e.target.value as 'new' | 'existing' })}
+          style={{ 
+            padding: '0.5rem',
+            border: '1px solid #d1d5db',
+            borderRadius: '4px',
+            backgroundColor: 'white',
+            width: '180px'
+          }}
+        >
+          <option value="">Select store type...</option>
+          <option value="new">New Store (First year)</option>
+          <option value="existing">Existing Store</option>
+        </select>
+      </FormField>
 
       {/* Store-specific sections */}
       {answers.storeType === 'existing' && (
