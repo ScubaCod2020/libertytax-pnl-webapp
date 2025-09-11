@@ -213,26 +213,6 @@ export default function Dashboard({ results }: DashboardProps) {
               })()}
             </div>
             
-            {/* Strategic vs Actual Status */}
-            <div style={{ 
-              fontSize: '0.75rem', 
-              color: '#6b7280', 
-              marginTop: '0.5rem',
-              fontStyle: 'italic',
-              borderTop: '1px solid #e5e7eb',
-              paddingTop: '0.5rem'
-            }}>
-              {(() => {
-                const expensePercentage = results.totalRevenue > 0 ? (results.totalExpenses / results.totalRevenue) * 100 : 0
-                const isStrategicTarget = Math.abs(expensePercentage - 76) <= 1
-                
-                if (isStrategicTarget) {
-                  return '📋 Current expenses align with Page 2 strategic targets (76% industry standard)'
-                } else {
-                  return `📋 Current expenses (${expensePercentage.toFixed(1)}%) differ from Page 2 strategic target (76%) due to Inputs Panel adjustments`
-                }
-              })()}
-            </div>
           </div>
           
           <div style={{ 

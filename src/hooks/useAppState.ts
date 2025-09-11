@@ -219,24 +219,32 @@ export function useAppState(): AppState & AppStateActions {
     setTaxRush(taxRushReturns)
     console.log(`📊 TaxRush flow: Region=${answers.region}, handlesTaxRush=${answers.handlesTaxRush}, returns=${taxRushReturns}`)
     
-    // Apply all 17 expense fields with wizard data or smart defaults
-    setSal(answers.salariesPct ?? 25)
-    setEmpDeductions(answers.empDeductionsPct ?? 10)
-    setRent(answers.rentPct ?? 18)
-    setTelephone(answers.telephoneAmt ?? 200)
-    setUtilities(answers.utilitiesAmt ?? 300)
-    setLocalAdv(answers.localAdvAmt ?? 500)
-    setInsurance(answers.insuranceAmt ?? 150)
-    setPostage(answers.postageAmt ?? 100)
-    setSup(answers.suppliesPct ?? 3.5)
-    setDues(answers.duesAmt ?? 200)
-    setBankFees(answers.bankFeesAmt ?? 100)
-    setMaintenance(answers.maintenanceAmt ?? 150)
-    setTravelEnt(answers.travelEntAmt ?? 200)
-    setRoy(answers.royaltiesPct ?? 14)
-    setAdvRoy(answers.advRoyaltiesPct ?? 5)
-    setTaxRushRoy(answers.taxRushRoyaltiesPct ?? 0)
-    setMisc(answers.miscPct ?? 2.5)
+    // Apply all 17 expense fields with actual wizard values (no fallbacks - trust the wizard)
+    if (answers.salariesPct !== undefined) setSal(answers.salariesPct)
+    if (answers.empDeductionsPct !== undefined) setEmpDeductions(answers.empDeductionsPct)
+    if (answers.rentPct !== undefined) setRent(answers.rentPct)
+    if (answers.telephoneAmt !== undefined) setTelephone(answers.telephoneAmt)
+    if (answers.utilitiesAmt !== undefined) setUtilities(answers.utilitiesAmt)
+    if (answers.localAdvAmt !== undefined) setLocalAdv(answers.localAdvAmt)
+    if (answers.insuranceAmt !== undefined) setInsurance(answers.insuranceAmt)
+    if (answers.postageAmt !== undefined) setPostage(answers.postageAmt)
+    if (answers.suppliesPct !== undefined) setSup(answers.suppliesPct)
+    if (answers.duesAmt !== undefined) setDues(answers.duesAmt)
+    if (answers.bankFeesAmt !== undefined) setBankFees(answers.bankFeesAmt)
+    if (answers.maintenanceAmt !== undefined) setMaintenance(answers.maintenanceAmt)
+    if (answers.travelEntAmt !== undefined) setTravelEnt(answers.travelEntAmt)
+    if (answers.royaltiesPct !== undefined) setRoy(answers.royaltiesPct)
+    if (answers.advRoyaltiesPct !== undefined) setAdvRoy(answers.advRoyaltiesPct)
+    if (answers.taxRushRoyaltiesPct !== undefined) setTaxRushRoy(answers.taxRushRoyaltiesPct)
+    if (answers.miscPct !== undefined) setMisc(answers.miscPct)
+    
+    console.log('💰 Expense values from wizard:', {
+      salariesPct: answers.salariesPct,
+      empDeductionsPct: answers.empDeductionsPct,
+      rentPct: answers.rentPct,
+      royaltiesPct: answers.royaltiesPct,
+      advRoyaltiesPct: answers.advRoyaltiesPct
+    })
   }
 
   return {

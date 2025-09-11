@@ -20,6 +20,7 @@ export interface CalculationInputs {
   taxPrepReturns: number
   taxRushReturns: number
   discountsPct: number
+  otherIncome: number
   
   // All 17 expense fields
   salariesPct: number
@@ -60,6 +61,7 @@ export function useCalculations(inputs: CalculationInputs): CalculationResults {
       taxPrepReturns: inputs.taxPrepReturns,
       taxRushReturns: inputs.taxRushReturns,
       discountsPct: inputs.discountsPct,
+      otherIncome: inputs.otherIncome,
       
       // All 17 expense fields
       salariesPct: inputs.salariesPct,
@@ -84,7 +86,7 @@ export function useCalculations(inputs: CalculationInputs): CalculationResults {
     }),
     [
       inputs.region, inputs.scenario, inputs.avgNetFee, inputs.taxPrepReturns, inputs.taxRushReturns,
-      inputs.discountsPct, inputs.salariesPct, inputs.empDeductionsPct, inputs.rentPct, 
+      inputs.discountsPct, inputs.otherIncome, inputs.salariesPct, inputs.empDeductionsPct, inputs.rentPct, 
       inputs.telephoneAmt, inputs.utilitiesAmt, inputs.localAdvAmt, inputs.insuranceAmt, 
       inputs.postageAmt, inputs.suppliesPct, inputs.duesAmt, inputs.bankFeesAmt,
       inputs.maintenanceAmt, inputs.travelEntAmt, inputs.royaltiesPct, inputs.advRoyaltiesPct, 
