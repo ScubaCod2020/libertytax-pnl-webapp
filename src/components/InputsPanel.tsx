@@ -349,11 +349,31 @@ export default function InputsPanel(props: InputsPanelProps) {
           💰 Income Drivers
         </div>
 
-        {/* Average Net Fee with Slider */}
+        {/* Average Net Fee with Manual Input + Slider */}
         <div style={{ marginBottom: '1rem' }}>
           <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 500 }}>
-            Average Net Fee: ${avgNetFee}
+            Average Net Fee: $
           </label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+            <input
+              type="number"
+              min="50"
+              max="500"
+              step="1"
+              value={avgNetFee}
+              onChange={(e) => setANF(Number(e.target.value) || 50)}
+              placeholder="125"
+              style={{
+                width: '80px',
+                padding: '0.25rem',
+                border: '1px solid #d1d5db',
+                borderRadius: '4px',
+                fontSize: '0.9rem',
+                textAlign: 'right'
+              }}
+            />
+            <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>or use slider</span>
+          </div>
           <input
             type="range"
             min="50"
@@ -369,11 +389,31 @@ export default function InputsPanel(props: InputsPanelProps) {
           </div>
         </div>
 
-        {/* Tax-Prep Returns with Slider */}
+        {/* Tax-Prep Returns with Manual Input + Slider */}
         <div style={{ marginBottom: '1rem' }}>
           <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 500 }}>
-            Tax-Prep Returns: {taxPrepReturns.toLocaleString()}
+            Tax-Prep Returns: #
           </label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+            <input
+              type="number"
+              min="100"
+              max="10000"
+              step="1"
+              value={taxPrepReturns}
+              onChange={(e) => setReturns(Number(e.target.value) || 100)}
+              placeholder="1600"
+              style={{
+                width: '100px',
+                padding: '0.25rem',
+                border: '1px solid #d1d5db',
+                borderRadius: '4px',
+                fontSize: '0.9rem',
+                textAlign: 'right'
+              }}
+            />
+            <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>or use slider</span>
+          </div>
           <input
             type="range"
             min="100"
@@ -466,7 +506,7 @@ export default function InputsPanel(props: InputsPanelProps) {
               <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>%</span>
             </div>
           </div>
-          
+
           {/* Percentage Slider */}
           <input
             type="range"
@@ -486,9 +526,28 @@ export default function InputsPanel(props: InputsPanelProps) {
 
       {/* Expense Management Sections - Matching Wizard Page 2 */}
       {(['personnel', 'facility', 'operations', 'franchise', 'misc'] as ExpenseCategory[]).map(category => {
-        // Get all fields for the current region and TaxRush setting
-        const allFieldsForRegion = getFieldsForRegion(expenseFields, region, handlesTaxRush)
-        const categoryFields = getFieldsByCategory(allFieldsForRegion, category)
+        // Get fields by category first, then filter by region and TaxRush
+        const allCategoryFields = getFieldsByCategory(category)
+        const categoryFields = allCategoryFields.filter(field => {
+          // First filter by region
+          const regionMatch = !field.regionSpecific || field.regionSpecific === region || field.regionSpecific === 'both'
+          if (!regionMatch) return false
+          
+          // Then filter out TaxRush-related fields if handlesTaxRush is false
+          const isTaxRushField = field.id === 'taxRushRoyaltiesPct' || field.id === 'taxRushShortagesPct'
+          if (isTaxRushField && handlesTaxRush === false) return false
+          
+          return true
+        })
+        
+        // Debug logging
+        console.log(`🔍 Category ${category}:`, {
+          region,
+          handlesTaxRush,
+          allCategoryFields: allCategoryFields.length,
+          categoryFields: categoryFields.length,
+          categoryFieldIds: categoryFields.map(f => f.id)
+        })
         
         if (categoryFields.length === 0) return null
 
@@ -514,16 +573,16 @@ export default function InputsPanel(props: InputsPanelProps) {
               <span style={{ fontSize: '0.8rem', fontWeight: 400, opacity: 0.7, marginLeft: '0.5rem' }}>
                 ({categoryFields.length} {categoryFields.length === 1 ? 'field' : 'fields'})
               </span>
-            </div>
-            
+        </div>
+
             <div style={{ fontSize: '0.8rem', marginBottom: '1rem', opacity: 0.8, fontStyle: 'italic' }}>
               {expenseCategories[category].description}
-            </div>
-            
+      </div>
+
             <div>
               {categoryFields.map(renderExpenseField)}
-            </div>
-          </div>
+      </div>
+      </div>
         )
       })}
     </div>
