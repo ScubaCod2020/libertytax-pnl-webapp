@@ -394,12 +394,23 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           }}>
             <FormField 
               label="TaxRush Gross Fees" 
-              helpText="Total gross fees from TaxRush returns last year (separate from tax prep fees)"
+              helpText="Auto-calculated: TaxRush Returns × TaxRush Avg Net Fee (you can override)"
             >
               <CurrencyInput
-                value={answers.lastYearTaxRushGrossFees ?? (answers.lastYearTaxRushReturns && answers.lastYearTaxRushAvgNetFee ? answers.lastYearTaxRushReturns * answers.lastYearTaxRushAvgNetFee : undefined)}
-                placeholder={(answers.lastYearTaxRushReturns && answers.lastYearTaxRushAvgNetFee) ? (answers.lastYearTaxRushReturns * answers.lastYearTaxRushAvgNetFee).toLocaleString() : '30,000'}
+                value={(() => {
+                  if (answers.lastYearTaxRushReturns && answers.lastYearTaxRushAvgNetFee) {
+                    return Math.round(answers.lastYearTaxRushReturns * answers.lastYearTaxRushAvgNetFee)
+                  }
+                  if (answers.lastYearTaxRushReturns && answers.lastYearGrossFees && answers.lastYearTaxPrepReturns) {
+                    const avgNetFee = answers.lastYearGrossFees / answers.lastYearTaxPrepReturns
+                    return Math.round(answers.lastYearTaxRushReturns * avgNetFee)
+                  }
+                  return undefined
+                })()}
+                placeholder="Auto-calculated"
                 onChange={value => updateAnswers({ lastYearTaxRushGrossFees: value })}
+                readOnly={false}
+                backgroundColor="#f9fafb"
               />
             </FormField>
 
@@ -866,24 +877,34 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
             
             <FormField
               label="TaxRush Gross Fees"
-              helpText="Projected gross fees from TaxRush returns (based on growth projections)"
+              helpText="Auto-calculated: Projected TaxRush Returns × Projected TaxRush Avg Net Fee (you can override)"
             >
               <CurrencyInput
                 value={(() => {
-                  // Use manual override if available
-                  if (answers.taxRushGrossFees !== undefined) {
-                    return answers.taxRushGrossFees
+                  // Calculate from current projected values
+                  const projectedTaxRushReturns = answers.taxRushReturns && answers.expectedGrowthPct !== undefined 
+                    ? Math.round(answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100))
+                    : answers.taxRushReturns
+                  
+                  const projectedTaxRushAvgNetFee = answers.taxRushAvgNetFee && answers.expectedGrowthPct !== undefined
+                    ? Math.round(answers.taxRushAvgNetFee * (1 + answers.expectedGrowthPct / 100))
+                    : answers.taxRushAvgNetFee
+                  
+                  if (projectedTaxRushReturns && projectedTaxRushAvgNetFee) {
+                    return Math.round(projectedTaxRushReturns * projectedTaxRushAvgNetFee)
                   }
                   
-                  // Calculate from projected values
+                  // Fallback to growth-based calculation
                   if (answers.lastYearTaxRushGrossFees && answers.expectedGrowthPct !== undefined) {
                     return Math.round(answers.lastYearTaxRushGrossFees * (1 + answers.expectedGrowthPct / 100))
                   }
                   
-                  return answers.lastYearTaxRushGrossFees || undefined
+                  return undefined
                 })()}
                 placeholder="Auto-calculated"
                 onChange={value => updateAnswers({ taxRushGrossFees: value })}
+                readOnly={false}
+                backgroundColor="#f9fafb"
               />
             </FormField>
             
