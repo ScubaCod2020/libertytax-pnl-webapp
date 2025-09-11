@@ -698,29 +698,26 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
 
         {/* TaxRush Section - Projected Performance (matching Last Year styling) */}
         {region === 'CA' && answers.handlesTaxRush && (
-          <>
+          <div style={{
+            padding: '1rem',
+            border: '2px solid #0ea5e9',
+            borderRadius: '8px',
+            backgroundColor: '#f0f9ff',
+            margin: '0'
+          }}>
             <div style={{
-              padding: '0.75rem',
-              border: '2px solid #0ea5e9',
-              borderRadius: '8px',
-              backgroundColor: '#f0f9ff',
-              marginTop: '0.5rem',
-              marginBottom: '0.75rem'
+              fontWeight: 600,
+              color: '#0369a1',
+              marginBottom: '0.75rem',
+              fontSize: '0.9rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
             }}>
-              <div style={{
-                fontWeight: 600,
-                color: '#0369a1',
-                marginBottom: '0.5rem',
-                fontSize: '0.9rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem'
-              }}>
-                🚀 TaxRush Projected
-                <span style={{ fontWeight: 400, fontSize: '0.8rem', color: '#64748b' }}>
-                  (Based on growth projections)
-                </span>
-              </div>
+              🚀 TaxRush Projected
+              <span style={{ fontWeight: 400, fontSize: '0.8rem', color: '#64748b' }}>
+                (Based on growth projections)
+              </span>
             </div>
             
             <FormField
@@ -864,7 +861,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
             
             <FormField
               label="TaxRush Gross Fees"
-              helpText={"Projected gross fees from TaxRush returns (based on growth projections)"}
+              helpText="Projected gross fees from TaxRush returns (based on growth projections)"
             >
               <CurrencyInput
                 value={(() => {
@@ -887,7 +884,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
             
             <FormField
               label="TaxRush Avg Net Fee"
-              helpText={"Projected average net fee per TaxRush return (based on growth projections)"}
+              helpText="Projected average net fee per TaxRush return (based on growth projections)"
             >
               <CurrencyInput
                 value={(() => {
@@ -907,7 +904,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                 onChange={value => updateAnswers({ taxRushAvgNetFee: value })}
               />
             </FormField>
-          </>
+          </div>
         )}
 
         <FormField

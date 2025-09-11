@@ -100,29 +100,26 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
 
           {/* TaxRush Fields (Canada only - conditional) */}
           {region === 'CA' && answers.handlesTaxRush && (
-            <>
+            <div style={{
+              padding: '1rem',
+              border: '2px solid #0ea5e9',
+              borderRadius: '8px',
+              backgroundColor: '#f0f9ff',
+              margin: '0'
+            }}>
               <div style={{
-                padding: '0.75rem',
-                border: '2px solid #0ea5e9',
-                borderRadius: '8px',
-                backgroundColor: '#f0f9ff',
-                marginTop: '0.5rem',
-                marginBottom: '0.75rem'
+                fontWeight: 600,
+                color: '#0369a1',
+                marginBottom: '0.75rem',
+                fontSize: '0.9rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
               }}>
-                <div style={{
-                  fontWeight: 600,
-                  color: '#0369a1',
-                  marginBottom: '0.5rem',
-                  fontSize: '0.9rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem'
-                }}>
-                  🚀 TaxRush Fields
-                  <span style={{ fontWeight: 400, fontSize: '0.8rem', color: '#64748b' }}>
-                    (Same-day refund service)
-                  </span>
-                </div>
+                🚀 TaxRush Fields
+                <span style={{ fontWeight: 400, fontSize: '0.8rem', color: '#64748b' }}>
+                  (Same-day refund service)
+                </span>
               </div>
               
               <FormField 
@@ -158,7 +155,7 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
                   onChange={value => updateAnswers({ taxRushAvgNetFee: value })}
                 />
               </FormField>
-            </>
+            </div>
           )}
 
         <FormField 
