@@ -7,6 +7,7 @@ import type { WizardAnswers } from './components/WizardShell'
 import Header from './components/Header'
 import InputsPanel from './components/InputsPanel'
 import Dashboard from './components/Dashboard/Dashboard'
+import ProjectedPerformancePanel from './components/ProjectedPerformancePanel'
 import DebugToggle from './components/DebugSystem/DebugToggle'
 import DebugSidebar from './components/DebugSystem/DebugSidebar'
 import DebugErrorBoundary from './components/DebugSystem/DebugErrorBoundary'
@@ -169,8 +170,22 @@ const savedAt = (() => {
             persistence={persistence} // Pass persistence for loading saved answers
           />
         ) : (
-          <div className="container" style={{ display: 'grid', gridTemplateColumns: '400px 1fr', gap: '2rem', alignItems: 'start' }}>
-            <InputsPanel
+            <div className="container" style={{ display: 'grid', gridTemplateColumns: '350px 420px 1fr', gap: '1.5rem', alignItems: 'start' }}>
+              <ProjectedPerformancePanel 
+                grossFees={calculations.grossFees}
+                discounts={calculations.discounts}
+                taxPrepIncome={calculations.taxPrepIncome}
+                taxRushIncome={calculations.taxRushIncome}
+                totalRevenue={calculations.totalRevenue}
+                totalExpenses={calculations.totalExpenses}
+                netIncome={calculations.netIncome}
+                netMarginPct={calculations.netMarginPct}
+                costPerReturn={calculations.costPerReturn}
+                totalReturns={calculations.totalReturns}
+                region={appState.region}
+              />
+              
+              <InputsPanel
               region={appState.region}
               scenario={appState.scenario}
               setScenario={appState.setScenario}

@@ -267,7 +267,8 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
     
     const netIncome = totalGrossRevenue - totalExpenses
     const netMargin = totalGrossRevenue > 0 ? (netIncome / totalGrossRevenue) * 100 : 0
-    const costPerReturn = currentTaxPrepReturns > 0 ? totalExpenses / currentTaxPrepReturns : 0
+    const totalReturns = currentTaxPrepReturns + (answers.region === 'CA' && answers.handlesTaxRush ? currentTaxRushReturns : 0)
+    const costPerReturn = totalReturns > 0 ? totalExpenses / totalReturns : 0
 
     return (
       <div style={{ 

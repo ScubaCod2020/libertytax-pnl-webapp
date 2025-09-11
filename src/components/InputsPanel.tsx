@@ -237,11 +237,12 @@ export default function InputsPanel(props: InputsPanelProps) {
     return (
       <div key={field.id} style={fieldStyle}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-            <label style={{ fontSize: '0.9rem', fontWeight: 500, color: isLocked ? '#6b7280' : 'inherit' }}>
-              {field.label}
-              {isLocked && ' (Locked)'}
-            </label>
+          <label style={{ fontSize: '0.9rem', fontWeight: 500, color: isLocked ? '#6b7280' : 'inherit' }}>
+            {field.label}
+            {isLocked && ' (Locked)'}
+          </label>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             {field.description && (
               <button
                 type="button"
@@ -259,9 +260,6 @@ export default function InputsPanel(props: InputsPanelProps) {
                 ℹ️
               </button>
             )}
-          </div>
-          
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             {/* Percentage/Fixed Amount Input */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
               {isFixed && <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>}
@@ -658,52 +656,53 @@ export default function InputsPanel(props: InputsPanelProps) {
             <label style={{ fontSize: '0.9rem', fontWeight: 500 }}>
               Customer Discounts
             </label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>
-                <input
-                  type="number"
-                  min="0"
-                  step="1"
-                  value={Math.round(discountDollarAmount) || ''}
-                  onChange={(e) => handleDiscountDollarChange(Number(e.target.value) || 0)}
-                  title="Customer Discounts Dollar Amount"
-                  aria-label="Customer Discounts Dollar Amount"
-                  placeholder="0"
-                  style={{
-                    width: '80px',
-                    padding: '0.25rem',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '4px',
-                    fontSize: '0.8rem',
-                    textAlign: 'right'
-                  }}
-                />
-              </div>
-              <span style={{ color: '#6b7280' }}>⟷</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <input
-                  type="number"
-                  min="0"
-                  max="50"
-                  step="0.1"
-                  value={discountsPct || ''}
-                  onChange={(e) => handleDiscountPctChange(Number(e.target.value) || 0)}
-                  title="Customer Discounts Percentage"
-                  aria-label="Customer Discounts Percentage"
-                  placeholder="3"
-                  style={{
-                    width: '60px',
-                    padding: '0.25rem',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '4px',
-                    fontSize: '0.8rem',
-                    textAlign: 'right'
-                  }}
-                />
-                <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>%</span>
-              </div>
-            </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                        <input
+                          type="number"
+                          min="0"
+                          max="50"
+                          step="0.1"
+                          value={discountsPct || ''}
+                          onChange={(e) => handleDiscountPctChange(Number(e.target.value) || 0)}
+                          title="Customer Discounts Percentage"
+                          aria-label="Customer Discounts Percentage"
+                          placeholder="3"
+                          style={{
+                            width: '60px',
+                            padding: '0.25rem',
+                            border: '1px solid #d1d5db',
+                            borderRadius: '4px',
+                            fontSize: '0.8rem',
+                            textAlign: 'right'
+                          }}
+                        />
+                        <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>%</span>
+                      </div>
+                      <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>=</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                        <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>
+                        <input
+                          type="number"
+                          min="0"
+                          step="1"
+                          value={Math.round(discountDollarAmount) || ''}
+                          onChange={(e) => handleDiscountDollarChange(Number(e.target.value) || 0)}
+                          title="Customer Discounts Dollar Amount"
+                          aria-label="Customer Discounts Dollar Amount"
+                          placeholder="0"
+                          style={{
+                            width: '80px',
+                            padding: '0.25rem',
+                            border: '1px solid #d1d5db',
+                            borderRadius: '4px',
+                            fontSize: '0.8rem',
+                            textAlign: 'right',
+                            backgroundColor: '#f9fafb'
+                          }}
+                        />
+                      </div>
+                    </div>
           </div>
           <input
             type="range"
