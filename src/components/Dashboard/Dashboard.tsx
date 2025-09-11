@@ -46,53 +46,14 @@ export default function Dashboard({ results }: DashboardProps) {
         </div>
       </div>
 
-      <div style={{ marginTop: 20, gap: '16px' }} className="grid-2">
-        <div className="card">
-          <div className="card-title" style={{ color: '#059669', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            💰 Projected Revenue Breakdown
-          </div>
-          <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '0.5rem' }}>
-              {/* Tax Prep Revenue Breakdown */}
-              <div>
-                <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#059669', marginBottom: '0.25rem' }}>Tax Prep Revenue:</div>
-                <div style={{ color: '#374151', fontSize: '0.8rem' }}>Gross Tax Prep Fees: <strong>{currency(results.grossFees)}</strong></div>
-                <div style={{ color: '#374151', fontSize: '0.8rem' }}>Returns: {(results.totalReturns - (results.taxRushIncome > 0 ? Math.round(results.taxRushIncome / 125) : 0)).toLocaleString()} @ ${Math.round(results.grossFees / (results.totalReturns - (results.taxRushIncome > 0 ? Math.round(results.taxRushIncome / 125) : 0))).toLocaleString()}</div>
-                <div style={{ color: '#dc2626', fontSize: '0.8rem' }}>Less Discounts: <strong>-{currency(results.discounts)}</strong></div>
-                <div style={{ fontWeight: 'bold', color: '#059669', fontSize: '0.85rem' }}>Net Tax Prep Income: <strong>{currency(results.taxPrepIncome)}</strong></div>
-              </div>
-              
-              {/* TaxRush Revenue Breakdown */}
-              {results.taxRushIncome && results.taxRushIncome > 0 && (
-                <div style={{ paddingLeft: '0.5rem', borderLeft: '2px solid #0ea5e9' }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#0ea5e9', marginBottom: '0.25rem' }}>TaxRush Revenue:</div>
-                  <div style={{ color: '#374151', fontSize: '0.8rem' }}>TaxRush Returns: {Math.round(results.taxRushIncome / 125).toLocaleString()}</div>
-                  <div style={{ color: '#374151', fontSize: '0.8rem' }}>Average Net Fee: $125</div>
-                  <div style={{ fontWeight: 'bold', color: '#0ea5e9', fontSize: '0.85rem' }}>TaxRush Income: <strong>{currency(results.taxRushIncome)}</strong></div>
-                </div>
-              )}
-            </div>
-            
-            {/* Total Summary */}
-            <div style={{ 
-              borderTop: '2px solid #059669', 
-              paddingTop: '0.5rem', 
-              marginTop: '0.5rem',
-              fontWeight: 'bold',
-              color: '#059669'
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>Total Projected Revenue:</span>
-                <strong>{currency(results.totalRevenue)}</strong>
-              </div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem', textAlign: 'center', fontStyle: 'italic' }}>
-                Total Returns: {results.totalReturns.toLocaleString()}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="card">
+      <div style={{ 
+        marginTop: 20, 
+        gap: '16px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))'
+      }}>
+        {/* Pro-Tips Card - Shows first when stacked on narrow screens */}
+        <div className="card" style={{ order: 2 }}>
           <div className="card-title">Pro-Tips</div>
           <ul className="small">
             {cprStatus === 'red' && (
@@ -116,6 +77,63 @@ export default function Dashboard({ results }: DashboardProps) {
               )}
           </ul>
         </div>
+
+        {/* Income Summary Card - Shows second when stacked */}
+        <div className="card" style={{ order: 1 }}>
+          <div className="card-title" style={{ color: '#059669', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            💰 Projected Income Summary
+          </div>
+          <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '0.5rem' }}>
+              {/* Tax Prep Revenue Breakdown */}
+              <div>
+                <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#059669', marginBottom: '0.25rem' }}>Tax Prep Revenue:</div>
+                <div style={{ color: '#374151', fontSize: '0.8rem' }}>Gross Tax Prep Fees: <strong>{currency(results.grossFees)}</strong></div>
+                <div style={{ color: '#374151', fontSize: '0.8rem' }}>Returns: {(results.totalReturns - (results.taxRushIncome > 0 ? Math.round(results.taxRushIncome / 125) : 0)).toLocaleString()} @ ${Math.round(results.grossFees / (results.totalReturns - (results.taxRushIncome > 0 ? Math.round(results.taxRushIncome / 125) : 0))).toLocaleString()}</div>
+                <div style={{ color: '#dc2626', fontSize: '0.8rem' }}>Less Discounts: <strong>-{currency(results.discounts)}</strong></div>
+                <div style={{ fontWeight: 'bold', color: '#059669', fontSize: '0.85rem' }}>Net Tax Prep Income: <strong>{currency(results.taxPrepIncome)}</strong></div>
+              </div>
+              
+              {/* TaxRush Revenue Breakdown */}
+              {results.taxRushIncome && results.taxRushIncome > 0 && (
+                <div style={{ paddingLeft: '0.5rem', borderLeft: '2px solid #0ea5e9' }}>
+                  <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#0ea5e9', marginBottom: '0.25rem' }}>TaxRush Revenue:</div>
+                  <div style={{ color: '#374151', fontSize: '0.8rem' }}>TaxRush Returns: {Math.round(results.taxRushIncome / 125).toLocaleString()}</div>
+                  <div style={{ color: '#374151', fontSize: '0.8rem' }}>Average Net Fee: $125</div>
+                  <div style={{ fontWeight: 'bold', color: '#0ea5e9', fontSize: '0.85rem' }}>TaxRush Income: <strong>{currency(results.taxRushIncome)}</strong></div>
+                </div>
+              )}
+            </div>
+            
+            {/* Other Income */}
+            {results.totalRevenue > (results.taxPrepIncome + (results.taxRushIncome || 0)) && (
+              <div style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
+                <div style={{ fontWeight: 'bold', color: '#6b7280', marginBottom: '0.25rem' }}>Other Income:</div>
+                <div style={{ color: '#374151', fontSize: '0.8rem', paddingLeft: '0.5rem' }}>
+                  Additional Revenue: <strong>{currency(results.totalRevenue - results.taxPrepIncome - (results.taxRushIncome || 0))}</strong>
+                </div>
+              </div>
+            )}
+            
+            {/* Total Summary */}
+            <div style={{ 
+              borderTop: '2px solid #059669', 
+              paddingTop: '0.5rem', 
+              marginTop: '0.5rem',
+              fontWeight: 'bold',
+              color: '#059669'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>Total Projected Revenue:</span>
+                <strong>{currency(results.totalRevenue)}</strong>
+              </div>
+              <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem', textAlign: 'center', fontStyle: 'italic' }}>
+                Total Returns: {results.totalReturns.toLocaleString()}
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       {/* Comprehensive Expense Breakdown */}

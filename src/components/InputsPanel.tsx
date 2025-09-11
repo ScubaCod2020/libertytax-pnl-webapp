@@ -27,6 +27,8 @@ interface InputsPanelProps {
   setTaxRush: (value: number) => void
   discountsPct: number
   setDisc: (value: number) => void
+  otherIncome: number
+  setOtherIncome: (value: number) => void
 
   // All 17 expense fields
   salariesPct: number
@@ -74,7 +76,7 @@ interface InputsPanelProps {
 export default function InputsPanel(props: InputsPanelProps) {
   const {
     region, scenario, setScenario, avgNetFee, setANF, taxPrepReturns, setReturns,
-    taxRushReturns, setTaxRush, discountsPct, setDisc,
+    taxRushReturns, setTaxRush, discountsPct, setDisc, otherIncome, setOtherIncome,
     salariesPct, setSal, empDeductionsPct, setEmpDeductions, rentPct, setRent,
     telephoneAmt, setTelephone, utilitiesAmt, setUtilities, localAdvAmt, setLocalAdv,
     insuranceAmt, setInsurance, postageAmt, setPostage, suppliesPct, setSup,
@@ -92,6 +94,7 @@ export default function InputsPanel(props: InputsPanelProps) {
         taxPrepReturns,
         taxRushReturns,
         discountsPct,
+        otherIncome,
         // Expense fields
         salariesPct,
         empDeductionsPct,
@@ -116,7 +119,7 @@ export default function InputsPanel(props: InputsPanelProps) {
       onSaveToWizard(wizardUpdates)
     }
   }, [
-    avgNetFee, taxPrepReturns, taxRushReturns, discountsPct,
+    avgNetFee, taxPrepReturns, taxRushReturns, discountsPct, otherIncome,
     salariesPct, empDeductionsPct, rentPct, telephoneAmt, utilitiesAmt,
     localAdvAmt, insuranceAmt, postageAmt, suppliesPct, duesAmt,
     bankFeesAmt, maintenanceAmt, travelEntAmt, royaltiesPct,
@@ -715,6 +718,40 @@ export default function InputsPanel(props: InputsPanelProps) {
             aria-label="Customer Discounts slider"
             style={{ width: '100%' }}
           />
+        </div>
+
+        {/* Other Income with Manual Input */}
+        <div style={{ marginBottom: '0.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
+            <label style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+              Other Income
+            </label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>
+              <input
+                type="number"
+                min="0"
+                max="50000"
+                step="100"
+                value={otherIncome}
+                onChange={(e) => setOtherIncome(Number(e.target.value) || 0)}
+                title="Other Income"
+                aria-label="Other Income"
+                placeholder="0"
+                style={{
+                  width: '100px',
+                  padding: '0.25rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '4px',
+                  fontSize: '0.8rem',
+                  textAlign: 'right'
+                }}
+              />
+            </div>
+          </div>
+          <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
+            Additional revenue sources (e.g., notary services, business consulting)
+          </div>
         </div>
       </div>
 

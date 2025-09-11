@@ -170,7 +170,7 @@ const savedAt = (() => {
             persistence={persistence} // Pass persistence for loading saved answers
           />
         ) : (
-            <div className="container" style={{ display: 'grid', gridTemplateColumns: '350px 420px 1fr', gap: '1.5rem', alignItems: 'start' }}>
+            <div className="container" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 350px) minmax(400px, 500px) 1fr', gap: '1.5rem', alignItems: 'start' }}>
               <ProjectedPerformancePanel 
                 grossFees={calculations.grossFees}
                 discounts={calculations.discounts}
@@ -183,6 +183,10 @@ const savedAt = (() => {
                 costPerReturn={calculations.costPerReturn}
                 totalReturns={calculations.totalReturns}
                 region={appState.region}
+                lastYearRevenue={persistence.loadWizardAnswers()?.lastYearRevenue || 0}
+                lastYearExpenses={persistence.loadWizardAnswers()?.projectedExpenses || 0}
+                lastYearReturns={persistence.loadWizardAnswers()?.lastYearTaxPrepReturns || 0}
+                expectedGrowthPct={persistence.loadWizardAnswers()?.expectedGrowthPct || 0}
               />
               
               <InputsPanel
@@ -197,6 +201,8 @@ const savedAt = (() => {
               setTaxRush={appState.setTaxRush}
               discountsPct={appState.discountsPct}
               setDisc={appState.setDisc}
+              otherIncome={appState.otherIncome}
+              setOtherIncome={appState.setOtherIncome}
               salariesPct={appState.salariesPct}
               setSal={appState.setSal}
               empDeductionsPct={appState.empDeductionsPct}

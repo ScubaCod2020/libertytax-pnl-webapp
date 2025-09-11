@@ -25,6 +25,7 @@ export interface AppState {
   taxPrepReturns: number
   taxRushReturns: number
   discountsPct: number
+  otherIncome: number
 
   // All 17 expense fields
   salariesPct: number
@@ -60,6 +61,7 @@ export interface AppStateActions {
   setReturns: (value: number) => void
   setTaxRush: (value: number) => void
   setDisc: (value: number) => void
+  setOtherIncome: (value: number) => void
 
   // Expense actions
   setSal: (value: number) => void
@@ -118,6 +120,7 @@ export function useAppState(): AppState & AppStateActions {
   const [taxPrepReturns, setReturns] = useState(1600)
   const [taxRushReturns, setTaxRush] = useState(0)
   const [discountsPct, setDisc] = useState(3)
+  const [otherIncome, setOtherIncome] = useState(0)
 
   // All 17 expense fields
   const [salariesPct, setSal] = useState(25)
@@ -207,6 +210,7 @@ export function useAppState(): AppState & AppStateActions {
     setANF(answers.avgNetFee ?? 125)
     setReturns(answers.taxPrepReturns ?? 1600)
     setDisc(answers.discountsPct ?? 3)
+    setOtherIncome(answers.otherIncome ?? 0)
     
     // 🐛 FIXED: Apply TaxRush data from wizard (was previously hardcoded to 0)
     const taxRushReturns = answers.region === 'CA' && answers.handlesTaxRush 
@@ -244,6 +248,7 @@ export function useAppState(): AppState & AppStateActions {
     taxPrepReturns,
     taxRushReturns,
     discountsPct,
+    otherIncome,
     salariesPct,
     empDeductionsPct,
     rentPct,
@@ -271,6 +276,7 @@ export function useAppState(): AppState & AppStateActions {
     setReturns,
     setTaxRush,
     setDisc,
+    setOtherIncome,
     setSal,
     setEmpDeductions,
     setRent,

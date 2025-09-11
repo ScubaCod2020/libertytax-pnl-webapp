@@ -1,10 +1,11 @@
-// ProjectedPerformancePanel.tsx - Performance targets and projections panel
-// Shows projected performance metrics that update with input changes
+// ProjectedPerformancePanel.tsx - Prior Year vs Projected performance comparison
+// Shows last year performance metrics vs projected goals
 
 import React from 'react'
 import { currency, pct } from '../hooks/useCalculations'
 
 interface ProjectedPerformancePanelProps {
+  // Projected performance (current inputs)
   grossFees: number
   discounts: number
   taxPrepIncome: number
@@ -16,6 +17,12 @@ interface ProjectedPerformancePanelProps {
   costPerReturn: number
   totalReturns: number
   region: string
+  
+  // Prior Year data (from wizard answers)
+  lastYearRevenue?: number
+  lastYearExpenses?: number
+  lastYearReturns?: number
+  expectedGrowthPct?: number
 }
 
 export default function ProjectedPerformancePanel({ 
@@ -29,8 +36,17 @@ export default function ProjectedPerformancePanel({
   netMarginPct, 
   costPerReturn, 
   totalReturns,
-  region 
+  region,
+  lastYearRevenue = 0,
+  lastYearExpenses = 0, 
+  lastYearReturns = 0,
+  expectedGrowthPct = 0
 }: ProjectedPerformancePanelProps) {
+  
+  // Calculate prior year metrics
+  const pyNetIncome = lastYearRevenue - lastYearExpenses
+  const pyNetMarginPct = lastYearRevenue > 0 ? (pyNetIncome / lastYearRevenue) * 100 : 0
+  const pyCostPerReturn = lastYearReturns > 0 ? lastYearExpenses / lastYearReturns : 0
   
   // Performance status indicators
   const getPerformanceStatus = (metric: string, value: number) => {
@@ -52,62 +68,78 @@ export default function ProjectedPerformancePanel({
     }
   }
 
-  const netMarginStatus = getPerformanceStatus('netMargin', netMarginPct)
-  const costPerReturnStatus = getPerformanceStatus('costPerReturn', costPerReturn)
-
-  // Calculate key ratios and benchmarks
-  const expenseRatio = totalRevenue > 0 ? (totalExpenses / totalRevenue) * 100 : 0
-  const revenuePerReturn = totalReturns > 0 ? totalRevenue / totalReturns : 0
-  const profitPerReturn = totalReturns > 0 ? netIncome / totalReturns : 0
+  const pyNetMarginStatus = getPerformanceStatus('netMargin', pyNetMarginPct)
+  const pyCostPerReturnStatus = getPerformanceStatus('costPerReturn', pyCostPerReturn)
+  const projectedNetMarginStatus = getPerformanceStatus('netMargin', netMarginPct)
+  const projectedCostPerReturnStatus = getPerformanceStatus('costPerReturn', costPerReturn)
 
   return (
     <div className="card" style={{ minWidth: '300px', maxWidth: '350px' }}>
       <div className="card-title" style={{ color: '#0369a1', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        📊 Projected Performance
+        📈 PY Performance
       </div>
       
-      {/* Key Performance Metrics */}
-      <div style={{ marginBottom: '1rem' }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '0.5rem',
-          padding: '0.5rem',
-          backgroundColor: `${netMarginStatus.color}15`,
-          border: `1px solid ${netMarginStatus.color}`,
-          borderRadius: '6px',
-          marginBottom: '0.5rem'
-        }}>
-          <span style={{ fontSize: '1.2rem' }}>{netMarginStatus.icon}</span>
-          <div>
-            <div style={{ fontSize: '0.85rem', color: '#374151', fontWeight: 500 }}>Net Margin</div>
-            <div style={{ fontSize: '1rem', fontWeight: 'bold', color: netMarginStatus.color }}>
-              {pct(netMarginPct)}
+      {/* Last Year Performance */}
+      {lastYearRevenue > 0 && lastYearExpenses > 0 && (
+        <div style={{ marginBottom: '1rem' }}>
+          <div style={{ 
+            fontWeight: 'bold', 
+            fontSize: '0.9rem', 
+            color: '#6b7280', 
+            marginBottom: '0.5rem',
+            borderBottom: '1px solid #d1d5db',
+            paddingBottom: '0.25rem'
+          }}>
+            📅 Last Year Performance
+          </div>
+          
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '0.5rem',
+            padding: '0.4rem',
+            backgroundColor: `${pyNetMarginStatus.color}15`,
+            border: `1px solid ${pyNetMarginStatus.color}`,
+            borderRadius: '6px',
+            marginBottom: '0.4rem'
+          }}>
+            <span style={{ fontSize: '1rem' }}>{pyNetMarginStatus.icon}</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '0.8rem', color: '#374151', fontWeight: 500 }}>PY Net Margin</div>
+              <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: pyNetMarginStatus.color }}>
+                {pct(pyNetMarginPct)}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '0.5rem',
-          padding: '0.5rem',
-          backgroundColor: `${costPerReturnStatus.color}15`,
-          border: `1px solid ${costPerReturnStatus.color}`,
-          borderRadius: '6px',
-          marginBottom: '0.5rem'
-        }}>
-          <span style={{ fontSize: '1.2rem' }}>{costPerReturnStatus.icon}</span>
-          <div>
-            <div style={{ fontSize: '0.85rem', color: '#374151', fontWeight: 500 }}>Cost / Return</div>
-            <div style={{ fontSize: '1rem', fontWeight: 'bold', color: costPerReturnStatus.color }}>
-              {currency(costPerReturn)}
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '0.5rem',
+            padding: '0.4rem',
+            backgroundColor: `${pyCostPerReturnStatus.color}15`,
+            border: `1px solid ${pyCostPerReturnStatus.color}`,
+            borderRadius: '6px',
+            marginBottom: '0.5rem'
+          }}>
+            <span style={{ fontSize: '1rem' }}>{pyCostPerReturnStatus.icon}</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '0.8rem', color: '#374151', fontWeight: 500 }}>PY Cost / Return</div>
+              <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: pyCostPerReturnStatus.color }}>
+                {currency(pyCostPerReturn)}
+              </div>
             </div>
           </div>
+          
+          <div style={{ fontSize: '0.75rem', color: '#6b7280', lineHeight: '1.4' }}>
+            <div>Revenue: {currency(lastYearRevenue)}</div>
+            <div>Expenses: {currency(lastYearExpenses)}</div>
+            <div>Returns: {lastYearReturns.toLocaleString()}</div>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Revenue Projections */}
+      {/* Projected Performance Goals */}
       <div style={{ marginBottom: '1rem' }}>
         <div style={{ 
           fontWeight: 'bold', 
@@ -117,62 +149,60 @@ export default function ProjectedPerformancePanel({
           borderBottom: '1px solid #d1d5db',
           paddingBottom: '0.25rem'
         }}>
-          Revenue Projections
-        </div>
-        <div style={{ fontSize: '0.8rem', color: '#374151', lineHeight: '1.5' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span>Tax Prep Income:</span>
-            <strong>{currency(taxPrepIncome)}</strong>
-          </div>
-          {taxRushIncome > 0 && region === 'CA' && (
-            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#0ea5e9' }}>
-              <span>TaxRush Income:</span>
-              <strong>{currency(taxRushIncome)}</strong>
-            </div>
+          🎯 Projected Performance Goals
+          {expectedGrowthPct !== 0 && (
+            <span style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#6b7280' }}>
+              ({expectedGrowthPct > 0 ? '+' : ''}{expectedGrowthPct}% growth target)
+            </span>
           )}
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            fontWeight: 'bold',
-            borderTop: '1px solid #e5e7eb',
-            paddingTop: '0.25rem',
-            marginTop: '0.25rem'
-          }}>
-            <span>Total Revenue:</span>
-            <strong>{currency(totalRevenue)}</strong>
-          </div>
         </div>
-      </div>
-
-      {/* Performance Ratios */}
-      <div style={{ marginBottom: '1rem' }}>
+        
         <div style={{ 
-          fontWeight: 'bold', 
-          fontSize: '0.9rem', 
-          color: '#6b7280', 
-          marginBottom: '0.5rem',
-          borderBottom: '1px solid #d1d5db',
-          paddingBottom: '0.25rem'
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '0.5rem',
+          padding: '0.4rem',
+          backgroundColor: `${projectedNetMarginStatus.color}15`,
+          border: `1px solid ${projectedNetMarginStatus.color}`,
+          borderRadius: '6px',
+          marginBottom: '0.4rem'
         }}>
-          Key Ratios
+          <span style={{ fontSize: '1rem' }}>{projectedNetMarginStatus.icon}</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '0.8rem', color: '#374151', fontWeight: 500 }}>Target Net Margin</div>
+            <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: projectedNetMarginStatus.color }}>
+              {pct(netMarginPct)}
+            </div>
+          </div>
         </div>
-        <div style={{ fontSize: '0.8rem', color: '#374151', lineHeight: '1.5' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span>Revenue / Return:</span>
-            <strong>{currency(revenuePerReturn)}</strong>
+
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '0.5rem',
+          padding: '0.4rem',
+          backgroundColor: `${projectedCostPerReturnStatus.color}15`,
+          border: `1px solid ${projectedCostPerReturnStatus.color}`,
+          borderRadius: '6px',
+          marginBottom: '0.5rem'
+        }}>
+          <span style={{ fontSize: '1rem' }}>{projectedCostPerReturnStatus.icon}</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '0.8rem', color: '#374151', fontWeight: 500 }}>Target Cost / Return</div>
+            <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: projectedCostPerReturnStatus.color }}>
+              {currency(costPerReturn)}
+            </div>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span>Profit / Return:</span>
-            <strong>{currency(profitPerReturn)}</strong>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span>Expense Ratio:</span>
-            <strong>{expenseRatio.toFixed(1)}%</strong>
-          </div>
+        </div>
+        
+        <div style={{ fontSize: '0.75rem', color: '#6b7280', lineHeight: '1.4' }}>
+          <div>Target Revenue: {currency(totalRevenue)}</div>
+          <div>Target Expenses: {currency(totalExpenses)}</div>
+          <div>Target Returns: {totalReturns.toLocaleString()}</div>
         </div>
       </div>
 
-      {/* Performance Targets */}
+      {/* Industry Benchmarks */}
       <div style={{ 
         padding: '0.5rem',
         backgroundColor: '#f9fafb',
@@ -185,7 +215,9 @@ export default function ProjectedPerformancePanel({
         <div>• Net Margin: 20-25% (Excellent)</div>
         <div>• Cost/Return: $85-100 (Good)</div>
         <div>• Expense Ratio: 75-80% (Target)</div>
-        <div>• Returns: {totalReturns.toLocaleString()} processed</div>
+        <div style={{ marginTop: '0.25rem', fontStyle: 'italic' }}>
+          {expectedGrowthPct > 0 && `Growth projection: ${expectedGrowthPct}%`}
+        </div>
       </div>
     </div>
   )
