@@ -65,6 +65,23 @@ export default function App() {
     appState.setShowWizard(true) // Always show wizard after reset
   }
 
+  // 🔄 BIDIRECTIONAL FLOW: Handle dashboard changes flowing back to wizard
+  const handleDashboardToWizard = (updates: any) => {
+    // Load current wizard answers
+    const currentAnswers = persistence.loadWizardAnswers() || {}
+    
+    // Merge dashboard changes with existing wizard answers
+    const updatedAnswers = { ...currentAnswers, ...updates }
+    
+    // Save back to wizard persistence
+    persistence.saveWizardAnswers(updatedAnswers)
+    
+    persistence.dbg('dashboard: Updated wizard persistence from dashboard changes', {
+      updates,
+      mergedAnswers: updatedAnswers
+    })
+  }
+
   // Debug panel handlers
   const handleSaveNow = () => { 
     persistence.dbg('ui: Save Now')
@@ -199,6 +216,7 @@ const savedAt = (() => {
               setTaxRushRoy={appState.setTaxRushRoy}
               miscPct={appState.miscPct}
               setMisc={appState.setMisc}
+              onSaveToWizard={handleDashboardToWizard}
             />
 
             <Dashboard results={calculations} />
