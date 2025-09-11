@@ -419,7 +419,7 @@ export default function WizardInputs({
                   fontSize: '0.8rem',
                   fontWeight: 'bold'
                 }}>
-                  {answers.region === 'US' ? '🇺🇸 United States' : '🇨🇦 Canada'}
+                  {answers.region === 'US' ? 'United States 🇺🇸' : 'Canada 🇨🇦'}
                 </span>
               </div>
             )}
