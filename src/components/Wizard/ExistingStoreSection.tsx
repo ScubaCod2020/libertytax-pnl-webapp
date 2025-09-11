@@ -196,6 +196,43 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
         </div>
       )}
 
+      {/* Other Income Toggle Question (All regions) */}
+      <div style={{ marginBottom: '1rem', padding: '0.75rem', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+        <div style={{ marginBottom: '0.5rem' }}>
+          <label style={{ fontWeight: 600, color: '#6b7280' }}>Additional Revenue Streams</label>
+        </div>
+        <div style={{ marginBottom: '0.5rem', fontSize: '0.9rem', color: '#475569' }}>
+          Does your office have additional revenue streams beyond tax preparation? (e.g., notary services, business consulting, bookkeeping)
+        </div>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+            <input
+              type="radio"
+              name="hasOtherIncome"
+              checked={answers.hasOtherIncome === true}
+              onChange={() => updateAnswers({ hasOtherIncome: true })}
+              style={{ marginRight: '0.25rem' }}
+            />
+            <span style={{ fontWeight: 500 }}>Yes, we have other income sources</span>
+          </label>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+            <input
+              type="radio"
+              name="hasOtherIncome"
+              checked={answers.hasOtherIncome === false}
+              onChange={() => updateAnswers({ 
+                hasOtherIncome: false,
+                // Clear other income related fields when disabled
+                otherIncome: undefined,
+                lastYearOtherIncome: undefined
+              })}
+              style={{ marginRight: '0.25rem' }}
+            />
+            <span style={{ fontWeight: 500 }}>No, only tax preparation</span>
+          </label>
+        </div>
+      </div>
+
       {/* Last Year Performance Box */}
       <FormSection 
         title="Last Year Performance" 
@@ -369,16 +406,19 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        <FormField 
-          label="Other Income" 
-          helpText="Optional: Additional revenue streams (bookkeeping, notary, etc.) - Enter 0 or leave blank if none"
-        >
-          <CurrencyInput
-            value={answers.lastYearOtherIncome}
-            placeholder="e.g., 2,500"
-            onChange={value => updateAnswers({ lastYearOtherIncome: value })}
-          />
-        </FormField>
+        {/* Other Income field - conditional */}
+        {answers.hasOtherIncome && (
+          <FormField 
+            label="Other Income" 
+            helpText="Additional revenue streams (bookkeeping, notary, etc.)"
+          >
+            <CurrencyInput
+              value={answers.lastYearOtherIncome}
+              placeholder="e.g., 2,500"
+              onChange={value => updateAnswers({ lastYearOtherIncome: value })}
+            />
+          </FormField>
+        )}
 
         {/* TaxRush Section - Grouped with border for visual clarity */}
         {region === 'CA' && answers.handlesTaxRush && (

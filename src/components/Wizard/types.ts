@@ -15,6 +15,7 @@ export interface WizardAnswers {
   // Business performance (new fields)
   storeType?: 'new' | 'existing'
   handlesTaxRush?: boolean // Canada only - whether office handles TaxRush returns
+  hasOtherIncome?: boolean // Whether office has additional revenue streams
   
   // Last Year Performance - Complete breakdown (Page 1) - RESTRUCTURED for franchise UX
   lastYearGrossFees?: number // new field - what franchisee actually charged
