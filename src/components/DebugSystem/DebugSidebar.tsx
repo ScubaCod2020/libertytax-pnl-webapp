@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import type { Thresholds } from '../../lib/calcs'
 import { presets } from '../../data/presets'
 import type { Scenario } from '../../data/presets'
+import SuggestionManager from './SuggestionManager'
 
 interface DebugSidebarProps {
   isOpen: boolean
@@ -38,7 +39,7 @@ interface DebugSidebarProps {
   onResetDefaults?: () => void
 }
 
-type DebugView = 'storage' | 'calculations' | 'state' | 'performance' | 'thresholds'
+type DebugView = 'storage' | 'calculations' | 'state' | 'performance' | 'thresholds' | 'suggestions'
 
 export default function DebugSidebar(props: DebugSidebarProps) {
   const {
@@ -504,8 +505,23 @@ export default function DebugSidebar(props: DebugSidebarProps) {
       case 'state': return renderStateView()
       case 'performance': return renderPerformanceView()
       case 'thresholds': return renderThresholdsView()
+      case 'suggestions': return renderSuggestionsView()
       default: return renderStorageView()
     }
+  }
+
+  const renderSuggestionsView = () => {
+    const region = appState?.region || 'US'
+    
+    return (
+      <SuggestionManager 
+        region={region}
+        onProfileUpdate={(profileKey, profile) => {
+          console.log('🎯 DEBUG: Updating suggestion profile', { profileKey, profile })
+          // Could save to localStorage or send to server in the future
+        }}
+      />
+    )
   }
 
   return (
@@ -571,6 +587,13 @@ export default function DebugSidebar(props: DebugSidebarProps) {
           title="🎯 Thresholds - Adjust KPI thresholds, scenario defaults, and expense defaults"
         >
           🎯 Thresholds
+        </button>
+        <button 
+          style={tabStyle(activeView === 'suggestions')} 
+          onClick={() => setActiveView('suggestions')}
+          title="💡 Suggestion Profiles - Manage contextual suggestions and examples"
+        >
+          💡 Suggest
         </button>
       </div>
 

@@ -225,41 +225,48 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
 
         <FormField 
           label="Customer Discounts" 
-          helpText="Total discounts given to customers (percentage auto-calculated)"
+          helpText="Percentage of discounts given to customers - this will be applied to projected revenue"
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <CurrencyInput
-              value={answers.lastYearDiscountsAmt}
-              placeholder="e.g., 6,000"
+            <PercentageInput
+              value={answers.lastYearDiscountsPct}
+              placeholder="3.5"
               width="110px"
+              max={20}
               onChange={value => {
-                console.log('🧙‍♂️ EXISTING - Discounts Amount changed:', { 
-                  oldValue: answers.lastYearDiscountsAmt, 
+                console.log('🧙‍♂️ EXISTING - Discounts Percentage changed:', { 
+                  oldValue: answers.lastYearDiscountsPct, 
                   newValue: value 
                 })
-                updateAnswers({ lastYearDiscountsAmt: value })
+                updateAnswers({ lastYearDiscountsPct: value })
+                
+                // Auto-calculate amount if we have gross fees
+                if (value && answers.lastYearGrossFees) {
+                  const calculatedAmount = answers.lastYearGrossFees * (value / 100)
+                  updateAnswers({ lastYearDiscountsAmt: Math.round(calculatedAmount) })
+                }
               }}
             />
             
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <span style={{ color: '#6b7280' }}>= </span>
-              <div style={{ 
-                width: '50px', 
-                textAlign: 'right', 
-                padding: '0.5rem',
-                backgroundColor: '#f9fafb',
-                border: '1px solid #e5e7eb',
-                borderRadius: '4px',
-                fontWeight: 500,
-                color: '#374151'
-              }}>
-                {answers.lastYearGrossFees && answers.lastYearDiscountsAmt 
-                  ? ((answers.lastYearDiscountsAmt / answers.lastYearGrossFees) * 100).toFixed(1)
-                  : '0.0'
-                }
+            {/* Show calculated dollar amount */}
+            {answers.lastYearDiscountsPct && answers.lastYearGrossFees && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <span style={{ color: '#6b7280' }}>= </span>
+                <div style={{ 
+                  width: 'auto', 
+                  minWidth: '70px',
+                  textAlign: 'right', 
+                  padding: '0.5rem',
+                  backgroundColor: '#f0fdf4',
+                  border: '1px solid #bbf7d0',
+                  borderRadius: '4px',
+                  fontWeight: 500,
+                  color: '#059669'
+                }}>
+                  ${Math.round(answers.lastYearGrossFees * (answers.lastYearDiscountsPct / 100)).toLocaleString()}
+                </div>
               </div>
-              <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
-            </div>
+            )}
           </div>
         </FormField>
 
