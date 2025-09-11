@@ -350,14 +350,15 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
 
         {/* TaxRush Section - Grouped with border for visual clarity */}
         {region === 'CA' && answers.handlesTaxRush && (
-          <div style={{
-            padding: '1rem',
-            border: '2px solid #0ea5e9',
-            borderRadius: '8px',
-            backgroundColor: '#f0f9ff',
-            marginTop: '1rem',
-            marginBottom: '1rem'
-          }}>
+          <>
+            <div style={{
+              padding: '0.75rem',
+              border: '2px solid #0ea5e9',
+              borderRadius: '8px',
+              backgroundColor: '#f0f9ff',
+              marginTop: '0.5rem',
+              marginBottom: '0.75rem'
+            }}>
             <div style={{
               fontWeight: 600,
               color: '#0369a1',
@@ -483,7 +484,8 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                 onChange={value => updateAnswers({ lastYearTaxRushAvgNetFee: value })}
               />
             </FormField>
-          </div>
+            </div>
+          </>
         )}
 
         <FormField 
@@ -696,37 +698,39 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
 
         {/* TaxRush Section - Projected Performance (matching Last Year styling) */}
         {region === 'CA' && answers.handlesTaxRush && (
-          <div style={{
-            padding: '1rem',
-            border: '2px solid #0ea5e9',
-            borderRadius: '8px',
-            backgroundColor: '#f0f9ff',
-            marginTop: '1rem',
-            marginBottom: '1rem'
-          }}>
+          <>
             <div style={{
-              fontWeight: 600,
-              color: '#0369a1',
-              marginBottom: '0.5rem',
-              fontSize: '0.9rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem'
+              padding: '0.75rem',
+              border: '2px solid #0ea5e9',
+              borderRadius: '8px',
+              backgroundColor: '#f0f9ff',
+              marginTop: '0.5rem',
+              marginBottom: '0.75rem'
             }}>
-              🚀 TaxRush Projected
-              <span style={{ fontWeight: 400, fontSize: '0.8rem', color: '#64748b' }}>
-                (Based on growth projections)
-              </span>
+              <div style={{
+                fontWeight: 600,
+                color: '#0369a1',
+                marginBottom: '0.5rem',
+                fontSize: '0.9rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}>
+                🚀 TaxRush Projected
+                <span style={{ fontWeight: 400, fontSize: '0.8rem', color: '#64748b' }}>
+                  (Based on growth projections)
+                </span>
+              </div>
             </div>
             
-          <FormField
-            label="TaxRush Returns"
-            helpText={
-              answers.manualTaxRushReturns !== undefined ?
-                'Manual override applied (you can edit or clear to use auto-calculation)' :
-                'Auto-calculated as 15% of projected tax prep returns (you can override)'
-            }
-          >
+            <FormField
+              label="TaxRush Returns"
+              helpText={
+                answers.manualTaxRushReturns !== undefined ?
+                  'Manual override applied (you can edit or clear to use auto-calculation)' :
+                  'Auto-calculated as 15% of projected tax prep returns (you can override)'
+              }
+            >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               {/* Return Count Input */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
@@ -856,8 +860,54 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                 <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
               </div>
             </div>
-          </FormField>
-          </div>
+            </FormField>
+            
+            <FormField
+              label="TaxRush Gross Fees"
+              helpText={"Projected gross fees from TaxRush returns (based on growth projections)"}
+            >
+              <CurrencyInput
+                value={(() => {
+                  // Use manual override if available
+                  if (answers.taxRushGrossFees !== undefined) {
+                    return answers.taxRushGrossFees
+                  }
+                  
+                  // Calculate from projected values
+                  if (answers.lastYearTaxRushGrossFees && answers.expectedGrowthPct !== undefined) {
+                    return Math.round(answers.lastYearTaxRushGrossFees * (1 + answers.expectedGrowthPct / 100))
+                  }
+                  
+                  return answers.lastYearTaxRushGrossFees || undefined
+                })()}
+                placeholder="Auto-calculated"
+                onChange={value => updateAnswers({ taxRushGrossFees: value })}
+              />
+            </FormField>
+            
+            <FormField
+              label="TaxRush Avg Net Fee"
+              helpText={"Projected average net fee per TaxRush return (based on growth projections)"}
+            >
+              <CurrencyInput
+                value={(() => {
+                  // Use manual override if available
+                  if (answers.taxRushAvgNetFee !== undefined) {
+                    return answers.taxRushAvgNetFee
+                  }
+                  
+                  // Calculate from projected values
+                  if (answers.lastYearTaxRushAvgNetFee && answers.expectedGrowthPct !== undefined) {
+                    return Math.round(answers.lastYearTaxRushAvgNetFee * (1 + answers.expectedGrowthPct / 100))
+                  }
+                  
+                  return answers.lastYearTaxRushAvgNetFee || undefined
+                })()}
+                placeholder="Auto-calculated"
+                onChange={value => updateAnswers({ taxRushAvgNetFee: value })}
+              />
+            </FormField>
+          </>
         )}
 
         <FormField

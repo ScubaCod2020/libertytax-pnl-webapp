@@ -118,7 +118,7 @@ export function ValidatedInput({
         // Accessibility attributes (addresses critical accessibility violations)
         aria-label={`${field.label} (${getFieldDescription(field)})`}
         aria-describedby={getAriaDescribedBy(validation, errorId, warningId)}
-        aria-invalid={validation.isValid ? "false" : "true"}
+        aria-invalid={validation?.isValid === false ? "true" : "false"}
         aria-required="false" // Most expense fields are optional
       />
       

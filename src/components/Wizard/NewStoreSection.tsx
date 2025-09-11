@@ -98,48 +98,68 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
             />
           </FormField>
 
-          {/* TaxRush Returns (Canada only - conditional) */}
+          {/* TaxRush Fields (Canada only - conditional) */}
           {region === 'CA' && answers.handlesTaxRush && (
-            <FormField 
-              label="TaxRush Returns" 
-              helpText="Your target TaxRush returns for this year (typically ~15% of total returns)"
-            >
-              <NumberInput
-                value={answers.taxRushReturns || (answers.taxPrepReturns ? Math.round(answers.taxPrepReturns * 0.15) : undefined)}
-                placeholder="0"
-                prefix="#"
-                onChange={value => updateAnswers({ taxRushReturns: value })}
-              />
-            </FormField>
+            <>
+              <div style={{
+                padding: '0.75rem',
+                border: '2px solid #0ea5e9',
+                borderRadius: '8px',
+                backgroundColor: '#f0f9ff',
+                marginTop: '0.5rem',
+                marginBottom: '0.75rem'
+              }}>
+                <div style={{
+                  fontWeight: 600,
+                  color: '#0369a1',
+                  marginBottom: '0.5rem',
+                  fontSize: '0.9rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}>
+                  🚀 TaxRush Fields
+                  <span style={{ fontWeight: 400, fontSize: '0.8rem', color: '#64748b' }}>
+                    (Same-day refund service)
+                  </span>
+                </div>
+              </div>
+              
+              <FormField 
+                label="TaxRush Returns" 
+                helpText="Your target TaxRush returns for this year (typically ~15% of total returns)"
+              >
+                <NumberInput
+                  value={answers.taxRushReturns || (answers.taxPrepReturns ? Math.round(answers.taxPrepReturns * 0.15) : undefined)}
+                  placeholder="0"
+                  prefix="#"
+                  onChange={value => updateAnswers({ taxRushReturns: value })}
+                />
+              </FormField>
+
+              <FormField 
+                label="TaxRush Gross Fees" 
+                helpText="Your target gross fees from TaxRush returns (separate from tax prep fees)"
+              >
+                <CurrencyInput
+                  value={answers.taxRushGrossFees}
+                  placeholder="0"
+                  onChange={value => updateAnswers({ taxRushGrossFees: value })}
+                />
+              </FormField>
+
+              <FormField 
+                label="TaxRush Avg Net Fee" 
+                helpText="Your target average net fee per TaxRush return (separate from tax prep average)"
+              >
+                <CurrencyInput
+                  value={answers.taxRushAvgNetFee}
+                  placeholder="0"
+                  onChange={value => updateAnswers({ taxRushAvgNetFee: value })}
+                />
+              </FormField>
+            </>
           )}
-
-        {/* TaxRush Gross Fees (Canada only - conditional) */}
-        {region === 'CA' && answers.handlesTaxRush && (
-          <FormField 
-            label="TaxRush Gross Fees" 
-            helpText="Your target gross fees from TaxRush returns (separate from tax prep fees)"
-          >
-            <CurrencyInput
-              value={answers.taxRushGrossFees}
-              placeholder="0"
-              onChange={value => updateAnswers({ taxRushGrossFees: value })}
-            />
-          </FormField>
-        )}
-
-        {/* TaxRush Average Net Fee (Canada only - conditional) */}
-        {region === 'CA' && answers.handlesTaxRush && (
-          <FormField 
-            label="TaxRush Avg Net Fee" 
-            helpText="Your target average net fee per TaxRush return (separate from tax prep average)"
-          >
-            <CurrencyInput
-              value={answers.taxRushAvgNetFee}
-              placeholder="0"
-              onChange={value => updateAnswers({ taxRushAvgNetFee: value })}
-            />
-          </FormField>
-        )}
 
         <FormField 
           label="Gross Tax Prep Fees" 

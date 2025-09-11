@@ -94,6 +94,8 @@ export default function SuggestionManager({ region, onProfileUpdate }: Suggestio
         <select
           value={selectedProfile}
           onChange={(e) => setSelectedProfile(e.target.value)}
+          title="Select suggestion profile"
+          aria-label="Select suggestion profile"
           style={{
             background: '#374151',
             color: '#f3f4f6',
@@ -230,6 +232,8 @@ export default function SuggestionManager({ region, onProfileUpdate }: Suggestio
                           type="number"
                           value={editedProfile.avgNetFee}
                           onChange={(e) => updateProfileField('avgNetFee', +e.target.value)}
+                          title="Average Net Fee"
+                          aria-label="Average Net Fee"
                           style={{
                             width: '100%',
                             background: '#1f2937',
@@ -248,6 +252,8 @@ export default function SuggestionManager({ region, onProfileUpdate }: Suggestio
                           type="number"
                           value={editedProfile.taxPrepReturns}
                           onChange={(e) => updateProfileField('taxPrepReturns', +e.target.value)}
+                          title="Tax Prep Returns"
+                          aria-label="Tax Prep Returns"
                           style={{
                             width: '100%',
                             background: '#1f2937',
@@ -267,6 +273,8 @@ export default function SuggestionManager({ region, onProfileUpdate }: Suggestio
                           step="0.1"
                           value={editedProfile.discountsPct}
                           onChange={(e) => updateProfileField('discountsPct', +e.target.value)}
+                          title="Discounts Percentage"
+                          aria-label="Discounts Percentage"
                           style={{
                             width: '100%',
                             background: '#1f2937',
@@ -285,6 +293,8 @@ export default function SuggestionManager({ region, onProfileUpdate }: Suggestio
                           type="number"
                           value={editedProfile.otherIncome || 0}
                           onChange={(e) => updateProfileField('otherIncome', +e.target.value)}
+                          title="Other Income"
+                          aria-label="Other Income"
                           style={{
                             width: '100%',
                             background: '#1f2937',
@@ -305,6 +315,8 @@ export default function SuggestionManager({ region, onProfileUpdate }: Suggestio
                               type="number"
                               value={editedProfile.taxRushReturns || 0}
                               onChange={(e) => updateProfileField('taxRushReturns', +e.target.value)}
+                              title="TaxRush Returns"
+                              aria-label="TaxRush Returns"
                               style={{
                                 width: '100%',
                                 background: '#1f2937',
@@ -323,6 +335,8 @@ export default function SuggestionManager({ region, onProfileUpdate }: Suggestio
                               type="number"
                               value={editedProfile.taxRushAvgNetFee || 0}
                               onChange={(e) => updateProfileField('taxRushAvgNetFee', +e.target.value)}
+                              title="TaxRush Average Net Fee"
+                              aria-label="TaxRush Average Net Fee"
                               style={{
                                 width: '100%',
                                 background: '#1f2937',
@@ -345,6 +359,8 @@ export default function SuggestionManager({ region, onProfileUpdate }: Suggestio
                             step="0.1"
                             value={editedProfile.expectedGrowthPct || 0}
                             onChange={(e) => updateProfileField('expectedGrowthPct', +e.target.value)}
+                            title="Expected Growth Percentage"
+                            aria-label="Expected Growth Percentage"
                             style={{
                               width: '100%',
                               background: '#1f2937',
@@ -369,21 +385,23 @@ export default function SuggestionManager({ region, onProfileUpdate }: Suggestio
                           <label style={{ fontSize: '0.8rem', color: '#d1d5db' }}>
                             {expenseId.replace('Pct', '').replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                           </label>
-                          <input
-                            type="number"
-                            step="0.1"
-                            value={editedProfile.expenses[expenseId as keyof typeof editedProfile.expenses]}
-                            onChange={(e) => updateExpenseField(expenseId, +e.target.value)}
-                            style={{
-                              width: '100%',
-                              background: '#1f2937',
-                              color: '#f3f4f6',
-                              border: '1px solid #4b5563',
-                              borderRadius: '4px',
-                              padding: '0.25rem',
-                              fontSize: '0.8rem'
-                            }}
-                          />
+                            <input
+                              type="number"
+                              step="0.1"
+                              value={editedProfile.expenses[expenseId as keyof typeof editedProfile.expenses]}
+                              onChange={(e) => updateExpenseField(expenseId, +e.target.value)}
+                              title={expenseId.replace('Pct', '').replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                              aria-label={expenseId.replace('Pct', '').replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                              style={{
+                                width: '100%',
+                                background: '#1f2937',
+                                color: '#f3f4f6',
+                                border: '1px solid #4b5563',
+                                borderRadius: '4px',
+                                padding: '0.25rem',
+                                fontSize: '0.8rem'
+                              }}
+                            />
                         </div>
                       ))}
                     </div>
