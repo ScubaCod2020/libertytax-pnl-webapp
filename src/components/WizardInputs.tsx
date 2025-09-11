@@ -129,20 +129,20 @@ export default function WizardInputs({
       const currentAvgNetFee = answers.projectedAvgNetFee || (answers.avgNetFee && answers.expectedGrowthPct !== undefined ? answers.avgNetFee * (1 + answers.expectedGrowthPct / 100) : answers.avgNetFee)
       const currentTaxPrepReturns = answers.projectedTaxPrepReturns || (answers.taxPrepReturns && answers.expectedGrowthPct !== undefined ? answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100) : answers.taxPrepReturns)
       
-      const grossFees = currentAvgNetFee && currentTaxPrepReturns ? currentAvgNetFee * currentTaxPrepReturns : 0
-      const discounts = grossFees * ((answers.discountsPct || 3) / 100)
-      const taxPrepIncome = grossFees - discounts
+      const grossTaxPrepFees = currentAvgNetFee && currentTaxPrepReturns ? currentAvgNetFee * currentTaxPrepReturns : 0
+      const discounts = grossTaxPrepFees * ((answers.discountsPct || 3) / 100)
+      const taxPrepIncome = grossTaxPrepFees - discounts
       
       switch (field.calculationBase) {
         case 'percentage_gross':
           // Use actual gross fees (before discounts) - but exclude TaxRush royalties handled above
-          return grossFees
+          return grossTaxPrepFees
         case 'percentage_tp_income':
           // Use tax prep income (after discounts) - this is the Net Tax Prep Revenue
           return taxPrepIncome
         case 'percentage_salaries':
           // Base on actual gross fees, then apply salary percentage
-          return grossFees * ((answers as any).salariesPct || 25) / 100
+          return grossTaxPrepFees * ((answers as any).salariesPct || 25) / 100
         case 'fixed_amount':
           return 1 // For fixed amounts, percentage doesn't apply
         default:
@@ -1101,9 +1101,12 @@ export default function WizardInputs({
             calculatedValues: {
               currentAvgNetFee: currentAvgNetFee,
               currentTaxPrepReturns: currentTaxPrepReturns,
-              grossFees: grossFees,
+              adjustedTaxPrepReturns: adjustedTaxPrepReturns,
+              grossTaxPrepFees: grossTaxPrepFees,
+              grossTaxRushFees: grossTaxRushFees,
               discountAmount: discountAmount,
               taxPrepIncome: taxPrepIncome,
+              taxRushIncome: taxRushIncome,
               totalRevenue: totalRevenue
             },
             expectedFromPage1: answers.expectedRevenue
@@ -1280,9 +1283,9 @@ export default function WizardInputs({
           const currentTaxRushAvgNetFee = answers.handlesTaxRush && answers.taxRushAvgNetFee && answers.expectedGrowthPct !== undefined ? answers.taxRushAvgNetFee * (1 + answers.expectedGrowthPct / 100) : (answers.handlesTaxRush ? (answers.taxRushAvgNetFee || 0) : 0)
           
           if (currentAvgNetFee && currentTaxPrepReturns) {
-            const grossFees = currentAvgNetFee * currentTaxPrepReturns
-            const discountAmount = grossFees * (answers.discountsPct || 3) / 100
-            const taxPrepIncome = grossFees - discountAmount
+            const grossTaxPrepFees = currentAvgNetFee * currentTaxPrepReturns
+            const discountAmount = grossTaxPrepFees * (answers.discountsPct || 3) / 100
+            const taxPrepIncome = grossTaxPrepFees - discountAmount
             // TaxRush income calculation (conditional on handlesTaxRush setting)
             const taxRushIncome = answers.handlesTaxRush && currentTaxRushAvgNetFee && currentTaxRushReturns 
               ? currentTaxRushAvgNetFee * currentTaxRushReturns
@@ -1402,9 +1405,9 @@ export default function WizardInputs({
           const currentTaxRushAvgNetFee = answers.handlesTaxRush && answers.taxRushAvgNetFee && answers.expectedGrowthPct !== undefined ? answers.taxRushAvgNetFee * (1 + answers.expectedGrowthPct / 100) : (answers.handlesTaxRush ? (answers.taxRushAvgNetFee || 0) : 0)
           
           if (currentAvgNetFee && currentTaxPrepReturns) {
-            const grossFees = currentAvgNetFee * currentTaxPrepReturns
-            const discountAmount = grossFees * (answers.discountsPct || 3) / 100
-            const taxPrepIncome = grossFees - discountAmount
+            const grossTaxPrepFees = currentAvgNetFee * currentTaxPrepReturns
+            const discountAmount = grossTaxPrepFees * (answers.discountsPct || 3) / 100
+            const taxPrepIncome = grossTaxPrepFees - discountAmount
             // TaxRush income calculation (conditional on handlesTaxRush setting)
             const taxRushIncome = answers.handlesTaxRush && currentTaxRushAvgNetFee && currentTaxRushReturns 
               ? currentTaxRushAvgNetFee * currentTaxRushReturns
