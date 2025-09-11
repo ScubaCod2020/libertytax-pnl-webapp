@@ -1,5 +1,5 @@
 // InputsPanel.tsx - Dashboard inputs mirroring wizard Page 2 structure
-// Bidirectional data flow between wizard and dashboard
+// Enhanced with sliders and bidirectional wizard data flow
 
 import React, { useEffect } from 'react'
 import type { Region } from '../lib/calcs'
@@ -10,6 +10,7 @@ import {
   expenseCategories,
   getFieldsByCategory,
   getFieldsForRegion,
+  type ExpenseField,
   type ExpenseCategory 
 } from '../types/expenses'
 
@@ -26,9 +27,6 @@ interface InputsPanelProps {
   setTaxRush: (value: number) => void
   discountsPct: number
   setDisc: (value: number) => void
-
-  // Bidirectional persistence functions
-  onSaveToWizard?: (updates: Partial<WizardAnswers>) => void
 
   // All 17 expense fields
   salariesPct: number
@@ -65,6 +63,9 @@ interface InputsPanelProps {
   setTaxRushRoy: (value: number) => void
   miscPct: number
   setMisc: (value: number) => void
+
+  // Bidirectional persistence functions
+  onSaveToWizard?: (updates: Partial<WizardAnswers>) => void
 }
 
 export default function InputsPanel(props: InputsPanelProps) {
@@ -119,7 +120,7 @@ export default function InputsPanel(props: InputsPanelProps) {
   ])
 
   // Expense field value getters and setters mapping
-  const getFieldValue = (field: any) => {
+  const getFieldValue = (field: ExpenseField) => {
     const fieldMap: any = {
       salariesPct, empDeductionsPct, rentPct, telephoneAmt, utilitiesAmt,
       localAdvAmt, insuranceAmt, postageAmt, suppliesPct, duesAmt,
@@ -129,7 +130,7 @@ export default function InputsPanel(props: InputsPanelProps) {
     return fieldMap[field.id] ?? field.defaultValue
   }
 
-  const setFieldValue = (field: any, value: number) => {
+  const setFieldValue = (field: ExpenseField, value: number) => {
     const setterMap: any = {
       salariesPct: setSal, empDeductionsPct: setEmpDeductions, rentPct: setRent,
       telephoneAmt: setTelephone, utilitiesAmt: setUtilities, localAdvAmt: setLocalAdv,
@@ -153,45 +154,145 @@ export default function InputsPanel(props: InputsPanelProps) {
     }
   }
 
-  // Render expense field input (compact dashboard version)
-  const renderExpenseField = (field: any) => {
+  // Calculate gross fees for discount calculation
+  const grossFees = avgNetFee * taxPrepReturns
+  const discountDollarAmount = grossFees * (discountsPct / 100)
+
+  // Handle discount percentage/dollar changes
+  const handleDiscountPctChange = (newPct: number) => {
+    setDisc(Math.max(0, Math.min(50, newPct)))
+  }
+
+  const handleDiscountDollarChange = (newDollar: number) => {
+    const validDollar = Math.max(0, newDollar)
+    if (grossFees > 0) {
+      const newPct = (validDollar / grossFees) * 100
+      setDisc(Math.max(0, Math.min(50, newPct)))
+    }
+  }
+
+  // Render expense field with dual percentage/dollar inputs (matching wizard Page 2)
+  const renderExpenseField = (field: ExpenseField) => {
     const value = getFieldValue(field)
     const isFixed = field.calculationBase === 'fixed_amount'
     const isDisabled = field.regionSpecific === 'CA' && region !== 'CA'
     const isTaxRushField = field.id === 'taxRushRoyaltiesPct'
+    const isFranchiseRoyalty = field.category === 'franchise' && field.id.includes('oyalties')
+    const isLocked = isFranchiseRoyalty // Franchise royalties are locked
+    
+    // Calculate dollar value for percentage-based fields
+    let dollarValue = 0
+    if (!isFixed) {
+      if (field.calculationBase === 'percentage_gross') {
+        dollarValue = Math.round(grossFees * value / 100)
+      } else if (field.calculationBase === 'percentage_tp_income') {
+        const taxPrepIncome = grossFees - discountDollarAmount
+        dollarValue = Math.round(taxPrepIncome * value / 100)
+      } else if (field.calculationBase === 'percentage_salaries') {
+        const salariesAmount = grossFees * salariesPct / 100
+        dollarValue = Math.round(salariesAmount * value / 100)
+      }
+    }
+
+    const handlePercentageChange = (newPercentage: number) => {
+      const validPercentage = Math.max(0, Math.min(100, newPercentage))
+      setFieldValue(field, validPercentage)
+    }
+
+    const handleDollarChange = (newDollar: number) => {
+      const validDollar = Math.max(0, newDollar)
+      if (isFixed) {
+        setFieldValue(field, validDollar)
+      } else {
+        let base = 0
+        if (field.calculationBase === 'percentage_gross') {
+          base = grossFees
+        } else if (field.calculationBase === 'percentage_tp_income') {
+          base = grossFees - discountDollarAmount
+        } else if (field.calculationBase === 'percentage_salaries') {
+          base = grossFees * salariesPct / 100
+        }
+        
+        if (base > 0) {
+          const newPercentage = Math.round(validDollar / base * 100)
+          const cappedPercentage = Math.max(0, Math.min(100, newPercentage))
+          setFieldValue(field, cappedPercentage)
+        }
+      }
+    }
     
     // Style for TaxRush fields (blue boxed)
     const fieldStyle = isTaxRushField ? {
       border: '2px solid #3b82f6',
       borderRadius: '6px',
-      padding: '0.5rem',
+      padding: '0.75rem',
       backgroundColor: '#f8fafc',
-      marginBottom: '0.5rem'
-    } : { marginBottom: '0.5rem' }
+      marginBottom: '0.75rem'
+    } : { marginBottom: '0.75rem' }
 
     return (
       <div key={field.id} style={fieldStyle}>
-        <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
-          <span style={{ fontWeight: 500 }}>{field.label}:</span>
-          {isFixed ? ' $' : ' %'}
-        </label>
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => setFieldValue(field, Number(e.target.value))}
-          min={field.min}
-          max={field.max}
-          step={field.step}
-          disabled={isDisabled}
-          style={{
-            width: '100%',
-            padding: '0.25rem 0.5rem',
-            borderRadius: '4px',
-            border: '1px solid #d1d5db',
-            fontSize: '0.9rem',
-            backgroundColor: isDisabled ? '#f3f4f6' : isTaxRushField ? '#f0f9ff' : 'white'
-          }}
-        />
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center' }}>
+          <label style={{ fontSize: '0.9rem', fontWeight: 500, color: isLocked ? '#6b7280' : 'inherit' }}>
+            {field.label}
+            {isLocked && ' (Locked)'}
+          </label>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {/* Percentage/Fixed Amount Input */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              {isFixed && <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>}
+              <input
+                type="number"
+                min="0"
+                max={isFixed ? undefined : 100}
+                step="1"
+                value={value}
+                onChange={(e) => handlePercentageChange(Number(e.target.value) || 0)}
+                disabled={isDisabled || isLocked}
+                style={{
+                  width: '60px',
+                  padding: '0.25rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '4px',
+                  fontSize: '0.8rem',
+                  textAlign: 'right',
+                  backgroundColor: isDisabled ? '#f3f4f6' : isTaxRushField ? '#f0f9ff' : 'white'
+                }}
+              />
+              {!isFixed && <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>%</span>}
+            </div>
+
+            {/* Dollar Input - only for percentage-based fields */}
+            {!isFixed && !isLocked && (
+              <>
+                <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>=</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={dollarValue || ''}
+                    onChange={(e) => handleDollarChange(Number(e.target.value) || 0)}
+                    disabled={isDisabled || grossFees === 0}
+                    placeholder="0"
+                    style={{
+                      width: '80px',
+                      padding: '0.25rem',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '4px',
+                      fontSize: '0.8rem',
+                      textAlign: 'right',
+                      backgroundColor: '#f9fafb'
+                    }}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+        
         {field.description && (
           <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
             {field.description}
@@ -205,14 +306,15 @@ export default function InputsPanel(props: InputsPanelProps) {
     <div className="card" style={{ minWidth: '420px', maxWidth: '500px' }}>
       <div className="card-title">Inputs</div>
 
-      {/* Scenario Selector */}
+      {/* Scenario Selector - IMPORTANT for post-wizard adjustments */}
       <div style={{ marginBottom: '1.5rem' }}>
         <label>
-          Scenario:&nbsp;
+          <strong>Scenario:</strong>&nbsp;
           <select
             value={scenario}
             onChange={(e) => setScenario(e.target.value as Scenario)}
             aria-label="Scenario"
+            style={{ padding: '0.25rem', borderRadius: '4px', border: '1px solid #d1d5db' }}
           >
             <option value="Custom">Custom</option>
             <option value="Good">Good</option>
@@ -222,7 +324,7 @@ export default function InputsPanel(props: InputsPanelProps) {
         </label>
       </div>
 
-      {/* 💰 Income Drivers Section - Matching Wizard Page 2 */}
+      {/* 💰 Income Drivers Section - Enhanced with sliders */}
       <div style={{ 
         marginBottom: '1.5rem',
         border: '1px solid #d1d5db',
@@ -243,50 +345,47 @@ export default function InputsPanel(props: InputsPanelProps) {
           💰 Income Drivers
         </div>
 
-        {/* Average Net Fee */}
+        {/* Average Net Fee with Slider */}
         <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.25rem', fontWeight: 500 }}>
-            Average Net Fee: $
+          <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 500 }}>
+            Average Net Fee: ${avgNetFee}
           </label>
           <input
-            type="number"
+            type="range"
+            min="50"
+            max="500"
+            step="1"
             value={avgNetFee}
             onChange={(e) => setANF(Number(e.target.value))}
-            min="1"
-            max="1000"
-            step="1"
-            style={{
-              width: '100%',
-              padding: '0.25rem 0.5rem',
-              borderRadius: '4px',
-              border: '1px solid #d1d5db',
-              fontSize: '0.9rem'
-            }}
+            style={{ width: '100%', marginBottom: '0.25rem' }}
           />
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#6b7280' }}>
+            <span>$50</span>
+            <span>$500</span>
+          </div>
         </div>
 
-        {/* Tax-Prep Returns */}
+        {/* Tax-Prep Returns with Slider */}
         <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.25rem', fontWeight: 500 }}>
-            Tax-Prep Returns: #
+          <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 500 }}>
+            Tax-Prep Returns: {taxPrepReturns.toLocaleString()}
           </label>
           <input
-            type="number"
+            type="range"
+            min="100"
+            max="5000"
+            step="1"
             value={taxPrepReturns}
             onChange={(e) => setReturns(Number(e.target.value))}
-            min="0"
-            step="1"
-            style={{
-              width: '100%',
-              padding: '0.25rem 0.5rem',
-              borderRadius: '4px',
-              border: '1px solid #d1d5db',
-              fontSize: '0.9rem'
-            }}
+            style={{ width: '100%', marginBottom: '0.25rem' }}
           />
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#6b7280' }}>
+            <span>100</span>
+            <span>5,000</span>
+          </div>
         </div>
 
-        {/* TaxRush Returns - Blue Boxed for Canada */}
+        {/* TaxRush Returns - Blue Boxed for Canada with Slider */}
         {region === 'CA' && (
           <div style={{
             border: '2px solid #3b82f6',
@@ -295,47 +394,89 @@ export default function InputsPanel(props: InputsPanelProps) {
             backgroundColor: '#f8fafc',
             marginBottom: '1rem'
           }}>
-            <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.25rem', fontWeight: 500 }}>
-              TaxRush Returns: #
+            <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 500 }}>
+              TaxRush Returns: {taxRushReturns.toLocaleString()}
             </label>
             <input
-              type="number"
+              type="range"
+              min="0"
+              max="1000"
+              step="1"
               value={taxRushReturns}
               onChange={(e) => setTaxRush(Number(e.target.value))}
-              min="0"
-              step="1"
-              style={{
-                width: '100%',
-                padding: '0.25rem 0.5rem',
-                borderRadius: '4px',
-                border: '1px solid #d1d5db',
-                fontSize: '0.9rem',
-                backgroundColor: '#f0f9ff'
-              }}
+              style={{ width: '100%', marginBottom: '0.25rem' }}
             />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#6b7280' }}>
+              <span>0</span>
+              <span>1,000</span>
+            </div>
           </div>
         )}
 
-        {/* Discounts */}
+        {/* Customer Discounts - Dual Dollar/Percentage with Slider */}
         <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.25rem', fontWeight: 500 }}>
-            Discounts: %
+          <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 500 }}>
+            Customer Discounts
           </label>
+          
+          {/* Dual Inputs */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>
+              <input
+                type="number"
+                min="0"
+                step="1"
+                value={Math.round(discountDollarAmount) || ''}
+                onChange={(e) => handleDiscountDollarChange(Number(e.target.value) || 0)}
+                placeholder="0"
+                style={{
+                  width: '80px',
+                  padding: '0.25rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '4px',
+                  fontSize: '0.8rem',
+                  textAlign: 'right'
+                }}
+              />
+            </div>
+            <span style={{ color: '#6b7280' }}>⟷</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <input
+                type="number"
+                min="0"
+                max="50"
+                step="0.1"
+                value={discountsPct || ''}
+                onChange={(e) => handleDiscountPctChange(Number(e.target.value) || 0)}
+                placeholder="3"
+                style={{
+                  width: '60px',
+                  padding: '0.25rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '4px',
+                  fontSize: '0.8rem',
+                  textAlign: 'right'
+                }}
+              />
+              <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>%</span>
+            </div>
+          </div>
+          
+          {/* Percentage Slider */}
           <input
-            type="number"
-            value={discountsPct}
-            onChange={(e) => setDisc(Number(e.target.value))}
+            type="range"
             min="0"
-            max="50"
-            step="0.1"
-            style={{
-              width: '100%',
-              padding: '0.25rem 0.5rem',
-              borderRadius: '4px',
-              border: '1px solid #d1d5db',
-              fontSize: '0.9rem'
-            }}
+            max="25"
+            step="1"
+            value={discountsPct}
+            onChange={(e) => handleDiscountPctChange(Number(e.target.value))}
+            style={{ width: '100%', marginBottom: '0.25rem' }}
           />
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#6b7280' }}>
+            <span>0%</span>
+            <span>25%</span>
+          </div>
         </div>
       </div>
 
