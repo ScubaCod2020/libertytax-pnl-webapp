@@ -146,70 +146,18 @@ export default function ProjectedPerformancePanel({
         </div>
       )}
 
-      {/* Projected Performance Goals */}
-      <div style={{ marginBottom: '1rem' }}>
-        <div style={{ 
-          fontWeight: 'bold', 
-          fontSize: '0.9rem', 
-          color: '#059669', 
-          marginBottom: '0.5rem',
-          borderBottom: '1px solid #d1d5db',
-          paddingBottom: '0.25rem'
-        }}>
-          🎯 Projected Performance Goals
-          {expectedGrowthPct !== 0 && (
-            <div style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#6b7280', marginTop: '0.25rem' }}>
-              Performance Change: {expectedGrowthPct > 0 ? '+' : ''}{expectedGrowthPct}% growth target
-            </div>
-          )}
-        </div>
-        
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '0.5rem',
-          padding: '0.4rem',
-          backgroundColor: '#f9fafb',
-          border: `1px solid #e5e7eb`,
-          borderRadius: '6px',
-          marginBottom: '0.4rem',
-          opacity: 0.8
-        }}>
-          <span style={{ fontSize: '1rem', color: '#6b7280' }}>📊</span>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.8rem', color: '#6b7280', fontWeight: 500 }}>Target Net Margin (Reference)</div>
-            <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#6b7280' }}>
-              {pct(netMarginPct)}
-            </div>
-          </div>
-        </div>
-
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '0.5rem',
-          padding: '0.4rem',
-          backgroundColor: '#f9fafb',
-          border: `1px solid #e5e7eb`,
-          borderRadius: '6px',
-          marginBottom: '0.5rem',
-          opacity: 0.8
-        }}>
-          <span style={{ fontSize: '1rem', color: '#6b7280' }}>📊</span>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.8rem', color: '#6b7280', fontWeight: 500 }}>Target Cost / Return (Reference)</div>
-            <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#6b7280' }}>
-              {currency(costPerReturn)}
-            </div>
-          </div>
-        </div>
-        
-        <div style={{ fontSize: '0.75rem', color: '#6b7280', lineHeight: '1.4' }}>
-          <div>Target Revenue: {currency(totalRevenue)}</div>
-          <div>Target Expenses: {currency(totalExpenses)}</div>
-          <div>Target Returns: {totalReturns.toLocaleString()}</div>
-        </div>
-      </div>
+      {/* 
+      TODO: FUTURE ENHANCEMENT - Projected Performance Goals Section
+      
+      When transitioning from forecasting to tracking mode, restore this section:
+      - Target Net Margin (Reference) with calculated projections
+      - Target Cost/Return (Reference) with performance targets  
+      - Performance Change display from Page 1 expectedGrowthPct
+      - Static reference metrics for PY vs Projected vs Actual comparisons
+      
+      This will be valuable when users start entering actual numbers to compare
+      against their forecasted targets and see performance variance.
+      */}
 
     </div>
   )

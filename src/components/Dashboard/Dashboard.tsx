@@ -86,54 +86,61 @@ export default function Dashboard({ results }: DashboardProps) {
             💰 Income Summary
           </div>
           <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '0.5rem' }}>
-              {/* Tax Prep Revenue Breakdown */}
-              <div>
-                <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#059669', marginBottom: '0.25rem' }}>Tax Prep Revenue:</div>
-                <div style={{ color: '#374151', fontSize: '0.8rem' }}>Gross Tax Prep Fees: <strong>{currency(results.grossFees)}</strong></div>
-                <div style={{ color: '#374151', fontSize: '0.8rem' }}>Returns: {(results.totalReturns - (results.taxRushIncome > 0 ? Math.round(results.taxRushIncome / 125) : 0)).toLocaleString()} @ ${Math.round(results.grossFees / (results.totalReturns - (results.taxRushIncome > 0 ? Math.round(results.taxRushIncome / 125) : 0))).toLocaleString()}</div>
-                <div style={{ color: '#dc2626', fontSize: '0.8rem' }}>Less Discounts: <strong>-{currency(results.discounts)}</strong></div>
-                <div style={{ fontWeight: 'bold', color: '#059669', fontSize: '0.85rem' }}>Net Tax Prep Income: <strong>{currency(results.taxPrepIncome)}</strong></div>
+            {/* Tax Prep Revenue */}
+            <div style={{ marginBottom: '0.75rem' }}>
+              <div style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#059669', marginBottom: '0.5rem' }}>
+                Tax Prep Revenue:
               </div>
-              
-              {/* TaxRush Revenue Breakdown */}
-              {results.taxRushIncome && results.taxRushIncome > 0 && (
-                <div style={{ paddingLeft: '0.5rem', borderLeft: '2px solid #0ea5e9' }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#0ea5e9', marginBottom: '0.25rem' }}>TaxRush Revenue:</div>
-                  <div style={{ color: '#374151', fontSize: '0.8rem' }}>TaxRush Returns: {Math.round(results.taxRushIncome / 125).toLocaleString()}</div>
-                  <div style={{ color: '#374151', fontSize: '0.8rem' }}>Average Net Fee: $125</div>
-                  <div style={{ fontWeight: 'bold', color: '#0ea5e9', fontSize: '0.85rem' }}>TaxRush Income: <strong>{currency(results.taxRushIncome)}</strong></div>
+              <div style={{ paddingLeft: '1rem', fontSize: '0.85rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                  <span>Net Tax Prep Income:</span>
+                  <strong>{currency(results.taxPrepIncome)}</strong>
                 </div>
-              )}
+              </div>
             </div>
-            
-            {/* Other Income */}
+
+            {/* TaxRush Revenue */}
+            {results.taxRushIncome && results.taxRushIncome > 0 && (
+              <div style={{ marginBottom: '0.75rem' }}>
+                <div style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#0ea5e9', marginBottom: '0.5rem' }}>
+                  TaxRush Revenue:
+                </div>
+                <div style={{ paddingLeft: '1rem', fontSize: '0.85rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                    <span>TaxRush Income:</span>
+                    <strong>{currency(results.taxRushIncome)}</strong>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Other Revenue */}
             {results.otherIncome > 0 && (
-              <div style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
-                <div style={{ fontWeight: 'bold', color: '#6b7280', marginBottom: '0.25rem' }}>Other Income:</div>
-                <div style={{ color: '#374151', fontSize: '0.8rem', paddingLeft: '0.5rem' }}>
-                  Additional Revenue: <strong>{currency(results.otherIncome)}</strong>
-                  <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginTop: '0.1rem' }}>
-                    (Notary services, business consulting, etc.)
+              <div style={{ marginBottom: '0.75rem' }}>
+                <div style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#6b7280', marginBottom: '0.5rem' }}>
+                  Other Revenue:
+                </div>
+                <div style={{ paddingLeft: '1rem', fontSize: '0.85rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                    <span>Other Income:</span>
+                    <strong>{currency(results.otherIncome)}</strong>
                   </div>
                 </div>
               </div>
             )}
             
-            {/* Total Summary */}
+            {/* Total Gross Revenue */}
             <div style={{ 
               borderTop: '2px solid #059669', 
-              paddingTop: '0.5rem', 
-              marginTop: '0.5rem',
+              paddingTop: '0.75rem', 
+              marginTop: '1rem',
               fontWeight: 'bold',
+              fontSize: '1rem',
               color: '#059669'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>Total Revenue:</span>
+                <span>Total Gross Revenue:</span>
                 <strong>{currency(results.totalRevenue)}</strong>
-              </div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem', textAlign: 'center', fontStyle: 'italic' }}>
-                Total Returns: {results.totalReturns.toLocaleString()}
               </div>
             </div>
           </div>
@@ -145,75 +152,24 @@ export default function Dashboard({ results }: DashboardProps) {
       <div style={{ marginTop: 16 }}>
         <div className="card">
           <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            💰 Actual Expense Breakdown
+            💰 Expense Breakdown
             <span className="small" style={{ fontWeight: 400, marginLeft: '8px' }}>
               (Total: {currency(results.totalExpenses)})
             </span>
           </div>
           
-          {/* Actual Performance Summary */}
-          <div style={{
-            padding: '0.75rem',
-            backgroundColor: (() => {
-              const expensePercentage = results.totalRevenue > 0 ? (results.totalExpenses / results.totalRevenue) * 100 : 0
-              if (expensePercentage >= 75 && expensePercentage <= 77) return '#f0f9ff'
-              if (expensePercentage <= 80) return '#fffbeb'
-              return '#fef2f2'
-            })(),
-            border: (() => {
-              const expensePercentage = results.totalRevenue > 0 ? (results.totalExpenses / results.totalRevenue) * 100 : 0
-              if (expensePercentage >= 75 && expensePercentage <= 77) return '1px solid #0ea5e9'
-              if (expensePercentage <= 80) return '1px solid #f59e0b'
-              return '1px solid #ef4444'
-            })(),
-            borderRadius: '6px',
-            marginBottom: '1rem',
-            fontSize: '0.9rem'
-          }}>
-            <div style={{ 
-              fontWeight: 'bold',
-              color: (() => {
-                const expensePercentage = results.totalRevenue > 0 ? (results.totalExpenses / results.totalRevenue) * 100 : 0
-                if (expensePercentage >= 75 && expensePercentage <= 77) return '#0369a1'
-                if (expensePercentage <= 80) return '#d97706'
-                return '#dc2626'
-              })(),
-              marginBottom: '0.25rem'
-            }}>
-              Total Expenses: {currency(results.totalExpenses)}
-              <span style={{ fontSize: '0.85rem', marginLeft: '0.5rem' }}>
-                ({results.totalRevenue > 0 ? ((results.totalExpenses / results.totalRevenue) * 100).toFixed(1) : '0.0'}% of gross revenue)
-              </span>
-            </div>
-            <div style={{
-              color: (() => {
-                const expensePercentage = results.totalRevenue > 0 ? (results.totalExpenses / results.totalRevenue) * 100 : 0
-                if (expensePercentage >= 75 && expensePercentage <= 77) return '#0369a1'
-                if (expensePercentage <= 80) return '#d97706'
-                return '#dc2626'
-              })(),
-              fontSize: '0.85rem',
-              fontWeight: 'bold'
-            }}>
-              {(() => {
-                const expensePercentage = results.totalRevenue > 0 ? (results.totalExpenses / results.totalRevenue) * 100 : 0
-                const isStrategicTarget = Math.abs(expensePercentage - 76) <= 1 // Within 1% of Page 2's 76% strategic target
-                
-                if (isStrategicTarget) {
-                  return '🎯 Matches Page 2 Strategic Target (76%) - Excellent alignment with operational best practices!'
-                } else if (expensePercentage >= 75 && expensePercentage <= 77) {
-                  return '✅ Excellent - optimal expense management within 75-77% operational best practices!'
-                } else if (expensePercentage < 75) {
-                  return `⚠️ ${expensePercentage < 76 ? 'Below' : 'Above'} Page 2 Strategic Target (76%) - Under-investment risk, consider increasing operational investments`
-                } else if (expensePercentage <= 80) {
-                  return `⚠️ Above Page 2 Strategic Target (76%) - Slightly over optimal range, review and optimize expenses`
-                } else {
-                  return `🚨 Well above Page 2 Strategic Target (76%) - Over budget, reduce expenses immediately`
-                }
-              })()}
-            </div>
-            
-          </div>
+          {/* 
+          TODO: FUTURE ENHANCEMENT - Actual vs Strategic Expense Analysis
+          
+          When transitioning from forecasting to tracking mode, restore this section:
+          - Color-coded expense performance summary (green/yellow/red)
+          - Strategic target comparison (76% operational best practices)
+          - Variance alerts and recommendations for optimization
+          - "Actual" vs "Projected" expense tracking with actionable insights
+          
+          This will provide real-time expense management guidance when users
+          start entering actual expense data vs their forecasted amounts.
+          */}
           
           <div style={{ 
             display: 'grid', 
