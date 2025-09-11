@@ -1072,6 +1072,58 @@ export default function WizardInputs({
           </div>
         </div>
 
+        {/* Other Income */}
+        <div style={{ 
+          marginBottom: '0.75rem',
+          display: 'grid',
+          gridTemplateColumns: '200px 1fr',
+          gridTemplateRows: 'auto auto',
+          gap: '0.25rem 0.75rem',
+          alignItems: 'center'
+        }}>
+          <label style={{ 
+            fontWeight: 500, 
+            gridColumn: '1', 
+            gridRow: '1',
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word'
+          }}>
+            Other Income
+          </label>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '0.25rem',
+            gridColumn: '2', 
+            gridRow: '1'
+          }}>
+            <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+            <input
+              type="number"
+              min={0}
+              max={50000}
+              step={100}
+              value={answers.otherIncome ?? 0}
+              onChange={e => updateAnswers({ otherIncome: +e.target.value || 0 })}
+              placeholder="0"
+              style={{
+                width: '140px', 
+                textAlign: 'right', 
+                border: '1px solid #d1d5db', 
+                borderRadius: '4px', 
+                padding: '0.5rem'
+              }}
+            />
+          </div>
+          <div className="small" style={{ 
+            opacity: 0.7,
+            gridColumn: '2',
+            gridRow: '2'
+          }}>
+            Additional revenue sources (e.g., notary services, business consulting)
+          </div>
+        </div>
+
 
         {/* Revenue Breakdown with Stoplight Colors */}
         {(answers.avgNetFee && answers.taxPrepReturns) && (() => {
