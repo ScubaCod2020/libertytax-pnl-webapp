@@ -6,6 +6,7 @@ import type { WizardSectionProps } from './types'
 import { calculateNetIncome, formatCurrency, parseCurrencyInput } from './calculations'
 import FormSection from './FormSection'
 import FormField, { CurrencyInput, NumberInput } from './FormField'
+import ToggleQuestion from './ToggleQuestion'
 
 export default function NewStoreSection({ answers, updateAnswers, region }: WizardSectionProps) {
   return (
@@ -27,80 +28,30 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
       </div>
 
       {/* TaxRush Toggle Question (Canada only) */}
-      {region === 'CA' && (
-        <div style={{ marginBottom: '1rem', padding: '0.75rem', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
-          <div style={{ marginBottom: '0.5rem' }}>
-            <label style={{ fontWeight: 600, color: '#1e40af' }}>TaxRush Returns</label>
-          </div>
-          <div style={{ marginBottom: '0.5rem', fontSize: '0.9rem', color: '#475569' }}>
-            Will your office handle TaxRush returns? (TaxRush is Liberty Tax's same-day refund service)
-          </div>
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-              <input
-                type="radio"
-                name="handlesTaxRush"
-                checked={answers.handlesTaxRush === true}
-                onChange={() => updateAnswers({ handlesTaxRush: true })}
-                style={{ marginRight: '0.25rem' }}
-              />
-              <span style={{ fontWeight: 500 }}>Yes, we will handle TaxRush returns</span>
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-              <input
-                type="radio"
-                name="handlesTaxRush"
-                checked={answers.handlesTaxRush === false}
-                onChange={() => updateAnswers({ 
-                  handlesTaxRush: false,
-                  // Clear TaxRush-related fields when disabled
-                  taxRushReturns: undefined,
-                  taxRushReturnsPct: undefined
-                })}
-                style={{ marginRight: '0.25rem' }}
-              />
-              <span style={{ fontWeight: 500 }}>No, we won't handle TaxRush</span>
-            </label>
-          </div>
-        </div>
-      )}
+      <ToggleQuestion
+        title="TaxRush Returns"
+        description="Will your office handle TaxRush returns? (TaxRush is Liberty Tax's same-day refund service)"
+        fieldName="handlesTaxRush"
+        fieldValue={answers.handlesTaxRush}
+        positiveLabel="Yes, we will handle TaxRush returns"
+        negativeLabel="No, we won't handle TaxRush"
+        onUpdate={updateAnswers}
+        fieldsToeClearOnDisable={['taxRushReturns', 'taxRushReturnsPct']}
+        titleColor="#1e40af"
+        showOnlyWhen={region === 'CA'}
+      />
 
-      {/* Other Income Toggle Question (All regions) */}
-      <div style={{ marginBottom: '1rem', padding: '0.75rem', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
-        <div style={{ marginBottom: '0.5rem' }}>
-          <label style={{ fontWeight: 600, color: '#6b7280' }}>Additional Revenue Streams</label>
-        </div>
-        <div style={{ marginBottom: '0.5rem', fontSize: '0.9rem', color: '#475569' }}>
-          Does your office have additional revenue streams beyond tax preparation? (e.g., notary services, business consulting, bookkeeping)
-        </div>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-            <input
-              type="radio"
-              name="hasOtherIncome"
-              checked={answers.hasOtherIncome === true}
-              onChange={() => updateAnswers({ hasOtherIncome: true })}
-              style={{ marginRight: '0.25rem' }}
-            />
-            <span style={{ fontWeight: 500 }}>Yes, we have other income sources</span>
-          </label>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-            <input
-              type="radio"
-              name="hasOtherIncome"
-              checked={answers.hasOtherIncome === false}
-              onChange={() => updateAnswers({ 
-                hasOtherIncome: false,
-                // Clear other income related fields when disabled
-                otherIncome: undefined,
-                lastYearOtherIncome: undefined
-              })}
-              style={{ marginRight: '0.25rem' }}
-            />
-            <span style={{ fontWeight: 500 }}>No, only tax preparation</span>
-          </label>
-        </div>
-      </div>
+      <ToggleQuestion
+        title="Additional Revenue Streams"
+        description="Does your office have additional revenue streams beyond tax preparation? (e.g., notary services, business consulting, bookkeeping)"
+        fieldName="hasOtherIncome"
+        fieldValue={answers.hasOtherIncome}
+        positiveLabel="Yes, we have other income sources"
+        negativeLabel="No, only tax preparation"
+        onUpdate={updateAnswers}
+        fieldsToeClearOnDisable={['otherIncome', 'lastYearOtherIncome']}
+        titleColor="#6b7280"
+      />
 
       {/* Target Performance Goals Box */}
       <FormSection 
