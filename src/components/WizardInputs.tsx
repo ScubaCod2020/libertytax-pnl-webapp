@@ -983,57 +983,59 @@ export default function WizardInputs({
           </div>
         )}
 
-        {/* Other Revenue */}
-        <div style={{ 
-          marginBottom: '0.75rem',
-          display: 'grid',
-          gridTemplateColumns: '200px 1fr',
-          gridTemplateRows: 'auto auto',
-          gap: '0.25rem 0.75rem',
-          alignItems: 'center'
-        }}>
-          <label style={{ 
-            fontWeight: 500, 
-            gridColumn: '1', 
-            gridRow: '1',
-            wordWrap: 'break-word',
-            overflowWrap: 'break-word'
-          }}>
-            Other Revenue
-          </label>
+        {/* Other Revenue - conditional */}
+        {answers.hasOtherIncome && (
           <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '0.25rem',
-            gridColumn: '2', 
-            gridRow: '1'
+            marginBottom: '0.75rem',
+            display: 'grid',
+            gridTemplateColumns: '200px 1fr',
+            gridTemplateRows: 'auto auto',
+            gap: '0.25rem 0.75rem',
+            alignItems: 'center'
           }}>
-            <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-            <input
-              type="number"
-              min={0}
-              max={100000}
-              step={100}
-              value={answers.otherIncome || ''}
-              onChange={e => updateAnswers({ otherIncome: +e.target.value || undefined })}
-                placeholder="e.g., 2,500"
-                style={{
-                  width: '140px', 
-                  textAlign: 'right', 
-                  border: '1px solid #d1d5db', 
-                  borderRadius: '4px', 
-                  padding: '0.5rem'
-                }}
-              />
+            <label style={{ 
+              fontWeight: 500, 
+              gridColumn: '1', 
+              gridRow: '1',
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word'
+            }}>
+              Other Revenue
+            </label>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '0.25rem',
+              gridColumn: '2', 
+              gridRow: '1'
+            }}>
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+              <input
+                type="number"
+                min={0}
+                max={100000}
+                step={100}
+                value={answers.otherIncome || ''}
+                onChange={e => updateAnswers({ otherIncome: +e.target.value || undefined })}
+                  placeholder="e.g., 2,500"
+                  style={{
+                    width: '140px', 
+                    textAlign: 'right', 
+                    border: '1px solid #d1d5db', 
+                    borderRadius: '4px', 
+                    padding: '0.5rem'
+                  }}
+                />
+            </div>
+            <div className="small" style={{ 
+              opacity: 0.7,
+              gridColumn: '2',
+              gridRow: '2'
+            }}>
+              Additional revenue (bookkeeping, notary, etc.)
+            </div>
           </div>
-          <div className="small" style={{ 
-            opacity: 0.7,
-            gridColumn: '2',
-            gridRow: '2'
-          }}>
-            Additional revenue (bookkeeping, notary, etc.)
-          </div>
-        </div>
+        )}
 
         {/* Customer Discounts */}
         <div style={{ 
@@ -1087,59 +1089,6 @@ export default function WizardInputs({
           </div>
         </div>
 
-        {/* Other Income - conditional */}
-        {answers.hasOtherIncome && (
-          <div style={{ 
-            marginBottom: '0.75rem',
-            display: 'grid',
-            gridTemplateColumns: '200px 1fr',
-            gridTemplateRows: 'auto auto',
-            gap: '0.25rem 0.75rem',
-            alignItems: 'center'
-          }}>
-            <label style={{ 
-              fontWeight: 500, 
-              gridColumn: '1', 
-              gridRow: '1',
-              wordWrap: 'break-word',
-              overflowWrap: 'break-word'
-            }}>
-              Other Income
-            </label>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.25rem',
-              gridColumn: '2', 
-              gridRow: '1'
-            }}>
-              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-              <input
-                type="number"
-                min={0}
-                max={50000}
-                step={100}
-                value={answers.otherIncome ?? 0}
-                onChange={e => updateAnswers({ otherIncome: +e.target.value || 0 })}
-                placeholder="0"
-                style={{
-                  width: '140px', 
-                  textAlign: 'right', 
-                  border: '1px solid #d1d5db', 
-                  borderRadius: '4px', 
-                  padding: '0.5rem'
-                }}
-              />
-            </div>
-            <div className="small" style={{ 
-              opacity: 0.7,
-              gridColumn: '2',
-              gridRow: '2'
-            }}>
-              Additional revenue sources (e.g., notary services, business consulting)
-            </div>
-          </div>
-        )}
 
 
         {/* Revenue Breakdown with Stoplight Colors */}
@@ -1270,7 +1219,7 @@ export default function WizardInputs({
                   </div>
                 )}
               </div>
-            {answers.otherIncome && (
+            {answers.hasOtherIncome && answers.otherIncome && (
                 <div style={{ color: statusColor }}>Other Revenue: <strong>${answers.otherIncome.toLocaleString()}</strong></div>
               )}
               
