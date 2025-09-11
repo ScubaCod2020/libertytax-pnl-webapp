@@ -85,47 +85,26 @@ export default function Dashboard({ results }: DashboardProps) {
           <div className="card-title" style={{ color: '#059669', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             💰 Income Summary
           </div>
-          <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+          <div style={{ fontSize: '0.9rem', lineHeight: '1.8' }}>
             {/* Tax Prep Revenue */}
-            <div style={{ marginBottom: '0.75rem' }}>
-              <div style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#059669', marginBottom: '0.5rem' }}>
-                Tax Prep Revenue:
-              </div>
-              <div style={{ paddingLeft: '1rem', fontSize: '0.85rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                  <span>Net Tax Prep Income:</span>
-                  <strong>{currency(results.taxPrepIncome)}</strong>
-                </div>
-              </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+              <span style={{ fontWeight: 'bold', color: '#059669' }}>Tax Prep Revenue:</span>
+              <strong>{currency(results.taxPrepIncome)}</strong>
             </div>
 
-            {/* TaxRush Revenue */}
-            {results.taxRushIncome && results.taxRushIncome > 0 && (
-              <div style={{ marginBottom: '0.75rem' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#0ea5e9', marginBottom: '0.5rem' }}>
-                  TaxRush Revenue:
-                </div>
-                <div style={{ paddingLeft: '1rem', fontSize: '0.85rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                    <span>TaxRush Income:</span>
-                    <strong>{currency(results.taxRushIncome)}</strong>
-                  </div>
-                </div>
+            {/* TaxRush Revenue (if applicable) */}
+            {results.taxRushIncome > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                <span style={{ fontWeight: 'bold', color: '#0ea5e9' }}>TaxRush Revenue:</span>
+                <strong>{currency(results.taxRushIncome)}</strong>
               </div>
             )}
 
             {/* Other Revenue */}
             {results.otherIncome > 0 && (
-              <div style={{ marginBottom: '0.75rem' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#6b7280', marginBottom: '0.5rem' }}>
-                  Other Revenue:
-                </div>
-                <div style={{ paddingLeft: '1rem', fontSize: '0.85rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                    <span>Other Income:</span>
-                    <strong>{currency(results.otherIncome)}</strong>
-                  </div>
-                </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                <span style={{ fontWeight: 'bold', color: '#6b7280' }}>Other Revenue:</span>
+                <strong>{currency(results.otherIncome)}</strong>
               </div>
             )}
             
@@ -134,14 +113,14 @@ export default function Dashboard({ results }: DashboardProps) {
               borderTop: '2px solid #059669', 
               paddingTop: '0.75rem', 
               marginTop: '1rem',
+              display: 'flex', 
+              justifyContent: 'space-between',
               fontWeight: 'bold',
               fontSize: '1rem',
               color: '#059669'
             }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>Total Gross Revenue:</span>
-                <strong>{currency(results.totalRevenue)}</strong>
-              </div>
+              <span>Total Gross Revenue:</span>
+              <strong>{currency(results.totalRevenue)}</strong>
             </div>
           </div>
         </div>
