@@ -524,6 +524,19 @@ export default function InputsPanel(props: InputsPanelProps) {
         </div>
       </div>
 
+      {/* 🔍 DEBUG: Show expense field info */}
+      <div style={{ 
+        marginBottom: '1rem',
+        padding: '0.5rem',
+        backgroundColor: '#f3f4f6',
+        borderRadius: '4px',
+        fontSize: '0.75rem'
+      }}>
+        <div><strong>Debug Info:</strong></div>
+        <div>Region: {region}, TaxRush: {handlesTaxRush ? 'Yes' : 'No'}</div>
+        <div>Total expense fields: {expenseFields.length}</div>
+      </div>
+
       {/* Expense Management Sections - Matching Wizard Page 2 */}
       {(['personnel', 'facility', 'operations', 'franchise', 'misc'] as ExpenseCategory[]).map(category => {
         // Get fields by category first, then filter by region and TaxRush
