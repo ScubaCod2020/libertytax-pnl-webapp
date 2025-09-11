@@ -389,8 +389,6 @@ export default function WizardInputs({
 
   return (
     <div data-wizard-step="inputs" style={{ paddingLeft: '1rem' }}>
-      <div className="card-title">Income & Expense Inputs</div>
-      
       {/* Page Header with Selections Summary */}
       {(answers.region || answers.storeType || answers.handlesTaxRush !== undefined) && (
         <div style={{
@@ -449,16 +447,18 @@ export default function WizardInputs({
                   fontSize: '0.8rem',
                   fontWeight: 'bold'
                 }}>
-                  {answers.handlesTaxRush ? '🚀 Enabled' : '❌ Disabled'}
+                  {answers.handlesTaxRush ? 'Yes, we handle TaxRush returns' : 'No, we don\'t handle TaxRush'}
                 </span>
               </div>
             )}
           </div>
         </div>
       )}
+
+      <div className="card-title">Income & Expense Inputs</div>
       
-      {/* Store Type Indicator */}
-      {answers.storeType && (
+      {/* REMOVED: Store Type Indicator - redundant with header */}
+      {false && answers.storeType && (
         <div style={{ 
           padding: '0.5rem 1rem', 
           marginBottom: '1rem',
