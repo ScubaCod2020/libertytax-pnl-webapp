@@ -830,118 +830,140 @@ export default function WizardInputs({
           </div>
         </div>
 
-        {/* TaxRush Returns (Canada only) */}
-          {answers.region === 'CA' && (
-          <div style={{ 
-            marginBottom: '0.75rem',
-            display: 'grid',
-            gridTemplateColumns: '200px 1fr',
-            gridTemplateRows: 'auto auto',
-            gap: '0.25rem 0.75rem',
-            alignItems: 'center'
+        {/* TaxRush Returns (Canada only) - Blue Box Styled */}
+        {answers.region === 'CA' && (
+          <div style={{
+            paddingTop: '0.75rem',
+            paddingBottom: '0.75rem',
+            paddingLeft: '0.75rem',
+            paddingRight: '0.75rem',
+            border: '2px solid #0ea5e9',
+            borderRadius: '8px',
+            backgroundColor: '#f0f9ff',
+            margin: '0.5rem 0'
           }}>
-            <label style={{ 
-              fontWeight: 500, 
-              gridColumn: '1', 
-              gridRow: '1',
-              wordWrap: 'break-word',
-              overflowWrap: 'break-word'
-            }}>
-              TaxRush Returns {answers.storeType === 'existing' && '📋'}
-            </label>
             <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.25rem',
-              gridColumn: '2', 
-              gridRow: '1'
+              marginBottom: '0.75rem',
+              display: 'grid',
+              gridTemplateColumns: '200px 1fr',
+              gridTemplateRows: 'auto auto',
+              gap: '0.25rem 0.75rem',
+              alignItems: 'center'
             }}>
-              <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
-              <input
-                type="number"
-                min={0}
-                max={5000}
-                step={25}
-                value={answers.taxRushReturns || ''}
-                onChange={e => updateAnswers({ taxRushReturns: +e.target.value || undefined })}
-                placeholder="0"
+              <label style={{ 
+                fontWeight: 500, 
+                gridColumn: '1', 
+                gridRow: '1',
+                wordWrap: 'break-word',
+                overflowWrap: 'break-word'
+              }}>
+                TaxRush Returns {answers.storeType === 'existing' && '📋'}
+              </label>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '0.25rem',
+                gridColumn: '2', 
+                gridRow: '1'
+              }}>
+                <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
+                <input
+                  type="number"
+                  min={0}
+                  max={5000}
+                  step={25}
+                  value={answers.taxRushReturns || ''}
+                  onChange={e => updateAnswers({ taxRushReturns: +e.target.value || undefined })}
+                  placeholder="0"
                   style={{
                     width: '140px', 
                     textAlign: 'right', 
                     border: '1px solid #d1d5db', 
                     borderRadius: '4px', 
                     padding: '0.5rem',
-                    ...(answers.storeType === 'existing' ? { backgroundColor: '#f0f9ff', borderColor: '#0ea5e9' } : {})
+                    ...(answers.storeType === 'existing' ? { backgroundColor: '#ffffff', borderColor: '#0ea5e9' } : {})
                   }}
                 />
-            </div>
-            <div className="small" style={{ 
-              opacity: 0.7,
-              gridColumn: '2',
-              gridRow: '2'
-            }}>
-              {answers.storeType === 'existing' ? 
-                '📋 Carried forward from page 1 (you can adjust)' : 
-                'Expected TaxRush returns (Canada only)'
-              }
+              </div>
+              <div className="small" style={{ 
+                opacity: 0.7,
+                gridColumn: '2',
+                gridRow: '2'
+              }}>
+                {answers.storeType === 'existing' ? 
+                  '📋 Carried forward from page 1 (you can adjust)' : 
+                  'Expected TaxRush returns (Canada only)'
+                }
+              </div>
             </div>
           </div>
-          )}
+        )}
 
-        {/* TaxRush Average Net Fee (Canada only) */}
+        {/* TaxRush Average Net Fee (Canada only) - Blue Box Styled */}
         {answers.region === 'CA' && answers.handlesTaxRush && (
-          <div style={{ 
-            marginBottom: '0.75rem',
-            display: 'grid',
-            gridTemplateColumns: '200px 1fr',
-            gridTemplateRows: 'auto auto',
-            gap: '0.25rem 0.75rem',
-            alignItems: 'center'
+          <div style={{
+            paddingTop: '0.75rem',
+            paddingBottom: '0.75rem',
+            paddingLeft: '0.75rem',
+            paddingRight: '0.75rem',
+            border: '2px solid #0ea5e9',
+            borderRadius: '8px',
+            backgroundColor: '#f0f9ff',
+            margin: '0.5rem 0'
           }}>
-            <label style={{ 
-              fontWeight: 500, 
-              gridColumn: '1', 
-              gridRow: '1',
-              wordWrap: 'break-word',
-              overflowWrap: 'break-word'
-            }}>
-              TaxRush Avg Net Fee {answers.storeType === 'existing' && '📋'}
-            </label>
             <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.25rem',
-              gridColumn: '2', 
-              gridRow: '1'
+              marginBottom: '0.75rem',
+              display: 'grid',
+              gridTemplateColumns: '200px 1fr',
+              gridTemplateRows: 'auto auto',
+              gap: '0.25rem 0.75rem',
+              alignItems: 'center'
             }}>
-              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-              <input
-                type="number"
-                min={50}
-                max={500}
-                step={1}
-                value={answers.taxRushAvgNetFee || (answers.avgNetFee || '')}
-                onChange={e => updateAnswers({ taxRushAvgNetFee: +e.target.value || undefined })}
-                placeholder={(answers.avgNetFee || 125).toString()}
-                style={{
-                  width: '140px', 
-                  textAlign: 'right', 
-                  border: '1px solid #d1d5db', 
-                  borderRadius: '4px', 
-                  padding: '0.5rem',
-                  ...(answers.storeType === 'existing' ? { backgroundColor: '#f0f9ff', borderColor: '#0ea5e9' } : {})
-                }}
-              />
-            </div>
-            <div className="small" style={{ 
-              opacity: 0.7,
-              gridColumn: '2',
-              gridRow: '2'
-            }}>
-              {answers.storeType === 'existing' ? 
-                '📋 Default: Same as Tax Prep fee (you can adjust)' : 
-                'Average fee per TaxRush return (usually same as Tax Prep fee)'
-              }
+              <label style={{ 
+                fontWeight: 500, 
+                gridColumn: '1', 
+                gridRow: '1',
+                wordWrap: 'break-word',
+                overflowWrap: 'break-word'
+              }}>
+                TaxRush Avg Net Fee {answers.storeType === 'existing' && '📋'}
+              </label>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '0.25rem',
+                gridColumn: '2', 
+                gridRow: '1'
+              }}>
+                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+                <input
+                  type="number"
+                  min={50}
+                  max={500}
+                  step={1}
+                  value={answers.taxRushAvgNetFee || (answers.avgNetFee || '')}
+                  onChange={e => updateAnswers({ taxRushAvgNetFee: +e.target.value || undefined })}
+                  placeholder={(answers.avgNetFee || 125).toString()}
+                  style={{
+                    width: '140px', 
+                    textAlign: 'right', 
+                    border: '1px solid #d1d5db', 
+                    borderRadius: '4px', 
+                    padding: '0.5rem',
+                    backgroundColor: '#ffffff'
+                  }}
+                />
+              </div>
+              <div className="small" style={{ 
+                opacity: 0.7,
+                gridColumn: '2',
+                gridRow: '2'
+              }}>
+                {answers.storeType === 'existing' ? 
+                  '📋 Default: Same as Tax Prep fee (you can adjust)' : 
+                  'Average fee per TaxRush return (usually same as Tax Prep fee)'
+                }
+              </div>
             </div>
           </div>
         )}
@@ -1169,7 +1191,7 @@ export default function WizardInputs({
                 </div>
                 
                 {/* TaxRush Revenue Breakdown */}
-                {answers.region === 'CA' && currentTaxRushReturns > 0 && (
+                {answers.region === 'CA' && answers.handlesTaxRush && (
                   <div style={{ paddingLeft: '0.5rem', borderLeft: '2px solid #0ea5e9' }}>
                     <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#0369a1', marginBottom: '0.25rem' }}>TaxRush Revenue:</div>
                     <div style={{ color: '#0369a1', fontSize: '0.8rem' }}>Gross TaxRush Fees: <strong>${grossTaxRushFees.toLocaleString()}</strong></div>
