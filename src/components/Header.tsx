@@ -15,9 +15,11 @@ interface HeaderProps {
   wizardCompleted?: boolean
   showWizard?: boolean  // New prop to detect when user is actively in wizard
   storeType?: 'new' | 'existing'  // Show store type if selected
+  currentPage?: 'wizard' | 'dashboard' | 'reports'  // Track current page
+  onShowReports?: () => void  // Navigate to reports page
 }
 
-export default function Header({ region, setRegion, onReset, onShowWizard, onShowDashboard, wizardCompleted = false, showWizard = false, storeType }: HeaderProps) {
+export default function Header({ region, setRegion, onReset, onShowWizard, onShowDashboard, wizardCompleted = false, showWizard = false, storeType, currentPage = 'dashboard', onShowReports }: HeaderProps) {
   return (
     <>
     <div className="header" style={{
@@ -73,109 +75,163 @@ export default function Header({ region, setRegion, onReset, onShowWizard, onSho
         </span>
       </div>
 
-      {/* Right Column: Action Buttons */}
+      {/* Right Column: Action Buttons - Stacked for better 3-column distribution */}
       <div style={{ 
         display: 'flex', 
-        alignItems: 'center', 
-        gap: '1rem',
-        justifySelf: 'end'
+        flexDirection: 'column',
+        alignItems: 'end',
+        gap: '0.5rem',
+        justifySelf: 'end',
+        minWidth: '180px'
       }}>
-        {/* Full Reset — clears ALL data and reverts to defaults */}
-        <button
-          onClick={onReset}
-          aria-label="Reset entire application to defaults"
-          title="Reset entire application - clears ALL data and starts fresh"
-          style={{ 
-            background: 'linear-gradient(45deg, #dc2626, #ef4444)', 
-            color: 'white', 
-            padding: '8px 16px', 
-            borderRadius: '6px', 
-            border: 'none',
-            textDecoration: 'none',
-            fontWeight: '600',
-            fontSize: '14px',
-            cursor: 'pointer',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            marginLeft: '0.75rem'
-          }}
-        >
-          🔄 Reset All Data
-        </button>
+        {/* Top Row: Primary Actions */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          {/* Launch Setup Wizard / Review Setup - Hide when user is actively in wizard */}
+          {!showWizard && (
+            <button
+              onClick={onShowWizard}
+              aria-label={wizardCompleted ? "Review Setup" : "Launch Setup Wizard"}
+              title={wizardCompleted ? "Review and edit your setup configuration" : "Launch Setup Wizard"}
+              style={{ 
+                background: wizardCompleted 
+                  ? 'linear-gradient(45deg, #059669, #10b981)' 
+                  : 'linear-gradient(45deg, #4f46e5, #7c3aed)', 
+                color: 'white', 
+                padding: '6px 12px', 
+                borderRadius: '6px', 
+                border: 'none',
+                textDecoration: 'none',
+                fontWeight: '600',
+                fontSize: '13px',
+                cursor: 'pointer',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+            >
+              {wizardCompleted ? '⚙️ Review Setup' : '🚀 Setup Wizard'}
+            </button>
+          )}
 
-        {/* Launch Setup Wizard / Review Setup - Hide when user is actively in wizard */}
-        {!showWizard && (
+          {/* Dashboard Button - Only show when NOT on dashboard */}
+          {wizardCompleted && onShowDashboard && currentPage !== 'dashboard' && (
+            <button
+              onClick={onShowDashboard}
+              style={{ 
+                background: 'linear-gradient(45deg, #1e40af, #3b82f6)', 
+                color: 'white', 
+                padding: '6px 12px', 
+                borderRadius: '6px', 
+                border: 'none',
+                textDecoration: 'none',
+                fontWeight: '600',
+                fontSize: '13px',
+                cursor: 'pointer',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+              title="Go to Interactive Dashboard"
+            >
+              📊 Dashboard
+            </button>
+          )}
+
+          {/* Reports Button - Show when on dashboard and wizard is completed */}
+          {wizardCompleted && currentPage === 'dashboard' && onShowReports && (
+            <button
+              onClick={onShowReports}
+              style={{ 
+                background: 'linear-gradient(45deg, #7c2d12, #dc2626)', 
+                color: 'white', 
+                padding: '6px 12px', 
+                borderRadius: '6px', 
+                border: 'none',
+                textDecoration: 'none',
+                fontWeight: '600',
+                fontSize: '13px',
+                cursor: 'pointer',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+              title="Generate Reports and Analysis"
+            >
+              📈 Reports
+            </button>
+          )}
+        </div>
+
+        {/* Bottom Row: Reset Button */}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <button
-            onClick={onShowWizard}
-            aria-label={wizardCompleted ? "Review Setup" : "Launch Setup Wizard"}
-            title={wizardCompleted ? "Review and edit your setup configuration" : "Launch Setup Wizard"}
+            onClick={onReset}
+            aria-label="Reset entire application to defaults"
+            title="Reset entire application - clears ALL data and starts fresh"
             style={{ 
-              background: wizardCompleted 
-                ? 'linear-gradient(45deg, #059669, #10b981)' 
-                : 'linear-gradient(45deg, #4f46e5, #7c3aed)', 
+              background: 'linear-gradient(45deg, #dc2626, #ef4444)', 
               color: 'white', 
-              padding: '8px 16px', 
-              borderRadius: '6px', 
+              padding: '5px 10px', 
+              borderRadius: '5px', 
               border: 'none',
               textDecoration: 'none',
               fontWeight: '600',
-              fontSize: '14px',
-              cursor: 'pointer',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-              marginLeft: '0.75rem'
-            }}
-          >
-            {wizardCompleted ? '⚙️ Review Setup' : '🚀 Launch Setup Wizard'}
-          </button>
-        )}
-
-        {/* Dashboard Button - Right Side */}
-        {wizardCompleted && onShowDashboard && (
-          <button
-            onClick={onShowDashboard}
-            className="dashboard-btn"
-            style={{ 
-              background: 'linear-gradient(45deg, #1e40af, #3b82f6)', 
-              color: 'white', 
-              padding: '8px 16px', 
-              borderRadius: '6px', 
-              border: 'none',
-              textDecoration: 'none',
-              fontWeight: '600',
-              fontSize: '14px',
+              fontSize: '12px',
               cursor: 'pointer',
               boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
             }}
-            title="Go to Interactive Dashboard"
           >
-            📊 Dashboard
+            🔄 Reset All
           </button>
-        )}
+        </div>
       </div>
     </div>
 
-    {/* Configuration Display - Below Header */}
+    {/* Configuration Display - Below Header - Match Page 1 Read-Only Format */}
     {wizardCompleted && storeType && (
       <div style={{
         display: 'flex',
         justifyContent: 'center',
-        padding: '0.5rem 0',
+        padding: '1rem 0',
         backgroundColor: '#f9fafb',
         borderBottom: '1px solid #e5e7eb'
       }}>
         <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          fontSize: '0.875rem',
-          color: '#059669',
-          backgroundColor: '#f0fdf4',
-          padding: '0.5rem 0.75rem',
-          borderRadius: '6px',
-          border: '1px solid #bbf7d0'
+          padding: '1rem',
+          border: '2px solid #6b7280',
+          borderRadius: '8px',
+          backgroundColor: '#f9fafb',
+          fontSize: '0.9rem',
+          minWidth: '500px'
         }}>
-          <span style={{ fontWeight: 500 }}>
-            📍 {region === 'US' ? 'United States' : 'Canada'} • {storeType === 'new' ? 'New Store' : 'Existing Store'}
-          </span>
+          <div style={{ fontWeight: 'bold', color: '#374151', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            🏷️ Your Configuration
+            <span style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#6b7280' }}>
+              (From Setup Wizard - Read Only)
+            </span>
+          </div>
+          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', color: '#374151', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <span style={{ fontWeight: 500 }}>Region:</span> 
+              <span style={{ 
+                padding: '0.25rem 0.5rem', 
+                backgroundColor: region === 'US' ? '#dbeafe' : '#fef3c7',
+                color: region === 'US' ? '#1e40af' : '#92400e',
+                borderRadius: '4px',
+                fontSize: '0.8rem',
+                fontWeight: 'bold'
+              }}>
+                {region === 'US' ? 'United States 🇺🇸' : 'Canada 🇨🇦'}
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <span style={{ fontWeight: 500 }}>Store Type:</span>
+              <span style={{ 
+                padding: '0.25rem 0.5rem', 
+                backgroundColor: storeType === 'new' ? '#dcfce7' : '#fef3c7',
+                color: storeType === 'new' ? '#166534' : '#92400e',
+                borderRadius: '4px',
+                fontSize: '0.8rem',
+                fontWeight: 'bold'
+              }}>
+                {storeType === 'new' ? '🏢 New Store' : '🏢 Existing Store'}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     )}

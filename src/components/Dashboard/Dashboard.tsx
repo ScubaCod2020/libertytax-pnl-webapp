@@ -49,10 +49,30 @@ export default function Dashboard({ results }: DashboardProps) {
       <div style={{ marginTop: 20, gap: '16px' }} className="grid-2">
         <div className="card">
           <div className="card-title">Income Summary</div>
-          <div className="small">Gross Fees: {currency(results.grossFees)}</div>
-          <div className="small">Discounts: {currency(results.discounts)}</div>
-          <div className="small">Tax-Prep Income: {currency(results.taxPrepIncome)}</div>
-          <div className="small">Total Returns: {results.totalReturns.toLocaleString()}</div>
+          <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+              <span>Gross Fees:</span>
+              <strong>{currency(results.grossFees)}</strong>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+              <span>Discounts:</span>
+              <strong>-{currency(results.discounts)}</strong>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem', borderTop: '1px solid #e5e7eb', paddingTop: '0.25rem' }}>
+              <span style={{ fontWeight: 'bold' }}>Tax-Prep Income:</span>
+              <strong>{currency(results.taxPrepIncome)}</strong>
+            </div>
+            {/* Show TaxRush income if applicable */}
+            {results.taxRushIncome && results.taxRushIncome > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                <span style={{ fontWeight: 'bold' }}>TaxRush Income:</span>
+                <strong>{currency(results.taxRushIncome)}</strong>
+              </div>
+            )}
+            <div style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.5rem', textAlign: 'center', fontStyle: 'italic' }}>
+              Total Returns: {results.totalReturns.toLocaleString()}
+            </div>
+          </div>
         </div>
 
         <div className="card">

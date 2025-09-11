@@ -127,8 +127,14 @@ const savedAt = (() => {
           onReset={handleReset} 
           onShowWizard={() => appState.setShowWizard(true)}
           onShowDashboard={() => appState.setShowWizard(false)}
+          onShowReports={() => {
+            // Future: Navigate to reports page
+            console.log('📊 Reports feature coming soon!')
+            // For now, trigger export or show reports modal
+          }}
           wizardCompleted={persistence.getWizardState().wizardCompleted}
           showWizard={appState.showWizard}
+          currentPage={appState.showWizard ? 'wizard' : 'dashboard'}
           storeType={persistence.loadWizardAnswers()?.storeType}
         />
 
@@ -146,7 +152,7 @@ const savedAt = (() => {
             persistence={persistence} // Pass persistence for loading saved answers
           />
         ) : (
-          <div className="container">
+          <div className="container" style={{ display: 'grid', gridTemplateColumns: '400px 1fr', gap: '2rem', alignItems: 'start' }}>
             <InputsPanel
               region={appState.region}
               scenario={appState.scenario}

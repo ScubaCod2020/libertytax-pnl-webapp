@@ -201,12 +201,21 @@ export function useAppState(): AppState & AppStateActions {
   }
 
   const applyWizardAnswers = (answers: any) => {
+    console.log('🧙‍♂️ Applying wizard answers to app state:', answers)
+    
     setRegion(answers.region)
     setANF(answers.avgNetFee ?? 125)
     setReturns(answers.taxPrepReturns ?? 1600)
     setDisc(answers.discountsPct ?? 3)
     
-    // Apply all 17 expense fields with defaults
+    // 🐛 FIXED: Apply TaxRush data from wizard (was previously hardcoded to 0)
+    const taxRushReturns = answers.region === 'CA' && answers.handlesTaxRush 
+      ? (answers.taxRushReturns ?? answers.projectedTaxRushReturns ?? 0)
+      : 0
+    setTaxRush(taxRushReturns)
+    console.log(`📊 TaxRush flow: Region=${answers.region}, handlesTaxRush=${answers.handlesTaxRush}, returns=${taxRushReturns}`)
+    
+    // Apply all 17 expense fields with wizard data or smart defaults
     setSal(answers.salariesPct ?? 25)
     setEmpDeductions(answers.empDeductionsPct ?? 10)
     setRent(answers.rentPct ?? 18)
@@ -224,8 +233,6 @@ export function useAppState(): AppState & AppStateActions {
     setAdvRoy(answers.advRoyaltiesPct ?? 5)
     setTaxRushRoy(answers.taxRushRoyaltiesPct ?? 0)
     setMisc(answers.miscPct ?? 2.5)
-    
-    setTaxRush(0) // Set TaxRush returns to 0 for now
   }
 
   return {

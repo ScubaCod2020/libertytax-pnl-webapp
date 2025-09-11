@@ -69,7 +69,7 @@ export default function InputsPanel(props: InputsPanelProps) {
   } = props
 
   return (
-    <div className="card">
+    <div className="card" style={{ minWidth: '420px', maxWidth: '500px' }}>
       <div className="card-title">Inputs</div>
 
       <div>
@@ -200,22 +200,53 @@ export default function InputsPanel(props: InputsPanelProps) {
         {avgNetFee && taxPrepReturns && (
           <div style={{ 
             marginTop: '1rem', 
-            padding: '0.75rem', 
+            padding: '0.75rem',
             backgroundColor: '#f0fdf4',
-            border: '1px solid #22c55e',
-            borderRadius: '6px',
-            fontSize: '0.85rem'
+            border: '2px solid #22c55e',
+            borderRadius: '8px',
+            fontSize: '0.9rem',
+            marginBottom: '1rem'
           }}>
-            <div style={{ fontWeight: 'bold', color: '#15803d', marginBottom: '0.25rem' }}>
-              💰 Revenue Breakdown
+            <div style={{ fontWeight: 'bold', color: '#15803d', marginBottom: '0.5rem', fontSize: '1rem' }}>
+              💰 Income Summary
             </div>
-            <div style={{ color: '#15803d' }}>
-              Tax Prep Income: <strong>${(avgNetFee * taxPrepReturns).toLocaleString()}</strong>
-              {region === 'CA' && taxRushReturns > 0 && (
-                <span> • TaxRush: <strong>${(avgNetFee * taxRushReturns).toLocaleString()}</strong></span>
-              )}
+            
+            {/* Gross Fees */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+              <span style={{ color: '#15803d' }}>Gross Fees:</span>
+              <strong style={{ color: '#15803d' }}>
+                ${Math.round(avgNetFee * taxPrepReturns / (1 - discountsPct / 100)).toLocaleString()}
+              </strong>
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#15803d', marginTop: '0.25rem' }}>
+            
+            {/* Discounts */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+              <span style={{ color: '#15803d' }}>Discounts ({discountsPct}%):</span>
+              <strong style={{ color: '#15803d' }}>
+                -${Math.round((avgNetFee * taxPrepReturns / (1 - discountsPct / 100)) * (discountsPct / 100)).toLocaleString()}
+              </strong>
+            </div>
+            
+            {/* Tax Prep Income */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem', borderTop: '1px solid #22c55e', paddingTop: '0.25rem' }}>
+              <span style={{ color: '#15803d', fontWeight: 'bold' }}>Tax-Prep Income:</span>
+              <strong style={{ color: '#15803d' }}>
+                ${(avgNetFee * taxPrepReturns).toLocaleString()}
+              </strong>
+            </div>
+            
+            {/* TaxRush Income (CA only) */}
+            {region === 'CA' && taxRushReturns > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                <span style={{ color: '#15803d', fontWeight: 'bold' }}>TaxRush Income:</span>
+                <strong style={{ color: '#15803d' }}>
+                  ${(avgNetFee * taxRushReturns).toLocaleString()}
+                </strong>
+              </div>
+            )}
+            
+            {/* Total Returns */}
+            <div style={{ fontSize: '0.8rem', color: '#16a34a', marginTop: '0.5rem', textAlign: 'center', fontStyle: 'italic' }}>
               Total Returns: {(taxPrepReturns + (region === 'CA' ? taxRushReturns : 0)).toLocaleString()}
             </div>
           </div>

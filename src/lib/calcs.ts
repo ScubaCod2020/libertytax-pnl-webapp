@@ -41,7 +41,8 @@ export interface Results {
   grossFees: number
   discounts: number
   taxPrepIncome: number
-  totalRevenue: number // Tax prep income + other income sources
+  taxRushIncome: number // TaxRush income for Canadian stores
+  totalRevenue: number // Tax prep income + TaxRush income + other income sources
   
   // Personnel expenses
   salaries: number
