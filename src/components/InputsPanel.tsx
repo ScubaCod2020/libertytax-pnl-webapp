@@ -237,10 +237,29 @@ export default function InputsPanel(props: InputsPanelProps) {
     return (
       <div key={field.id} style={fieldStyle}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
-          <label style={{ fontSize: '0.9rem', fontWeight: 500, color: isLocked ? '#6b7280' : 'inherit' }}>
-            {field.label}
-            {isLocked && ' (Locked)'}
-          </label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+            <label style={{ fontSize: '0.9rem', fontWeight: 500, color: isLocked ? '#6b7280' : 'inherit' }}>
+              {field.label}
+              {isLocked && ' (Locked)'}
+            </label>
+            {field.description && (
+              <button
+                type="button"
+                title={field.description}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#6b7280',
+                  cursor: 'help',
+                  fontSize: '0.8rem',
+                  padding: '0',
+                  lineHeight: 1
+                }}
+              >
+                ℹ️
+              </button>
+            )}
+          </div>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             {/* Percentage/Fixed Amount Input */}
@@ -254,6 +273,8 @@ export default function InputsPanel(props: InputsPanelProps) {
                 value={value}
                 onChange={(e) => handlePercentageChange(Number(e.target.value) || 0)}
                 disabled={isDisabled || isLocked}
+                title={`${field.label} ${isFixed ? 'amount' : 'percentage'}`}
+                aria-label={`${field.label} ${isFixed ? 'amount' : 'percentage'}`}
                 style={{
                   width: '60px',
                   padding: '0.25rem',
@@ -280,6 +301,8 @@ export default function InputsPanel(props: InputsPanelProps) {
                     value={dollarValue || ''}
                     onChange={(e) => handleDollarChange(Number(e.target.value) || 0)}
                     disabled={isDisabled || grossFees === 0}
+                    title={`${field.label} dollar amount`}
+                    aria-label={`${field.label} dollar amount`}
                     placeholder="0"
                     style={{
                       width: '80px',
@@ -299,27 +322,18 @@ export default function InputsPanel(props: InputsPanelProps) {
         
         {/* Slider for percentage-based fields */}
         {!isFixed && !isLocked && (
-          <>
-            <input
-              type="range"
-              min="0"
-              max={Math.min(field.max, 50)} // Cap at reasonable max
-              step={field.step}
-              value={value}
-              onChange={(e) => handlePercentageChange(Number(e.target.value))}
-              disabled={isDisabled}
-              style={{ width: '100%', marginBottom: '0.25rem' }}
-            />
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', textAlign: 'center' }}>
-              Range: 0% - {Math.min(field.max, 50)}%
-            </div>
-          </>
-        )}
-        
-        {field.description && (
-          <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
-            {field.description}
-          </div>
+          <input
+            type="range"
+            min="0"
+            max={Math.min(field.max, 50)} // Cap at reasonable max
+            step={field.step}
+            value={value}
+            onChange={(e) => handlePercentageChange(Number(e.target.value))}
+            disabled={isDisabled}
+            title={`${field.label}: ${value}% ($${dollarValue.toLocaleString()}) - Range: 0% - ${Math.min(field.max, 50)}%`}
+            aria-label={`${field.label} slider`}
+            style={{ width: '100%', marginBottom: '0.5rem' }}
+          />
         )}
       </div>
     )
@@ -404,6 +418,8 @@ export default function InputsPanel(props: InputsPanelProps) {
                 value={value}
                 onChange={(e) => handlePercentageChange(Number(e.target.value) || 0)}
                 disabled={isDisabled || isLocked}
+                title={`${field.label} ${isFixed ? 'amount' : 'percentage'}`}
+                aria-label={`${field.label} ${isFixed ? 'amount' : 'percentage'}`}
                 style={{
                   width: '60px',
                   padding: '0.25rem',
@@ -430,6 +446,8 @@ export default function InputsPanel(props: InputsPanelProps) {
                     value={dollarValue || ''}
                     onChange={(e) => handleDollarChange(Number(e.target.value) || 0)}
                     disabled={isDisabled || grossFees === 0}
+                    title={`${field.label} dollar amount`}
+                    aria-label={`${field.label} dollar amount`}
                     placeholder="0"
                     style={{
                       width: '80px',
@@ -514,6 +532,8 @@ export default function InputsPanel(props: InputsPanelProps) {
                 step="1"
                 value={avgNetFee}
                 onChange={(e) => setANF(Number(e.target.value) || 50)}
+                title="Average Net Fee"
+                aria-label="Average Net Fee"
                 placeholder="125"
                 style={{
                   width: '80px',
@@ -533,11 +553,10 @@ export default function InputsPanel(props: InputsPanelProps) {
             step="1"
             value={avgNetFee}
             onChange={(e) => setANF(Number(e.target.value))}
-            style={{ width: '100%', marginBottom: '0.25rem' }}
+            title={`Average Net Fee: $${avgNetFee} (Range: $50 - $500)`}
+            aria-label="Average Net Fee slider"
+            style={{ width: '100%' }}
           />
-          <div style={{ fontSize: '0.75rem', color: '#6b7280', textAlign: 'center' }}>
-            Range: $50 - $500
-          </div>
         </div>
 
         {/* Tax-Prep Returns with Manual Input + Slider */}
@@ -555,6 +574,8 @@ export default function InputsPanel(props: InputsPanelProps) {
                 step="1"
                 value={taxPrepReturns}
                 onChange={(e) => setReturns(Number(e.target.value) || 100)}
+                title="Tax Prep Returns"
+                aria-label="Tax Prep Returns"
                 placeholder="1600"
                 style={{
                   width: '100px',
@@ -574,11 +595,10 @@ export default function InputsPanel(props: InputsPanelProps) {
             step="1"
             value={taxPrepReturns}
             onChange={(e) => setReturns(Number(e.target.value))}
-            style={{ width: '100%', marginBottom: '0.25rem' }}
+            title={`Tax-Prep Returns: ${taxPrepReturns.toLocaleString()} (Range: 100 - 5,000)`}
+            aria-label="Tax Prep Returns slider"
+            style={{ width: '100%' }}
           />
-          <div style={{ fontSize: '0.75rem', color: '#6b7280', textAlign: 'center' }}>
-            Range: 100 - 5,000
-          </div>
         </div>
 
         {/* TaxRush Returns - Blue Boxed for Canada with Slider */}
@@ -603,6 +623,8 @@ export default function InputsPanel(props: InputsPanelProps) {
                   step="1"
                   value={taxRushReturns}
                   onChange={(e) => setTaxRush(Number(e.target.value) || 0)}
+                  title="TaxRush Returns"
+                  aria-label="TaxRush Returns"
                   placeholder="0"
                   style={{
                     width: '80px',
@@ -623,11 +645,10 @@ export default function InputsPanel(props: InputsPanelProps) {
               step="1"
               value={taxRushReturns}
               onChange={(e) => setTaxRush(Number(e.target.value))}
-              style={{ width: '100%', marginBottom: '0.25rem' }}
+              title={`TaxRush Returns: ${taxRushReturns.toLocaleString()} (Range: 0 - 1,000)`}
+              aria-label="TaxRush Returns slider"
+              style={{ width: '100%' }}
             />
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', textAlign: 'center' }}>
-              Range: 0 - 1,000
-            </div>
           </div>
         )}
 
@@ -646,6 +667,8 @@ export default function InputsPanel(props: InputsPanelProps) {
                   step="1"
                   value={Math.round(discountDollarAmount) || ''}
                   onChange={(e) => handleDiscountDollarChange(Number(e.target.value) || 0)}
+                  title="Customer Discounts Dollar Amount"
+                  aria-label="Customer Discounts Dollar Amount"
                   placeholder="0"
                   style={{
                     width: '80px',
@@ -666,6 +689,8 @@ export default function InputsPanel(props: InputsPanelProps) {
                   step="0.1"
                   value={discountsPct || ''}
                   onChange={(e) => handleDiscountPctChange(Number(e.target.value) || 0)}
+                  title="Customer Discounts Percentage"
+                  aria-label="Customer Discounts Percentage"
                   placeholder="3"
                   style={{
                     width: '60px',
@@ -687,11 +712,10 @@ export default function InputsPanel(props: InputsPanelProps) {
             step="1"
             value={discountsPct}
             onChange={(e) => handleDiscountPctChange(Number(e.target.value))}
-            style={{ width: '100%', marginBottom: '0.25rem' }}
+            title={`Customer Discounts: ${discountsPct}% ($${Math.round(discountDollarAmount).toLocaleString()}) - Range: 0% - 25%`}
+            aria-label="Customer Discounts slider"
+            style={{ width: '100%' }}
           />
-          <div style={{ fontSize: '0.75rem', color: '#6b7280', textAlign: 'center' }}>
-            Range: 0% - 25%
-          </div>
         </div>
       </div>
 
