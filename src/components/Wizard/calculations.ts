@@ -129,10 +129,14 @@ export const calculateExpectedRevenue = (answers: WizardAnswers): number | undef
   const projectedDiscountAmt = projectedGrossFees * (discountsPct / 100)
   const projectedTaxPrepIncome = projectedGrossFees - projectedDiscountAmt
   
-  // Add other revenue sources with growth
-  // FIXED: Use current otherIncome if lastYearOtherIncome is not set (common case)
-  const lastYearOtherIncome = answers.lastYearOtherIncome || answers.otherIncome || 0
-  const projectedOtherIncome = lastYearOtherIncome * (1 + answers.expectedGrowthPct / 100)
+  // Add other revenue sources with growth - conditional on hasOtherIncome
+  const projectedOtherIncome = answers.hasOtherIncome 
+    ? (() => {
+        // FIXED: Use current otherIncome if lastYearOtherIncome is not set (common case)
+        const lastYearOtherIncome = answers.lastYearOtherIncome || answers.otherIncome || 0
+        return lastYearOtherIncome * (1 + answers.expectedGrowthPct / 100)
+      })()
+    : 0
   
   // TaxRush income disabled until TaxRush fields are properly configured
   const projectedTaxRushIncome = 0
@@ -155,9 +159,9 @@ export const calculateExpectedRevenue = (answers: WizardAnswers): number | undef
       projectedTaxPrepIncome
     },
     otherIncomeDetails: {
+      hasOtherIncome: answers.hasOtherIncome,
       lastYearOtherIncome_raw: answers.lastYearOtherIncome,
       currentOtherIncome_fallback: answers.otherIncome,
-      lastYearOtherIncome_final: lastYearOtherIncome,
       expectedGrowthPct: answers.expectedGrowthPct,
       projectedOtherIncome
     },

@@ -95,7 +95,8 @@ export default function InputsPanel(props: InputsPanelProps) {
         taxPrepReturns,
         taxRushReturns,
         discountsPct,
-        otherIncome,
+        // Only include otherIncome if hasOtherIncome is enabled
+        ...(hasOtherIncome && { otherIncome }),
         // Expense fields
         salariesPct,
         empDeductionsPct,

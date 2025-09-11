@@ -210,7 +210,8 @@ export function useAppState(): AppState & AppStateActions {
     setANF(answers.avgNetFee ?? 125)
     setReturns(answers.taxPrepReturns ?? 1600)
     setDisc(answers.discountsPct ?? 3)
-    setOtherIncome(answers.otherIncome ?? 0)
+    // Only set otherIncome if hasOtherIncome is enabled, otherwise force to 0
+    setOtherIncome(answers.hasOtherIncome ? (answers.otherIncome ?? 0) : 0)
     
     // 🐛 FIXED: Apply TaxRush data from wizard (was previously hardcoded to 0)
     const taxRushReturns = answers.region === 'CA' && answers.handlesTaxRush 
