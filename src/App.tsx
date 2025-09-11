@@ -216,6 +216,7 @@ const savedAt = (() => {
               setTaxRushRoy={appState.setTaxRushRoy}
               miscPct={appState.miscPct}
               setMisc={appState.setMisc}
+              handlesTaxRush={appState.region === 'CA' && persistence.loadWizardAnswers()?.handlesTaxRush}
               onSaveToWizard={handleDashboardToWizard}
             />
 

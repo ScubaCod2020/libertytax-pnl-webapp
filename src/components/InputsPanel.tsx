@@ -66,6 +66,9 @@ interface InputsPanelProps {
 
   // Bidirectional persistence functions
   onSaveToWizard?: (updates: Partial<WizardAnswers>) => void
+  
+  // TaxRush handling for expense field filtering
+  handlesTaxRush?: boolean
 }
 
 export default function InputsPanel(props: InputsPanelProps) {
@@ -77,7 +80,8 @@ export default function InputsPanel(props: InputsPanelProps) {
     insuranceAmt, setInsurance, postageAmt, setPostage, suppliesPct, setSup,
     duesAmt, setDues, bankFeesAmt, setBankFees, maintenanceAmt, setMaintenance,
     travelEntAmt, setTravelEnt, royaltiesPct, setRoy, advRoyaltiesPct, setAdvRoy,
-    taxRushRoyaltiesPct, setTaxRushRoy, miscPct, setMisc, onSaveToWizard
+    taxRushRoyaltiesPct, setTaxRushRoy, miscPct, setMisc, onSaveToWizard,
+    handlesTaxRush = false
   } = props
 
   // 🔄 BIDIRECTIONAL FLOW: Save dashboard changes back to wizard persistence
@@ -482,7 +486,10 @@ export default function InputsPanel(props: InputsPanelProps) {
 
       {/* Expense Management Sections - Matching Wizard Page 2 */}
       {(['personnel', 'facility', 'operations', 'franchise', 'misc'] as ExpenseCategory[]).map(category => {
-        const categoryFields = getFieldsByCategory(getFieldsForRegion(expenseFields, region), category)
+        // Get all fields for the current region and TaxRush setting
+        const allFieldsForRegion = getFieldsForRegion(expenseFields, region, handlesTaxRush)
+        const categoryFields = getFieldsByCategory(allFieldsForRegion, category)
+        
         if (categoryFields.length === 0) return null
 
         return (
