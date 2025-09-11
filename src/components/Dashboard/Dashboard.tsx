@@ -85,10 +85,26 @@ export default function Dashboard({ results }: DashboardProps) {
           <div className="card-title" style={{ color: '#059669', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             💰 Income Summary
           </div>
-          <div style={{ fontSize: '0.9rem', lineHeight: '1.8' }}>
-            {/* Tax Prep Revenue */}
+          <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+            {/* Tax Prep Revenue Breakdown */}
+            <div style={{ marginBottom: '1rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
+                <span>Gross Tax Prep Fees:</span>
+                <strong>{currency(results.grossFees)}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem', fontSize: '0.85rem', color: '#6b7280' }}>
+                <span>Returns: {(results.totalReturns - (results.taxRushIncome > 0 ? Math.round(results.taxRushIncome / 125) : 0)).toLocaleString()} @ ${Math.round(results.grossFees / (results.totalReturns - (results.taxRushIncome > 0 ? Math.round(results.taxRushIncome / 125) : 0))).toLocaleString()}</span>
+                <span></span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: '#dc2626' }}>
+                <span>Less Discounts ({((results.discounts / results.grossFees) * 100).toFixed(0)}%):</span>
+                <strong>-{currency(results.discounts)}</strong>
+              </div>
+            </div>
+
+            {/* Tax Prep Net Revenue */}
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <span style={{ fontWeight: 'bold', color: '#059669' }}>Tax Prep Revenue:</span>
+              <span style={{ fontWeight: 'bold', color: '#059669' }}>Tax Prep Net Revenue:</span>
               <strong>{currency(results.taxPrepIncome)}</strong>
             </div>
 
