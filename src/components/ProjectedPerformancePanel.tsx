@@ -43,9 +43,14 @@ export default function ProjectedPerformancePanel({
   expectedGrowthPct = 0
 }: ProjectedPerformancePanelProps) {
   
-  // Calculate prior year metrics
+  // Calculate prior year metrics using same logic as target calculations
+  // PY Net Income = Last Year Revenue - Last Year Expenses  
   const pyNetIncome = lastYearRevenue - lastYearExpenses
+  
+  // PY Net Margin = (PY Net Income ÷ Last Year Revenue) × 100
   const pyNetMarginPct = lastYearRevenue > 0 ? (pyNetIncome / lastYearRevenue) * 100 : 0
+  
+  // PY Cost Per Return = Last Year Expenses ÷ Last Year Returns
   const pyCostPerReturn = lastYearReturns > 0 ? lastYearExpenses / lastYearReturns : 0
   
   // Performance status indicators
@@ -202,23 +207,6 @@ export default function ProjectedPerformancePanel({
         </div>
       </div>
 
-      {/* Industry Benchmarks */}
-      <div style={{ 
-        padding: '0.5rem',
-        backgroundColor: '#f9fafb',
-        border: '1px solid #e5e7eb',
-        borderRadius: '6px',
-        fontSize: '0.75rem',
-        color: '#6b7280'
-      }}>
-        <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>Industry Benchmarks:</div>
-        <div>• Net Margin: 20-25% (Excellent)</div>
-        <div>• Cost/Return: $85-100 (Good)</div>
-        <div>• Expense Ratio: 75-80% (Target)</div>
-        <div style={{ marginTop: '0.25rem', fontStyle: 'italic' }}>
-          {expectedGrowthPct > 0 && `Growth projection: ${expectedGrowthPct}%`}
-        </div>
-      </div>
     </div>
   )
 }

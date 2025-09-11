@@ -14,7 +14,7 @@ export default function Dashboard({ results }: DashboardProps) {
   const { cprStatus, nimStatus, niStatus } = results
 
   return (
-    <div className="card" data-dashboard>
+    <div className="card" data-dashboard style={{ minWidth: '600px', width: '100%', maxWidth: '100%' }}>
       <div className="card-title">Dashboard</div>
 
       <div className="kpi-vertical" style={{ marginBottom: '1rem' }}>
@@ -50,7 +50,8 @@ export default function Dashboard({ results }: DashboardProps) {
         marginTop: 20, 
         gap: '16px',
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+        maxWidth: '100%'
       }}>
         {/* Pro-Tips Card - Shows first when stacked on narrow screens */}
         <div className="card" style={{ order: 2 }}>
@@ -75,6 +76,7 @@ export default function Dashboard({ results }: DashboardProps) {
               niStatus === 'green' && (
                 <li>Great! Consider "Best" scenario to stress-test capacity.</li>
               )}
+            <li><strong>Industry Benchmarks:</strong> Net Margin: 20-25% (Excellent) • Cost/Return: $85-100 (Good) • Expense Ratio: 75-80% (Target)</li>
           </ul>
         </div>
 
@@ -146,7 +148,13 @@ export default function Dashboard({ results }: DashboardProps) {
             </span>
           </div>
           
-          <div className="grid-2" style={{ gap: '20px', marginTop: '12px' }}>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+            gap: '20px', 
+            marginTop: '12px',
+            maxWidth: '100%'
+          }}>
             {/* Personnel */}
             <div className="expense-category">
               <div className="section-title" style={{ fontSize: '14px', marginBottom: '8px' }}>

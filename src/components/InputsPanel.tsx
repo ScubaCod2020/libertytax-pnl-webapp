@@ -579,7 +579,7 @@ export default function InputsPanel(props: InputsPanelProps) {
                 aria-label="Tax Prep Returns"
                 placeholder="1600"
                 style={{
-                  width: '100px',
+                  width: '80px',
                   padding: '0.25rem',
                   border: '1px solid #d1d5db',
                   borderRadius: '4px',
@@ -726,7 +726,23 @@ export default function InputsPanel(props: InputsPanelProps) {
             <label style={{ fontSize: '0.9rem', fontWeight: 500 }}>
               Other Income
             </label>
+            
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <button
+                type="button"
+                title="Additional revenue sources (e.g., notary services, business consulting)"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#6b7280',
+                  cursor: 'help',
+                  fontSize: '0.8rem',
+                  padding: '0',
+                  lineHeight: 1
+                }}
+              >
+                ℹ️
+              </button>
               <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>
               <input
                 type="number"
@@ -739,7 +755,7 @@ export default function InputsPanel(props: InputsPanelProps) {
                 aria-label="Other Income"
                 placeholder="0"
                 style={{
-                  width: '100px',
+                  width: '80px',
                   padding: '0.25rem',
                   border: '1px solid #d1d5db',
                   borderRadius: '4px',
@@ -748,9 +764,6 @@ export default function InputsPanel(props: InputsPanelProps) {
                 }}
               />
             </div>
-          </div>
-          <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
-            Additional revenue sources (e.g., notary services, business consulting)
           </div>
         </div>
       </div>
