@@ -169,7 +169,10 @@ export default function WizardInputs({
       }
     }
     
-    return (
+    // TaxRush fields need blue box styling like other TaxRush sections
+    const isTaxRushField = field.id === 'taxRushRoyaltiesPct' && answers.region === 'CA' && answers.handlesTaxRush
+    
+    const fieldContent = (
       <div key={field.id} style={{ 
         marginBottom: '0.75rem',
         display: 'grid',
@@ -315,6 +318,26 @@ export default function WizardInputs({
         )}
       </div>
     )
+    
+    // Return with or without TaxRush blue box styling
+    if (isTaxRushField) {
+      return (
+        <div style={{
+          paddingTop: '0.75rem',
+          paddingBottom: '0.75rem',
+          paddingLeft: '0.75rem',
+          paddingRight: '0.75rem',
+          border: '2px solid #0ea5e9',
+          borderRadius: '8px',
+          backgroundColor: '#f0f9ff',
+          margin: '0.5rem 0'
+        }}>
+          {fieldContent}
+        </div>
+      )
+    }
+    
+    return fieldContent
   }
 
   const renderCategorySection = (category: ExpenseCategory) => {

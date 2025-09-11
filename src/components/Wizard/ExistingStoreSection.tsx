@@ -351,10 +351,10 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
         {/* TaxRush Section - Grouped with border for visual clarity */}
         {region === 'CA' && answers.handlesTaxRush && (
           <div style={{
-            paddingTop: '0.5rem',
-            paddingBottom: '0.5rem',
-            paddingLeft: '0rem',
-            paddingRight: '0rem',
+            paddingTop: '0.75rem',
+            paddingBottom: '0.75rem',
+            paddingLeft: '0.75rem',
+            paddingRight: '0.75rem',
             border: '2px solid #0ea5e9',
             borderRadius: '8px',
             backgroundColor: '#f0f9ff',
@@ -684,10 +684,10 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
         {/* TaxRush Section - Projected Performance (matching Last Year styling) */}
         {region === 'CA' && answers.handlesTaxRush && (
           <div style={{
-            paddingTop: '0.5rem',
-            paddingBottom: '0.5rem',
-            paddingLeft: '0rem',
-            paddingRight: '0rem',
+            paddingTop: '0.75rem',
+            paddingBottom: '0.75rem',
+            paddingLeft: '0.75rem',
+            paddingRight: '0.75rem',
             border: '2px solid #0ea5e9',
             borderRadius: '8px',
             backgroundColor: '#f0f9ff',

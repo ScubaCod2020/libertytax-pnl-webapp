@@ -100,6 +100,8 @@ export function ValidatedInput({
   const inputId = `input-${field.id}`
   const errorId = `error-${field.id}`
   const warningId = `warning-${field.id}`
+  
+  const ariaDescribedBy = getAriaDescribedBy(validation, errorId, warningId) || undefined
 
   return (
     <div className={className}>
@@ -117,8 +119,8 @@ export function ValidatedInput({
         style={getInputStyle()}
         // Accessibility attributes (addresses critical accessibility violations)
         aria-label={`${field.label} (${getFieldDescription(field)})`}
-        aria-describedby={getAriaDescribedBy(validation, errorId, warningId)}
-        aria-invalid={validation?.isValid === false ? "true" : "false"}
+        aria-describedby={ariaDescribedBy}
+        {...(validation && !validation.isValid ? { "aria-invalid": "true" } : { "aria-invalid": "false" })}
         aria-required="false" // Most expense fields are optional
       />
       
@@ -213,5 +215,5 @@ function getAriaDescribedBy(
     describedBy.push(warningId)
   }
   
-  return describedBy.join(' ') || undefined
+  return describedBy.join(' ') || ''
 }
