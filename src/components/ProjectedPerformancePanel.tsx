@@ -23,6 +23,7 @@ interface ProjectedPerformancePanelProps {
   lastYearExpenses?: number
   lastYearReturns?: number
   expectedGrowthPct?: number
+  handlesTaxRush?: boolean
 }
 
 export default function ProjectedPerformancePanel({ 
@@ -40,7 +41,8 @@ export default function ProjectedPerformancePanel({
   lastYearRevenue = 0,
   lastYearExpenses = 0, 
   lastYearReturns = 0,
-  expectedGrowthPct = 0
+  expectedGrowthPct = 0,
+  handlesTaxRush = false
 }: ProjectedPerformancePanelProps) {
   
   // Calculate prior year metrics using same logic as target calculations
@@ -156,9 +158,9 @@ export default function ProjectedPerformancePanel({
         }}>
           🎯 Projected Performance Goals
           {expectedGrowthPct !== 0 && (
-            <span style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#6b7280' }}>
-              ({expectedGrowthPct > 0 ? '+' : ''}{expectedGrowthPct}% growth target)
-            </span>
+            <div style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#6b7280', marginTop: '0.25rem' }}>
+              Performance Change: {expectedGrowthPct > 0 ? '+' : ''}{expectedGrowthPct}% growth target
+            </div>
           )}
         </div>
         
@@ -167,15 +169,16 @@ export default function ProjectedPerformancePanel({
           alignItems: 'center', 
           gap: '0.5rem',
           padding: '0.4rem',
-          backgroundColor: `${projectedNetMarginStatus.color}15`,
-          border: `1px solid ${projectedNetMarginStatus.color}`,
+          backgroundColor: '#f9fafb',
+          border: `1px solid #e5e7eb`,
           borderRadius: '6px',
-          marginBottom: '0.4rem'
+          marginBottom: '0.4rem',
+          opacity: 0.8
         }}>
-          <span style={{ fontSize: '1rem' }}>{projectedNetMarginStatus.icon}</span>
+          <span style={{ fontSize: '1rem', color: '#6b7280' }}>📊</span>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.8rem', color: '#374151', fontWeight: 500 }}>Target Net Margin</div>
-            <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: projectedNetMarginStatus.color }}>
+            <div style={{ fontSize: '0.8rem', color: '#6b7280', fontWeight: 500 }}>Target Net Margin (Reference)</div>
+            <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#6b7280' }}>
               {pct(netMarginPct)}
             </div>
           </div>
@@ -186,15 +189,16 @@ export default function ProjectedPerformancePanel({
           alignItems: 'center', 
           gap: '0.5rem',
           padding: '0.4rem',
-          backgroundColor: `${projectedCostPerReturnStatus.color}15`,
-          border: `1px solid ${projectedCostPerReturnStatus.color}`,
+          backgroundColor: '#f9fafb',
+          border: `1px solid #e5e7eb`,
           borderRadius: '6px',
-          marginBottom: '0.5rem'
+          marginBottom: '0.5rem',
+          opacity: 0.8
         }}>
-          <span style={{ fontSize: '1rem' }}>{projectedCostPerReturnStatus.icon}</span>
+          <span style={{ fontSize: '1rem', color: '#6b7280' }}>📊</span>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.8rem', color: '#374151', fontWeight: 500 }}>Target Cost / Return</div>
-            <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: projectedCostPerReturnStatus.color }}>
+            <div style={{ fontSize: '0.8rem', color: '#6b7280', fontWeight: 500 }}>Target Cost / Return (Reference)</div>
+            <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#6b7280' }}>
               {currency(costPerReturn)}
             </div>
           </div>

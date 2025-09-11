@@ -5,13 +5,13 @@ import { useState } from 'react'
 import type { Region, Thresholds } from '../lib/calcs'
 import type { Scenario } from '../data/presets'
 
-// Default thresholds
+// Default thresholds - Updated to percentage-based like Page 2
 const defaultThresholds: Thresholds = {
-  cprGreen: 25,
-  cprYellow: 35,
-  nimGreen: 20,
-  nimYellow: 10,
-  netIncomeWarn: -5000,
+  cprGreen: 85,      // $85 per return (excellent)
+  cprYellow: 100,    // $100 per return (good)
+  nimGreen: 20,      // 20% net margin (excellent) 
+  nimYellow: 15,     // 15% net margin (good)
+  netIncomeWarn: -5000, // Red if net income <= -$5000
 }
 
 export interface AppState {

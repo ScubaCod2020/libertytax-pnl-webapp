@@ -141,11 +141,65 @@ export default function Dashboard({ results }: DashboardProps) {
       {/* Comprehensive Expense Breakdown */}
       <div style={{ marginTop: 16 }}>
         <div className="card">
-          <div className="card-title">
-            Expense Breakdown 
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            💰 Actual Expense Breakdown
             <span className="small" style={{ fontWeight: 400, marginLeft: '8px' }}>
               (Total: {currency(results.totalExpenses)})
             </span>
+          </div>
+          
+          {/* Actual Performance Summary */}
+          <div style={{
+            padding: '0.75rem',
+            backgroundColor: (() => {
+              const expensePercentage = results.totalRevenue > 0 ? (results.totalExpenses / results.totalRevenue) * 100 : 0
+              if (expensePercentage >= 75 && expensePercentage <= 77) return '#f0f9ff'
+              if (expensePercentage <= 80) return '#fffbeb'
+              return '#fef2f2'
+            })(),
+            border: (() => {
+              const expensePercentage = results.totalRevenue > 0 ? (results.totalExpenses / results.totalRevenue) * 100 : 0
+              if (expensePercentage >= 75 && expensePercentage <= 77) return '1px solid #0ea5e9'
+              if (expensePercentage <= 80) return '1px solid #f59e0b'
+              return '1px solid #ef4444'
+            })(),
+            borderRadius: '6px',
+            marginBottom: '1rem',
+            fontSize: '0.9rem'
+          }}>
+            <div style={{ 
+              fontWeight: 'bold',
+              color: (() => {
+                const expensePercentage = results.totalRevenue > 0 ? (results.totalExpenses / results.totalRevenue) * 100 : 0
+                if (expensePercentage >= 75 && expensePercentage <= 77) return '#0369a1'
+                if (expensePercentage <= 80) return '#d97706'
+                return '#dc2626'
+              })(),
+              marginBottom: '0.25rem'
+            }}>
+              Total Expenses: {currency(results.totalExpenses)}
+              <span style={{ fontSize: '0.85rem', marginLeft: '0.5rem' }}>
+                ({results.totalRevenue > 0 ? ((results.totalExpenses / results.totalRevenue) * 100).toFixed(1) : '0.0'}% of gross revenue)
+              </span>
+            </div>
+            <div style={{
+              color: (() => {
+                const expensePercentage = results.totalRevenue > 0 ? (results.totalExpenses / results.totalRevenue) * 100 : 0
+                if (expensePercentage >= 75 && expensePercentage <= 77) return '#0369a1'
+                if (expensePercentage <= 80) return '#d97706'
+                return '#dc2626'
+              })(),
+              fontSize: '0.85rem',
+              fontWeight: 'bold'
+            }}>
+              {(() => {
+                const expensePercentage = results.totalRevenue > 0 ? (results.totalExpenses / results.totalRevenue) * 100 : 0
+                if (expensePercentage >= 75 && expensePercentage <= 77) return '✅ Excellent - optimal expense management within 75-77% operational best practices!'
+                if (expensePercentage < 75) return '⚠️ Under-investment risk - consider increasing operational investments'
+                if (expensePercentage <= 80) return '⚠️ Slightly over optimal range - review and optimize expenses'
+                return '🚨 Over budget - reduce expenses immediately'
+              })()}
+            </div>
           </div>
           
           <div style={{ 

@@ -194,6 +194,7 @@ const savedAt = (() => {
                 lastYearExpenses={persistence.loadWizardAnswers()?.lastYearExpenses || 0}
                 lastYearReturns={persistence.loadWizardAnswers()?.lastYearTaxPrepReturns || 0}
                 expectedGrowthPct={persistence.loadWizardAnswers()?.expectedGrowthPct || 0}
+                handlesTaxRush={appState.region === 'CA' && persistence.loadWizardAnswers()?.handlesTaxRush}
               />
               
               <InputsPanel
