@@ -109,6 +109,19 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
   useEffect(() => {
     if (answers.storeType === 'existing' && answers.avgNetFee && answers.taxPrepReturns && answers.expectedGrowthPct !== undefined) {
       const calculated = calculateExpectedRevenue(answers)
+      
+      console.log('🔍 EXISTING STORE Expected Revenue Calculation:', {
+        inputs: {
+          avgNetFee: answers.avgNetFee,
+          taxPrepReturns: answers.taxPrepReturns,
+          expectedGrowthPct: answers.expectedGrowthPct,
+          lastYearOtherIncome: answers.lastYearOtherIncome,
+          currentOtherIncome: answers.otherIncome
+        },
+        calculatedExpectedRevenue: calculated,
+        willUpdate: !!calculated
+      })
+      
       if (calculated) {
         updateAnswers({ expectedRevenue: calculated })
       }
@@ -131,6 +144,15 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
         : 0
       
       const totalRevenue = netTaxPrepRevenue + otherIncome + taxRushIncome
+      
+      console.log('🔍 NEW STORE Expected Revenue Calculation:', {
+        netTaxPrepRevenue,
+        otherIncome,
+        taxRushIncome,
+        totalRevenue,
+        willUpdateTo: totalRevenue
+      })
+      
       updateAnswers({ expectedRevenue: totalRevenue })
     }
   }, [answers.avgNetFee, answers.taxPrepReturns, answers.expectedGrowthPct, answers.lastYearDiscountsPct, answers.lastYearOtherIncome, answers.lastYearTaxRushReturns, answers.region, answers.storeType, answers.discountsPct, answers.otherIncome, answers.taxRushReturns])

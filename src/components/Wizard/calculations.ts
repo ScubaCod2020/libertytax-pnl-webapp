@@ -130,7 +130,8 @@ export const calculateExpectedRevenue = (answers: WizardAnswers): number | undef
   const projectedTaxPrepIncome = projectedGrossFees - projectedDiscountAmt
   
   // Add other revenue sources with growth
-  const lastYearOtherIncome = answers.lastYearOtherIncome || 0
+  // FIXED: Use current otherIncome if lastYearOtherIncome is not set (common case)
+  const lastYearOtherIncome = answers.lastYearOtherIncome || answers.otherIncome || 0
   const projectedOtherIncome = lastYearOtherIncome * (1 + answers.expectedGrowthPct / 100)
   
   // TaxRush income disabled until TaxRush fields are properly configured
@@ -142,7 +143,33 @@ export const calculateExpectedRevenue = (answers: WizardAnswers): number | undef
   // const projectedTaxRushIncome = lastYearTaxRushIncome * (1 + answers.expectedGrowthPct / 100)
   
   // Calculate total revenue (should match Page 2)
-  return projectedTaxPrepIncome + projectedOtherIncome + projectedTaxRushIncome
+  const totalRevenue = projectedTaxPrepIncome + projectedOtherIncome + projectedTaxRushIncome
+  
+  console.log('🔍 calculateExpectedRevenue BREAKDOWN:', {
+    taxPrepDetails: {
+      projectedAvgNetFee,
+      projectedTaxPrepReturns,
+      projectedGrossFees,
+      discountsPct,
+      projectedDiscountAmt,
+      projectedTaxPrepIncome
+    },
+    otherIncomeDetails: {
+      lastYearOtherIncome_raw: answers.lastYearOtherIncome,
+      currentOtherIncome_fallback: answers.otherIncome,
+      lastYearOtherIncome_final: lastYearOtherIncome,
+      expectedGrowthPct: answers.expectedGrowthPct,
+      projectedOtherIncome
+    },
+    finalCalculation: {
+      projectedTaxPrepIncome,
+      projectedOtherIncome,
+      projectedTaxRushIncome,
+      totalRevenue
+    }
+  })
+  
+  return totalRevenue
 }
 
 // Calculate gross fees for display
