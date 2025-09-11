@@ -110,39 +110,39 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
               backgroundColor: '#f0f9ff',
               margin: '0.5rem 0'
             }}>
-              <FormField 
-                label="TaxRush Returns" 
-                helpText="Your target TaxRush returns for this year (typically ~15% of total returns)"
-              >
-                <NumberInput
-                  value={answers.taxRushReturns || (answers.taxPrepReturns ? Math.round(answers.taxPrepReturns * 0.15) : undefined)}
-                  placeholder="0"
-                  prefix="#"
-                  onChange={value => updateAnswers({ taxRushReturns: value })}
-                />
-              </FormField>
+            <FormField 
+              label="TaxRush Returns" 
+              helpText="Your target TaxRush returns for this year (typically ~15% of total returns)"
+            >
+              <NumberInput
+                  value={answers.taxRushReturns ?? (answers.taxPrepReturns ? Math.round(answers.taxPrepReturns * 0.15) : undefined)}
+                  placeholder={answers.taxPrepReturns ? Math.round(answers.taxPrepReturns * 0.15).toString() : '240'}
+                prefix="#"
+                onChange={value => updateAnswers({ taxRushReturns: value })}
+              />
+            </FormField>
 
               <FormField 
                 label="TaxRush Gross Fees" 
-                helpText="Your target gross fees from TaxRush returns (separate from tax prep fees)"
+                helpText="Your target gross fees from TaxRush returns (auto-calculated from returns × avg fee)"
               >
                 <CurrencyInput
-                  value={answers.taxRushGrossFees}
-                  placeholder="0"
+                  value={answers.taxRushGrossFees ?? (answers.taxRushReturns && answers.taxRushAvgNetFee ? answers.taxRushReturns * answers.taxRushAvgNetFee : undefined)}
+                  placeholder={(answers.taxRushReturns && answers.taxRushAvgNetFee) ? (answers.taxRushReturns * answers.taxRushAvgNetFee).toLocaleString() : '30,000'}
                   onChange={value => updateAnswers({ taxRushGrossFees: value })}
                 />
               </FormField>
 
-              <FormField 
-                label="TaxRush Avg Net Fee" 
-                helpText="Your target average net fee per TaxRush return (separate from tax prep average)"
-              >
-                <CurrencyInput
-                  value={answers.taxRushAvgNetFee}
-                  placeholder="0"
-                  onChange={value => updateAnswers({ taxRushAvgNetFee: value })}
-                />
-              </FormField>
+          <FormField 
+            label="TaxRush Avg Net Fee" 
+                helpText="Your target average net fee per TaxRush return (usually same as tax prep fee)"
+          >
+            <CurrencyInput
+                  value={answers.taxRushAvgNetFee ?? answers.avgNetFee}
+                  placeholder={answers.avgNetFee ? answers.avgNetFee.toString() : '125'}
+              onChange={value => updateAnswers({ taxRushAvgNetFee: value })}
+            />
+          </FormField>
             </div>
           )}
 
@@ -151,48 +151,15 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
           helpText="Percentage and dollar amount of discounts given to customers - this will be applied to projected revenue"
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            {/* Percentage Input */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <input
-                type="number"
-                step="0.1"
-                min="0"
-                max="20"
-                placeholder="3.0"
-                value={answers.discountsPct ?? ''}
-                onChange={e => {
-                  const newPct = parseFloat(e.target.value) || undefined
-                  updateAnswers({ discountsPct: newPct })
-                  
-                  // Auto-calculate dollar amount if we have gross fees
-                  if (newPct && answers.avgNetFee && answers.taxPrepReturns) {
-                    const grossFees = answers.avgNetFee * answers.taxPrepReturns
-                    const calculatedAmount = grossFees * (newPct / 100)
-                    updateAnswers({ discountsAmt: Math.round(calculatedAmount) })
-                  }
-                }}
-                style={{ 
-                  width: '80px', 
-                  textAlign: 'right',
-                  border: '1px solid #d1d5db', 
-                  borderRadius: '4px', 
-                  padding: '0.5rem' 
-                }}
-              />
-              <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
-            </div>
-
-            <span style={{ color: '#6b7280' }}>=</span>
-            
-            {/* Dollar Input */}
+            {/* Dollar Input FIRST */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
               <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
               <input
                 type="number"
                 min="0"
                 step="1"
-                placeholder={(answers.avgNetFee && answers.taxPrepReturns) ? Math.round(answers.avgNetFee * answers.taxPrepReturns * 0.03).toString() : '0'}
-                value={answers.discountsAmt ?? ''}
+                placeholder={(answers.avgNetFee && answers.taxPrepReturns) ? Math.round(answers.avgNetFee * answers.taxPrepReturns * 0.03).toString() : '6,000'}
+                value={answers.discountsAmt ?? (answers.avgNetFee && answers.taxPrepReturns ? Math.round(answers.avgNetFee * answers.taxPrepReturns * 0.03) : '')}
                 onChange={e => {
                   const newAmt = parseFloat(e.target.value) || undefined
                   updateAnswers({ discountsAmt: newAmt })
@@ -215,9 +182,42 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
                 }}
               />
             </div>
+
+            <span style={{ color: '#6b7280' }}>=</span>
+            
+            {/* Percentage Input SECOND */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <input
+                type="number"
+                step="0.1"
+                min="0"
+                max="20"
+                placeholder="3.0"
+                value={answers.discountsPct ?? (answers.avgNetFee && answers.taxPrepReturns && answers.discountsAmt ? Math.round(((answers.discountsAmt / (answers.avgNetFee * answers.taxPrepReturns)) * 100) * 10) / 10 : '')}
+                onChange={e => {
+                  const newPct = parseFloat(e.target.value) || undefined
+                  updateAnswers({ discountsPct: newPct })
+                  
+                  // Auto-calculate dollar amount if we have gross fees
+                  if (newPct && answers.avgNetFee && answers.taxPrepReturns) {
+                    const grossFees = answers.avgNetFee * answers.taxPrepReturns
+                    const calculatedAmount = grossFees * (newPct / 100)
+                    updateAnswers({ discountsAmt: Math.round(calculatedAmount) })
+                  }
+                }}
+                style={{ 
+                  width: '80px', 
+                  textAlign: 'right',
+                  border: '1px solid #d1d5db', 
+                  borderRadius: '4px', 
+                  padding: '0.5rem' 
+                }}
+              />
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
+            </div>
           </div>
           <div style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#6b7280', fontStyle: 'italic' }}>
-            Default: 3% • Enter either percentage or dollar amount - the other will auto-calculate
+            Default: 3% • Enter either dollar amount or percentage - the other will auto-calculate
           </div>
         </FormField>
 
@@ -244,14 +244,20 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
           helpText="Industry standard: 76% of Gross Tax Prep Fees (you can override)"
         >
           <CurrencyInput
-            value={(() => {
+            value={answers.projectedExpenses ?? ((() => {
               if (answers.avgNetFee && answers.taxPrepReturns) {
                 const grossFees = answers.avgNetFee * answers.taxPrepReturns
                 return Math.round(grossFees * 0.76)
               }
               return undefined
+            })())}
+            placeholder={(() => {
+              if (answers.avgNetFee && answers.taxPrepReturns) {
+                const grossFees = answers.avgNetFee * answers.taxPrepReturns
+                return Math.round(grossFees * 0.76).toLocaleString()
+              }
+              return '152,000'
             })()}
-            placeholder="Auto-calculated"
             onChange={value => updateAnswers({ projectedExpenses: value })}
           />
         </FormField>
