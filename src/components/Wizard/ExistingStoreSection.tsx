@@ -225,48 +225,80 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
 
         <FormField 
           label="Customer Discounts" 
-          helpText="Percentage of discounts given to customers - this will be applied to projected revenue"
+          helpText="Percentage and dollar amount of discounts given to customers - this will be applied to projected revenue"
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <PercentageInput
-              value={answers.lastYearDiscountsPct}
-              placeholder="3.5"
-              width="110px"
-              max={20}
-              onChange={value => {
-                console.log('🧙‍♂️ EXISTING - Discounts Percentage changed:', { 
-                  oldValue: answers.lastYearDiscountsPct, 
-                  newValue: value 
-                })
-                updateAnswers({ lastYearDiscountsPct: value })
-                
-                // Auto-calculate amount if we have gross fees
-                if (value && answers.lastYearGrossFees) {
-                  const calculatedAmount = answers.lastYearGrossFees * (value / 100)
-                  updateAnswers({ lastYearDiscountsAmt: Math.round(calculatedAmount) })
-                }
-              }}
-            />
+            {/* Percentage Input */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <input
+                type="number"
+                step="0.1"
+                min="0"
+                max="20"
+                placeholder="3.0"
+                value={answers.lastYearDiscountsPct ?? ''}
+                onChange={e => {
+                  const newPct = parseFloat(e.target.value) || undefined
+                  console.log('🧙‍♂️ EXISTING - Discounts Percentage changed:', { 
+                    oldValue: answers.lastYearDiscountsPct, 
+                    newValue: newPct
+                  })
+                  updateAnswers({ lastYearDiscountsPct: newPct })
+                  
+                  // Auto-calculate dollar amount if we have gross fees
+                  if (newPct && answers.lastYearGrossFees) {
+                    const calculatedAmount = answers.lastYearGrossFees * (newPct / 100)
+                    updateAnswers({ lastYearDiscountsAmt: Math.round(calculatedAmount) })
+                  }
+                }}
+                style={{ 
+                  width: '80px', 
+                  textAlign: 'right',
+                  border: '1px solid #d1d5db', 
+                  borderRadius: '4px', 
+                  padding: '0.5rem' 
+                }}
+              />
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
+            </div>
+
+            <span style={{ color: '#6b7280' }}>=</span>
             
-            {/* Show calculated dollar amount */}
-            {answers.lastYearDiscountsPct && answers.lastYearGrossFees && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ color: '#6b7280' }}>= </span>
-                <div style={{ 
-                  width: 'auto', 
-                  minWidth: '70px',
-                  textAlign: 'right', 
-                  padding: '0.5rem',
-                  backgroundColor: '#f0fdf4',
-                  border: '1px solid #bbf7d0',
-                  borderRadius: '4px',
-                  fontWeight: 500,
-                  color: '#059669'
-                }}>
-                  ${Math.round(answers.lastYearGrossFees * (answers.lastYearDiscountsPct / 100)).toLocaleString()}
-                </div>
-              </div>
-            )}
+            {/* Dollar Input */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+              <input
+                type="number"
+                min="0"
+                step="1"
+                placeholder={answers.lastYearGrossFees ? Math.round(answers.lastYearGrossFees * 0.03).toString() : '0'}
+                value={answers.lastYearDiscountsAmt ?? ''}
+                onChange={e => {
+                  const newAmt = parseFloat(e.target.value) || undefined
+                  console.log('🧙‍♂️ EXISTING - Discounts Dollar amount changed:', { 
+                    oldValue: answers.lastYearDiscountsAmt, 
+                    newValue: newAmt
+                  })
+                  updateAnswers({ lastYearDiscountsAmt: newAmt })
+                  
+                  // Auto-calculate percentage if we have gross fees
+                  if (newAmt && answers.lastYearGrossFees && answers.lastYearGrossFees > 0) {
+                    const calculatedPct = (newAmt / answers.lastYearGrossFees) * 100
+                    updateAnswers({ lastYearDiscountsPct: Math.round(calculatedPct * 10) / 10 }) // Round to 1 decimal
+                  }
+                }}
+                style={{ 
+                  width: '80px', 
+                  textAlign: 'right',
+                  border: '1px solid #d1d5db', 
+                  borderRadius: '4px', 
+                  padding: '0.5rem' 
+                }}
+              />
+            </div>
+          </div>
+          <div style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#6b7280', fontStyle: 'italic' }}>
+            Default: 3% • Enter either percentage or dollar amount - the other will auto-calculate
           </div>
         </FormField>
 

@@ -147,6 +147,81 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
           )}
 
         <FormField 
+          label="Customer Discounts" 
+          helpText="Percentage and dollar amount of discounts given to customers - this will be applied to projected revenue"
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            {/* Percentage Input */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <input
+                type="number"
+                step="0.1"
+                min="0"
+                max="20"
+                placeholder="3.0"
+                value={answers.discountsPct ?? ''}
+                onChange={e => {
+                  const newPct = parseFloat(e.target.value) || undefined
+                  updateAnswers({ discountsPct: newPct })
+                  
+                  // Auto-calculate dollar amount if we have gross fees
+                  if (newPct && answers.avgNetFee && answers.taxPrepReturns) {
+                    const grossFees = answers.avgNetFee * answers.taxPrepReturns
+                    const calculatedAmount = grossFees * (newPct / 100)
+                    updateAnswers({ discountsAmt: Math.round(calculatedAmount) })
+                  }
+                }}
+                style={{ 
+                  width: '80px', 
+                  textAlign: 'right',
+                  border: '1px solid #d1d5db', 
+                  borderRadius: '4px', 
+                  padding: '0.5rem' 
+                }}
+              />
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
+            </div>
+
+            <span style={{ color: '#6b7280' }}>=</span>
+            
+            {/* Dollar Input */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+              <input
+                type="number"
+                min="0"
+                step="1"
+                placeholder={(answers.avgNetFee && answers.taxPrepReturns) ? Math.round(answers.avgNetFee * answers.taxPrepReturns * 0.03).toString() : '0'}
+                value={answers.discountsAmt ?? ''}
+                onChange={e => {
+                  const newAmt = parseFloat(e.target.value) || undefined
+                  updateAnswers({ discountsAmt: newAmt })
+                  
+                  // Auto-calculate percentage if we have gross fees
+                  if (newAmt && answers.avgNetFee && answers.taxPrepReturns) {
+                    const grossFees = answers.avgNetFee * answers.taxPrepReturns
+                    if (grossFees > 0) {
+                      const calculatedPct = (newAmt / grossFees) * 100
+                      updateAnswers({ discountsPct: Math.round(calculatedPct * 10) / 10 }) // Round to 1 decimal
+                    }
+                  }
+                }}
+                style={{ 
+                  width: '80px', 
+                  textAlign: 'right',
+                  border: '1px solid #d1d5db', 
+                  borderRadius: '4px', 
+                  padding: '0.5rem' 
+                }}
+              />
+            </div>
+          </div>
+          <div style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#6b7280', fontStyle: 'italic' }}>
+            Default: 3% • Enter either percentage or dollar amount - the other will auto-calculate
+          </div>
+        </FormField>
+
+        <FormField 
           label="Gross Tax Prep Fees" 
           helpText="Auto-calculated: Average Net Fee × Tax Prep Returns"
         >

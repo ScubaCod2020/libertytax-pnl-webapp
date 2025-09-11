@@ -391,6 +391,72 @@ export default function WizardInputs({
     <div data-wizard-step="inputs" style={{ paddingLeft: '1rem' }}>
       <div className="card-title">Income & Expense Inputs</div>
       
+      {/* Page Header with Selections Summary */}
+      {(answers.region || answers.storeType || answers.handlesTaxRush !== undefined) && (
+        <div style={{
+          padding: '1rem',
+          border: '2px solid #6b7280',
+          borderRadius: '8px',
+          backgroundColor: '#f9fafb',
+          marginBottom: '1.5rem',
+          fontSize: '0.9rem'
+        }}>
+          <div style={{ fontWeight: 'bold', color: '#374151', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            🏷️ Your Selections
+            <span style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#6b7280' }}>
+              (From Step 1 - Read Only)
+            </span>
+          </div>
+          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', color: '#374151' }}>
+            {answers.region && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <span style={{ fontWeight: 500 }}>Region:</span> 
+                <span style={{ 
+                  padding: '0.25rem 0.5rem', 
+                  backgroundColor: answers.region === 'US' ? '#dbeafe' : '#fef3c7',
+                  color: answers.region === 'US' ? '#1e40af' : '#92400e',
+                  borderRadius: '4px',
+                  fontSize: '0.8rem',
+                  fontWeight: 'bold'
+                }}>
+                  {answers.region === 'US' ? '🇺🇸 United States' : '🇨🇦 Canada'}
+                </span>
+              </div>
+            )}
+            {answers.storeType && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <span style={{ fontWeight: 500 }}>Store Type:</span>
+                <span style={{ 
+                  padding: '0.25rem 0.5rem', 
+                  backgroundColor: answers.storeType === 'new' ? '#dcfce7' : '#fef3c7',
+                  color: answers.storeType === 'new' ? '#166534' : '#92400e',
+                  borderRadius: '4px',
+                  fontSize: '0.8rem',
+                  fontWeight: 'bold'
+                }}>
+                  {answers.storeType === 'new' ? '🏢 New Store' : '🏢 Existing Store'}
+                </span>
+              </div>
+            )}
+            {answers.region === 'CA' && answers.handlesTaxRush !== undefined && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <span style={{ fontWeight: 500 }}>TaxRush:</span>
+                <span style={{ 
+                  padding: '0.25rem 0.5rem', 
+                  backgroundColor: answers.handlesTaxRush ? '#dbeafe' : '#f3f4f6',
+                  color: answers.handlesTaxRush ? '#1e40af' : '#6b7280',
+                  borderRadius: '4px',
+                  fontSize: '0.8rem',
+                  fontWeight: 'bold'
+                }}>
+                  {answers.handlesTaxRush ? '🚀 Enabled' : '❌ Disabled'}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      
       {/* Store Type Indicator */}
       {answers.storeType && (
         <div style={{ 
@@ -504,11 +570,20 @@ export default function WizardInputs({
             {answers.storeType === 'existing' && answers.expectedGrowthPct !== undefined && answers.avgNetFee && answers.taxPrepReturns && (
               <div style={{ color: '#0369a1', marginTop: '0.5rem', fontSize: '0.85rem' }}>
                 <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>Strategic Targets:</div>
-                <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-                  <span>Average Net Fee: <strong>${Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></span>
-                  <span>Tax Prep Returns: <strong>{Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></span>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                  <div>
+                    <div style={{ fontWeight: 'bold', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Tax Prep Targets:</div>
+                    <div>Average Net Fee: <strong>${Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></div>
+                    <div>Tax Prep Returns: <strong>{Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></div>
+                    <div>Gross Tax Prep Fees: <strong>${Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100) * answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></div>
+                  </div>
                   {answers.region === 'CA' && answers.handlesTaxRush && answers.taxRushReturns && (
-                    <span>TaxRush Returns: <strong>{Math.round(answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></span>
+                    <div style={{ paddingLeft: '0.75rem', borderLeft: '2px solid #0ea5e9' }}>
+                      <div style={{ fontWeight: 'bold', marginBottom: '0.25rem', fontSize: '0.8rem' }}>TaxRush Targets:</div>
+                      <div>TaxRush Returns: <strong>{Math.round(answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></div>
+                      <div>TaxRush Avg Net Fee: <strong>${answers.taxRushAvgNetFee ? Math.round(answers.taxRushAvgNetFee * (1 + answers.expectedGrowthPct / 100)).toLocaleString() : 'Same as Tax Prep'}</strong></div>
+                      <div>TaxRush Gross Fees: <strong>${answers.taxRushGrossFees ? Math.round(answers.taxRushGrossFees * (1 + answers.expectedGrowthPct / 100)).toLocaleString() : 'Auto-calculated'}</strong></div>
+                    </div>
                   )}
                 </div>
               </div>
@@ -518,11 +593,20 @@ export default function WizardInputs({
             {answers.storeType === 'new' && answers.avgNetFee && answers.taxPrepReturns && (
               <div style={{ color: '#0369a1', marginTop: '0.5rem', fontSize: '0.85rem' }}>
                 <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>Target Goals:</div>
-                <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-                  <span>Average Net Fee: <strong>${answers.avgNetFee.toLocaleString()}</strong></span>
-                  <span>Tax Prep Returns: <strong>{answers.taxPrepReturns.toLocaleString()}</strong></span>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                  <div>
+                    <div style={{ fontWeight: 'bold', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Tax Prep Targets:</div>
+                    <div>Average Net Fee: <strong>${answers.avgNetFee.toLocaleString()}</strong></div>
+                    <div>Tax Prep Returns: <strong>{answers.taxPrepReturns.toLocaleString()}</strong></div>
+                    <div>Gross Tax Prep Fees: <strong>${Math.round(answers.avgNetFee * answers.taxPrepReturns).toLocaleString()}</strong></div>
+                  </div>
                   {answers.region === 'CA' && answers.handlesTaxRush && answers.taxRushReturns && (
-                    <span>TaxRush Returns: <strong>{answers.taxRushReturns.toLocaleString()}</strong></span>
+                    <div style={{ paddingLeft: '0.75rem', borderLeft: '2px solid #0ea5e9' }}>
+                      <div style={{ fontWeight: 'bold', marginBottom: '0.25rem', fontSize: '0.8rem' }}>TaxRush Targets:</div>
+                      <div>TaxRush Returns: <strong>{answers.taxRushReturns.toLocaleString()}</strong></div>
+                      <div>TaxRush Avg Net Fee: <strong>${answers.taxRushAvgNetFee ? answers.taxRushAvgNetFee.toLocaleString() : 'Same as Tax Prep'}</strong></div>
+                      <div>TaxRush Gross Fees: <strong>${answers.taxRushGrossFees ? answers.taxRushGrossFees.toLocaleString() : 'Auto-calculated'}</strong></div>
+                    </div>
                   )}
                 </div>
               </div>
@@ -804,6 +888,64 @@ export default function WizardInputs({
           </div>
           )}
 
+        {/* TaxRush Average Net Fee (Canada only) */}
+        {answers.region === 'CA' && answers.handlesTaxRush && (
+          <div style={{ 
+            marginBottom: '0.75rem',
+            display: 'grid',
+            gridTemplateColumns: '200px 1fr',
+            gridTemplateRows: 'auto auto',
+            gap: '0.25rem 0.75rem',
+            alignItems: 'center'
+          }}>
+            <label style={{ 
+              fontWeight: 500, 
+              gridColumn: '1', 
+              gridRow: '1',
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word'
+            }}>
+              TaxRush Avg Net Fee {answers.storeType === 'existing' && '📋'}
+            </label>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '0.25rem',
+              gridColumn: '2', 
+              gridRow: '1'
+            }}>
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+              <input
+                type="number"
+                min={50}
+                max={500}
+                step={1}
+                value={answers.taxRushAvgNetFee || (answers.avgNetFee || '')}
+                onChange={e => updateAnswers({ taxRushAvgNetFee: +e.target.value || undefined })}
+                placeholder={(answers.avgNetFee || 125).toString()}
+                style={{
+                  width: '140px', 
+                  textAlign: 'right', 
+                  border: '1px solid #d1d5db', 
+                  borderRadius: '4px', 
+                  padding: '0.5rem',
+                  ...(answers.storeType === 'existing' ? { backgroundColor: '#f0f9ff', borderColor: '#0ea5e9' } : {})
+                }}
+              />
+            </div>
+            <div className="small" style={{ 
+              opacity: 0.7,
+              gridColumn: '2',
+              gridRow: '2'
+            }}>
+              {answers.storeType === 'existing' ? 
+                '📋 Default: Same as Tax Prep fee (you can adjust)' : 
+                'Average fee per TaxRush return (usually same as Tax Prep fee)'
+              }
+            </div>
+          </div>
+        )}
+
         {/* Other Revenue */}
         <div style={{ 
           marginBottom: '0.75rem',
@@ -928,17 +1070,21 @@ export default function WizardInputs({
                : answers.taxRushReturns)
             : 0
           
-          const grossFees = (currentAvgNetFee || 0) * (currentTaxPrepReturns || 0)
-          const discountAmount = grossFees * (answers.discountsPct || 3) / 100
-          const taxPrepIncome = grossFees - discountAmount
-          // TaxRush income calculation - DISABLED until TaxRush fields are properly configured
-          const taxRushIncome = 0
-          // TODO: Re-enable when TaxRush gross fees and average net fee are properly set up
-          // const taxRushIncome = answers.region === 'CA' && answers.handlesTaxRush && answers.taxRushAvgNetFee && answers.taxRushReturns
-          //   ? (answers.storeType === 'existing' && answers.expectedGrowthPct !== undefined
-          //      ? (answers.taxRushAvgNetFee * (1 + answers.expectedGrowthPct / 100)) * (answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100))
-          //      : answers.taxRushAvgNetFee * answers.taxRushReturns)
-          //   : 0
+          // Fix double counting: Subtract TaxRush returns from Tax Prep returns since they have different fees
+          const adjustedTaxPrepReturns = currentTaxRushReturns > 0 ? (currentTaxPrepReturns || 0) - currentTaxRushReturns : (currentTaxPrepReturns || 0)
+          
+          const grossTaxPrepFees = (currentAvgNetFee || 0) * adjustedTaxPrepReturns
+          const discountAmount = grossTaxPrepFees * (answers.discountsPct || 3) / 100
+          const taxPrepIncome = grossTaxPrepFees - discountAmount
+          
+          // TaxRush income calculation - NOW ENABLED with proper fee handling
+          const currentTaxRushAvgNetFee = answers.taxRushAvgNetFee || currentAvgNetFee || 0 // Default to same as Tax Prep fee
+          const grossTaxRushFees = answers.region === 'CA' && answers.handlesTaxRush && currentTaxRushReturns > 0
+            ? currentTaxRushAvgNetFee * currentTaxRushReturns
+            : 0
+          const taxRushDiscountAmount = grossTaxRushFees * (answers.discountsPct || 3) / 100
+          const taxRushIncome = grossTaxRushFees - taxRushDiscountAmount
+          
           const totalRevenue = taxPrepIncome + taxRushIncome + (answers.otherIncome || 0)
           
           // 🚨 DEBUG: Track down the massive calculation error
@@ -1009,12 +1155,27 @@ export default function WizardInputs({
                 </span>
               </div>
               
-              <div style={{ color: statusColor }}>Gross Fees: <strong>${grossFees.toLocaleString()}</strong></div>
-              <div style={{ color: '#dc2626' }}>Less Customer Discounts ({answers.discountsPct || 3}%): <strong>-${Math.round(discountAmount).toLocaleString()}</strong></div>
-              <div style={{ fontWeight: 'bold', color: '#059669' }}>Net Tax Prep Revenue: <strong>${Math.round(taxPrepIncome).toLocaleString()}</strong></div>
-              {answers.region === 'CA' && currentTaxRushReturns > 0 && (
-                <div style={{ color: statusColor }}>TaxRush Revenue: <strong>${Math.round(taxRushIncome).toLocaleString()}</strong></div>
-            )}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '0.5rem' }}>
+                {/* Tax Prep Revenue Breakdown */}
+                <div>
+                  <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: statusColor, marginBottom: '0.25rem' }}>Tax Prep Revenue:</div>
+                  <div style={{ color: statusColor, fontSize: '0.8rem' }}>Gross Tax Prep Fees: <strong>${grossTaxPrepFees.toLocaleString()}</strong></div>
+                  <div style={{ color: statusColor, fontSize: '0.8rem' }}>Returns: {adjustedTaxPrepReturns.toLocaleString()} @ ${(currentAvgNetFee || 0).toLocaleString()}</div>
+                  <div style={{ color: '#dc2626', fontSize: '0.8rem' }}>Less Discounts ({answers.discountsPct || 3}%): <strong>-${Math.round(discountAmount).toLocaleString()}</strong></div>
+                  <div style={{ fontWeight: 'bold', color: '#059669', fontSize: '0.85rem' }}>Net Tax Prep Income: <strong>${Math.round(taxPrepIncome).toLocaleString()}</strong></div>
+                </div>
+                
+                {/* TaxRush Revenue Breakdown */}
+                {answers.region === 'CA' && currentTaxRushReturns > 0 && (
+                  <div style={{ paddingLeft: '0.5rem', borderLeft: '2px solid #0ea5e9' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#0369a1', marginBottom: '0.25rem' }}>TaxRush Revenue:</div>
+                    <div style={{ color: '#0369a1', fontSize: '0.8rem' }}>Gross TaxRush Fees: <strong>${grossTaxRushFees.toLocaleString()}</strong></div>
+                    <div style={{ color: '#0369a1', fontSize: '0.8rem' }}>Returns: {currentTaxRushReturns.toLocaleString()} @ ${currentTaxRushAvgNetFee.toLocaleString()}</div>
+                    <div style={{ color: '#dc2626', fontSize: '0.8rem' }}>Less Discounts ({answers.discountsPct || 3}%): <strong>-${Math.round(taxRushDiscountAmount).toLocaleString()}</strong></div>
+                    <div style={{ fontWeight: 'bold', color: '#059669', fontSize: '0.85rem' }}>Net TaxRush Income: <strong>${Math.round(taxRushIncome).toLocaleString()}</strong></div>
+                  </div>
+                )}
+              </div>
             {answers.otherIncome && (
                 <div style={{ color: statusColor }}>Other Revenue: <strong>${answers.otherIncome.toLocaleString()}</strong></div>
               )}
