@@ -246,10 +246,14 @@ const savedAt = (() => {
               miscPct={appState.miscPct}
               setMisc={appState.setMisc}
               handlesTaxRush={appState.region === 'CA' && persistence.loadWizardAnswers()?.handlesTaxRush}
+              hasOtherIncome={persistence.loadWizardAnswers()?.hasOtherIncome}
               onSaveToWizard={handleDashboardToWizard}
             />
 
-            <Dashboard results={calculations} />
+            <Dashboard 
+              results={calculations} 
+              hasOtherIncome={persistence.loadWizardAnswers()?.hasOtherIncome}
+            />
           </div>
         )}
 

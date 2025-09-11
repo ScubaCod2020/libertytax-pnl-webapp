@@ -8,9 +8,10 @@ import KPIStoplight from '../KPIStoplight'
 
 interface DashboardProps {
   results: CalculationResults
+  hasOtherIncome?: boolean
 }
 
-export default function Dashboard({ results }: DashboardProps) {
+export default function Dashboard({ results, hasOtherIncome }: DashboardProps) {
   const { cprStatus, nimStatus, niStatus } = results
 
   return (
@@ -117,7 +118,7 @@ export default function Dashboard({ results }: DashboardProps) {
             )}
 
             {/* Other Revenue */}
-            {results.otherIncome > 0 && (
+            {hasOtherIncome && results.otherIncome > 0 && (
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                 <span style={{ fontWeight: 'bold', color: '#6b7280' }}>Other Revenue:</span>
                 <strong>{currency(results.otherIncome)}</strong>

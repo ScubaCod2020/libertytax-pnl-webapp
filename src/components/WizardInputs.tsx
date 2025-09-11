@@ -451,6 +451,21 @@ export default function WizardInputs({
                 </span>
               </div>
             )}
+            {answers.hasOtherIncome !== undefined && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <span style={{ fontWeight: 500 }}>Other Income:</span>
+                <span style={{ 
+                  padding: '0.25rem 0.5rem', 
+                  backgroundColor: answers.hasOtherIncome ? '#dbeafe' : '#f3f4f6',
+                  color: answers.hasOtherIncome ? '#1e40af' : '#6b7280',
+                  borderRadius: '4px',
+                  fontSize: '0.8rem',
+                  fontWeight: 'bold'
+                }}>
+                  {answers.hasOtherIncome ? 'Yes, we have other income sources' : 'No, only tax preparation'}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -1072,57 +1087,59 @@ export default function WizardInputs({
           </div>
         </div>
 
-        {/* Other Income */}
-        <div style={{ 
-          marginBottom: '0.75rem',
-          display: 'grid',
-          gridTemplateColumns: '200px 1fr',
-          gridTemplateRows: 'auto auto',
-          gap: '0.25rem 0.75rem',
-          alignItems: 'center'
-        }}>
-          <label style={{ 
-            fontWeight: 500, 
-            gridColumn: '1', 
-            gridRow: '1',
-            wordWrap: 'break-word',
-            overflowWrap: 'break-word'
-          }}>
-            Other Income
-          </label>
+        {/* Other Income - conditional */}
+        {answers.hasOtherIncome && (
           <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '0.25rem',
-            gridColumn: '2', 
-            gridRow: '1'
+            marginBottom: '0.75rem',
+            display: 'grid',
+            gridTemplateColumns: '200px 1fr',
+            gridTemplateRows: 'auto auto',
+            gap: '0.25rem 0.75rem',
+            alignItems: 'center'
           }}>
-            <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-            <input
-              type="number"
-              min={0}
-              max={50000}
-              step={100}
-              value={answers.otherIncome ?? 0}
-              onChange={e => updateAnswers({ otherIncome: +e.target.value || 0 })}
-              placeholder="0"
-              style={{
-                width: '140px', 
-                textAlign: 'right', 
-                border: '1px solid #d1d5db', 
-                borderRadius: '4px', 
-                padding: '0.5rem'
-              }}
-            />
+            <label style={{ 
+              fontWeight: 500, 
+              gridColumn: '1', 
+              gridRow: '1',
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word'
+            }}>
+              Other Income
+            </label>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '0.25rem',
+              gridColumn: '2', 
+              gridRow: '1'
+            }}>
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+              <input
+                type="number"
+                min={0}
+                max={50000}
+                step={100}
+                value={answers.otherIncome ?? 0}
+                onChange={e => updateAnswers({ otherIncome: +e.target.value || 0 })}
+                placeholder="0"
+                style={{
+                  width: '140px', 
+                  textAlign: 'right', 
+                  border: '1px solid #d1d5db', 
+                  borderRadius: '4px', 
+                  padding: '0.5rem'
+                }}
+              />
+            </div>
+            <div className="small" style={{ 
+              opacity: 0.7,
+              gridColumn: '2',
+              gridRow: '2'
+            }}>
+              Additional revenue sources (e.g., notary services, business consulting)
+            </div>
           </div>
-          <div className="small" style={{ 
-            opacity: 0.7,
-            gridColumn: '2',
-            gridRow: '2'
-          }}>
-            Additional revenue sources (e.g., notary services, business consulting)
-          </div>
-        </div>
+        )}
 
 
         {/* Revenue Breakdown with Stoplight Colors */}

@@ -71,6 +71,7 @@ interface InputsPanelProps {
   
   // TaxRush handling for expense field filtering
   handlesTaxRush?: boolean
+  hasOtherIncome?: boolean
 }
 
 export default function InputsPanel(props: InputsPanelProps) {
@@ -83,7 +84,7 @@ export default function InputsPanel(props: InputsPanelProps) {
     duesAmt, setDues, bankFeesAmt, setBankFees, maintenanceAmt, setMaintenance,
     travelEntAmt, setTravelEnt, royaltiesPct, setRoy, advRoyaltiesPct, setAdvRoy,
     taxRushRoyaltiesPct, setTaxRushRoy, miscPct, setMisc, onSaveToWizard,
-    handlesTaxRush = false
+    handlesTaxRush = false, hasOtherIncome = false
   } = props
 
   // 🔄 BIDIRECTIONAL FLOW: Save dashboard changes back to wizard persistence
@@ -720,52 +721,54 @@ export default function InputsPanel(props: InputsPanelProps) {
           />
         </div>
 
-        {/* Other Income with Manual Input */}
-        <div style={{ marginBottom: '0.75rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <label style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-              Other Income
-            </label>
-            
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <button
-                type="button"
-                title="Additional revenue sources (e.g., notary services, business consulting)"
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#6b7280',
-                  cursor: 'help',
-                  fontSize: '0.8rem',
-                  padding: '0',
-                  lineHeight: 1
-                }}
-              >
-                ℹ️
-              </button>
-              <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>
-              <input
-                type="number"
-                min="0"
-                max="50000"
-                step="100"
-                value={otherIncome}
-                onChange={(e) => setOtherIncome(Number(e.target.value) || 0)}
-                title="Other Income"
-                aria-label="Other Income"
-                placeholder="0"
-                style={{
-                  width: '80px',
-                  padding: '0.25rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '4px',
-                  fontSize: '0.8rem',
-                  textAlign: 'right'
-                }}
-              />
+        {/* Other Income with Manual Input - conditional */}
+        {hasOtherIncome && (
+          <div style={{ marginBottom: '0.75rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
+              <label style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+                Other Income
+              </label>
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <button
+                  type="button"
+                  title="Additional revenue sources (e.g., notary services, business consulting)"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#6b7280',
+                    cursor: 'help',
+                    fontSize: '0.8rem',
+                    padding: '0',
+                    lineHeight: 1
+                  }}
+                >
+                  ℹ️
+                </button>
+                <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>
+                <input
+                  type="number"
+                  min="0"
+                  max="50000"
+                  step="100"
+                  value={otherIncome}
+                  onChange={(e) => setOtherIncome(Number(e.target.value) || 0)}
+                  title="Other Income"
+                  aria-label="Other Income"
+                  placeholder="0"
+                  style={{
+                    width: '80px',
+                    padding: '0.25rem',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '4px',
+                    fontSize: '0.8rem',
+                    textAlign: 'right'
+                  }}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
 

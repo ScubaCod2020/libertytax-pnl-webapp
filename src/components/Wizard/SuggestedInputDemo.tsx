@@ -133,19 +133,22 @@ export default function SuggestedInputDemo({
           </>
         )}
 
-        <SuggestedFormField
-          label="Other Income"
-          helpText="Additional revenue (bookkeeping, notary, etc.)"
-          fieldId="otherIncome"
-          suggestions={suggestions}
-        >
-          <SuggestedCurrencyInput
-            value={answers.otherIncome}
+        {/* Other Income - conditional */}
+        {answers.hasOtherIncome && (
+          <SuggestedFormField
+            label="Other Income"
+            helpText="Additional revenue (bookkeeping, notary, etc.)"
             fieldId="otherIncome"
             suggestions={suggestions}
-            onChange={(value) => updateAnswers({ otherIncome: value })}
-          />
-        </SuggestedFormField>
+          >
+            <SuggestedCurrencyInput
+              value={answers.otherIncome}
+              fieldId="otherIncome"
+              suggestions={suggestions}
+              onChange={(value) => updateAnswers({ otherIncome: value })}
+            />
+          </SuggestedFormField>
+        )}
 
       </FormSection>
 
