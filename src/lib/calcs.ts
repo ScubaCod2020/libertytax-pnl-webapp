@@ -42,6 +42,7 @@ export interface Results {
   discounts: number
   taxPrepIncome: number
   taxRushIncome: number // TaxRush income for Canadian stores
+  otherIncome: number // Other revenue streams (bookkeeping, notary, etc.)
   totalRevenue: number // Tax prep income + TaxRush income + other income sources
   
   // Personnel expenses
@@ -183,7 +184,7 @@ export function calc(inputs: Inputs): Results {
   })
   
   return { 
-    grossFees, discounts, taxPrepIncome, taxRushIncome, totalRevenue,
+    grossFees, discounts, taxPrepIncome, taxRushIncome, otherIncome, totalRevenue,
     salaries, empDeductions,
     rent, telephone, utilities,
     localAdv, insurance, postage, supplies, dues, bankFees, maintenance, travelEnt,
@@ -196,7 +197,7 @@ export function calc(inputs: Inputs): Results {
     
     // Return safe fallback values to prevent application crash
     return {
-      grossFees: 0, discounts: 0, taxPrepIncome: 0, taxRushIncome: 0, totalRevenue: 0,
+      grossFees: 0, discounts: 0, taxPrepIncome: 0, taxRushIncome: 0, otherIncome: 0, totalRevenue: 0,
       salaries: 0, empDeductions: 0,
       rent: 0, telephone: 0, utilities: 0,
       localAdv: 0, insurance: 0, postage: 0, supplies: 0, dues: 0, bankFees: 0, maintenance: 0, travelEnt: 0,

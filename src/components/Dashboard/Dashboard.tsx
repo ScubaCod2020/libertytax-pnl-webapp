@@ -83,109 +83,57 @@ export default function Dashboard({ results }: DashboardProps) {
         {/* Income Summary Card - Shows second when stacked */}
         <div className="card" style={{ order: 1 }}>
           <div className="card-title" style={{ color: '#059669', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            💰 Projected Income Summary
+            💰 Income Summary
           </div>
           <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
-            {/* Revenue Components in Proper Order */}
-            <div style={{ marginBottom: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '0.5rem' }}>
               {/* Tax Prep Revenue Breakdown */}
-              <div style={{ marginBottom: '0.75rem' }}>
+              <div>
                 <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#059669', marginBottom: '0.25rem' }}>Tax Prep Revenue:</div>
-                <div style={{ color: '#374151', fontSize: '0.8rem', paddingLeft: '0.5rem' }}>
-                  <div>Gross Tax Prep Fees: <strong>{currency(results.grossFees)}</strong></div>
-                  <div>Returns: {(results.totalReturns - (results.taxRushIncome > 0 ? Math.round(results.taxRushIncome / 125) : 0)).toLocaleString()} @ ${Math.round(results.grossFees / (results.totalReturns - (results.taxRushIncome > 0 ? Math.round(results.taxRushIncome / 125) : 0))).toLocaleString()}</div>
-                  <div style={{ color: '#dc2626' }}>Less Discounts: <strong>-{currency(results.discounts)}</strong></div>
-                </div>
-                <div style={{ fontWeight: 'bold', color: '#059669', fontSize: '0.85rem', marginTop: '0.25rem', paddingLeft: '0.5rem', borderLeft: '3px solid #059669' }}>
-                  Net Tax Prep Income: <strong>{currency(results.taxPrepIncome)}</strong>
-                </div>
+                <div style={{ color: '#374151', fontSize: '0.8rem' }}>Gross Tax Prep Fees: <strong>{currency(results.grossFees)}</strong></div>
+                <div style={{ color: '#374151', fontSize: '0.8rem' }}>Returns: {(results.totalReturns - (results.taxRushIncome > 0 ? Math.round(results.taxRushIncome / 125) : 0)).toLocaleString()} @ ${Math.round(results.grossFees / (results.totalReturns - (results.taxRushIncome > 0 ? Math.round(results.taxRushIncome / 125) : 0))).toLocaleString()}</div>
+                <div style={{ color: '#dc2626', fontSize: '0.8rem' }}>Less Discounts: <strong>-{currency(results.discounts)}</strong></div>
+                <div style={{ fontWeight: 'bold', color: '#059669', fontSize: '0.85rem' }}>Net Tax Prep Income: <strong>{currency(results.taxPrepIncome)}</strong></div>
               </div>
               
               {/* TaxRush Revenue Breakdown */}
               {results.taxRushIncome && results.taxRushIncome > 0 && (
-                <div style={{ marginBottom: '0.75rem' }}>
+                <div style={{ paddingLeft: '0.5rem', borderLeft: '2px solid #0ea5e9' }}>
                   <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#0ea5e9', marginBottom: '0.25rem' }}>TaxRush Revenue:</div>
-                  <div style={{ color: '#374151', fontSize: '0.8rem', paddingLeft: '0.5rem' }}>
-                    <div>TaxRush Returns: {Math.round(results.taxRushIncome / 125).toLocaleString()}</div>
-                    <div>Average Net Fee: $125</div>
-                  </div>
-                  <div style={{ fontWeight: 'bold', color: '#0ea5e9', fontSize: '0.85rem', marginTop: '0.25rem', paddingLeft: '0.5rem', borderLeft: '3px solid #0ea5e9' }}>
-                    TaxRush Income: <strong>{currency(results.taxRushIncome)}</strong>
-                  </div>
+                  <div style={{ color: '#374151', fontSize: '0.8rem' }}>TaxRush Returns: {Math.round(results.taxRushIncome / 125).toLocaleString()}</div>
+                  <div style={{ color: '#374151', fontSize: '0.8rem' }}>Average Net Fee: $125</div>
+                  <div style={{ fontWeight: 'bold', color: '#0ea5e9', fontSize: '0.85rem' }}>TaxRush Income: <strong>{currency(results.taxRushIncome)}</strong></div>
                 </div>
               )}
-              
-              {/* Other Income - Show actual otherIncome value if > 0 */}
-              {(() => {
-                const otherIncome = results.totalRevenue - results.taxPrepIncome - (results.taxRushIncome || 0)
-                return otherIncome > 0 && (
-                  <div style={{ marginBottom: '0.75rem' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#6b7280', marginBottom: '0.25rem' }}>Other Income:</div>
-                    <div style={{ color: '#374151', fontSize: '0.8rem', paddingLeft: '0.5rem' }}>
-                      <div>Notary, consulting, etc.</div>
-                    </div>
-                    <div style={{ fontWeight: 'bold', color: '#6b7280', fontSize: '0.85rem', marginTop: '0.25rem', paddingLeft: '0.5rem', borderLeft: '3px solid #6b7280' }}>
-                      Other Income: <strong>{currency(otherIncome)}</strong>
-                    </div>
-                  </div>
-                )
-              })()}
             </div>
             
-            {/* Revenue Calculation Summary */}
+            {/* Other Income */}
+            {results.otherIncome > 0 && (
+              <div style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
+                <div style={{ fontWeight: 'bold', color: '#6b7280', marginBottom: '0.25rem' }}>Other Income:</div>
+                <div style={{ color: '#374151', fontSize: '0.8rem', paddingLeft: '0.5rem' }}>
+                  Additional Revenue: <strong>{currency(results.otherIncome)}</strong>
+                  <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginTop: '0.1rem' }}>
+                    (Notary services, business consulting, etc.)
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Total Summary */}
             <div style={{ 
               borderTop: '2px solid #059669', 
-              paddingTop: '0.75rem', 
-              marginTop: '1rem',
-              backgroundColor: '#f0f9ff',
-              padding: '0.75rem',
-              borderRadius: '6px',
-              border: '1px solid #bae6fd'
+              paddingTop: '0.5rem', 
+              marginTop: '0.5rem',
+              fontWeight: 'bold',
+              color: '#059669'
             }}>
-              <div style={{ fontWeight: 'bold', color: '#059669', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
-                📊 Revenue Calculation:
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>Total Revenue:</span>
+                <strong>{currency(results.totalRevenue)}</strong>
               </div>
-              
-              <div style={{ fontSize: '0.85rem', color: '#374151', lineHeight: '1.4' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.25rem' }}>
-                  <span>Net Tax Prep Income:</span>
-                  <span><strong>{currency(results.taxPrepIncome)}</strong></span>
-                </div>
-                
-                {results.taxRushIncome > 0 && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.25rem' }}>
-                    <span>+ TaxRush Income:</span>
-                    <span><strong>{currency(results.taxRushIncome)}</strong></span>
-                  </div>
-                )}
-                
-                {(() => {
-                  const otherIncome = results.totalRevenue - results.taxPrepIncome - (results.taxRushIncome || 0)
-                  return otherIncome > 0 && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.25rem' }}>
-                      <span>+ Other Income:</span>
-                      <span><strong>{currency(otherIncome)}</strong></span>
-                    </div>
-                  )
-                })()}
-                
-                <div style={{ 
-                  borderTop: '1px solid #bae6fd',
-                  paddingTop: '0.5rem',
-                  marginTop: '0.5rem',
-                  display: 'flex', 
-                  justifyContent: 'space-between',
-                  fontWeight: 'bold',
-                  color: '#059669',
-                  fontSize: '0.95rem'
-                }}>
-                  <span>Total Projected Revenue:</span>
-                  <span>{currency(results.totalRevenue)}</span>
-                </div>
-                
-                <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.5rem', textAlign: 'center', fontStyle: 'italic' }}>
-                  Total Returns: {results.totalReturns.toLocaleString()}
-                </div>
+              <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem', textAlign: 'center', fontStyle: 'italic' }}>
+                Total Returns: {results.totalReturns.toLocaleString()}
               </div>
             </div>
           </div>
