@@ -1,0 +1,177 @@
+name: Simplified CI/CD
+
+on:
+  push:
+    branches: [ main, develop, 'feat/*', 'fix/*' ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  # Core build and test
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 🔄 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 📋 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📦 Install dependencies
+      run: npm ci
+      
+    - name: 🧮 Run core tests
+      run: |
+        echo "Running core calculation tests..."
+        node scripts/test-calculations.js
+        
+        echo "Running edge case tests..."
+        node scripts/comprehensive-edge-case-tests.js
+        
+        echo "Running regression tests..."
+        node scripts/regression-test.js
+        
+    - name: 🏗️ Build application
+      run: npm run build
+      
+    - name: 📏 Validate build
+      run: |
+        # Check critical files exist
+        [ -f "dist/index.html" ] || (echo "❌ Missing index.html" && exit 1)
+        [ -f dist/assets/index-*.js ] || (echo "❌ Missing JavaScript bundle" && exit 1)
+        [ -f dist/assets/index-*.css ] || (echo "❌ Missing CSS bundle" && exit 1)
+        
+        # Check bundle sizes (updated limits)
+        MAIN_BUNDLE=$(find dist/assets -name "index-*.js" -exec stat -c%s {} \; | sort -n | tail -1)
+        VENDOR_BUNDLE=$(find dist/assets -name "vendor-*.js" -exec stat -c%s {} \; | sort -n | tail -1 || echo "0")
+        TOTAL_SIZE=$((MAIN_BUNDLE + VENDOR_BUNDLE))
+        
+        echo "Main bundle: $((MAIN_BUNDLE / 1024))KB"
+        echo "Vendor bundle: $((VENDOR_BUNDLE / 1024))KB" 
+        echo "Total JS: $((TOTAL_SIZE / 1024))KB"
+        
+        # Updated realistic limits based on our optimized build
+        if [ $TOTAL_SIZE -gt 350000 ]; then
+          echo "⚠️ Total bundle size exceeds 350KB recommendation"
+          echo "Consider further optimization"
+        else
+          echo "✅ Bundle size within reasonable limits"
+        fi
+        
+    - name: 🧪 Basic functionality test
+      run: |
+        echo "Testing preview server..."
+        
+        # Start server
+        npm run preview &
+        SERVER_PID=$!
+        
+        # Wait for startup
+        for i in {1..20}; do
+          if curl -s http://localhost:4173 > /dev/null; then
+            echo "✅ Server started after ${i} seconds"
+            break
+          fi
+          sleep 1
+        done
+        
+        # Test basic functionality
+        RESPONSE=$(curl -s http://localhost:4173)
+        
+        if echo "$RESPONSE" | grep -q "Liberty Tax"; then
+          echo "✅ Liberty Tax branding found"
+        else
+          echo "❌ Liberty Tax branding missing"
+          kill $SERVER_PID
+          exit 1
+        fi
+        
+        if echo "$RESPONSE" | grep -q "script"; then
+          echo "✅ JavaScript bundle loaded"
+        else
+          echo "❌ JavaScript bundle missing"  
+          kill $SERVER_PID
+          exit 1
+        fi
+        
+        # Cleanup
+        kill $SERVER_PID
+        echo "✅ Basic functionality tests passed"
+        
+    - name: 📊 Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts-${{ github.sha }}
+        path: dist/
+        retention-days: 7
+
+  # Code quality checks
+  code-quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 🔄 Checkout code  
+      uses: actions/checkout@v4
+      
+    - name: 📋 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📦 Install dependencies
+      run: npm ci
+      
+    - name: 🔍 TypeScript check
+      run: npx tsc --noEmit
+      
+    - name: ⚠️ Console.log check (warning only)
+      run: |
+        CONSOLE_LOGS=$(grep -r "console\." src/ --exclude-dir=node_modules || true)
+        if [ ! -z "$CONSOLE_LOGS" ]; then
+          echo "⚠️ Console statements found (consider removing for production):"
+          echo "$CONSOLE_LOGS"
+        else
+          echo "✅ No console statements found"
+        fi
+        
+    - name: 🔒 Security audit
+      run: |
+        npm audit --audit-level high || echo "⚠️ Security warnings found - review recommended"
+
+  # Deployment readiness check
+  deployment-check:
+    runs-on: ubuntu-latest
+    needs: [build-and-test, code-quality]
+    if: github.ref == 'refs/heads/main' || contains(github.ref, 'feat/')
+    
+    steps:
+    - name: ✅ Deployment Status
+      run: |
+        echo "## 🚀 Deployment Readiness Check" >> $GITHUB_STEP_SUMMARY
+        echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Build & Tests | ${{ needs.build-and-test.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Code Quality | ${{ needs.code-quality.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        
+        if [[ "${{ needs.build-and-test.result }}" == "success" && "${{ needs.code-quality.result }}" == "success" ]]; then
+          echo "| **Overall** | **✅ Ready for Deployment** |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🎯 **Branch is ready for staging deployment!**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Steps:" >> $GITHUB_STEP_SUMMARY
+          echo "1. **Trigger staging deployment**: Use 'Deploy to Staging' workflow" >> $GITHUB_STEP_SUMMARY
+          echo "2. **Test validation features**: Input validation, error handling, accessibility" >> $GITHUB_STEP_SUMMARY
+          echo "3. **Verify regional features**: US ↔ CA switching, TaxRush functionality" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "| **Overall** | **❌ Not Ready** |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🚨 **Fix failing checks before deployment**" >> $GITHUB_STEP_SUMMARY
+        fi

@@ -307,17 +307,24 @@ test.describe('${componentName} - Auto-generated Tests', () => {
   }
 }
 
-// CLI execution
-if (import.meta.url === `file://${process.argv[1]}`) {
+// CLI execution - simplified approach for ES modules
+async function runCLI() {
   const componentName = process.argv[2] || 'WizardInputs';
   
   const generator = new AITestGenerator();
+  
   try {
     await generator.generate(componentName);
+    console.log('🎉 Test generation completed successfully!');
   } catch (error) {
     console.error('❌ Test generation failed:', error);
     process.exit(1);
   }
+}
+
+// Run if this file is executed directly
+if (process.argv[1] && process.argv[1].includes('ai-test-generator.js')) {
+  runCLI();
 }
 
 export { AITestGenerator };
