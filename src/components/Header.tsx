@@ -4,6 +4,7 @@
 import React from 'react'
 
 import type { Region } from '../lib/calcs'
+import BrandLogo from './BrandLogo'
 
 interface HeaderProps {
   region: Region
@@ -13,28 +14,72 @@ interface HeaderProps {
   onShowDashboard?: () => void  // New prop for dashboard navigation
   wizardCompleted?: boolean
   showWizard?: boolean  // New prop to detect when user is actively in wizard
+  storeType?: 'new' | 'existing'  // Show store type if selected
 }
 
-export default function Header({ region, setRegion, onReset, onShowWizard, onShowDashboard, wizardCompleted = false, showWizard = false }: HeaderProps) {
+export default function Header({ region, setRegion, onReset, onShowWizard, onShowDashboard, wizardCompleted = false, showWizard = false, storeType }: HeaderProps) {
   return (
-    <div className="header">
-      <div className="brand">Liberty Tax • P&L Budget & Forecast (v0.5 preview)</div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <div className="small">
-        Region:&nbsp;
-        <select
-          value={region}
-          onChange={(e) => {
-            const next = e.target.value as Region
-            console.log('[header] region ->', next)
-            setRegion(next)
+    <>
+    <div className="header" style={{
+      display: 'grid',
+      gridTemplateColumns: 'auto 1fr auto',
+      alignItems: 'center', 
+      gap: '2rem',
+      padding: '16px 0',
+      borderBottom: '1px solid #e5e7eb'
+    }}>
+      {/* Left Column: Regional Logo */}
+      <div style={{ justifySelf: 'start' }}>
+        <img 
+          src={region === 'US' 
+            ? '/src/assets/brands/us/LT-2022-Wide-RGB.png'
+            : '/src/assets/brands/ca/LT-Canada-Wide-Red.png'
+          }
+          alt={region === 'US' ? 'Liberty Tax US' : 'Liberty Tax Canada'}
+          style={{ 
+            height: '60px',
+            maxWidth: '220px',
+            objectFit: 'contain'
           }}
-          aria-label="Region"
-        >
-          <option value="US">U.S.</option>
-          <option value="CA">Canada</option>
-        </select>
+        />
+      </div>
+      
+      {/* Middle Column: Title + Version (Centered) */}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifySelf: 'center'
+      }}>
+        <div style={{
+          fontSize: '1.5rem',
+          fontWeight: 600,
+          color: '#1e40af',
+          lineHeight: '1.2',
+          textAlign: 'center'
+        }}>
+          P&L Budget & Forecast
+        </div>
+        <span style={{
+          fontSize: '0.75rem',
+          color: '#6b7280',
+          backgroundColor: '#f3f4f6',
+          padding: '0.25rem 0.5rem',
+          borderRadius: '4px',
+          fontWeight: 500,
+          marginTop: '0.25rem'
+        }}>
+          v0.5 preview
+        </span>
+      </div>
 
+      {/* Right Column: Action Buttons */}
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: '1rem',
+        justifySelf: 'end'
+      }}>
         {/* Full Reset — clears ALL data and reverts to defaults */}
         <button
           onClick={onReset}
@@ -82,8 +127,7 @@ export default function Header({ region, setRegion, onReset, onShowWizard, onSho
             {wizardCompleted ? '⚙️ Review Setup' : '🚀 Launch Setup Wizard'}
           </button>
         )}
-        </div>
-        
+
         {/* Dashboard Button - Right Side */}
         {wizardCompleted && onShowDashboard && (
           <button
@@ -108,5 +152,33 @@ export default function Header({ region, setRegion, onReset, onShowWizard, onSho
         )}
       </div>
     </div>
+
+    {/* Configuration Display - Below Header */}
+    {wizardCompleted && storeType && (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '0.5rem 0',
+        backgroundColor: '#f9fafb',
+        borderBottom: '1px solid #e5e7eb'
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          fontSize: '0.875rem',
+          color: '#059669',
+          backgroundColor: '#f0fdf4',
+          padding: '0.5rem 0.75rem',
+          borderRadius: '6px',
+          border: '1px solid #bbf7d0'
+        }}>
+          <span style={{ fontWeight: 500 }}>
+            📍 {region === 'US' ? 'United States' : 'Canada'} • {storeType === 'new' ? 'New Store' : 'Existing Store'}
+          </span>
+        </div>
+      </div>
+    )}
+    </>
   )
 }

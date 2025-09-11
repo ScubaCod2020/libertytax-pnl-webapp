@@ -30,10 +30,11 @@ export default function BrandWatermark({ region }: BrandWatermarkProps) {
         src={assets.watermarkUrl}
         alt={`${region === 'US' ? 'Liberty Tax' : 'Liberty Tax Canada'} watermark`}
         style={{
-          width: '400px',
+          width: '800px',
           height: 'auto',
-          maxWidth: '40vw', // Responsive sizing
-          maxHeight: '40vh',
+          maxWidth: '70vw', // More responsive sizing - fills more space
+          maxHeight: '70vh', // Taller on desktop
+          minWidth: '320px', // Minimum size for mobile
           objectFit: 'contain',
           filter: 'grayscale(20%)' // Slightly reduce saturation for watermark effect
         }}

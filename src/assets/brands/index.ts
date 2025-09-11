@@ -4,6 +4,7 @@
 // US Liberty Tax Assets
 import USLogoStack from './us/LT-2022-Stack-Color-RGB.png'
 import USLogoWide from './us/LT-2022-Wide-RGB.png'
+import USTorchLogo from './us/__sitelogo__LT-Torch-CMYK.png'
 
 // Canada Liberty Tax Assets  
 import CALogo from './ca/LT-Canada-Logo-RGB.jpg'
@@ -13,8 +14,8 @@ import CALeafIcon from './ca/LTCA-Leaf-ISO-Red.jpg'
 export const US_ASSETS = {
   logo: USLogoStack,        // Main logo (stacked version)
   logoWide: USLogoWide,     // Wide/horizontal version
-  watermark: USLogoStack,   // Use stacked logo for watermark
-  favicon: USLogoStack      // Can be processed to favicon
+  watermark: USTorchLogo,   // Use torch logo for watermark (like Canada's leaf)
+  favicon: USTorchLogo      // Use torch for favicon
 }
 
 export const CA_ASSETS = {

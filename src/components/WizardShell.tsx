@@ -35,7 +35,10 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
       }
     }
     console.log('🧙‍♂️ Starting fresh wizard (no saved answers)')
-    return { region }
+    return { 
+      region,
+      handlesTaxRush: false // Smart default: Most offices start without TaxRush
+    }
   })
   
   // Sync app region with wizard region when loading saved data
@@ -61,7 +64,10 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
   // Reset wizard data but stay in wizard (for "Reset Data" button on Page 1)
   const handleResetWizardData = () => {
     console.log('🔄 Resetting wizard data - staying in wizard')
-    setAnswers({ region }) // Reset to just region, clear all other data
+    setAnswers({ 
+      region,
+      handlesTaxRush: false // Maintain smart default on reset
+    })
     // Stay on current step - don't exit wizard
   }
 
@@ -183,39 +189,56 @@ function WelcomeStep({
 }) {
   return (
     <div data-wizard-step="welcome" style={{ paddingLeft: '1rem' }}>
-      <div className="card-title">Welcome – Quick Start Wizard</div>
-      <div className="card-subtitle">
-        Create your customized P&L dashboard in just a few quick steps
+      <div style={{
+        textAlign: 'center',
+        marginBottom: '2rem',
+        padding: '1.5rem 0'
+      }}>
+        <div style={{
+          fontSize: '1.75rem',
+          fontWeight: 600,
+          color: '#1e40af',
+          marginBottom: '1rem'
+        }}>
+          Welcome – Quick Start Wizard
+        </div>
+        <div style={{
+          fontSize: '1.1rem',
+          color: '#6b7280',
+          lineHeight: '1.6'
+        }}>
+          Create your customized P&L dashboard in just a few quick steps
+        </div>
       </div>
 
       {/* Region Selection */}
-      <div style={{ marginBottom: '1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-          <label htmlFor="region-select" style={{ minWidth: '60px', fontWeight: 500 }}>Region</label>
-          <select 
-            id="region-select"
-            value={region} 
-            onChange={e => {
-              const newRegion = e.target.value as Region
-              setRegion(newRegion) // Update app state
-              updateAnswers({ region: newRegion }) // Update wizard answers for saving
-            }}
-            style={{ 
-              padding: '0.5rem',
-              border: '1px solid #d1d5db',
-              borderRadius: '4px',
-              backgroundColor: 'white',
-              minWidth: '150px'
-            }}
-          >
-            <option value="US">United States</option>
-            <option value="CA">Canada</option>
-          </select>
-        </div>
-        <div className="small" style={{ marginLeft: '100px', opacity: 0.7 }}>
-          Affects tax calculations and available features
-        </div>
-      </div>
+      <FormField 
+        label="Region" 
+        helpText="Affects tax calculations and available features"
+        required
+      >
+        <select 
+          id="region-select"
+          title="Select region"
+          aria-label="Select region"
+          value={region} 
+          onChange={e => {
+            const newRegion = e.target.value as Region
+            setRegion(newRegion) // Update app state
+            updateAnswers({ region: newRegion }) // Update wizard answers for saving
+          }}
+          style={{ 
+            padding: '0.5rem',
+            border: '1px solid #d1d5db',
+            borderRadius: '4px',
+            backgroundColor: 'white',
+            width: '150px'
+          }}
+        >
+          <option value="US">United States</option>
+          <option value="CA">Canada</option>
+        </select>
+      </FormField>
 
       {/* Store Type Selection */}
       <FormField 
@@ -225,6 +248,7 @@ function WelcomeStep({
       >
         <select 
           id="store-type-select"
+          title="Select your store type"
           value={answers.storeType || ''} 
           onChange={e => updateAnswers({ storeType: e.target.value as 'new' | 'existing' })}
           style={{ 
@@ -293,7 +317,7 @@ function WelcomeStep({
         display: 'flex', 
         gap: '12px', 
         justifyContent: 'space-between',
-        paddingTop: '1rem',
+        padding: '1.5rem 0 1.5rem 0',
         borderTop: '1px solid #e5e7eb'
       }}>
         <div style={{ display: 'flex', gap: '8px' }}>

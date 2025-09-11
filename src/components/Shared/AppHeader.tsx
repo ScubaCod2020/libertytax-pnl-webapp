@@ -169,6 +169,8 @@ export default function AppHeader({
                 <span style={{ fontWeight: 500 }}>Region:</span>
                 <select 
                   value={region}
+                  title="Select region"
+                  aria-label="Select region"
                   style={{
                     border: '1px solid #d1d5db',
                     borderRadius: '4px',

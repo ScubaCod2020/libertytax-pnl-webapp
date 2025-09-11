@@ -1403,7 +1403,7 @@ export default function WizardInputs({
         display: 'flex', 
         gap: '12px', 
         justifyContent: 'space-between',
-        paddingTop: '1rem',
+        padding: '1.5rem 0 1.5rem 0',
         borderTop: '1px solid #e5e7eb'
       }}>
         <button 

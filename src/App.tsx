@@ -11,12 +11,12 @@ import DebugToggle from './components/DebugSystem/DebugToggle'
 import DebugSidebar from './components/DebugSystem/DebugSidebar'
 import DebugErrorBoundary from './components/DebugSystem/DebugErrorBoundary'
 import Footer from './components/Footer'
+import BrandWatermark from './components/BrandWatermark'
 import { useAppState } from './hooks/useAppState'
 import { useCalculations } from './hooks/useCalculations'
 import { usePersistence } from './hooks/usePersistence'
 import { usePresets } from './hooks/usePresets'
 import { useBranding } from './hooks/useBranding'
-import BrandWatermark from './components/BrandWatermark'
 
 export default function App() {
   // Custom hooks for clean separation of concerns
@@ -129,6 +129,7 @@ const savedAt = (() => {
           onShowDashboard={() => appState.setShowWizard(false)}
           wizardCompleted={persistence.getWizardState().wizardCompleted}
           showWizard={appState.showWizard}
+          storeType={persistence.loadWizardAnswers()?.storeType}
         />
 
         {appState.showWizard ? (
@@ -198,13 +199,48 @@ const savedAt = (() => {
           </div>
         )}
 
-        <Footer />
+        <Footer 
+          onNavigate={(page) => {
+            switch(page) {
+              case 'wizard':
+                appState.setShowWizard(true)
+                break
+              case 'dashboard':
+                if (persistence.getWizardState().wizardCompleted) {
+                  appState.setShowWizard(false)
+                }
+                break
+              case 'pro-tips':
+                // Future: Open Pro-Tips modal/panel
+                console.log('🔮 Pro-Tips feature coming soon!')
+                break
+              case 'practice':
+                // Future: Open Practice Problems module
+                console.log('🎯 Practice Problems feature coming soon!')
+                break
+              case 'export':
+                // Future: Export current state to PDF/Excel
+                console.log('📄 Export functionality coming soon!')
+                break
+              case 'settings':
+              case 'reports':
+                // Placeholder for future navigation
+                console.log(`Navigate to ${page}`)
+                break
+            }
+          }}
+          showWizard={appState.showWizard}
+          wizardCompleted={persistence.getWizardState().wizardCompleted}
+          currentPage={appState.showWizard ? 'wizard' : 'dashboard'}
+        />
       </div>
 
       <DebugToggle
+        key={`debug-${appState.region}`}
         show={showDebug}
         isOpen={debugOpen}
         onToggle={() => setDebugOpen(!debugOpen)}
+        region={appState.region}
       />
 
       <DebugErrorBoundary onClose={() => setDebugOpen(false)}>

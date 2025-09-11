@@ -341,26 +341,47 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* TaxRush Gross Fees (Canada only - conditional) */}
+        {/* TaxRush Section - Grouped with border for visual clarity */}
         {region === 'CA' && answers.handlesTaxRush && (
-          <FormField 
-            label="TaxRush Gross Fees" 
-            helpText="Total gross fees from TaxRush returns last year (separate from tax prep fees)"
-          >
-            <CurrencyInput
-              value={answers.lastYearTaxRushGrossFees}
-              placeholder="0"
-              onChange={value => updateAnswers({ lastYearTaxRushGrossFees: value })}
-            />
-          </FormField>
-        )}
+          <div style={{
+            padding: '1rem',
+            border: '2px solid #0ea5e9',
+            borderRadius: '8px',
+            backgroundColor: '#f0f9ff',
+            marginTop: '1rem',
+            marginBottom: '1rem'
+          }}>
+            <div style={{
+              fontWeight: 600,
+              color: '#0369a1',
+              marginBottom: '0.5rem',
+              fontSize: '0.9rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}>
+              🚀 TaxRush Fields
+              <span style={{ fontWeight: 400, fontSize: '0.8rem', color: '#64748b' }}>
+                (Same-day refund service)
+              </span>
+            </div>
+            
+            <FormField 
+              label="TaxRush Gross Fees" 
+              helpText="Total gross fees from TaxRush returns last year (separate from tax prep fees)"
+            >
+              <CurrencyInput
+                value={answers.lastYearTaxRushGrossFees}
+                placeholder="0"
+                onChange={value => updateAnswers({ lastYearTaxRushGrossFees: value })}
+              />
+            </FormField>
 
-          {/* TaxRush Returns - Bidirectional Calculation (Canada only - conditional) */}
-          {region === 'CA' && answers.handlesTaxRush && (
-            <div style={{ marginBottom: '0.75rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-                <label style={{ minWidth: '140px', fontWeight: 500 }}>TaxRush Returns</label>
-                
+            <FormField
+              label="TaxRush Returns"
+              helpText="Number and percentage of TaxRush returns filed last year (typically ~15% of total returns)"
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 {/* Return Count Input */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                   <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
@@ -443,41 +464,20 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                   <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
                 </div>
               </div>
-              <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-                Number and percentage of TaxRush returns filed last year (typically ~15% of total returns)
-              </div>
-            </div>
-          )}
+            </FormField>
 
-          {/* TaxRush Average Net Fee (Canada only - conditional) */}
-          {region === 'CA' && answers.handlesTaxRush && (
-            <div style={{ marginBottom: '0.75rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-                <label style={{ minWidth: '140px', fontWeight: 500 }}>TaxRush Avg Net Fee</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                  <input
-                    type="number"
-                    placeholder="0"
-                    value={answers.lastYearTaxRushAvgNetFee || ''}
-                    onChange={e => updateAnswers({ 
-                      lastYearTaxRushAvgNetFee: parseFloat(e.target.value) || undefined 
-                    })}
-                    style={{ 
-                      width: '140px', 
-                      textAlign: 'right', 
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '4px', 
-                      padding: '0.5rem' 
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-                Average net fee per TaxRush return last year (separate from tax prep average)
-              </div>
-            </div>
-          )}
+            <FormField
+              label="TaxRush Avg Net Fee"
+              helpText="Average net fee per TaxRush return last year (separate from tax prep average)"
+            >
+              <CurrencyInput
+                value={answers.lastYearTaxRushAvgNetFee}
+                placeholder="0"
+                onChange={value => updateAnswers({ lastYearTaxRushAvgNetFee: value })}
+              />
+            </FormField>
+          </div>
+        )}
 
         <FormField 
           label="Total Expenses" 
@@ -546,54 +546,301 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           </div>
 
       {/* Projected Performance Box */}
-      <div style={{
-        marginBottom: '1rem',
-        padding: '1.5rem',
-        backgroundColor: '#f8fafc',
-        border: '1px solid #e2e8f0',
-        borderRadius: '8px'
-      }}>
-        <div>
-          <h4 style={{ 
-            margin: '0 0 0.75rem 0', 
-            fontSize: '1rem', 
-            fontWeight: 600, 
-            color: '#374151',
-            borderBottom: '2px solid #059669',
-            paddingBottom: '0.25rem'
-          }}>
-            Projected Performance
-          </h4>
+      <FormSection
+        title="Projected Performance"
+        icon="📈"
+        backgroundColor="#f8fafc"
+        borderColor="#059669"
+        description="Projected metrics based on your growth expectations"
+      >
 
-          {/* Performance Change Slider Section */}
-          <div style={{ marginBottom: '1rem' }}>
-            {/* Field Label, Input, and Dropdown - ALL INLINE */}
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.75rem', 
-              marginBottom: '0.5rem', 
-              flexWrap: 'wrap' 
+        <FormField
+          label="Performance Change"
+          helpText="Enter percentage, use slider for precision, or select preset (+ growth, - decline)"
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            {/* Direct percentage input */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <input
+                type="number"
+                step="1"
+                min="-50"
+                max="100"
+                value={answers.expectedGrowthPct !== undefined ? answers.expectedGrowthPct : 0}
+                onChange={e => {
+                  const value = parseInt(e.target.value)
+                  console.log('🎛️ EXISTING - Direct input changed:', { value })
+                  updateAnswers({ expectedGrowthPct: isNaN(value) ? undefined : value })
+                }}
+                placeholder="0"
+                style={{ 
+                  width: '70px', 
+                  textAlign: 'right', 
+                  border: '1px solid #d1d5db', 
+                  borderRadius: '4px', 
+                  padding: '0.5rem' 
+                }}
+              />
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
+            </div>
+
+            {/* Dropdown */}
+            <select 
+              aria-label="Performance change growth percentage options"
+              value={
+                answers.expectedGrowthPct !== undefined 
+                  ? (GROWTH_OPTIONS.find(opt => opt.value === answers.expectedGrowthPct) 
+                      ? answers.expectedGrowthPct.toString() 
+                      : 'custom')
+                  : '0'
+              }
+              style={{ 
+                padding: '0.5rem',
+                border: '1px solid #d1d5db',
+                borderRadius: '4px',
+                backgroundColor: 'white',
+                minWidth: '200px'
+              }}
+              onChange={e => {
+                const val = e.target.value
+                console.log('🎛️ EXISTING - Dropdown changed:', { selectedValue: val })
+                
+                if (val === '' || val === 'custom') {
+                  console.log('🎛️ EXISTING - Custom or empty selected, keeping current value')
+                } else {
+                  updateAnswers({ expectedGrowthPct: parseFloat(val) })
+                }
+              }}
+            >
+              <option value="custom">Custom percentage</option>
+              {GROWTH_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Slider underneath for visual feedback */}
+          <div style={{ marginTop: '0.5rem' }}>
+            <input
+              type="range"
+              min="-50"
+              max="100"
+              step="1"
+              aria-label="Expected growth percentage slider"
+              value={answers.expectedGrowthPct || 0}
+              onChange={e => {
+                const value = parseInt(e.target.value)
+                console.log('🎛️ EXISTING - Slider changed:', { value })
+                updateAnswers({ expectedGrowthPct: value })
+              }}
+              style={{
+                width: '280px',
+                height: '6px',
+                borderRadius: '3px',
+                background: '#ddd',
+                outline: 'none',
+                cursor: 'pointer'
+              }}
+            />
+          </div>
+        </FormField>
+
+        <FormField
+          label="Average Net Fee"
+          helpText={
+            answers.avgNetFee && answers.expectedGrowthPct !== undefined ? 
+              `Calculated from last year + ${answers.expectedGrowthPct}% growth (you can override)` :
+              'Your projected average net fee per return'
+          }
+        >
+          <CurrencyInput
+            value={(() => {
+              if (answers.avgNetFee && answers.expectedGrowthPct !== undefined) {
+                return Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100))
+              }
+              return answers.avgNetFee
+            })()}
+            placeholder="e.g., 130"
+            onChange={value => updateAnswers({ avgNetFee: value })}
+          />
+        </FormField>
+
+        <FormField
+          label="Tax Prep Returns"
+          helpText={
+            answers.taxPrepReturns && answers.expectedGrowthPct !== undefined ? 
+              `Calculated from last year + ${answers.expectedGrowthPct}% growth (you can override)` :
+              'Your projected number of tax returns'
+          }
+        >
+          <NumberInput
+            value={
+              answers.taxPrepReturns && answers.expectedGrowthPct !== undefined 
+                ? Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100))
+                : answers.taxPrepReturns
+            }
+            placeholder="e.g., 1,680"
+            prefix="#"
+            onChange={value => updateAnswers({ taxPrepReturns: value })}
+          />
+        </FormField>
+
+        {/* TaxRush Section - Projected Performance (matching Last Year styling) */}
+        {region === 'CA' && answers.handlesTaxRush && (
+          <div style={{
+            padding: '1rem',
+            border: '2px solid #0ea5e9',
+            borderRadius: '8px',
+            backgroundColor: '#f0f9ff',
+            marginTop: '1rem',
+            marginBottom: '1rem'
+          }}>
+            <div style={{
+              fontWeight: 600,
+              color: '#0369a1',
+              marginBottom: '0.5rem',
+              fontSize: '0.9rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
             }}>
-              <label style={{ minWidth: '140px', fontWeight: 500 }}>Performance Change</label>
-              
-              {/* Direct percentage input - always visible */}
+              🚀 TaxRush Projected
+              <span style={{ fontWeight: 400, fontSize: '0.8rem', color: '#64748b' }}>
+                (Based on growth projections)
+              </span>
+            </div>
+            
+          <FormField
+            label="TaxRush Returns"
+            helpText={
+              answers.manualTaxRushReturns !== undefined ?
+                'Manual override applied (you can edit or clear to use auto-calculation)' :
+                'Auto-calculated as 15% of projected tax prep returns (you can override)'
+            }
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              {/* Return Count Input */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
                 <input
                   type="number"
-                  step="1"
-                  min="-50"
-                  max="100"
-                  value={answers.expectedGrowthPct !== undefined ? answers.expectedGrowthPct : 0}
-                  onChange={e => {
-                    const value = parseInt(e.target.value)
-                    console.log('🎛️ EXISTING - Direct input changed:', { value })
-                    updateAnswers({ expectedGrowthPct: isNaN(value) ? undefined : value })
-                  }}
                   placeholder="0"
+                  value={(() => {
+                    // Use manual override if available
+                    if (answers.manualTaxRushReturns !== undefined) {
+                      return answers.manualTaxRushReturns
+                    }
+                    
+                    // Calculate projected tax prep returns first
+                    const projectedTaxPrepReturns = answers.lastYearTaxPrepReturns && answers.expectedGrowthPct !== undefined 
+                      ? Math.round(answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100))
+                      : answers.lastYearTaxPrepReturns
+                    
+                    // Default to 15% of projected tax prep returns
+                    if (projectedTaxPrepReturns) {
+                      return Math.round(projectedTaxPrepReturns * 0.15)
+                    }
+                    
+                    // Fallback to historical TaxRush returns with growth
+                    if (answers.lastYearTaxRushReturns && answers.expectedGrowthPct !== undefined) {
+                      return Math.round(answers.lastYearTaxRushReturns * (1 + answers.expectedGrowthPct / 100))
+                    }
+                    
+                    return answers.lastYearTaxRushReturns || ''
+                  })()}
+                  onChange={e => {
+                    const newCount = parseFloat(e.target.value) || undefined
+                    
+                    // Calculate percentage from count using projected tax prep returns
+                    const projectedTaxPrepReturns = answers.lastYearTaxPrepReturns && answers.expectedGrowthPct !== undefined 
+                      ? Math.round(answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100))
+                      : answers.lastYearTaxPrepReturns
+                    
+                    const newPct = newCount && projectedTaxPrepReturns 
+                      ? Math.round((newCount / projectedTaxPrepReturns) * 100 * 10) / 10 // Round to 1 decimal
+                      : 15 // Default to 15%
+                    
+                    console.log('🧙‍♂️ PROJECTED - TaxRush Returns count changed:', { 
+                      oldCount: answers.manualTaxRushReturns, 
+                      newCount,
+                      projectedTaxPrepReturns,
+                      calculatedPct: newPct
+                    })
+                    
+                    updateAnswers({ 
+                      manualTaxRushReturns: newCount, // Track manual override
+                      taxRushReturns: newCount || 0,   // Set main field for Page 2
+                      taxRushReturnsPct: newPct       // Update projected percentage
+                    })
+                  }}
                   style={{ 
-                    width: '70px', 
+                    width: '110px', 
                     textAlign: 'right', 
+                    border: '1px solid #d1d5db', 
+                    borderRadius: '4px', 
+                    padding: '0.5rem' 
+                  }}
+                />
+              </div>
+
+              {/* Percentage Input */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <span style={{ color: '#6b7280' }}>= </span>
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="50"
+                  placeholder="15"
+                  value={(() => {
+                    // Use manual percentage if available
+                    if (answers.taxRushReturnsPct !== undefined) {
+                      return answers.taxRushReturnsPct
+                    }
+                    
+                    // Calculate percentage from projected count
+                    const projectedTaxPrepReturns = answers.lastYearTaxPrepReturns && answers.expectedGrowthPct !== undefined 
+                      ? Math.round(answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100))
+                      : answers.lastYearTaxPrepReturns
+                    
+                    const currentCount = answers.manualTaxRushReturns !== undefined
+                      ? answers.manualTaxRushReturns
+                      : (projectedTaxPrepReturns ? Math.round(projectedTaxPrepReturns * 0.15) : 0)
+                    
+                    return projectedTaxPrepReturns && currentCount 
+                      ? Math.round((currentCount / projectedTaxPrepReturns) * 100 * 10) / 10
+                      : 15
+                  })()}
+                  onChange={e => {
+                    const newPct = parseFloat(e.target.value)
+                    
+                    // Calculate count from percentage using projected tax prep returns  
+                    const projectedTaxPrepReturns = answers.lastYearTaxPrepReturns && answers.expectedGrowthPct !== undefined 
+                      ? Math.round(answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100))
+                      : answers.lastYearTaxPrepReturns
+                    
+                    const newCount = !isNaN(newPct) && projectedTaxPrepReturns 
+                      ? Math.round(projectedTaxPrepReturns * (newPct / 100))
+                      : undefined
+                    
+                    console.log('🧙‍♂️ PROJECTED - TaxRush Returns percentage changed:', { 
+                      oldPct: answers.taxRushReturnsPct, 
+                      newPct,
+                      projectedTaxPrepReturns,
+                      calculatedCount: newCount
+                    })
+                    
+                    updateAnswers({ 
+                      taxRushReturnsPct: isNaN(newPct) ? undefined : newPct,
+                      manualTaxRushReturns: newCount, // Track manual override
+                      taxRushReturns: newCount || 0   // Set main field for Page 2
+                    })
+                  }}
+                  style={{ 
+                    width: '60px', 
+                    textAlign: 'right',
                     border: '1px solid #d1d5db', 
                     borderRadius: '4px', 
                     padding: '0.5rem' 
@@ -601,417 +848,102 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                 />
                 <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
               </div>
-
-              {/* Dropdown INLINE with label and input */}
-              <select 
-                aria-label="Performance change growth percentage options"
-                value={
-                  answers.expectedGrowthPct !== undefined 
-                    ? (GROWTH_OPTIONS.find(opt => opt.value === answers.expectedGrowthPct) 
-                        ? answers.expectedGrowthPct.toString() 
-                        : 'custom')
-                    : '0'
-                }
-                style={{ 
-                  padding: '0.5rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '4px',
-                  backgroundColor: 'white',
-                  minWidth: '200px'
-                }}
-                onChange={e => {
-                  const val = e.target.value
-                  console.log('🎛️ EXISTING - Dropdown changed:', { selectedValue: val })
-                  
-                  if (val === '' || val === 'custom') {
-                    // Keep current value, don't override
-                    console.log('🎛️ EXISTING - Custom or empty selected, keeping current value')
-                  } else {
-                    updateAnswers({ expectedGrowthPct: parseFloat(val) })
-                  }
-                }}
-              >
-                <option value="custom">Custom percentage</option>
-                {GROWTH_OPTIONS.map(opt => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
             </div>
-
-            {/* Slider underneath for visual feedback and precision */}
-            <div style={{ marginLeft: '100px', marginBottom: '0.5rem' }}>
-              <input
-                type="range"
-                min="-50"
-                max="100"
-                step="1"
-                aria-label="Expected growth percentage slider"
-                value={answers.expectedGrowthPct || 0}
-                onChange={e => {
-                  const value = parseInt(e.target.value)
-                  console.log('🎛️ EXISTING - Slider changed:', { value })
-                  updateAnswers({ expectedGrowthPct: value })
-                }}
-                style={{
-                  width: '280px',
-                  height: '6px',
-                  borderRadius: '3px',
-                  background: '#ddd',
-                  outline: 'none',
-                  cursor: 'pointer'
-                }}
-              />
-            </div>
-
-            {/* Simplified instructional text */}
-            <div className="small" style={{ marginLeft: '100px', opacity: 0.7 }}>
-              Enter percentage, use slider for precision, or select preset (+ growth, - decline)
-            </div>
+          </FormField>
           </div>
+        )}
 
-          {/* Calculated Input Fields */}
-          
-          {/* Average Net Fee - Calculated with override */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '120px', fontWeight: 500 }}>Average Net Fee</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                <input
-                  type="text"
-                  placeholder="e.g., 130"
-                  value={(() => {
-                    if (answers.avgNetFee && answers.expectedGrowthPct !== undefined) {
-                      const calculatedValue = Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100))
-                      return calculatedValue.toLocaleString()
-                    }
-                    return formatCurrency(answers.avgNetFee)
-                  })()}
-                  onChange={e => {
-                    const newValue = parseCurrencyInput(e.target.value)
-                    updateAnswers({ avgNetFee: newValue })
-                  }}
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem' 
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              {answers.avgNetFee && answers.expectedGrowthPct !== undefined ? 
-                `Calculated from last year + ${answers.expectedGrowthPct}% growth (you can override)` :
-                'Your projected average net fee per return'
-              }
-            </div>
-          </div>
-
-          {/* Tax Prep Returns - Calculated with override */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '120px', fontWeight: 500 }}>Tax Prep Returns</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
-                <input
-                  type="number"
-                  placeholder="e.g., 1,680"
-                  value={
-                    answers.taxPrepReturns && answers.expectedGrowthPct !== undefined 
-                      ? Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100))
-                      : (answers.taxPrepReturns || '')
-                  }
-                  onChange={e => updateAnswers({ 
-                    taxPrepReturns: parseFloat(e.target.value) || undefined 
-                  })}
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem' 
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              {answers.taxPrepReturns && answers.expectedGrowthPct !== undefined ? 
-                `Calculated from last year + ${answers.expectedGrowthPct}% growth (you can override)` :
-                'Your projected number of tax returns'
-              }
-            </div>
-          </div>
-
-          {/* TaxRush Returns - Bidirectional Calculation (Canada only - conditional) */}
-          {region === 'CA' && answers.handlesTaxRush && (
-            <div style={{ marginBottom: '0.75rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-                <label style={{ minWidth: '120px', fontWeight: 500 }}>TaxRush Returns</label>
-                
-                {/* Return Count Input */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
-                  <input
-                    type="number"
-                    placeholder="0"
-                    value={(() => {
-                      // Use manual override if available
-                      if (answers.manualTaxRushReturns !== undefined) {
-                        return answers.manualTaxRushReturns
-                      }
-                      
-                      // Calculate projected tax prep returns first
-                      const projectedTaxPrepReturns = answers.lastYearTaxPrepReturns && answers.expectedGrowthPct !== undefined 
-                        ? Math.round(answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100))
-                        : answers.lastYearTaxPrepReturns
-                      
-                      // Default to 15% of projected tax prep returns
-                      if (projectedTaxPrepReturns) {
-                        return Math.round(projectedTaxPrepReturns * 0.15)
-                      }
-                      
-                      // Fallback to historical TaxRush returns with growth
-                      if (answers.lastYearTaxRushReturns && answers.expectedGrowthPct !== undefined) {
-                        return Math.round(answers.lastYearTaxRushReturns * (1 + answers.expectedGrowthPct / 100))
-                      }
-                      
-                      return answers.lastYearTaxRushReturns || ''
-                    })()}
-                    onChange={e => {
-                      const newCount = parseFloat(e.target.value) || undefined
-                      
-                      // Calculate percentage from count using projected tax prep returns
-                      const projectedTaxPrepReturns = answers.lastYearTaxPrepReturns && answers.expectedGrowthPct !== undefined 
-                        ? Math.round(answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100))
-                        : answers.lastYearTaxPrepReturns
-                      
-                      const newPct = newCount && projectedTaxPrepReturns 
-                        ? Math.round((newCount / projectedTaxPrepReturns) * 100 * 10) / 10 // Round to 1 decimal
-                        : 15 // Default to 15%
-                      
-                      console.log('🧙‍♂️ PROJECTED - TaxRush Returns count changed:', { 
-                        oldCount: answers.manualTaxRushReturns, 
-                        newCount,
-                        projectedTaxPrepReturns,
-                        calculatedPct: newPct
-                      })
-                      
-                      updateAnswers({ 
-                        manualTaxRushReturns: newCount, // Track manual override
-                        taxRushReturns: newCount || 0,   // Set main field for Page 2
-                        taxRushReturnsPct: newPct       // Update projected percentage
-                      })
-                    }}
-                    style={{ 
-                      width: '110px', 
-                      textAlign: 'right', 
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '4px', 
-                      padding: '0.5rem' 
-                    }}
-                  />
-                </div>
-
-                {/* Percentage Input */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <span style={{ color: '#6b7280' }}>= </span>
-                  <input
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    max="50"
-                    placeholder="15"
-                    value={(() => {
-                      // Use manual percentage if available
-                      if (answers.taxRushReturnsPct !== undefined) {
-                        return answers.taxRushReturnsPct
-                      }
-                      
-                      // Calculate percentage from projected count
-                      const projectedTaxPrepReturns = answers.lastYearTaxPrepReturns && answers.expectedGrowthPct !== undefined 
-                        ? Math.round(answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100))
-                        : answers.lastYearTaxPrepReturns
-                      
-                      const currentCount = answers.manualTaxRushReturns !== undefined
-                        ? answers.manualTaxRushReturns
-                        : (projectedTaxPrepReturns ? Math.round(projectedTaxPrepReturns * 0.15) : 0)
-                      
-                      return projectedTaxPrepReturns && currentCount 
-                        ? Math.round((currentCount / projectedTaxPrepReturns) * 100 * 10) / 10
-                        : 15
-                    })()}
-                    onChange={e => {
-                      const newPct = parseFloat(e.target.value)
-                      
-                      // Calculate count from percentage using projected tax prep returns  
-                      const projectedTaxPrepReturns = answers.lastYearTaxPrepReturns && answers.expectedGrowthPct !== undefined 
-                        ? Math.round(answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100))
-                        : answers.lastYearTaxPrepReturns
-                      
-                      const newCount = !isNaN(newPct) && projectedTaxPrepReturns 
-                        ? Math.round(projectedTaxPrepReturns * (newPct / 100))
-                        : undefined
-                      
-                      console.log('🧙‍♂️ PROJECTED - TaxRush Returns percentage changed:', { 
-                        oldPct: answers.taxRushReturnsPct, 
-                        newPct,
-                        projectedTaxPrepReturns,
-                        calculatedCount: newCount
-                      })
-                      
-                      updateAnswers({ 
-                        taxRushReturnsPct: isNaN(newPct) ? undefined : newPct,
-                        manualTaxRushReturns: newCount, // Track manual override
-                        taxRushReturns: newCount || 0   // Set main field for Page 2
-                      })
-                    }}
-                    style={{ 
-                      width: '60px', 
-                      textAlign: 'right',
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '4px', 
-                      padding: '0.5rem' 
-                    }}
-                  />
-                  <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
-                </div>
-              </div>
-              <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-                {answers.manualTaxRushReturns !== undefined ?
-                  'Manual override applied (you can edit or clear to use auto-calculation)' :
-                  'Auto-calculated as 15% of projected tax prep returns (you can override)'
-                }
-              </div>
-            </div>
-          )}
-
-          {/* Gross Tax Prep Fees - Auto-calculated */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '120px', fontWeight: 500 }}>Gross Tax Prep Fees</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                <input
-                  type="text"
-                  title="Auto-calculated Gross Tax Prep Fees based on projected average net fee and tax prep returns"
-                  value={(() => {
-                    if (answers.avgNetFee && answers.taxPrepReturns && answers.expectedGrowthPct !== undefined) {
-                      // Apply growth
-                      const projectedAvgNetFee = answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)
-                      const projectedTaxPrepReturns = answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)
-                      const grossFees = Math.round(projectedAvgNetFee * projectedTaxPrepReturns)
-                      return grossFees.toLocaleString()
-                    }
-                    return ''
-                  })()}
-                  readOnly
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem', 
-                    backgroundColor: '#f9fafb' 
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              Auto-calculated: Projected Average Net Fee × Projected Tax Prep Returns
-            </div>
-          </div>
-
-          {/* Total Expenses - Calculated with override */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-              <label style={{ minWidth: '120px', fontWeight: 500 }}>Total Expenses</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-                <input
-                  type="text"
-                  title="Total Expenses"
-                  placeholder="Enter total expenses"
-                  value={(() => {
-                    if (answers.avgNetFee && answers.taxPrepReturns && answers.expectedGrowthPct !== undefined) {
-                      const projectedAvgNetFee = answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)
-                      const projectedTaxPrepReturns = answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)
-                      const grossFees = projectedAvgNetFee * projectedTaxPrepReturns
-                      const expenses = Math.round(grossFees * 0.76)
-                      return expenses.toLocaleString()
-                    }
-                    return ''
-                  })()}
-                  onChange={e => {
-                    const newValue = parseCurrencyInput(e.target.value)
-                    updateAnswers({ projectedExpenses: newValue })
-                  }}
-                  style={{ 
-                    width: '140px', 
-                    textAlign: 'right', 
-                    border: '1px solid #d1d5db', 
-                    borderRadius: '4px', 
-                    padding: '0.5rem' 
-                  }}
-                />
-              </div>
-            </div>
-            <div className="small" style={{ marginTop: '0.25rem', marginLeft: '100px', opacity: 0.7 }}>
-              Industry standard: 76% of Gross Tax Prep Fees above (you can override)
-            </div>
-          </div>
-
-          {/* Projected Revenue Summary */}
-          {answers.avgNetFee && answers.taxPrepReturns && answers.expectedGrowthPct !== undefined && (
-            <div style={{ 
-              padding: '1rem', 
-              backgroundColor: '#e0f2fe', 
-              borderRadius: '6px',
-              fontWeight: 700,
-              fontSize: '1.1rem',
-              color: '#0369a1',
-              border: '2px solid #0ea5e9'
-            }}>
-              Projected Revenue: ${(() => {
+        <FormField
+          label="Gross Tax Prep Fees"
+          helpText="Auto-calculated: Projected Average Net Fee × Projected Tax Prep Returns"
+        >
+          <CurrencyInput
+            value={(() => {
+              if (answers.avgNetFee && answers.taxPrepReturns && answers.expectedGrowthPct !== undefined) {
+                // Apply growth
                 const projectedAvgNetFee = answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)
                 const projectedTaxPrepReturns = answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)
-                const projectedGrossFees = projectedAvgNetFee * projectedTaxPrepReturns
-                
-                // Apply discounts
-                const discountsPct = answers.lastYearDiscountsPct || 3
-                const projectedDiscountAmt = projectedGrossFees * (discountsPct / 100)
-                const projectedTaxPrepIncome = projectedGrossFees - projectedDiscountAmt
-                
-                // Add other income with growth
-                const projectedOtherIncome = (answers.lastYearOtherIncome || 0) * (1 + answers.expectedGrowthPct / 100)
-                
-                // Add TaxRush income (disabled until TaxRush fields are fully configured)
-                const projectedTaxRushIncome = 0
-                // TODO: Re-enable when TaxRush gross fees and average net fee are properly set up
-                // const projectedTaxRushIncome = region === 'CA' && answers.lastYearTaxRushReturns && answers.taxRushAvgNetFee
-                //   ? (answers.taxRushAvgNetFee * (1 + answers.expectedGrowthPct / 100)) * (answers.lastYearTaxRushReturns * (1 + answers.expectedGrowthPct / 100))
-                //   : 0
-                
-                const totalRevenue = projectedTaxPrepIncome + projectedOtherIncome + projectedTaxRushIncome
-                return Math.round(totalRevenue).toLocaleString()
+                return Math.round(projectedAvgNetFee * projectedTaxPrepReturns)
+              }
+              return undefined
+            })()}
+            placeholder="Auto-calculated"
+            onChange={() => {}} // Read-only
+            backgroundColor="#f9fafb"
+            disabled={true}
+          />
+        </FormField>
+
+        <FormField
+          label="Total Expenses"
+          helpText="Industry standard: 76% of Gross Tax Prep Fees above (you can override)"
+        >
+          <CurrencyInput
+            value={(() => {
+              if (answers.projectedExpenses !== undefined) {
+                return answers.projectedExpenses
+              }
+              if (answers.avgNetFee && answers.taxPrepReturns && answers.expectedGrowthPct !== undefined) {
+                const projectedAvgNetFee = answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)
+                const projectedTaxPrepReturns = answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)
+                const grossFees = projectedAvgNetFee * projectedTaxPrepReturns
+                return Math.round(grossFees * 0.76)
+              }
+              return undefined
+            })()}
+            placeholder="Auto-calculated"
+            onChange={value => updateAnswers({ projectedExpenses: value })}
+          />
+        </FormField>
+
+        {/* Projected Revenue Summary */}
+        {answers.avgNetFee && answers.taxPrepReturns && answers.expectedGrowthPct !== undefined && (
+          <div style={{ 
+            padding: '1rem', 
+            backgroundColor: '#e0f2fe', 
+            borderRadius: '6px',
+            fontWeight: 700,
+            fontSize: '1.1rem',
+            color: '#0369a1',
+            border: '2px solid #0ea5e9',
+            marginTop: '1rem'
+          }}>
+            Projected Revenue: ${(() => {
+              const projectedAvgNetFee = answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)
+              const projectedTaxPrepReturns = answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)
+              const projectedGrossFees = projectedAvgNetFee * projectedTaxPrepReturns
+              
+              // Apply discounts
+              const discountsPct = answers.lastYearDiscountsPct || 3
+              const projectedDiscountAmt = projectedGrossFees * (discountsPct / 100)
+              const projectedTaxPrepIncome = projectedGrossFees - projectedDiscountAmt
+              
+              // Add other income with growth
+              const projectedOtherIncome = (answers.lastYearOtherIncome || 0) * (1 + answers.expectedGrowthPct / 100)
+              
+              // Add TaxRush income (disabled until TaxRush fields are fully configured)
+              const projectedTaxRushIncome = 0
+              // TODO: Re-enable when TaxRush gross fees and average net fee are properly set up
+              // const projectedTaxRushIncome = region === 'CA' && answers.lastYearTaxRushReturns && answers.taxRushAvgNetFee
+              //   ? (answers.taxRushAvgNetFee * (1 + answers.expectedGrowthPct / 100)) * (answers.lastYearTaxRushReturns * (1 + answers.expectedGrowthPct / 100))
+              //   : 0
+              
+              const totalRevenue = projectedTaxPrepIncome + projectedOtherIncome + projectedTaxRushIncome
+              return Math.round(totalRevenue).toLocaleString()
+            })()}
+            <span style={{ fontSize: '0.8rem', fontWeight: 'normal' }}>
+              {(() => {
+                const projectedAvgNetFee = answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)
+                const projectedTaxPrepReturns = answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)
+                const originalRevenue = answers.avgNetFee * answers.taxPrepReturns
+                const projectedRevenue = projectedAvgNetFee * projectedTaxPrepReturns
+                const growthPct = Math.round(((projectedRevenue - originalRevenue) / originalRevenue) * 100)
+                return ` (+${growthPct}% growth)`
               })()}
-              <span style={{ fontSize: '0.8rem', fontWeight: 'normal' }}>
-                {(() => {
-                  const projectedAvgNetFee = answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)
-                  const projectedTaxPrepReturns = answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)
-                  const originalRevenue = answers.avgNetFee * answers.taxPrepReturns
-                  const projectedRevenue = projectedAvgNetFee * projectedTaxPrepReturns
-                  const growthPct = Math.round(((projectedRevenue - originalRevenue) / originalRevenue) * 100)
-                  return ` (+${growthPct}% growth)`
-                })()}
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
+            </span>
+          </div>
+        )}
+      </FormSection>
     </>
   )
 }
