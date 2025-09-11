@@ -101,27 +101,15 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
           {/* TaxRush Fields (Canada only - conditional) */}
           {region === 'CA' && answers.handlesTaxRush && (
             <div style={{
-              padding: '1rem',
+              paddingTop: '0.5rem',
+              paddingBottom: '0.5rem',
+              paddingLeft: '0rem',
+              paddingRight: '0rem',
               border: '2px solid #0ea5e9',
               borderRadius: '8px',
               backgroundColor: '#f0f9ff',
-              margin: '0'
+              margin: '0.5rem 0'
             }}>
-              <div style={{
-                fontWeight: 600,
-                color: '#0369a1',
-                marginBottom: '0.75rem',
-                fontSize: '0.9rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem'
-              }}>
-                🚀 TaxRush Fields
-                <span style={{ fontWeight: 400, fontSize: '0.8rem', color: '#64748b' }}>
-                  (Same-day refund service)
-                </span>
-              </div>
-              
               <FormField 
                 label="TaxRush Returns" 
                 helpText="Your target TaxRush returns for this year (typically ~15% of total returns)"

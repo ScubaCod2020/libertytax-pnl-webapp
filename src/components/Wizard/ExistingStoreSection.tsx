@@ -350,30 +350,16 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
 
         {/* TaxRush Section - Grouped with border for visual clarity */}
         {region === 'CA' && answers.handlesTaxRush && (
-          <>
-            <div style={{
-              padding: '0.75rem',
-              border: '2px solid #0ea5e9',
-              borderRadius: '8px',
-              backgroundColor: '#f0f9ff',
-              marginTop: '0.5rem',
-              marginBottom: '0.75rem'
-            }}>
-            <div style={{
-              fontWeight: 600,
-              color: '#0369a1',
-              marginBottom: '0.5rem',
-              fontSize: '0.9rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem'
-            }}>
-              🚀 TaxRush Fields
-              <span style={{ fontWeight: 400, fontSize: '0.8rem', color: '#64748b' }}>
-                (Same-day refund service)
-              </span>
-            </div>
-            
+          <div style={{
+            paddingTop: '0.5rem',
+            paddingBottom: '0.5rem',
+            paddingLeft: '0rem',
+            paddingRight: '0rem',
+            border: '2px solid #0ea5e9',
+            borderRadius: '8px',
+            backgroundColor: '#f0f9ff',
+            margin: '0.5rem 0'
+          }}>
             <FormField 
               label="TaxRush Gross Fees" 
               helpText="Total gross fees from TaxRush returns last year (separate from tax prep fees)"
@@ -484,8 +470,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                 onChange={value => updateAnswers({ lastYearTaxRushAvgNetFee: value })}
               />
             </FormField>
-            </div>
-          </>
+          </div>
         )}
 
         <FormField 
@@ -699,27 +684,15 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
         {/* TaxRush Section - Projected Performance (matching Last Year styling) */}
         {region === 'CA' && answers.handlesTaxRush && (
           <div style={{
-            padding: '1rem',
+            paddingTop: '0.5rem',
+            paddingBottom: '0.5rem',
+            paddingLeft: '0rem',
+            paddingRight: '0rem',
             border: '2px solid #0ea5e9',
             borderRadius: '8px',
             backgroundColor: '#f0f9ff',
-            margin: '0'
+            margin: '0.5rem 0'
           }}>
-            <div style={{
-              fontWeight: 600,
-              color: '#0369a1',
-              marginBottom: '0.75rem',
-              fontSize: '0.9rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem'
-            }}>
-              🚀 TaxRush Projected
-              <span style={{ fontWeight: 400, fontSize: '0.8rem', color: '#64748b' }}>
-                (Based on growth projections)
-              </span>
-            </div>
-            
             <FormField
               label="TaxRush Returns"
               helpText={
