@@ -30,9 +30,22 @@ export default function App() {
   // Initialize wizard state from persistence on app startup
   React.useEffect(() => {
     const wizardState = persistence.getWizardState()
+    
+    // If wizard is incomplete, show it
     if (wizardState.showWizard && !appState.showWizard) {
       console.log('🧙‍♂️ Restoring incomplete wizard session')
       appState.setShowWizard(true)
+    }
+    
+    // 🔧 FIX: If wizard is completed, load and apply saved answers to app state
+    if (wizardState.wizardCompleted && !wizardState.showWizard) {
+      const savedAnswers = persistence.loadWizardAnswers()
+      if (savedAnswers) {
+        console.log('🧙‍♂️ Loading completed wizard answers on startup:', savedAnswers)
+        appState.applyWizardAnswers(savedAnswers)
+      } else {
+        console.warn('⚠️ Wizard marked as completed but no saved answers found')
+      }
     }
   }, [persistence, appState])
   
