@@ -220,8 +220,13 @@ export function useAppState(): AppState & AppStateActions {
     
     // 🔄 EXPENSE SYNC: Apply pre-calculated expense total from Page 2 if available
     if (answers.calculatedTotalExpenses !== undefined) {
-      console.log('💾 Applying Page 2 calculated expense total:', answers.calculatedTotalExpenses)
+      console.log('💾 useAppState: Applying Page 2 calculated expense total:', {
+        value: answers.calculatedTotalExpenses,
+        source: 'applyWizardAnswers'
+      })
       setCalculatedTotalExpenses(answers.calculatedTotalExpenses)
+    } else {
+      console.log('⚠️ useAppState: No calculatedTotalExpenses found in wizard answers')
     }
     
     // 🐛 FIXED: Apply TaxRush data from wizard (was previously hardcoded to 0)

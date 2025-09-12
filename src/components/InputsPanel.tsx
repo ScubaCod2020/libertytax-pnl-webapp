@@ -114,10 +114,12 @@ export default function InputsPanel(props: InputsPanelProps) {
         royaltiesPct,
         advRoyaltiesPct,
         taxRushRoyaltiesPct,
-        miscPct
+        miscPct,
+        // 🔄 PRESERVE: Don't include calculatedTotalExpenses in updates - preserve Page 2's calculation
+        // Let Page 2's sophisticated calculation take priority over InputsPanel field changes
       }
       
-      console.log('🔄 Dashboard → Wizard: Saving changes to wizard persistence', wizardUpdates)
+      console.log('🔄 Dashboard → Wizard: Saving changes to wizard persistence (preserving Page 2 calculatedTotalExpenses)', wizardUpdates)
       onSaveToWizard(wizardUpdates)
     }
   }, [

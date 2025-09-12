@@ -55,6 +55,12 @@ export interface CalculationResults extends Results {
 }
 
 export function useCalculations(inputs: CalculationInputs): CalculationResults {
+  // Debug: Log calculatedTotalExpenses input
+  console.log('🔍 useCalculations: Received inputs with calculatedTotalExpenses:', {
+    calculatedTotalExpenses: inputs.calculatedTotalExpenses,
+    hasPreCalculated: !!inputs.calculatedTotalExpenses
+  })
+
   // Prepare inputs for calculation engine
   const calcInputs: Inputs = useMemo(
     () => ({

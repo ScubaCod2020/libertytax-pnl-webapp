@@ -166,13 +166,14 @@ export function calc(inputs: Inputs): Results {
   )
   
   // 🔄 EXPENSE SYNC DEBUG: Log when using pre-calculated vs calculated expenses
-  if (inputs.calculatedTotalExpenses) {
-    console.log('💾 Using Page 2 pre-calculated expenses:', {
-      preCalculatedTotal: inputs.calculatedTotalExpenses,
-      fieldBasedTotal: salaries + empDeductions + rent + telephone + utilities + localAdv + insurance + postage + supplies + dues + bankFees + maintenance + travelEnt + royalties + advRoyalties + taxRushRoyalties + misc,
-      source: 'Page 2 actualTotalExpenses'
-    })
-  }
+  const fieldBasedTotal = salaries + empDeductions + rent + telephone + utilities + localAdv + insurance + postage + supplies + dues + bankFees + maintenance + travelEnt + royalties + advRoyalties + taxRushRoyalties + misc
+  
+  console.log('🧮 EXPENSE CALCULATION COMPARISON:', {
+    preCalculatedFromPage2: inputs.calculatedTotalExpenses || 'NOT_SET',
+    fieldBasedCalculation: Math.round(fieldBasedTotal),
+    usingPreCalculated: !!inputs.calculatedTotalExpenses,
+    difference: inputs.calculatedTotalExpenses ? Math.round(inputs.calculatedTotalExpenses - fieldBasedTotal) : 'N/A'
+  })
     
   const netIncome = totalRevenue - totalExpenses
   const totalReturns = inputs.taxPrepReturns + taxRush
