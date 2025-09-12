@@ -49,6 +49,12 @@ export default function AnalysisBlock({
   onClick 
 }: AnalysisBlockProps) {
   
+  // 🔧 SAFETY CHECK: Prevent crash if data is undefined
+  if (!data) {
+    console.warn('AnalysisBlock: data prop is undefined, skipping render')
+    return null
+  }
+  
   const getStatusColor = (status: AnalysisData['status']) => {
     switch (status) {
       case 'positive': return { bg: '#f0fdf4', border: '#22c55e', text: '#15803d' }
@@ -66,7 +72,7 @@ export default function AnalysisBlock({
     }
   }
 
-  const colors = getStatusColor(data.status)
+  const colors = getStatusColor(data.status || 'neutral')
   const sizeStyles = getSizeStyles(size)
 
   return (
