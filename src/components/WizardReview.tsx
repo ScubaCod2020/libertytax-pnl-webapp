@@ -12,6 +12,7 @@ import {
 } from '../types/expenses'
 import type { WizardAnswers } from './Wizard/types'
 import { formatCurrency } from './Wizard/calculations'
+import { statusForMargin, type Thresholds } from '../lib/calcs'
 
 // Import brand assets from centralized system
 import { US_ASSETS, CA_ASSETS } from '../assets/brands'
@@ -23,6 +24,14 @@ interface WizardReviewProps {
 }
 
 export default function WizardReview({ answers, onNext, onBack }: WizardReviewProps) {
+  // Use default thresholds for consistent KPI evaluation
+  const defaultThresholds: Thresholds = {
+    cprGreen: 85,
+    cprYellow: 100,
+    nimGreen: 22.5,
+    nimYellow: 19.5,
+    netIncomeWarn: -5000,
+  }
   
   // Add print-specific styles to hide site elements
   React.useEffect(() => {
@@ -387,7 +396,10 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                   border: '1px solid #ddd', 
                   textAlign: 'right',
                   fontWeight: 'bold',
-                  color: netMargin >= 20 ? '#059669' : netMargin >= 15 ? '#f59e0b' : '#dc2626'
+                  color: (() => {
+                    const status = statusForMargin(netMargin, defaultThresholds)
+                    return status === 'green' ? '#059669' : status === 'yellow' ? '#f59e0b' : '#dc2626'
+                  })()
                 }}>
                   {netMargin.toFixed(1)}%
                 </td>

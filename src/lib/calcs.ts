@@ -228,9 +228,17 @@ export function statusForCPR(v:number, t:Thresholds):Light{
   return 'red'
 }
 export function statusForMargin(v:number, t:Thresholds):Light{
-  if (v >= t.nimGreen) return 'green'
-  if (v >= t.nimYellow) return 'yellow'
-  return 'red'
+  // Mirror expense KPI ranges: 74.5-77.5% expenses = 22.5-25.5% net margin
+  const nimGreenMax = 100 - 74.5  // 25.5% (inverse of 74.5% min expense)
+  const nimYellowMax = 100 - 71.5 // 28.5% (inverse of 71.5% min expense)
+  
+  if (v >= t.nimGreen && v <= nimGreenMax) {
+    return 'green'  // 22.5-25.5% optimal range
+  }
+  if ((v >= t.nimYellow && v < t.nimGreen) || (v > nimGreenMax && v <= nimYellowMax)) {
+    return 'yellow' // 19.5-22.5% OR 25.5-28.5% monitor ranges
+  }
+  return 'red' // < 19.5% OR > 28.5% action required
 }
 export function statusForNetIncome(v:number, t:Thresholds):Light{
   if (v >= 0) return 'green'
