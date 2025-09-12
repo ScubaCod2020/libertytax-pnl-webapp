@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom'
+import { vi } from 'vitest'
 
 // Mock localStorage for tests
 const localStorageMock = (() => {
@@ -41,7 +42,7 @@ Object.defineProperty(window, 'location', {
 })
 
 // Mock console methods for cleaner test output
-global.console = {
+globalThis.console = {
   ...console,
   log: vi.fn(),
   warn: vi.fn(),

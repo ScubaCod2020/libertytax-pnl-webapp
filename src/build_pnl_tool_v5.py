@@ -12,9 +12,14 @@ from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.chart import BarChart, Reference, DoughnutChart
 import os
 
-LIBERTY_BLUE = "002D72"
+# Brand Colors (following Liberty Tax brand guidelines)
+LIBERTY_BLUE = "002D72"    # Liberty Navy (same as web app)
+LIBERTY_RED = "EA0029"     # Liberty Red (primary brand color)
 ACCENT_GREY = "F2F2F2"
 BORDER_GREY = "DDDDDD"
+
+# Brand Typography for Excel compatibility
+BRAND_FONT = "Arial"       # Primary font (Proxima Nova fallback for Excel)
 
 GREEN = "C6EFCE"   # fill for green
 YELLOW = "FFEB9C"
@@ -26,8 +31,16 @@ def thin_border():
                   top=Side(style="thin", color=BORDER_GREY),
                   bottom=Side(style="thin", color=BORDER_GREY))
 
+def brand_font(bold=False, size=10):
+    """Create brand-consistent font using Arial (Proxima Nova fallback for Excel)"""
+    return Font(name=BRAND_FONT, bold=bold, size=size)
+
+def brand_header_font(size=12):
+    """Brand header font with semibold equivalent styling"""
+    return Font(name=BRAND_FONT, bold=True, size=size, color=LIBERTY_BLUE)
+
 def header(cell):
-    cell.font = Font(bold=True)
+    cell.font = brand_font(bold=True)  # Use brand-consistent font
     cell.fill = PatternFill(start_color="D9E1F2", end_color="D9E1F2", fill_type="solid")
 
 def build_wb():
@@ -37,7 +50,7 @@ def build_wb():
     # -------------------- Welcome --------------------
     ws_w = wb.create_sheet("Welcome")
     ws_w["A1"] = "Welcome – Quick Start"
-    ws_w["A1"].font = Font(bold=True, size=14, color=LIBERTY_BLUE)
+    ws_w["A1"].font = brand_header_font(size=14)  # Brand header typography
 
     ws_w["A3"] = "Region"
     ws_w["B3"] = "U.S."
@@ -130,8 +143,8 @@ def build_wb():
     # -------------------- Presets --------------------
     ws_p = wb.create_sheet("Presets")
     ws_p["A1"] = "Parameter"; ws_p["B1"] = "Good"; ws_p["C1"] = "Better"; ws_p["D1"] = "Best"
-    ws_p["A1"].font = Font(bold=True)
-    for c in ["B","C","D"]: ws_p[f"{c}1"].font = Font(bold=True)
+    ws_p["A1"].font = brand_font(bold=True)
+    for c in ["B","C","D"]: ws_p[f"{c}1"].font = brand_font(bold=True)
     r = 2
     for tup in drivers + expenses:
         n, d, g, btr, bst = tup
@@ -142,7 +155,7 @@ def build_wb():
     # -------------------- Results --------------------
     ws_r = wb.create_sheet("Results")
     ws_r["A1"], ws_r["B1"] = "Metric", "Value"
-    ws_r["A1"].font = ws_r["B1"].font = Font(bold=True)
+    ws_r["A1"].font = ws_r["B1"].font = brand_font(bold=True)
 
     def ref(label):
         for rr in range(1, ws_in.max_row+1):
@@ -197,7 +210,7 @@ def build_wb():
 
     # -------------------- Dashboard --------------------
     ws_d = wb.create_sheet("Dashboard")
-    ws_d["A1"] = "Liberty Tax – KPI Dashboard"; ws_d["A1"].font = Font(bold=True, size=14, color=LIBERTY_BLUE)
+    ws_d["A1"] = "Liberty Tax – KPI Dashboard"; ws_d["A1"].font = brand_header_font(size=14)
     ws_d.merge_cells("A1:E1")
 
     # KPI rows
@@ -206,14 +219,14 @@ def build_wb():
     ws_d["A9"] = "Cost per Return"; ws_d["B9"] = f"={cpr}"
 
     for r in [3,6,9]:
-        ws_d[f"A{r}"].font = Font(bold=True)
+        ws_d[f"A{r}"].font = brand_font(bold=True)
         ws_d[f"A{r}"].fill = PatternFill(start_color=ACCENT_GREY, end_color=ACCENT_GREY, fill_type="solid")
         ws_d[f"A{r}"].border = thin_border()
         ws_d[f"B{r}"].border = thin_border()
 
     # Indicators & status
     ws_d["C2"] = "Indicator"; ws_d["D2"] = "Status"
-    ws_d["C2"].font = ws_d["D2"].font = Font(bold=True)
+    ws_d["C2"].font = ws_d["D2"].font = brand_font(bold=True)
 
     ws_d["C3"] = '=IF(B3<=Inputs!$B$23,"🔴","🟢")'
     ws_d["D3"] = '=IF(B3<=Inputs!$B$23,"Below target","OK/Above")'
@@ -233,7 +246,7 @@ def build_wb():
     for rr in [3,6,9]: color_symbol(f"C{rr}")
 
     # Mini Practice Progress (5 segments) in E3:I3
-    ws_d["E2"]="Practice Progress"; ws_d["E2"].font = Font(bold=True)
+    ws_d["E2"]="Practice Progress"; ws_d["E2"].font = brand_font(bold=True)
     ws_d["J2"]="Completed"; ws_d["J3"]='=Practice!B20'  # mirror count
     # paint segment cells with rules
     for i in range(5):
@@ -280,7 +293,7 @@ def build_wb():
 
     # -------------------- Practice --------------------
     ws_pr = wb.create_sheet("Practice")
-    ws_pr["A1"]="Practice Prompts"; ws_pr["A1"].font=Font(bold=True, size=14, color=LIBERTY_BLUE)
+    ws_pr["A1"]="Practice Prompts"; ws_pr["A1"].font=brand_header_font(size=14)
     prompts = [
         ("Increase return count by 10% — note the change in Net Income.", ""),
         ("Raise ANF by $5 — what happens to Net Margin %?", ""),
@@ -289,7 +302,7 @@ def build_wb():
         ("Compare Good vs Best — which is realistic for 2026 and why?", ""),
     ]
     ws_pr["A3"]="Question"; ws_pr["B3"]="Your notes"; ws_pr["C3"]="Done?"
-    ws_pr["A3"].font=ws_pr["B3"].font=ws_pr["C3"].font=Font(bold=True)
+    ws_pr["A3"].font=ws_pr["B3"].font=ws_pr["C3"].font=brand_font(bold=True)
     r=4
     for q,_ in prompts:
         ws_pr[f"A{r}"]=q; ws_pr[f"B{r}"]=""  # response cell
@@ -301,7 +314,7 @@ def build_wb():
     ws_pr["A20"]="Completed count"; ws_pr["B20"]=f"=COUNTIF(C4:C8,\"✅\")"
 
     # Full progress bar (5 segments) at row 2
-    ws_pr["E2"]="Practice Progress"; ws_pr["E2"].font=Font(bold=True)
+    ws_pr["E2"]="Practice Progress"; ws_pr["E2"].font=brand_font(bold=True)
     for i in range(5):
         cell = f"{get_column_letter(6+i)}2"  # F2..J2
         ws_pr[cell] = ""
@@ -319,8 +332,8 @@ def build_wb():
 
     # -------------------- ProTips --------------------
     ws_tip = wb.create_sheet("ProTips")
-    ws_tip["A1"]="Automated Pro Tips"; ws_tip["A1"].font=Font(bold=True, size=14, color=LIBERTY_BLUE)
-    ws_tip["A3"]="Tip"; ws_tip["A3"].font=Font(bold=True)
+    ws_tip["A1"]="Automated Pro Tips"; ws_tip["A1"].font=brand_header_font(size=14)
+    ws_tip["A3"]="Tip"; ws_tip["A3"].font=brand_font(bold=True)
     tips = [
         ('=IF(Results!B13<=Inputs!$B$23,"Net Income is negative — review fixed costs and staffing levels.","")'),
         ('=IF(Results!B15<Inputs!$B$20,"Net Margin is below caution — consider small ANF increase or reduce salaries %.","")'),
@@ -335,7 +348,7 @@ def build_wb():
 
     # -------------------- Report --------------------
     ws_rep = wb.create_sheet("Report")
-    ws_rep["A1"]="Liberty Tax — P&L Budget & Forecast Summary"; ws_rep["A1"].font=Font(bold=True, size=14, color=LIBERTY_BLUE)
+    ws_rep["A1"]="Liberty Tax — P&L Budget & Forecast Summary"; ws_rep["A1"].font=brand_header_font(size=14)
     ws_rep["A3"]="Region"; ws_rep["B3"]="=Welcome!B3"
     ws_rep["A4"]="Scenario"; ws_rep["B4"]="=Inputs!B1"
     ws_rep["A6"]="Net Income"; ws_rep["B6"]="=Results!B13"

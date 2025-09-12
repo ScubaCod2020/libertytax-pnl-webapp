@@ -18,6 +18,16 @@ export default defineConfig({
       ]
     }
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom']
+        }
+      }
+    },
+    assetsInlineLimit: 4096 // Inline assets smaller than 4KB
+  },
   server: {
     port: 3000
   },

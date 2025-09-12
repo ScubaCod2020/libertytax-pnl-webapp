@@ -20,6 +20,10 @@ export interface CalculationInputs {
   taxPrepReturns: number
   taxRushReturns: number
   discountsPct: number
+  otherIncome: number
+  
+  // Pre-calculated expense total from Page 2 (overrides field-based calculation)
+  calculatedTotalExpenses?: number
   
   // All 17 expense fields
   salariesPct: number
@@ -51,6 +55,12 @@ export interface CalculationResults extends Results {
 }
 
 export function useCalculations(inputs: CalculationInputs): CalculationResults {
+  // Debug: Log calculatedTotalExpenses input
+  console.log('🔍 useCalculations: Received inputs with calculatedTotalExpenses:', {
+    calculatedTotalExpenses: inputs.calculatedTotalExpenses,
+    hasPreCalculated: !!inputs.calculatedTotalExpenses
+  })
+
   // Prepare inputs for calculation engine
   const calcInputs: Inputs = useMemo(
     () => ({
@@ -60,6 +70,8 @@ export function useCalculations(inputs: CalculationInputs): CalculationResults {
       taxPrepReturns: inputs.taxPrepReturns,
       taxRushReturns: inputs.taxRushReturns,
       discountsPct: inputs.discountsPct,
+      otherIncome: inputs.otherIncome,
+      calculatedTotalExpenses: inputs.calculatedTotalExpenses,
       
       // All 17 expense fields
       salariesPct: inputs.salariesPct,
@@ -84,7 +96,7 @@ export function useCalculations(inputs: CalculationInputs): CalculationResults {
     }),
     [
       inputs.region, inputs.scenario, inputs.avgNetFee, inputs.taxPrepReturns, inputs.taxRushReturns,
-      inputs.discountsPct, inputs.salariesPct, inputs.empDeductionsPct, inputs.rentPct, 
+      inputs.discountsPct, inputs.otherIncome, inputs.calculatedTotalExpenses, inputs.salariesPct, inputs.empDeductionsPct, inputs.rentPct, 
       inputs.telephoneAmt, inputs.utilitiesAmt, inputs.localAdvAmt, inputs.insuranceAmt, 
       inputs.postageAmt, inputs.suppliesPct, inputs.duesAmt, inputs.bankFeesAmt,
       inputs.maintenanceAmt, inputs.travelEntAmt, inputs.royaltiesPct, inputs.advRoyaltiesPct, 
@@ -96,7 +108,7 @@ export function useCalculations(inputs: CalculationInputs): CalculationResults {
   const results = useMemo(() => calc(calcInputs), [calcInputs])
 
   // Calculate KPI statuses
-  const cprStatus = useMemo(() => statusForCPR(results.costPerReturn, inputs.thresholds), [results.costPerReturn, inputs.thresholds])
+  const cprStatus = useMemo(() => statusForCPR(results.costPerReturn, inputs.thresholds, calcInputs), [results.costPerReturn, inputs.thresholds, calcInputs])
   const nimStatus = useMemo(() => statusForMargin(results.netMarginPct, inputs.thresholds), [results.netMarginPct, inputs.thresholds])
   const niStatus = useMemo(() => statusForNetIncome(results.netIncome, inputs.thresholds), [results.netIncome, inputs.thresholds])
 

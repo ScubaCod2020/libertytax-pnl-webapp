@@ -12,11 +12,11 @@ const basePreset = {
   telephoneAmt: 200,
   utilitiesAmt: 300,
   
-  // Operations
+  // Operations (reduced slightly to rebalance for TaxRush Royalties)
   localAdvAmt: 500,
   insuranceAmt: 150,
   postageAmt: 100,
-  suppliesPct: 3.5,
+  suppliesPct: 3.5, // Standard office supplies percentage per guidance
   duesAmt: 200,
   bankFeesAmt: 100,
   maintenanceAmt: 150,
@@ -25,10 +25,11 @@ const basePreset = {
   // Franchise
   royaltiesPct: 14,
   advRoyaltiesPct: 5,
-  taxRushRoyaltiesPct: 0,
+  taxRushRoyaltiesPct: 40, // 40% of TaxRush gross fees per user guidance
+  taxRushShortagesPct: 2.5, // TaxRush shortages as % of gross fees
   
-  // Miscellaneous
-  miscPct: 2.5
+  // Miscellaneous (reduced to rebalance for TaxRush Royalties)
+  miscPct: 1
 }
 
 export const presets = {

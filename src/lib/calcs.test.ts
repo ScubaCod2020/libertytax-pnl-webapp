@@ -3,10 +3,10 @@ import { calc, statusForCPR, statusForMargin, statusForNetIncome, type Inputs, t
 
 describe('P&L Calculation Engine', () => {
   const defaultThresholds: Thresholds = {
-    cprGreen: 25,
-    cprYellow: 35,
-    nimGreen: 20,
-    nimYellow: 10,
+    cprGreen: 95,      // Aligned with strategic baseline ($92 cost/return)
+    cprYellow: 110,    // Monitor range for cost management
+    nimGreen: 22.5,    // Mirror expense KPI ranges (22.5-25.5% green)
+    nimYellow: 19.5,   // Mirror expense KPI ranges (19.5-22.5% yellow)
     netIncomeWarn: -5000,
   }
 
@@ -170,7 +170,7 @@ describe('P&L Calculation Engine', () => {
 
   describe('Scenario Validation', () => {
     it('should maintain calculation consistency across scenarios', () => {
-      const scenarios = ['Conservative', 'Optimistic', 'Best'] as const
+      const scenarios = ['Custom', 'Good', 'Better', 'Best'] as const
       
       scenarios.forEach(scenario => {
         const inputs = { ...baseInputs, scenario }

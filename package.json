@@ -21,7 +21,12 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json,md}\"",
     "type-check": "tsc --noEmit",
-    "validate": "npm run type-check && npm run lint && npm run format:check && npm run test"
+    "validate": "npm run type-check && npm run lint && npm run format:check && npm run test",
+    "ai:generate-tests": "node scripts/ai-test-generator.js",
+    "ai:audit-accessibility": "node scripts/automated-accessibility-audit.js",
+    "ai:monitor-performance": "node scripts/automated-performance-monitor.js",
+    "ai:full-audit": "npm run ai:audit-accessibility && npm run ai:monitor-performance",
+    "deploy:staging": "echo 'Use GitHub Actions workflow: Deploy to Staging'"
   },
   "dependencies": {
     "react": "^18.2.0",

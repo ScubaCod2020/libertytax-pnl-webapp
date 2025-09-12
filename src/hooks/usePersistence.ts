@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef } from 'react'
 import type { Region, Thresholds } from '../lib/calcs'
 import type { Scenario } from '../data/presets'
+import { validatePersistenceData } from '../utils/validation'
 
 export const APP_VERSION = 'v0.5-preview'
 export const ORIGIN = typeof window !== 'undefined' ? window.location.origin : 'ssr'
@@ -11,7 +12,7 @@ export const STORAGE_KEY = `lt_pnl_v5_session_v1_${APP_VERSION}`
 
 // DEV logging toggle
 export const DEBUG = true
-export const dbg = (...args: any[]) => { if (DEBUG) console.log('[persist]', ...args) }
+export const dbg = (...args: any[]) => { if (DEBUG) console.log('💾 PERSISTENCE DEBUG:', ...args) }
 
 export type SessionState = {
   region: Region
@@ -41,6 +42,10 @@ export type SessionState = {
   miscPct: number
   
   thresholds: Thresholds
+  
+  // Wizard state
+  wizardCompleted?: boolean
+  showWizard?: boolean
 }
 
 type PersistEnvelopeV1 = {
@@ -49,6 +54,7 @@ type PersistEnvelopeV1 = {
   baselines?: {
     questionnaire?: SessionState
   }
+  wizardAnswers?: any // Store complete wizard answers for review mode
   meta?: {
     lastScenario?: SessionState['scenario']
     savedAtISO?: string
@@ -64,14 +70,36 @@ export function usePersistence() {
   // Storage utilities
   const loadEnvelope = (): PersistEnvelopeV1 | undefined => {
     try {
-      dbg('loadEnvelope()', STORAGE_KEY)
+      dbg('Loading envelope from localStorage', { key: STORAGE_KEY })
       const raw = localStorage.getItem(STORAGE_KEY)
-      if (!raw) { dbg('loadEnvelope: no key'); return }
+      if (!raw) { 
+        dbg('No data found in localStorage for key:', STORAGE_KEY); 
+        return 
+      }
+      
       const parsed = JSON.parse(raw) as PersistEnvelopeV1
-      dbg('loadEnvelope: parsed', parsed?.meta?.savedAtISO ?? '(no meta)')
+      
+      // Critical security fix: Validate data integrity before using
+      if (!validatePersistenceData(parsed)) {
+        console.warn('💾 PERSISTENCE WARNING - Corrupted data detected, clearing storage for safety')
+        localStorage.removeItem(STORAGE_KEY)
+        return undefined
+      }
+      
+      dbg('Successfully loaded and validated data:', { 
+        savedAt: parsed?.meta?.savedAtISO ?? '(no meta)',
+        version: parsed?.version,
+        hasLastSession: !!parsed?.last
+      })
+      
       if (parsed && parsed.version === 1) return parsed
-    } catch (e) { dbg('loadEnvelope: ERROR', e) }
-    return
+      
+    } catch (e) { 
+      console.error('💾 PERSISTENCE ERROR - Failed to load or parse data, clearing storage:', e)
+      // Clear corrupted data to prevent repeated errors
+      localStorage.removeItem(STORAGE_KEY)
+    }
+    return undefined
   }
 
   const saveEnvelope = (mutator: (prev: PersistEnvelopeV1) => PersistEnvelopeV1) => {
@@ -129,10 +157,10 @@ export function usePersistence() {
       miscPct: state.miscPct || 2.5,
       
       thresholds: state.thresholds || {
-        cprGreen: 25,
-        cprYellow: 35,
-        nimGreen: 20,
-        nimYellow: 10,
+        cprGreen: 95,      // Aligned with strategic baseline ($92 cost/return)
+        cprYellow: 110,    // Monitor range for cost management
+        nimGreen: 22.5,    // Fixed: Mirror expense KPI ranges (22.5-25.5% green)
+        nimYellow: 19.5,   // Fixed: Mirror expense KPI ranges (19.5-22.5% yellow)
         netIncomeWarn: -5000,
       },
     }
@@ -175,8 +203,8 @@ export function usePersistence() {
         if (snap) {
           dbg('autosave: firing snapshot', snap)
           saveEnvelope(prev => ({
-            version: 1,
             ...prev,
+            version: 1,
             last: snap,
             meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
           }))
@@ -212,6 +240,67 @@ export function usePersistence() {
     }, [])
   }
 
+  // Wizard state management
+  const markWizardCompleted = () => {
+    dbg('markWizardCompleted: wizard completed - updating persistence')
+    saveEnvelope(prev => ({
+      ...prev,
+      version: 1,
+      last: {
+        ...prev.last,
+        wizardCompleted: true,
+        showWizard: false
+      } as SessionState,
+      meta: { 
+        ...prev.meta, 
+        savedAtISO: new Date().toISOString() 
+      }
+    }))
+  }
+
+  const saveWizardAnswers = (answers: any) => {
+    dbg('saveWizardAnswers: saving wizard answers for review mode', answers)
+    saveEnvelope(prev => ({
+      ...prev,
+      version: 1,
+      wizardAnswers: answers,
+      meta: { 
+        ...prev.meta, 
+        savedAtISO: new Date().toISOString() 
+      }
+    }))
+  }
+
+  const loadWizardAnswers = (): any => {
+    const envelope = loadEnvelope()
+    const answers = envelope?.wizardAnswers
+    dbg('loadWizardAnswers:', answers ? 'found saved answers' : 'no saved answers')
+    return answers || null
+  }
+
+  const shouldShowWizardOnStartup = (): boolean => {
+    const envelope = loadEnvelope()
+    const hasCompletedWizard = envelope?.last?.wizardCompleted === true
+    const hasBasicData = !!(envelope?.last?.avgNetFee && envelope?.last?.taxPrepReturns)
+    
+    dbg('shouldShowWizardOnStartup:', { 
+      hasCompletedWizard, 
+      hasBasicData, 
+      decision: !hasCompletedWizard || !hasBasicData 
+    })
+    
+    // Show wizard if never completed OR if missing basic data (corrupted state)
+    return !hasCompletedWizard || !hasBasicData
+  }
+
+  const getWizardState = (): { showWizard: boolean; wizardCompleted: boolean } => {
+    const envelope = loadEnvelope()
+    return {
+      showWizard: shouldShowWizardOnStartup(),
+      wizardCompleted: envelope?.last?.wizardCompleted === true
+    }
+  }
+
   return {
     // State refs
     hydratingRef,
@@ -229,6 +318,13 @@ export function usePersistence() {
     // Setup functions
     setupAutosave,
     setupFlushHandlers,
+    
+    // Wizard state management
+    markWizardCompleted,
+    saveWizardAnswers,
+    loadWizardAnswers,
+    shouldShowWizardOnStartup,
+    getWizardState,
     
     // Constants
     STORAGE_KEY,

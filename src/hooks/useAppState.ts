@@ -5,13 +5,13 @@ import { useState } from 'react'
 import type { Region, Thresholds } from '../lib/calcs'
 import type { Scenario } from '../data/presets'
 
-// Default thresholds
+// Default thresholds - Aligned with strategic baseline (76% expenses = $92 cost/return)
 const defaultThresholds: Thresholds = {
-  cprGreen: 25,
-  cprYellow: 35,
-  nimGreen: 20,
-  nimYellow: 10,
-  netIncomeWarn: -5000,
+  cprGreen: 95,      // $95 per return (excellent - includes strategic baseline ~$92)
+  cprYellow: 110,    // $110 per return (good - monitor range)
+  nimGreen: 22.5,    // 22.5% net margin (excellent - mirrors 77.5% max expense range)
+  nimYellow: 19.5,   // 19.5% net margin (good - mirrors 80.5% max expense range)
+  netIncomeWarn: -5000, // Red if net income <= -$5000
 }
 
 export interface AppState {
@@ -25,6 +25,10 @@ export interface AppState {
   taxPrepReturns: number
   taxRushReturns: number
   discountsPct: number
+  otherIncome: number
+  
+  // Pre-calculated expense total from Page 2 (overrides field-based calculation)
+  calculatedTotalExpenses?: number
 
   // All 17 expense fields
   salariesPct: number
@@ -60,6 +64,8 @@ export interface AppStateActions {
   setReturns: (value: number) => void
   setTaxRush: (value: number) => void
   setDisc: (value: number) => void
+  setOtherIncome: (value: number) => void
+  setCalculatedTotalExpenses: (value: number | undefined) => void
 
   // Expense actions
   setSal: (value: number) => void
@@ -93,13 +99,33 @@ export function useAppState(): AppState & AppStateActions {
   // UI state
   const [showWizard, setShowWizard] = useState(false)
 
+  // Load initial region from persistence if available
+  const getInitialRegion = (): Region => {
+    try {
+      const saved = localStorage.getItem('libertytax-pnl-webapp-v1')
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        const region = parsed?.last?.region || parsed?.wizardAnswers?.region
+        if (region === 'CA' || region === 'US') {
+          console.log(`🌍 Loading saved region: ${region}`)
+          return region
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to load saved region, defaulting to US')
+    }
+    return 'US'
+  }
+
   // Basic state
-  const [region, setRegion] = useState<Region>('US')
+  const [region, setRegion] = useState<Region>(getInitialRegion())
   const [scenario, setScenario] = useState<Scenario>('Custom')
   const [avgNetFee, setANF] = useState(125)
   const [taxPrepReturns, setReturns] = useState(1600)
   const [taxRushReturns, setTaxRush] = useState(0)
   const [discountsPct, setDisc] = useState(3)
+  const [otherIncome, setOtherIncome] = useState(0)
+  const [calculatedTotalExpenses, setCalculatedTotalExpenses] = useState<number | undefined>(undefined)
 
   // All 17 expense fields
   const [salariesPct, setSal] = useState(25)
@@ -152,6 +178,9 @@ export function useAppState(): AppState & AppStateActions {
     setMisc(2.5)
     
     setThr(defaultThresholds)
+    
+    // Reset wizard state - close wizard if open
+    setShowWizard(false)
   }
 
   const applyPreset = (preset: any) => {
@@ -180,31 +209,59 @@ export function useAppState(): AppState & AppStateActions {
   }
 
   const applyWizardAnswers = (answers: any) => {
+    console.log('🧙‍♂️ Applying wizard answers to app state:', answers)
+    
     setRegion(answers.region)
     setANF(answers.avgNetFee ?? 125)
     setReturns(answers.taxPrepReturns ?? 1600)
     setDisc(answers.discountsPct ?? 3)
+    // Only set otherIncome if hasOtherIncome is enabled, otherwise force to 0
+    setOtherIncome(answers.hasOtherIncome ? (answers.otherIncome ?? 0) : 0)
     
-    // Apply all 17 expense fields with defaults
-    setSal(answers.salariesPct ?? 25)
-    setEmpDeductions(answers.empDeductionsPct ?? 10)
-    setRent(answers.rentPct ?? 18)
-    setTelephone(answers.telephoneAmt ?? 200)
-    setUtilities(answers.utilitiesAmt ?? 300)
-    setLocalAdv(answers.localAdvAmt ?? 500)
-    setInsurance(answers.insuranceAmt ?? 150)
-    setPostage(answers.postageAmt ?? 100)
-    setSup(answers.suppliesPct ?? 3.5)
-    setDues(answers.duesAmt ?? 200)
-    setBankFees(answers.bankFeesAmt ?? 100)
-    setMaintenance(answers.maintenanceAmt ?? 150)
-    setTravelEnt(answers.travelEntAmt ?? 200)
-    setRoy(answers.royaltiesPct ?? 14)
-    setAdvRoy(answers.advRoyaltiesPct ?? 5)
-    setTaxRushRoy(answers.taxRushRoyaltiesPct ?? 0)
-    setMisc(answers.miscPct ?? 2.5)
+    // 🔄 EXPENSE SYNC: Apply pre-calculated expense total from Page 2 if available
+    if (answers.calculatedTotalExpenses !== undefined) {
+      console.log('💾 useAppState: Applying Page 2 calculated expense total:', {
+        value: answers.calculatedTotalExpenses,
+        source: 'applyWizardAnswers'
+      })
+      setCalculatedTotalExpenses(answers.calculatedTotalExpenses)
+    } else {
+      console.log('⚠️ useAppState: No calculatedTotalExpenses found in wizard answers')
+    }
     
-    setTaxRush(0) // Set TaxRush returns to 0 for now
+    // 🐛 FIXED: Apply TaxRush data from wizard (was previously hardcoded to 0)
+    const taxRushReturns = answers.region === 'CA' && answers.handlesTaxRush 
+      ? (answers.taxRushReturns ?? answers.projectedTaxRushReturns ?? 0)
+      : 0
+    setTaxRush(taxRushReturns)
+    console.log(`📊 TaxRush flow: Region=${answers.region}, handlesTaxRush=${answers.handlesTaxRush}, returns=${taxRushReturns}`)
+    
+    // Apply all 17 expense fields with actual wizard values (no fallbacks - trust the wizard)
+    if (answers.salariesPct !== undefined) setSal(answers.salariesPct)
+    if (answers.empDeductionsPct !== undefined) setEmpDeductions(answers.empDeductionsPct)
+    if (answers.rentPct !== undefined) setRent(answers.rentPct)
+    if (answers.telephoneAmt !== undefined) setTelephone(answers.telephoneAmt)
+    if (answers.utilitiesAmt !== undefined) setUtilities(answers.utilitiesAmt)
+    if (answers.localAdvAmt !== undefined) setLocalAdv(answers.localAdvAmt)
+    if (answers.insuranceAmt !== undefined) setInsurance(answers.insuranceAmt)
+    if (answers.postageAmt !== undefined) setPostage(answers.postageAmt)
+    if (answers.suppliesPct !== undefined) setSup(answers.suppliesPct)
+    if (answers.duesAmt !== undefined) setDues(answers.duesAmt)
+    if (answers.bankFeesAmt !== undefined) setBankFees(answers.bankFeesAmt)
+    if (answers.maintenanceAmt !== undefined) setMaintenance(answers.maintenanceAmt)
+    if (answers.travelEntAmt !== undefined) setTravelEnt(answers.travelEntAmt)
+    if (answers.royaltiesPct !== undefined) setRoy(answers.royaltiesPct)
+    if (answers.advRoyaltiesPct !== undefined) setAdvRoy(answers.advRoyaltiesPct)
+    if (answers.taxRushRoyaltiesPct !== undefined) setTaxRushRoy(answers.taxRushRoyaltiesPct)
+    if (answers.miscPct !== undefined) setMisc(answers.miscPct)
+    
+    console.log('💰 Expense values from wizard:', {
+      salariesPct: answers.salariesPct,
+      empDeductionsPct: answers.empDeductionsPct,
+      rentPct: answers.rentPct,
+      royaltiesPct: answers.royaltiesPct,
+      advRoyaltiesPct: answers.advRoyaltiesPct
+    })
   }
 
   return {
@@ -216,6 +273,8 @@ export function useAppState(): AppState & AppStateActions {
     taxPrepReturns,
     taxRushReturns,
     discountsPct,
+    otherIncome,
+    calculatedTotalExpenses,
     salariesPct,
     empDeductionsPct,
     rentPct,
@@ -243,6 +302,8 @@ export function useAppState(): AppState & AppStateActions {
     setReturns,
     setTaxRush,
     setDisc,
+    setOtherIncome,
+    setCalculatedTotalExpenses,
     setSal,
     setEmpDeductions,
     setRent,
