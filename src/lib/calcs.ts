@@ -97,7 +97,7 @@ export function calc(inputs: Inputs): Results {
   const totalRevenue = taxPrepIncome + taxRushIncome + otherIncome
   
   // 🔧 CURSOR TERMINAL DEBUG - This will show in Cursor's terminal
-  if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     console.log('🧮 CALC DEBUG (Server):', {
       region: inputs.region,
       avgNetFee: inputs.avgNetFee,
@@ -226,8 +226,16 @@ export function statusForCPR(v:number, t:Thresholds, inputs?: Inputs):Light{
   // Strategic calculation: Cost per return should align with expense percentage targets
   // Revenue per return × expense% = target cost per return
   if (inputs) {
-    const revenuePerReturn = inputs.totalRevenue > 0 && inputs.taxPrepReturns > 0 
-      ? inputs.totalRevenue / inputs.taxPrepReturns 
+    // Calculate total revenue (same logic as in calculate function)
+    const handlesTaxRush = inputs.handlesTaxRush ?? (inputs.region === 'CA')
+    const taxRush = handlesTaxRush ? inputs.taxRushReturns : 0
+    const taxPrepIncome = inputs.avgNetFee * (inputs.taxPrepReturns - taxRush) * (1 - inputs.discountsPct / 100)
+    const taxRushIncome = inputs.region === 'CA' && handlesTaxRush ? (inputs.avgNetFee * taxRush) : 0
+    const otherIncome = inputs.otherIncome || 0
+    const totalRevenue = taxPrepIncome + taxRushIncome + otherIncome
+    
+    const revenuePerReturn = totalRevenue > 0 && inputs.taxPrepReturns > 0 
+      ? totalRevenue / inputs.taxPrepReturns 
       : 0
     
     if (revenuePerReturn > 0) {

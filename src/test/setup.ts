@@ -42,7 +42,7 @@ Object.defineProperty(window, 'location', {
 })
 
 // Mock console methods for cleaner test output
-global.console = {
+globalThis.console = {
   ...console,
   log: vi.fn(),
   warn: vi.fn(),

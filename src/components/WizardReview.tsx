@@ -287,12 +287,8 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
         marginBottom: '1.5rem',
         fontFamily: '"Proxima Nova", Arial, sans-serif',
         fontSize: '12px',
-        lineHeight: 1.4,
-        '@media print': {
-          border: 'none',
-          boxShadow: 'none',
-          fontFamily: '"Times New Roman", serif'
-        }
+        lineHeight: 1.4
+        // Note: Media queries moved to CSS class for print styling
       }}>
         {/* Report Header with Dynamic Logo */}
         <div style={{ 

@@ -53,6 +53,7 @@ export interface BrandTypography {
 
 export interface BrandAssets {
   logoUrl: string
+  logoWide?: string        // Wide/horizontal version for headers
   watermarkUrl: string
   faviconUrl: string
   // Future: additional artwork, icons, etc.
@@ -109,6 +110,7 @@ export const US_BRAND: RegionalBrand = {
   typography: BRAND_TYPOGRAPHY,
   assets: {
     logoUrl: US_ASSETS.logo,
+    logoWide: US_ASSETS.logoWide,
     watermarkUrl: US_ASSETS.watermark,
     faviconUrl: US_ASSETS.favicon
   },
@@ -146,6 +148,7 @@ export const CA_BRAND: RegionalBrand = {
   typography: BRAND_TYPOGRAPHY,
   assets: {
     logoUrl: CA_ASSETS.logo,
+    logoWide: CA_ASSETS.logoWide,
     watermarkUrl: CA_ASSETS.watermark,
     faviconUrl: CA_ASSETS.favicon
   },

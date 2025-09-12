@@ -170,7 +170,7 @@ describe('P&L Calculation Engine', () => {
 
   describe('Scenario Validation', () => {
     it('should maintain calculation consistency across scenarios', () => {
-      const scenarios = ['Conservative', 'Optimistic', 'Best'] as const
+      const scenarios = ['Custom', 'Good', 'Better', 'Best'] as const
       
       scenarios.forEach(scenario => {
         const inputs = { ...baseInputs, scenario }

@@ -3,9 +3,9 @@
 
 import { useEffect, useRef } from 'react'
 import { presets } from '../data/presets'
-import type { AppState } from './useAppState'
+import type { AppState, AppStateActions } from './useAppState'
 
-export function usePresets(appState: AppState) {
+export function usePresets(appState: AppState & AppStateActions) {
   const hydratingRef = useRef(true)
   const readyRef = useRef(false)
   const taxRushDirtyRef = useRef(false)

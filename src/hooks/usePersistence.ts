@@ -203,8 +203,8 @@ export function usePersistence() {
         if (snap) {
           dbg('autosave: firing snapshot', snap)
           saveEnvelope(prev => ({
-            version: 1,
             ...prev,
+            version: 1,
             last: snap,
             meta: { lastScenario: snap.scenario, savedAtISO: new Date().toISOString() },
           }))

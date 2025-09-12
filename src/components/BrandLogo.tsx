@@ -24,7 +24,7 @@ export default function BrandLogo({
   
   // Choose the appropriate logo variant
   const logoUrl = variant === 'wide' 
-    ? (region === 'US' ? assets.logoWide || assets.logoUrl : assets.logoWide || assets.logoUrl)
+    ? assets.logoWide || assets.logoUrl  // Use wide logo or fall back to standard
     : variant === 'watermark'
     ? assets.watermarkUrl
     : assets.logoUrl

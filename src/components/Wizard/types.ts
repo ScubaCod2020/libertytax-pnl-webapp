@@ -44,6 +44,7 @@ export interface WizardAnswers {
   taxRushAvgNetFee?: number // for Canada - separate TaxRush average net fee
   otherIncome?: number // new field for additional revenue streams
   discountsPct?: number
+  discountsAmt?: number // projected discount amount (dollar value)
   
   // Projected values (for bidirectional wizard flow)
   projectedAvgNetFee?: number // manually adjusted projected value
