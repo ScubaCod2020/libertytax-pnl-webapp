@@ -3,10 +3,10 @@ import { calc, statusForCPR, statusForMargin, statusForNetIncome, type Inputs, t
 
 describe('P&L Calculation Engine', () => {
   const defaultThresholds: Thresholds = {
-    cprGreen: 25,
-    cprYellow: 35,
-    nimGreen: 20,
-    nimYellow: 10,
+    cprGreen: 85,      // Updated to match strategic baseline
+    cprYellow: 100,    // Updated to match strategic baseline
+    nimGreen: 22.5,    // Mirror expense KPI ranges (22.5-25.5% green)
+    nimYellow: 19.5,   // Mirror expense KPI ranges (19.5-22.5% yellow)
     netIncomeWarn: -5000,
   }
 
