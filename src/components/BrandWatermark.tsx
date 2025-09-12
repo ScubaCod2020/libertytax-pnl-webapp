@@ -2,7 +2,7 @@
 // Displays centered, scrolling watermark logo with proper transparency
 
 import React from 'react'
-import { useBrandAssets } from '../hooks/useBranding'
+import { useBrandAssets, useBranding } from '../hooks/useBranding'
 import type { Region } from '../lib/calcs'
 
 interface BrandWatermarkProps {

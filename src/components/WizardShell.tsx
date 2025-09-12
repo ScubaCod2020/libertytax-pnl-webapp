@@ -4,6 +4,9 @@
 import React, { useState, useEffect } from 'react'
 import type { Region } from '../lib/calcs'
 import type { WizardAnswers, WizardStep } from './Wizard/types'
+
+// Re-export types for other components to use
+export type { WizardAnswers, WizardStep }
 import { calculateExpectedRevenue } from './Wizard/calculations'
 import WizardInputs from './WizardInputs'
 import WizardReview from './WizardReview'

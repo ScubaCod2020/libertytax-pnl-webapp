@@ -8,6 +8,20 @@ import { getBrandForRegion, generateBrandCSSVars, type RegionalBrand } from '../
 export function useBranding(region: Region) {
   const brand = getBrandForRegion(region)
 
+  // 🔧 SAFETY CHECK: Ensure brand is valid
+  if (!brand || !brand.colors) {
+    console.error('useBranding: Invalid brand object', { region, brand })
+    // Return fallback to prevent crash
+    return {
+      brand: null,
+      colors: null,
+      typography: null,
+      assets: null,
+      name: 'Liberty Tax',
+      country: 'United States'
+    }
+  }
+
   // Apply brand CSS variables to document root
   useEffect(() => {
     const root = document.documentElement
@@ -46,6 +60,7 @@ export function useBranding(region: Region) {
 // Utility hook for getting brand colors in components
 export function useBrandColors(region: Region) {
   const { colors } = useBranding(region)
+  // 🔧 SAFETY CHECK: Return null if colors are unavailable
   return colors
 }
 

@@ -161,6 +161,11 @@ export const REGIONAL_BRANDS = {
 
 // Helper to get current brand
 export function getBrandForRegion(region: 'US' | 'CA'): RegionalBrand {
+  // 🔧 SAFETY CHECK: Handle undefined/invalid region
+  if (!region || (region !== 'US' && region !== 'CA')) {
+    console.warn(`getBrandForRegion: Invalid region "${region}", defaulting to US`)
+    return REGIONAL_BRANDS.US
+  }
   return REGIONAL_BRANDS[region]
 }
 
