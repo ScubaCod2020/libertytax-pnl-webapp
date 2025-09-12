@@ -167,40 +167,98 @@ export default function DebugSidebar(props: DebugSidebarProps) {
     </div>
   )
 
-  const renderCalculationsView = () => (
-    <div>
-      <div style={{ marginBottom: 16, padding: 8, backgroundColor: '#0f172a', borderRadius: 4 }}>
-        <div style={{ fontSize: 10, color: '#94a3b8', marginBottom: 8 }}>
-          🧮 <strong>What is this?</strong> Shows how your P&L numbers are calculated from your inputs. 
-          Use this to verify calculations or troubleshoot unexpected results.
-        </div>
-      </div>
-
-      <div style={{ fontWeight: 'bold', marginBottom: 8, color: '#8b5cf6' }}>📊 Current Calculations</div>
-      {calculations ? (
-        <div>
-          <div style={{ marginBottom: 12, fontSize: 11 }}>
-            <div style={{ color: '#10b981', fontWeight: 'bold' }}>Key Results:</div>
-            <div>Net Income: ${calculations.netIncome?.toLocaleString() || 'N/A'}</div>
-            <div>Net Margin: {calculations.netMarginPct?.toFixed(1) || 'N/A'}%</div>
-            <div>Cost/Return: ${calculations.costPerReturn?.toFixed(2) || 'N/A'}</div>
-            <div>Total Expenses: ${calculations.totalExpenses?.toLocaleString() || 'N/A'}</div>
+  const renderCalculationsView = () => {
+    // KPI Strategic Analysis for debugging
+    const debugKPIStrategic = () => {
+      if (!calculations || !appState) return null
+      
+      const revenuePerReturn = calculations.totalRevenue > 0 && appState.taxPrepReturns > 0 
+        ? calculations.totalRevenue / appState.taxPrepReturns 
+        : 0
+        
+      const cprGreenMin = revenuePerReturn * 0.745  // 74.5%
+      const cprGreenMax = revenuePerReturn * 0.775  // 77.5%
+      const nimGreenMin = 22.5
+      const nimGreenMax = 25.5
+      
+      return (
+        <div style={{ marginBottom: 16, padding: 8, backgroundColor: '#0f172a', borderRadius: 4, fontSize: 10 }}>
+          <div style={{ color: '#f59e0b', fontWeight: 'bold', marginBottom: 8 }}>🎯 KPI Strategic Analysis</div>
+          <div style={{ color: '#94a3b8' }}>
+            <div style={{ marginBottom: 4 }}><strong>Revenue per Return:</strong> ${revenuePerReturn.toFixed(2)}</div>
+            <div style={{ marginBottom: 4 }}>
+              <strong>Cost/Return Strategic Range:</strong> ${cprGreenMin.toFixed(2)} - ${cprGreenMax.toFixed(2)} (GREEN)
+            </div>
+            <div style={{ marginBottom: 4 }}>
+              <strong>Actual Cost/Return:</strong> ${calculations.costPerReturn?.toFixed(2)} 
+              <span style={{ 
+                color: calculations.cprStatus === 'green' ? '#10b981' : 
+                      calculations.cprStatus === 'yellow' ? '#f59e0b' : '#ef4444',
+                fontWeight: 'bold',
+                marginLeft: 4
+              }}>
+                ({calculations.cprStatus?.toUpperCase()})
+              </span>
+            </div>
+            <div style={{ marginBottom: 4 }}>
+              <strong>Net Margin Strategic Range:</strong> {nimGreenMin}% - {nimGreenMax}% (GREEN)
+            </div>
+            <div style={{ marginBottom: 4 }}>
+              <strong>Actual Net Margin:</strong> {calculations.netMarginPct?.toFixed(1)}%
+              <span style={{ 
+                color: calculations.nimStatus === 'green' ? '#10b981' : 
+                      calculations.nimStatus === 'yellow' ? '#f59e0b' : '#ef4444',
+                fontWeight: 'bold',
+                marginLeft: 4
+              }}>
+                ({calculations.nimStatus?.toUpperCase()})
+              </span>
+            </div>
+            <div style={{ fontSize: 9, color: '#6b7280', marginTop: 8 }}>
+              💡 <strong>Expected Result:</strong> When Page 2 shows green, Dashboard should show all green KPIs
+            </div>
           </div>
-          
-          <details>
-            <summary style={{ cursor: 'pointer', color: '#9ca3af', fontSize: 10 }}>
-              Show Full Calculation Data
-            </summary>
-            <pre style={{ fontSize: 9, overflow: 'auto', background: '#111827', padding: 8, borderRadius: 4, marginTop: 8 }}>
-              {JSON.stringify(calculations, null, 2)}
-            </pre>
-          </details>
         </div>
-      ) : (
-        <div style={{ color: '#9ca3af' }}>No calculation data available</div>
-      )}
-    </div>
-  )
+      )
+    }
+
+    return (
+      <div>
+        <div style={{ marginBottom: 16, padding: 8, backgroundColor: '#0f172a', borderRadius: 4 }}>
+          <div style={{ fontSize: 10, color: '#94a3b8', marginBottom: 8 }}>
+            🧮 <strong>What is this?</strong> Shows how your P&L numbers are calculated from your inputs. 
+            Use this to verify calculations or troubleshoot unexpected results.
+          </div>
+        </div>
+
+        {debugKPIStrategic()}
+
+        <div style={{ fontWeight: 'bold', marginBottom: 8, color: '#8b5cf6' }}>📊 Current Calculations</div>
+        {calculations ? (
+          <div>
+            <div style={{ marginBottom: 12, fontSize: 11 }}>
+              <div style={{ color: '#10b981', fontWeight: 'bold' }}>Key Results:</div>
+              <div>Net Income: ${calculations.netIncome?.toLocaleString() || 'N/A'}</div>
+              <div>Net Margin: {calculations.netMarginPct?.toFixed(1) || 'N/A'}%</div>
+              <div>Cost/Return: ${calculations.costPerReturn?.toFixed(2) || 'N/A'}</div>
+              <div>Total Expenses: ${calculations.totalExpenses?.toLocaleString() || 'N/A'}</div>
+            </div>
+            
+            <details>
+              <summary style={{ cursor: 'pointer', color: '#9ca3af', fontSize: 10 }}>
+                Show Full Calculation Data
+              </summary>
+              <pre style={{ fontSize: 9, overflow: 'auto', background: '#111827', padding: 8, borderRadius: 4, marginTop: 8 }}>
+                {JSON.stringify(calculations, null, 2)}
+              </pre>
+            </details>
+          </div>
+        ) : (
+          <div style={{ color: '#9ca3af' }}>No calculation data available</div>
+        )}
+      </div>
+    )
+  }
 
   const renderStateView = () => (
     <div>
