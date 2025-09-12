@@ -222,19 +222,35 @@ export function calc(inputs: Inputs): Results {
   }
 }
 export type Light = 'green'|'yellow'|'red'
-export function statusForCPR(v:number, t:Thresholds):Light{
-  // Industry benchmark: $85-100 is optimal range (green)
-  const cprGreenMin = 85   // Minimum for green range
-  const cprGreenMax = 100  // Maximum for green range  
-  const cprYellowMax = 110 // Maximum for yellow range
+export function statusForCPR(v:number, t:Thresholds, inputs?: Inputs):Light{
+  // Strategic calculation: Cost per return should align with expense percentage targets
+  // Revenue per return × expense% = target cost per return
+  if (inputs) {
+    const revenuePerReturn = inputs.totalRevenue > 0 && inputs.taxPrepReturns > 0 
+      ? inputs.totalRevenue / inputs.taxPrepReturns 
+      : 0
+    
+    if (revenuePerReturn > 0) {
+      // Strategic range: 74.5-77.5% of revenue per return
+      const cprGreenMin = revenuePerReturn * 0.745  // 74.5% strategic minimum
+      const cprGreenMax = revenuePerReturn * 0.775  // 77.5% strategic maximum
+      const cprYellowMin = revenuePerReturn * 0.715 // 71.5% yellow minimum  
+      const cprYellowMax = revenuePerReturn * 0.805 // 80.5% yellow maximum
+      
+      if (v >= cprGreenMin && v <= cprGreenMax) {
+        return 'green'  // Within strategic expense range (74.5-77.5%)
+      }
+      if ((v >= cprYellowMin && v < cprGreenMin) || (v > cprGreenMax && v <= cprYellowMax)) {
+        return 'yellow' // Monitor range (71.5-74.5% OR 77.5-80.5%)
+      }
+      return 'red' // Outside acceptable ranges
+    }
+  }
   
-  if (v >= cprGreenMin && v <= cprGreenMax) {
-    return 'green'  // $85-100 optimal range
-  }
-  if ((v >= 75 && v < cprGreenMin) || (v > cprGreenMax && v <= cprYellowMax)) {
-    return 'yellow' // $75-85 OR $100-110 monitor ranges
-  }
-  return 'red' // < $75 OR > $110 action required
+  // Fallback to simple thresholds if no inputs provided
+  if (v <= t.cprGreen) return 'green'
+  if (v <= t.cprYellow) return 'yellow'
+  return 'red'
 }
 export function statusForMargin(v:number, t:Thresholds):Light{
   // Mirror expense KPI ranges: 74.5-77.5% expenses = 22.5-25.5% net margin

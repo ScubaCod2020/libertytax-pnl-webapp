@@ -77,7 +77,8 @@ export default function Dashboard({ results, hasOtherIncome }: DashboardProps) {
               niStatus === 'green' && (
                 <li>Great! Consider "Best" scenario to stress-test capacity.</li>
               )}
-            <li><strong>Industry Benchmarks:</strong> Net Margin: 20-25% (Excellent) • Cost/Return: $85-100 (Good) • Expense Ratio: 75-80% (Target)</li>
+            {/* TODO: FACT-CHECK BENCHMARKS - Current ranges don't match KPI logic (75-77% vs 75-80%) */}
+            {/* <li><strong>Industry Benchmarks:</strong> Net Margin: 20-25% (Excellent) • Cost/Return: $85-100 (Good) • Expense Ratio: 75-80% (Target)</li> */}
           </ul>
         </div>
 

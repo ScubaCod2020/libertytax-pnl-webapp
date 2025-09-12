@@ -108,7 +108,7 @@ export function useCalculations(inputs: CalculationInputs): CalculationResults {
   const results = useMemo(() => calc(calcInputs), [calcInputs])
 
   // Calculate KPI statuses
-  const cprStatus = useMemo(() => statusForCPR(results.costPerReturn, inputs.thresholds), [results.costPerReturn, inputs.thresholds])
+  const cprStatus = useMemo(() => statusForCPR(results.costPerReturn, inputs.thresholds, calcInputs), [results.costPerReturn, inputs.thresholds, calcInputs])
   const nimStatus = useMemo(() => statusForMargin(results.netMarginPct, inputs.thresholds), [results.netMarginPct, inputs.thresholds])
   const niStatus = useMemo(() => statusForNetIncome(results.netIncome, inputs.thresholds), [results.netIncome, inputs.thresholds])
 
