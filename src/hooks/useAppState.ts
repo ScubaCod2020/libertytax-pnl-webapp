@@ -5,12 +5,12 @@ import { useState } from 'react'
 import type { Region, Thresholds } from '../lib/calcs'
 import type { Scenario } from '../data/presets'
 
-// Default thresholds - Updated to percentage-based like Page 2
+// Default thresholds - Aligned with strategic baseline (76% expenses = 24% net margin)
 const defaultThresholds: Thresholds = {
-  cprGreen: 85,      // $85 per return (excellent)
-  cprYellow: 100,    // $100 per return (good)
-  nimGreen: 20,      // 20% net margin (excellent) 
-  nimYellow: 15,     // 15% net margin (good)
+  cprGreen: 85,      // $85 per return (excellent - within optimal range)
+  cprYellow: 100,    // $100 per return (good - approaching upper limit)
+  nimGreen: 23,      // 23% net margin (excellent - strategic baseline range 23-25%)
+  nimYellow: 20,     // 20% net margin (good - above average but below optimal)
   netIncomeWarn: -5000, // Red if net income <= -$5000
 }
 
