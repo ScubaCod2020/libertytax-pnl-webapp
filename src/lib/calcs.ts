@@ -230,6 +230,15 @@ export function statusForCPR(v:number, t:Thresholds, inputs?: Inputs):Light{
       ? inputs.totalRevenue / inputs.taxPrepReturns 
       : 0
     
+    console.log('🎯 STRATEGIC COST/RETURN DEBUG:', {
+      costPerReturn: v,
+      totalRevenue: inputs.totalRevenue,
+      taxPrepReturns: inputs.taxPrepReturns,
+      revenuePerReturn,
+      hasInputs: !!inputs,
+      calculationWorking: revenuePerReturn > 0
+    })
+    
     if (revenuePerReturn > 0) {
       // Strategic range: 74.5-77.5% of revenue per return
       const cprGreenMin = revenuePerReturn * 0.745  // 74.5% strategic minimum
@@ -237,17 +246,34 @@ export function statusForCPR(v:number, t:Thresholds, inputs?: Inputs):Light{
       const cprYellowMin = revenuePerReturn * 0.715 // 71.5% yellow minimum  
       const cprYellowMax = revenuePerReturn * 0.805 // 80.5% yellow maximum
       
+      console.log('🎯 STRATEGIC RANGES:', {
+        greenMin: cprGreenMin.toFixed(2),
+        greenMax: cprGreenMax.toFixed(2),
+        yellowMin: cprYellowMin.toFixed(2),
+        yellowMax: cprYellowMax.toFixed(2),
+        actualValue: v,
+        shouldBeGreen: v >= cprGreenMin && v <= cprGreenMax
+      })
+      
       if (v >= cprGreenMin && v <= cprGreenMax) {
+        console.log('✅ STRATEGIC: Cost/Return is GREEN')
         return 'green'  // Within strategic expense range (74.5-77.5%)
       }
       if ((v >= cprYellowMin && v < cprGreenMin) || (v > cprGreenMax && v <= cprYellowMax)) {
+        console.log('🟡 STRATEGIC: Cost/Return is YELLOW')
         return 'yellow' // Monitor range (71.5-74.5% OR 77.5-80.5%)
       }
+      console.log('🔴 STRATEGIC: Cost/Return is RED')
       return 'red' // Outside acceptable ranges
+    } else {
+      console.log('⚠️ STRATEGIC: Falling back to threshold logic - no valid revenue/returns data')
     }
+  } else {
+    console.log('⚠️ STRATEGIC: No inputs provided, using fallback threshold logic')
   }
   
   // Fallback to simple thresholds if no inputs provided
+  console.log('📊 FALLBACK THRESHOLDS:', { value: v, cprGreen: t.cprGreen, cprYellow: t.cprYellow })
   if (v <= t.cprGreen) return 'green'
   if (v <= t.cprYellow) return 'yellow'
   return 'red'
