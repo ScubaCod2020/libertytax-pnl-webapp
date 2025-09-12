@@ -223,9 +223,18 @@ export function calc(inputs: Inputs): Results {
 }
 export type Light = 'green'|'yellow'|'red'
 export function statusForCPR(v:number, t:Thresholds):Light{
-  if (v <= t.cprGreen) return 'green'
-  if (v <= t.cprYellow) return 'yellow'
-  return 'red'
+  // Industry benchmark: $85-100 is optimal range (green)
+  const cprGreenMin = 85   // Minimum for green range
+  const cprGreenMax = 100  // Maximum for green range  
+  const cprYellowMax = 110 // Maximum for yellow range
+  
+  if (v >= cprGreenMin && v <= cprGreenMax) {
+    return 'green'  // $85-100 optimal range
+  }
+  if ((v >= 75 && v < cprGreenMin) || (v > cprGreenMax && v <= cprYellowMax)) {
+    return 'yellow' // $75-85 OR $100-110 monitor ranges
+  }
+  return 'red' // < $75 OR > $110 action required
 }
 export function statusForMargin(v:number, t:Thresholds):Light{
   // Mirror expense KPI ranges: 74.5-77.5% expenses = 22.5-25.5% net margin

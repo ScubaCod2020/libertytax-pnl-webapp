@@ -177,49 +177,49 @@ export default function Dashboard({ results, hasOtherIncome }: DashboardProps) {
             {/* Personnel */}
             <div className="expense-category">
               <div className="section-title" style={{ fontSize: '14px', marginBottom: '8px' }}>
-                👥 Personnel ({currency(results.salaries + results.empDeductions)})
+                👥 Personnel ({currency(results.salaries + results.empDeductions)} • {((results.salaries + results.empDeductions) / results.totalRevenue * 100).toFixed(1)}%)
               </div>
               <div className="small" style={{ marginLeft: '16px' }}>
-                <div>Salaries: {currency(results.salaries)}</div>
-                <div>Emp. Deductions: {currency(results.empDeductions)}</div>
+                <div>Salaries: {currency(results.salaries)} ({(results.salaries / results.totalRevenue * 100).toFixed(1)}%)</div>
+                <div>Emp. Deductions: {currency(results.empDeductions)} ({(results.empDeductions / results.totalRevenue * 100).toFixed(1)}%)</div>
               </div>
             </div>
 
             {/* Facility */}
             <div className="expense-category">
               <div className="section-title" style={{ fontSize: '14px', marginBottom: '8px' }}>
-                🏢 Facility ({currency(results.rent + results.telephone + results.utilities)})
+                🏢 Facility ({currency(results.rent + results.telephone + results.utilities)} • {((results.rent + results.telephone + results.utilities) / results.totalRevenue * 100).toFixed(1)}%)
               </div>
               <div className="small" style={{ marginLeft: '16px' }}>
-                <div>Rent: {currency(results.rent)}</div>
-                <div>Telephone: {currency(results.telephone)}</div>
-                <div>Utilities: {currency(results.utilities)}</div>
+                <div>Rent: {currency(results.rent)} ({(results.rent / results.totalRevenue * 100).toFixed(1)}%)</div>
+                <div>Telephone: {currency(results.telephone)} ({(results.telephone / results.totalRevenue * 100).toFixed(1)}%)</div>
+                <div>Utilities: {currency(results.utilities)} ({(results.utilities / results.totalRevenue * 100).toFixed(1)}%)</div>
               </div>
             </div>
 
             {/* Operations */}
             <div className="expense-category">
               <div className="section-title" style={{ fontSize: '14px', marginBottom: '8px' }}>
-                ⚙️ Operations ({currency(results.localAdv + results.insurance + results.postage + results.supplies + results.dues + results.bankFees + results.maintenance + results.travelEnt)})
+                ⚙️ Operations ({currency(results.localAdv + results.insurance + results.postage + results.supplies + results.dues + results.bankFees + results.maintenance + results.travelEnt)} • {((results.localAdv + results.insurance + results.postage + results.supplies + results.dues + results.bankFees + results.maintenance + results.travelEnt) / results.totalRevenue * 100).toFixed(1)}%)
               </div>
               <div className="small" style={{ marginLeft: '16px' }}>
-                <div>Local Advertising: {currency(results.localAdv)}</div>
-                <div>Insurance: {currency(results.insurance)}</div>
-                <div>Office Supplies: {currency(results.supplies)}</div>
-                <div>Other Ops: {currency(results.postage + results.dues + results.bankFees + results.maintenance + results.travelEnt)}</div>
+                <div>Local Advertising: {currency(results.localAdv)} ({(results.localAdv / results.totalRevenue * 100).toFixed(1)}%)</div>
+                <div>Insurance: {currency(results.insurance)} ({(results.insurance / results.totalRevenue * 100).toFixed(1)}%)</div>
+                <div>Office Supplies: {currency(results.supplies)} ({(results.supplies / results.totalRevenue * 100).toFixed(1)}%)</div>
+                <div>Other Ops: {currency(results.postage + results.dues + results.bankFees + results.maintenance + results.travelEnt)} ({((results.postage + results.dues + results.bankFees + results.maintenance + results.travelEnt) / results.totalRevenue * 100).toFixed(1)}%)</div>
               </div>
             </div>
 
             {/* Franchise */}
             <div className="expense-category">
               <div className="section-title" style={{ fontSize: '14px', marginBottom: '8px' }}>
-                🏪 Franchise ({currency(results.royalties + results.advRoyalties + results.taxRushRoyalties)})
+                🏪 Franchise ({currency(results.royalties + results.advRoyalties + results.taxRushRoyalties)} • {((results.royalties + results.advRoyalties + results.taxRushRoyalties) / results.totalRevenue * 100).toFixed(1)}%)
               </div>
               <div className="small" style={{ marginLeft: '16px' }}>
-                <div>Tax Prep Royalties: {currency(results.royalties)}</div>
-                <div>Adv. Royalties: {currency(results.advRoyalties)}</div>
+                <div>Tax Prep Royalties: {currency(results.royalties)} ({(results.royalties / results.totalRevenue * 100).toFixed(1)}%)</div>
+                <div>Adv. Royalties: {currency(results.advRoyalties)} ({(results.advRoyalties / results.totalRevenue * 100).toFixed(1)}%)</div>
                 {results.taxRushRoyalties > 0 && (
-                  <div>TaxRush Royalties: {currency(results.taxRushRoyalties)}</div>
+                  <div>TaxRush Royalties: {currency(results.taxRushRoyalties)} ({(results.taxRushRoyalties / results.totalRevenue * 100).toFixed(1)}%)</div>
                 )}
               </div>
             </div>
@@ -229,7 +229,7 @@ export default function Dashboard({ results, hasOtherIncome }: DashboardProps) {
           {results.misc > 0 && (
             <div style={{ marginTop: '12px' }}>
               <div className="section-title" style={{ fontSize: '14px' }}>
-                📝 Miscellaneous: {currency(results.misc)}
+                📝 Miscellaneous: {currency(results.misc)} ({(results.misc / results.totalRevenue * 100).toFixed(1)}%)
               </div>
             </div>
           )}

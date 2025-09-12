@@ -157,8 +157,8 @@ export function usePersistence() {
       miscPct: state.miscPct || 2.5,
       
       thresholds: state.thresholds || {
-        cprGreen: 85,      // Updated to match strategic baseline
-        cprYellow: 100,    // Updated to match strategic baseline
+        cprGreen: 95,      // Aligned with strategic baseline ($92 cost/return)
+        cprYellow: 110,    // Monitor range for cost management
         nimGreen: 22.5,    // Fixed: Mirror expense KPI ranges (22.5-25.5% green)
         nimYellow: 19.5,   // Fixed: Mirror expense KPI ranges (19.5-22.5% yellow)
         netIncomeWarn: -5000,
