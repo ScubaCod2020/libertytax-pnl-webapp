@@ -1,9 +1,8 @@
-// @ts-check
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test'
 
 /**
- * Mobile-focused Playwright configuration
- * @see https://playwright.dev/docs/test-configuration
+ * Mobile-specific Playwright configuration
+ * Focus on mobile devices and responsive design testing
  */
 export default defineConfig({
   testDir: './tests/mobile',
@@ -13,7 +12,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [
     ['html', { outputFolder: 'playwright-report-mobile' }],
-    ['json', { outputFile: 'test-results/mobile-results.json' }]
+    ['json', { outputFile: 'playwright-mobile-results.json' }],
   ],
   use: {
     baseURL: 'http://localhost:4173',
@@ -22,47 +21,52 @@ export default defineConfig({
     video: 'retain-on-failure',
   },
 
-  /* Mobile-specific projects */
   projects: [
+    // Mobile devices
+    {
+      name: 'iPhone 14 Pro',
+      use: { ...devices['iPhone 14 Pro'] },
+    },
     {
       name: 'iPhone SE',
+      use: { ...devices['iPhone SE'] },
+    },
+    {
+      name: 'Pixel 7',
+      use: { ...devices['Pixel 7'] },
+    },
+    {
+      name: 'Galaxy S8',
+      use: { ...devices['Galaxy S8'] },
+    },
+    
+    // Tablets
+    {
+      name: 'iPad Pro',
+      use: { ...devices['iPad Pro'] },
+    },
+    {
+      name: 'iPad Mini',
+      use: { ...devices['iPad Mini'] },
+    },
+    
+    // Responsive breakpoints
+    {
+      name: 'Small Mobile',
       use: { 
-        ...devices['iPhone SE'],
-        // Additional mobile-specific settings
-        hasTouch: true,
+        viewport: { width: 320, height: 568 },
+        deviceScaleFactor: 2,
         isMobile: true,
+        hasTouch: true,
       },
     },
     {
-      name: 'iPhone 12 Pro',
+      name: 'Large Mobile',
       use: { 
-        ...devices['iPhone 12 Pro'],
-        hasTouch: true,
+        viewport: { width: 414, height: 896 },
+        deviceScaleFactor: 3,
         isMobile: true,
-      },
-    },
-    {
-      name: 'Samsung Galaxy S21',
-      use: { 
-        ...devices['Galaxy S9+'],
         hasTouch: true,
-        isMobile: true,
-      },
-    },
-    {
-      name: 'iPad',
-      use: { 
-        ...devices['iPad Pro'],
-        hasTouch: true,
-        isMobile: false, // Tablet
-      },
-    },
-    {
-      name: 'iPad Landscape',
-      use: { 
-        ...devices['iPad Pro landscape'],
-        hasTouch: true,
-        isMobile: false,
       },
     },
   ],
@@ -71,6 +75,6 @@ export default defineConfig({
     command: 'npm run preview',
     url: 'http://localhost:4173',
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
+    timeout: 30000,
   },
-});
+})

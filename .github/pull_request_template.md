@@ -1,22 +1,24 @@
-# Pull Request
+# 🔄 Pull Request
 
-## 📋 Description
+## 📝 Description
 <!-- Provide a clear and concise description of the changes -->
 
-## 🔗 Related Issues
-<!-- Link to any related issues -->
-Closes #<!-- issue number -->
+## 🎯 Related Issue(s)
+<!-- Link to related issues using "Fixes #123" or "Relates to #456" -->
+- Fixes #<!-- issue number -->
+- Relates to #
 
-## 🧪 Type of Change
-<!-- Mark the relevant option with an "x" -->
-- [ ] 🐛 Bug fix (non-breaking change that fixes an issue)
-- [ ] ✨ New feature (non-breaking change that adds functionality)
+## 🏗️ Type of Change
+<!-- Mark the relevant option(s) with [x] -->
+- [ ] 🐛 Bug fix (non-breaking change which fixes an issue)
+- [ ] ✨ New feature (non-breaking change which adds functionality)
 - [ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - [ ] 📚 Documentation update
-- [ ] 🎨 UI/UX improvement
-- [ ] ⚡ Performance improvement
-- [ ] 🧹 Code refactoring
-- [ ] 🔧 Configuration/build changes
+- [ ] 🧪 Test improvements
+- [ ] 🎨 Code style/formatting changes
+- [ ] ♻️  Refactoring (no functional changes)
+- [ ] ⚡ Performance improvements
+- [ ] 🔧 Configuration changes
 
 ## 🧮 Calculation Changes
 <!-- If this PR affects calculations, provide details -->
@@ -34,116 +36,86 @@ Closes #<!-- issue number -->
 - [ ] Confirmed mathematical accuracy
 - [ ] Tested dual-entry synchronization
 
-## 🎯 Testing Checklist
+## 🧪 Testing
+<!-- Describe how this change has been tested -->
 
-### ✅ Automated Testing
-- [ ] All existing automated tests pass
-- [ ] New tests added for new functionality
-- [ ] Calculation tests updated (if applicable)
-- [ ] Build completes successfully
-- [ ] Bundle size within acceptable limits
+### Test Coverage
+- [ ] Unit tests added/updated
+- [ ] Integration tests added/updated
+- [ ] E2E tests added/updated
+- [ ] Manual testing completed
 
-### 🖱️ Manual Testing - Core Functionality
-- [ ] **Wizard Flow**: Complete wizard journey (Welcome → Inputs → Review → Dashboard)
-- [ ] **Regional Testing**: Tested both US and CA regions
-- [ ] **Dual-Entry**: Verified percentage ↔ dollar synchronization works
-- [ ] **Calculations**: Spot-checked KPI calculations for accuracy
-- [ ] **Presets**: Tested Good/Better/Best preset application
-- [ ] **Debug Panel**: Verified debug functionality works
-- [ ] **Data Persistence**: Confirmed data survives page refresh
+### Testing Checklist
+- [ ] All existing tests pass
+- [ ] New functionality has appropriate tests
+- [ ] Edge cases are covered
+- [ ] Performance impact assessed
 
-### 📱 Mobile/Responsive Testing
-- [ ] **Mobile Layout**: Tested on mobile device (iOS/Android)
-- [ ] **Tablet Layout**: Tested on tablet device
-- [ ] **Touch Interactions**: All buttons/inputs work on touch devices
-- [ ] **Keyboard Behavior**: Mobile keyboard doesn't obscure inputs
-- [ ] **Orientation**: Works in both portrait and landscape
+## 📱 Device Testing
+<!-- Check all that apply -->
+- [ ] Desktop (Chrome)
+- [ ] Desktop (Firefox)
+- [ ] Desktop (Safari)
+- [ ] Mobile (iOS Safari)
+- [ ] Mobile (Android Chrome)
+- [ ] Tablet
 
-### 🌐 Browser Compatibility
-- [ ] **Chrome**: Tested and working
-- [ ] **Firefox**: Tested and working
-- [ ] **Safari**: Tested and working (if available)
-- [ ] **Edge**: Tested and working (if available)
-- [ ] **Mobile Browsers**: Tested on mobile Chrome/Safari
+## 🌍 Regional Testing
+<!-- If applicable to regional features -->
+- [ ] US region tested
+- [ ] Canada region tested
+- [ ] Cross-region functionality verified
 
-### 🔍 Edge Case Testing
-- [ ] **Invalid Inputs**: Tested with invalid/edge case data
-- [ ] **Zero Values**: Tested with zero percentages and dollar amounts
-- [ ] **Maximum Values**: Tested with 100% and large numbers
-- [ ] **Negative Growth**: Tested with negative growth scenarios
-- [ ] **Empty States**: Tested with empty/default data
+## 📊 Calculation Validation
+<!-- For changes affecting P&L calculations -->
+- [ ] Calculation logic reviewed
+- [ ] Test cases include various input scenarios
+- [ ] Results verified against expected outputs
+- [ ] Edge cases handled (zero values, negative values, etc.)
 
-### ⚡ Performance Testing
-- [ ] **Load Time**: Initial load time acceptable
-- [ ] **Responsiveness**: UI interactions respond quickly
-- [ ] **Memory Usage**: No obvious memory leaks
-- [ ] **Console**: No errors or warnings in browser console
-
-## 📊 Test Results Summary
-<!-- Provide a summary of testing results -->
-
-**Tested Scenarios:**
-- Conservative Store: ANF $125, Returns 1600, Growth 10%
-- Aggressive Store: ANF $150, Returns 2000, Growth 20%
-- Edge Cases: [List specific edge cases tested]
-
-**Issues Found & Resolved:**
-- [List any issues found during testing and how they were resolved]
-
-**Known Limitations:**
-- [List any known limitations or issues that will be addressed later]
+## 🚀 Performance Impact
+<!-- Assess performance impact -->
+- [ ] No performance impact expected
+- [ ] Performance testing completed
+- [ ] Bundle size impact assessed
+- [ ] Memory usage considered
 
 ## 📸 Screenshots/Videos
-<!-- Add screenshots or videos demonstrating the changes -->
+<!-- Include screenshots for UI changes -->
+<!-- For calculation changes, consider including before/after comparison -->
 
-## 🚨 Breaking Changes
-<!-- If this introduces breaking changes, describe them -->
-- [ ] No breaking changes
-- [ ] Breaking changes (describe below):
+## 🔍 Code Review Checklist
+<!-- For reviewers -->
+- [ ] Code follows project style guidelines
+- [ ] Changes are well documented
+- [ ] No obvious security vulnerabilities
+- [ ] Error handling is appropriate
+- [ ] Code is readable and maintainable
+
+## 🚀 Deployment Checklist
+<!-- Before merging -->
+- [ ] CI/CD pipeline passes
+- [ ] Preview deployment tested
+- [ ] No breaking changes for existing users
+- [ ] Database migrations (if any) are safe
 
 ## 📝 Additional Notes
 <!-- Any additional information for reviewers -->
 
-## 🤖 AI Code Review Section
-<!-- For @codex and AI assistants -->
-
-### Questions for @codex:
-<!-- Tag @codex with specific questions about your changes -->
-- [ ] **Code Quality Review:** @codex Please review this code for potential bugs, improvements, and best practices
-- [ ] **Performance Analysis:** @codex Any performance implications I should be aware of?
-- [ ] **Testing Recommendations:** @codex What additional test scenarios would you recommend?
-- [ ] **Security Review:** @codex Any security considerations for these changes?
-
-### AI-Specific Context:
-<!-- Help AI understand your changes -->
-**Change Type:** <!-- Bug fix / New feature / Refactor / Performance / etc. -->
-**Complexity:** <!-- Simple / Medium / Complex -->
-**Risk Level:** <!-- Low / Medium / High -->
-
-**Specific Areas for AI Focus:**
-- [ ] Calculation logic accuracy
-- [ ] React hooks usage
-- [ ] TypeScript type safety
-- [ ] Mobile responsiveness
-- [ ] Error handling
-- [ ] Performance optimization
-
-## 👀 Human Reviewer Checklist
-<!-- For human reviewers to complete -->
-- [ ] Code follows project standards
-- [ ] Changes are well documented
-- [ ] Tests are comprehensive
-- [ ] No security concerns
-- [ ] Performance impact acceptable
-- [ ] Mobile compatibility verified
-- [ ] AI feedback addressed
+## 🏷️ Post-Merge Tasks
+<!-- Tasks to complete after merge -->
+- [ ] Monitor deployment for issues
+- [ ] Update documentation if needed
+- [ ] Notify stakeholders of changes
+- [ ] Schedule follow-up tasks if needed
 
 ---
 
-## 🚀 Pre-Deployment Verification
-<!-- Complete before merging to main -->
-- [ ] All automated tests pass in CI
-- [ ] Manual testing checklist completed
-- [ ] No console errors in production build
-- [ ] Bundle size impact acceptable
-- [ ] Ready for production deployment
+**Reviewer Assignment:**
+<!-- @ mention specific reviewers if needed -->
+- Frontend changes: <!-- @frontend-reviewer -->
+- Backend changes: <!-- @backend-reviewer -->
+- Calculation changes: <!-- @calculation-reviewer -->
+- Infrastructure changes: <!-- @devops-reviewer -->
+
+**Estimated Review Time:** <!-- Small: 30min, Medium: 1-2 hours, Large: 4+ hours -->

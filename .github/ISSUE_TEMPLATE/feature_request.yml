@@ -1,81 +1,14 @@
 name: ✨ Feature Request
-description: Suggest a new feature or enhancement
+description: Suggest a new feature or enhancement for the P&L Tool
 title: "[FEATURE] "
-labels: ["enhancement", "feature-request"]
+labels: ["enhancement", "needs-triage"]
 assignees: []
+
 body:
   - type: markdown
     attributes:
       value: |
-        Suggest a new feature or enhancement for the Liberty Tax P&L webapp.
-
-  - type: textarea
-    id: feature-description
-    attributes:
-      label: Feature Description
-      description: A clear and concise description of the feature you'd like to see
-      placeholder: Describe the feature you want...
-    validations:
-      required: true
-
-  - type: textarea
-    id: problem-statement
-    attributes:
-      label: Problem Statement
-      description: What problem does this feature solve?
-      placeholder: |
-        - What current limitation or pain point does this address?
-        - What user need is not being met?
-        - What workflow could be improved?
-    validations:
-      required: true
-
-  - type: textarea
-    id: proposed-solution
-    attributes:
-      label: Proposed Solution
-      description: How would you like this feature to work?
-      placeholder: |
-        Describe in detail:
-        - Where would this feature appear in the UI?
-        - How would users interact with it?
-        - What would be the expected behavior?
-    validations:
-      required: true
-
-  - type: dropdown
-    id: feature-area
-    attributes:
-      label: Feature Area
-      description: Which part of the app would this feature affect?
-      options:
-        - Wizard (Welcome/Inputs/Review pages)
-        - Dashboard/KPI display
-        - Debug panel
-        - Calculations/formulas
-        - Data persistence/export
-        - Mobile/responsive design
-        - Performance/optimization
-        - User experience/UI
-        - Regional features (US/CA)
-        - New functionality
-    validations:
-      required: true
-
-  - type: dropdown
-    id: user-type
-    attributes:
-      label: Primary User Type
-      description: Who would primarily benefit from this feature?
-      options:
-        - Tax office owners/operators
-        - Liberty Tax franchisees
-        - Business analysts
-        - Support agents
-        - Developers/testers
-        - All users
-    validations:
-      required: true
+        Thanks for suggesting a new feature! Help us understand what you need and why.
 
   - type: dropdown
     id: priority
@@ -83,68 +16,107 @@ body:
       label: Priority Level
       description: How important is this feature?
       options:
-        - Critical - Blocks key workflows
-        - High - Significantly improves user experience
-        - Medium - Nice to have improvement
-        - Low - Minor enhancement
+        - Low - Nice to have
+        - Medium - Would improve user experience
+        - High - Important for business goals
+        - Critical - Blocking important use cases
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature Category
+      description: What type of feature is this?
+      options:
+        - Calculation Enhancement
+        - User Interface Improvement
+        - New Regional Support
+        - Performance Optimization
+        - Data Export/Import
+        - Reporting/Analytics
+        - Integration
+        - Other
     validations:
       required: true
 
   - type: textarea
-    id: use-cases
+    id: problem
     attributes:
-      label: Use Cases
-      description: Specific scenarios where this feature would be used
-      placeholder: |
-        1. When a user needs to...
-        2. During the process of...
-        3. To help with...
+      label: Problem Statement
+      description: What problem does this feature solve? Who benefits from it?
+      placeholder: "As a [user type], I need [capability] so that [benefit/outcome]"
+    validations:
+      required: true
 
   - type: textarea
-    id: acceptance-criteria
+    id: solution
     attributes:
-      label: Acceptance Criteria
-      description: How would we know this feature is working correctly?
-      placeholder: |
-        - [ ] Feature appears in correct location
-        - [ ] User can perform expected actions
-        - [ ] Data is handled correctly
-        - [ ] Works on mobile devices
-        - [ ] Integrates with existing features
-        - etc.
-
-  - type: checkboxes
-    id: testing-considerations
-    attributes:
-      label: Testing Considerations
-      description: What testing would this feature require?
-      options:
-        - label: Unit testing for calculations
-        - label: Integration testing with existing features
-        - label: Mobile/responsive testing
-        - label: Cross-browser compatibility testing
-        - label: Performance testing
-        - label: Accessibility testing
-        - label: User acceptance testing
-        - label: Edge case testing
+      label: Proposed Solution
+      description: Describe your ideal solution or how you envision this feature working
+    validations:
+      required: true
 
   - type: textarea
-    id: alternative-solutions
+    id: alternatives
     attributes:
       label: Alternative Solutions
-      description: Have you considered other approaches?
-      placeholder: |
-        - Other ways to solve the same problem
-        - Existing workarounds
-        - Similar features in other apps
+      description: Have you considered any alternative approaches?
+    validations:
+      required: false
 
   - type: textarea
-    id: additional-context
+    id: mockup
+    attributes:
+      label: Mockups/Examples
+      description: If applicable, provide mockups, screenshots, or examples from other tools
+    validations:
+      required: false
+
+  - type: dropdown
+    id: effort
+    attributes:
+      label: Estimated Effort (if known)
+      description: If you have technical knowledge, estimate the complexity
+      options:
+        - Small - Few hours to 1 day
+        - Medium - 2-5 days
+        - Large - 1-2 weeks
+        - Extra Large - 2+ weeks
+        - Unknown
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: Expected Impact
+      description: What areas would this feature affect?
+      options:
+        - label: User Experience
+        - label: Performance
+        - label: Calculation Accuracy
+        - label: Data Management
+        - label: Accessibility
+        - label: Mobile Experience
+        - label: Backend/Infrastructure
+
+  - type: textarea
+    id: additional
     attributes:
       label: Additional Context
-      description: Any other context, mockups, or examples
-      placeholder: |
-        - Screenshots or mockups
-        - Examples from other applications
-        - User feedback or requests
-        - Business requirements
+      description: Any other context, requirements, or considerations?
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have searched existing issues and features
+          required: true
+        - label: I have clearly described the problem and solution
+          required: true
+        - label: I have provided business justification
+          required: true

@@ -1,51 +1,70 @@
 name: 🐛 Bug Report
-description: Report a bug or unexpected behavior
+description: Report a bug or issue with the P&L Tool
 title: "[BUG] "
 labels: ["bug", "needs-triage"]
 assignees: []
+
 body:
   - type: markdown
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report! Please provide as much detail as possible.
 
-  - type: textarea
-    id: bug-description
+  - type: dropdown
+    id: urgency
     attributes:
-      label: Bug Description
-      description: A clear and concise description of what the bug is.
-      placeholder: Describe what happened...
+      label: Urgency Level
+      description: How urgent is this bug?
+      options:
+        - Low - Minor inconvenience, workaround available
+        - Medium - Affects functionality but not critical
+        - High - Blocks important functionality
+        - Critical - Breaks core functionality or prevents deployment
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected Area
+      description: Which part of the application is affected?
+      options:
+        - Calculations (P&L logic)
+        - User Interface (forms, buttons, layout)
+        - Data Persistence (saving/loading data)
+        - Regional Features (US/Canada differences)
+        - Performance
+        - Other
     validations:
       required: true
 
   - type: textarea
-    id: reproduction-steps
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: Describe what happened vs what you expected to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
     attributes:
       label: Steps to Reproduce
-      description: Clear steps to reproduce the behavior
+      description: Step-by-step instructions to reproduce the behavior
       placeholder: |
         1. Go to '...'
         2. Click on '...'
-        3. Enter data '...'
+        3. Enter values '...'
         4. See error
     validations:
       required: true
 
   - type: textarea
-    id: expected-behavior
+    id: expected
     attributes:
       label: Expected Behavior
-      description: What you expected to happen
-      placeholder: Describe what should have happened...
-    validations:
-      required: true
-
-  - type: textarea
-    id: actual-behavior
-    attributes:
-      label: Actual Behavior
-      description: What actually happened
-      placeholder: Describe what actually happened...
+      description: What did you expect to happen?
     validations:
       required: true
 
@@ -153,3 +172,15 @@ body:
         - label: I tried in an incognito/private window
         - label: I checked the browser console for errors
         - label: I tried with different data values
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have provided clear steps to reproduce the issue
+          required: true
+        - label: I have included the urgency level and affected area
+          required: true
