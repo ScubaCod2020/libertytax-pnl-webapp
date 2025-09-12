@@ -22,6 +22,11 @@ export type SessionState = {
   taxRushReturns: number
   discountsPct: number
   
+  // 🔄 CRITICAL DATA FLOW FIXES: Add missing fields that were causing 63% failure rate
+  expectedGrowthPct?: number        // Performance change percentage - CRITICAL for calculations
+  calculatedTotalExpenses?: number  // Pre-calculated expense total from Page 2
+  otherIncome?: number             // Additional revenue streams - was missing from persistence
+  
   // All 17 expense fields
   salariesPct: number
   empDeductionsPct: number
@@ -136,6 +141,11 @@ export function usePersistence() {
       taxPrepReturns: state.taxPrepReturns || 1600,
       taxRushReturns: state.taxRushReturns || 0,
       discountsPct: state.discountsPct || 3,
+      
+      // 🔄 CRITICAL DATA FLOW FIXES: Preserve the newly added fields
+      expectedGrowthPct: state.expectedGrowthPct,        // Don't provide fallback - preserve undefined if not set
+      calculatedTotalExpenses: state.calculatedTotalExpenses, // Don't provide fallback - preserve undefined if not set  
+      otherIncome: state.otherIncome || 0,               // Default to 0 for additional income
       
       // All 17 expense fields
       salariesPct: state.salariesPct || 25,

@@ -44,13 +44,14 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
     }
   })
   
-  // Sync app region with wizard region when loading saved data
+  // 🔄 CRITICAL DATA FLOW FIX: Sync app region with wizard region when loading saved data
+  // Fixed race condition - removed 'region' from dependencies to prevent infinite update loops
   React.useEffect(() => {
     if (persistence && answers.region && answers.region !== region) {
       console.log(`🧙‍♂️ Syncing app region: ${region} → ${answers.region} (from saved wizard data)`)
       setRegion(answers.region)
     }
-  }, [answers.region, region, setRegion, persistence])
+  }, [answers.region, setRegion, persistence]) // Removed 'region' to fix race condition
 
   console.log('🧙‍♂️ WIZARD WELCOME DEBUG:', { 
     currentStep, 

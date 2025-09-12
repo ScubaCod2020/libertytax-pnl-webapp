@@ -27,6 +27,9 @@ export interface AppState {
   discountsPct: number
   otherIncome: number
   
+  // 🔄 CRITICAL DATA FLOW FIX: Performance change percentage from wizard
+  expectedGrowthPct?: number        // Performance change percentage - was getting lost after wizard completion
+  
   // Pre-calculated expense total from Page 2 (overrides field-based calculation)
   calculatedTotalExpenses?: number
 
@@ -66,6 +69,9 @@ export interface AppStateActions {
   setDisc: (value: number) => void
   setOtherIncome: (value: number) => void
   setCalculatedTotalExpenses: (value: number | undefined) => void
+  
+  // 🔄 CRITICAL DATA FLOW FIX: Add expectedGrowthPct setter
+  setExpectedGrowthPct: (value: number | undefined) => void
 
   // Expense actions
   setSal: (value: number) => void
@@ -126,6 +132,9 @@ export function useAppState(): AppState & AppStateActions {
   const [discountsPct, setDisc] = useState(3)
   const [otherIncome, setOtherIncome] = useState(0)
   const [calculatedTotalExpenses, setCalculatedTotalExpenses] = useState<number | undefined>(undefined)
+  
+  // 🔄 CRITICAL DATA FLOW FIX: Add expectedGrowthPct state
+  const [expectedGrowthPct, setExpectedGrowthPct] = useState<number | undefined>(undefined)
 
   // All 17 expense fields
   const [salariesPct, setSal] = useState(25)
@@ -229,6 +238,17 @@ export function useAppState(): AppState & AppStateActions {
       console.log('⚠️ useAppState: No calculatedTotalExpenses found in wizard answers')
     }
     
+    // 🔄 CRITICAL DATA FLOW FIX: Apply performance change percentage from wizard
+    if (answers.expectedGrowthPct !== undefined) {
+      console.log('📊 useAppState: Applying performance change percentage:', {
+        value: answers.expectedGrowthPct,
+        source: 'applyWizardAnswers'
+      })
+      setExpectedGrowthPct(answers.expectedGrowthPct)
+    } else {
+      console.log('⚠️ useAppState: No expectedGrowthPct found in wizard answers - this was the main cause of data flow failures')
+    }
+    
     // 🐛 FIXED: Apply TaxRush data from wizard (was previously hardcoded to 0)
     const taxRushReturns = answers.region === 'CA' && answers.handlesTaxRush 
       ? (answers.taxRushReturns ?? answers.projectedTaxRushReturns ?? 0)
@@ -275,6 +295,7 @@ export function useAppState(): AppState & AppStateActions {
     discountsPct,
     otherIncome,
     calculatedTotalExpenses,
+    expectedGrowthPct,
     salariesPct,
     empDeductionsPct,
     rentPct,
@@ -304,6 +325,7 @@ export function useAppState(): AppState & AppStateActions {
     setDisc,
     setOtherIncome,
     setCalculatedTotalExpenses,
+    setExpectedGrowthPct,
     setSal,
     setEmpDeductions,
     setRent,
