@@ -1,0 +1,71 @@
+{
+  "teams": {
+    "frontend": {
+      "name": "Frontend Team",
+      "description": "UI/UX, React components, responsive design, user experience",
+      "expertise": ["typescript", "react", "css", "accessibility", "mobile", "responsive"],
+      "githubUsernames": ["{{FRONTEND_USERNAME}}"],
+      "reviewPaths": ["src/components/**", "src/styles/**", "public/**", "src/assets/**"],
+      "testTypes": ["unit", "integration", "e2e", "mobile", "performance"],
+      "deploymentStages": ["preview", "staging", "production"],
+      "priority": "high"
+    },
+    "backend": {
+      "name": "Backend Team", 
+      "description": "Business logic, calculations, data processing, API development",
+      "expertise": ["python", "nodejs", "api", "calculations", "data", "excel"],
+      "githubUsernames": ["{{BACKEND_USERNAME}}"],
+      "reviewPaths": ["src/lib/**", "src/api/**", "*.py", "src/utils/**", "src/data/**"],
+      "testTypes": ["unit", "integration", "e2e"],
+      "deploymentStages": ["preview", "staging", "production"],
+      "priority": "high"
+    },
+    "qa": {
+      "name": "QA Team",
+      "description": "Testing strategy, quality assurance, test automation, bug detection",
+      "expertise": ["testing", "automation", "quality", "bug-detection", "test-frameworks"],
+      "githubUsernames": ["{{QA_USERNAME}}"],
+      "reviewPaths": ["tests/**", "*.test.*", "*.spec.*", "test-utils/**"],
+      "testTypes": ["unit", "integration", "e2e", "mobile", "performance", "security"],
+      "deploymentStages": ["preview", "staging", "production"],
+      "priority": "critical"
+    },
+    "devops": {
+      "name": "DevOps Team",
+      "description": "CI/CD, infrastructure, deployments, monitoring, automation",
+      "expertise": ["github-actions", "deployment", "monitoring", "infrastructure", "ci-cd"],
+      "githubUsernames": ["{{DEVOPS_USERNAME}}"],
+      "reviewPaths": [".github/**", "*.yml", "*.yaml", "Dockerfile*", "vercel.json"],
+      "testTypes": ["integration", "e2e", "performance"],
+      "deploymentStages": ["staging", "production"],
+      "priority": "high"
+    },
+    "security": {
+      "name": "Security Team",
+      "description": "Security reviews, vulnerability management, compliance, threat assessment",
+      "expertise": ["security", "vulnerability", "compliance", "threat-assessment", "auditing"],
+      "githubUsernames": ["{{SECURITY_USERNAME}}"],
+      "reviewPaths": ["package*.json", "requirements.txt", "*.lock", "src/auth/**"],
+      "testTypes": ["security"],
+      "deploymentStages": ["preview", "staging", "production"],
+      "priority": "medium"
+    }
+  },
+  "workflow": {
+    "preview": {
+      "teams": ["qa", "frontend", "backend"],
+      "duration": "16 minutes",
+      "parallel": true
+    },
+    "staging": {
+      "teams": ["qa", "frontend", "backend", "devops", "security"],
+      "duration": "50 minutes", 
+      "parallel": true
+    },
+    "production": {
+      "teams": ["qa", "devops", "security"],
+      "duration": "36 minutes",
+      "parallel": false
+    }
+  }
+}

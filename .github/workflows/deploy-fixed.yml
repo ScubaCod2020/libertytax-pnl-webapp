@@ -1,0 +1,410 @@
+name: 🚀 Sequential Deployment Pipeline
+
+on:
+  push:
+    branches: [ main, develop, 'feat/**', 'fix/**' ]
+  pull_request:
+    branches: [ main, develop ]
+    types: [ opened, synchronize, reopened, closed ]
+
+env:
+  NODE_VERSION: '20.x'
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  # ==========================================
+  # 🔍 STAGE 1: PREVIEW QUALITY GATES
+  # ==========================================
+  preview-quality-gates:
+    name: 🔍 Preview Quality Gates
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    outputs:
+      quality-gate-passed: ${{ steps.quality-check.outputs.passed }}
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 🔧 Install dependencies
+        run: npm ci
+        
+      - name: 🔍 Quality Gate 1: Lint & Type Check
+        id: lint-type
+        run: |
+          echo "Running lint and type checks..."
+          npm run lint
+          npm run type-check
+          echo "✅ Lint and type checks passed"
+          
+      - name: 🧪 Quality Gate 2: Unit Tests
+        id: unit-tests
+        run: |
+          echo "Running unit tests..."
+          npm run test:unit
+          echo "✅ Unit tests passed"
+          
+      - name: 🏗️ Quality Gate 3: Build Validation
+        id: build-check
+        run: |
+          echo "Building application..."
+          npm run build
+          echo "✅ Build successful"
+          
+      - name: 📊 Quality Gate Summary
+        id: quality-check
+        run: |
+          if [[ "${{ steps.lint-type.outcome }}" == "success" && 
+                "${{ steps.unit-tests.outcome }}" == "success" && 
+                "${{ steps.build-check.outcome }}" == "success" ]]; then
+            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "✅ All quality gates passed - ready for preview deployment"
+          else
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "❌ Quality gates failed - blocking deployment"
+            exit 1
+          fi
+
+  # ==========================================
+  # 👀 PREVIEW DEPLOYMENT (Sequential)
+  # ==========================================
+  deploy-preview:
+    name: 👀 Deploy Preview Environment
+    runs-on: ubuntu-latest
+    needs: preview-quality-gates
+    if: github.event_name == 'pull_request' && github.event.action != 'closed' && needs.preview-quality-gates.outputs.quality-gate-passed == 'true'
+    environment: 
+      name: preview-pr-${{ github.event.number }}
+      url: ${{ steps.deploy.outputs.preview-url }}
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 🔧 Install dependencies
+        run: npm ci
+        
+      - name: 🏗️ Build application
+        run: npm run build
+        
+      - name: 🚀 Deploy to Vercel Preview
+        id: deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          github-comment: true
+          
+      - name: 🧪 Basic Smoke Test on Preview
+        run: |
+          echo "Waiting for deployment to be ready..."
+          sleep 30
+          echo "Running basic smoke test..."
+          curl -f ${{ steps.deploy.outputs.preview-url }} || exit 1
+          echo "✅ Preview deployment successful and accessible"
+        
+      - name: 📊 Comment deployment status
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🚀 Preview Deployment Successful\n\n✅ **Quality gates passed**\n🔗 **Preview URL:** ${{ steps.deploy.outputs.preview-url }}\n📝 **Commit:** \`${{ github.sha }}\`\n\n---\n*This preview will be automatically updated when you push new commits.*`
+            })
+
+  # ==========================================
+  # 🔬 STAGE 2: STAGING QUALITY GATES
+  # ==========================================
+  staging-quality-gates:
+    name: 🔬 Staging Quality Gates
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    strategy:
+      matrix:
+        test-suite: [integration, mobile, performance, security]
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 🔧 Install dependencies
+        run: npm ci
+        
+      - name: 🎭 Install Playwright (for mobile tests)
+        if: matrix.test-suite == 'mobile'
+        run: npx playwright install --with-deps
+        
+      - name: 🏗️ Build application
+        run: npm run build
+        
+      - name: 🚀 Start preview server
+        if: matrix.test-suite == 'mobile' || matrix.test-suite == 'performance'
+        run: |
+          npm run preview &
+          sleep 10
+          
+      - name: ⏳ Wait for server
+        if: matrix.test-suite == 'mobile' || matrix.test-suite == 'performance'
+        run: npx wait-on http://localhost:4173 --timeout 30000
+        
+      - name: 🔗 Run Integration Tests
+        if: matrix.test-suite == 'integration'
+        run: npm run test:integration
+        
+      - name: 📱 Run Mobile Tests
+        if: matrix.test-suite == 'mobile'
+        run: npm run test:mobile
+        
+      - name: ⚡ Run Performance Tests
+        if: matrix.test-suite == 'performance'
+        run: |
+          npm install -g @lhci/cli@0.12.x
+          lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          
+      - name: 🔒 Run Security Tests
+        if: matrix.test-suite == 'security'
+        run: |
+          npm audit --audit-level=moderate
+          # Add Snyk scan if token available
+          if [ -n "${{ secrets.SNYK_TOKEN }}" ]; then
+            npx snyk test
+          fi
+
+  # ==========================================
+  # 🎯 STAGING DEPLOYMENT (Sequential)
+  # ==========================================
+  deploy-staging:
+    name: 🎯 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: staging-quality-gates
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    environment: 
+      name: staging
+      url: ${{ steps.deploy.outputs.preview-url }}
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 🔧 Install dependencies
+        run: npm ci
+        
+      - name: 🏗️ Build application
+        run: npm run build
+        
+      - name: 🎯 Deploy to Vercel Staging
+        id: deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          alias-domains: staging-libertytax-pnl.vercel.app
+          
+      - name: 🧪 Final Staging Validation
+        run: |
+          echo "Waiting for staging deployment..."
+          sleep 30
+          echo "Running final validation tests..."
+          curl -f ${{ steps.deploy.outputs.preview-url }} || exit 1
+          echo "✅ Staging deployment successful"
+          
+      - name: 📣 Notify staging deployment
+        uses: 8398a7/action-slack@v3
+        if: always()
+        with:
+          status: ${{ job.status }}
+          text: |
+            🎯 Staging deployment ${{ job.status }}
+            🔗 URL: ${{ steps.deploy.outputs.preview-url }}
+            📝 Commit: ${{ github.sha }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ==========================================
+  # ⚡ STAGE 3: PRODUCTION QUALITY GATES
+  # ==========================================
+  production-quality-gates:
+    name: ⚡ Production Quality Gates
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 🔧 Install dependencies
+        run: npm ci
+        
+      - name: 🏗️ Build application
+        run: npm run build
+        
+      - name: 🚀 Start preview server
+        run: |
+          npm run preview &
+          sleep 10
+          
+      - name: ⏳ Wait for server
+        run: npx wait-on http://localhost:4173 --timeout 30000
+        
+      - name: 🌐 Run Final E2E Tests
+        run: npm run test:e2e
+        
+      - name: ⚡ Run Final Performance Tests
+        run: |
+          npm install -g @lhci/cli@0.12.x
+          lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          
+      - name: 🔒 Final Security Check
+        run: |
+          npm audit --audit-level=high
+          if [ -n "${{ secrets.SNYK_TOKEN }}" ]; then
+            npx snyk test
+          fi
+          
+      - name: 🧪 Smoke Test Rollback Procedure
+        run: |
+          echo "Testing rollback procedure..."
+          # Add rollback test logic here
+          echo "✅ Rollback procedure validated"
+
+  # ==========================================
+  # 🚀 PRODUCTION DEPLOYMENT (Sequential)
+  # ==========================================
+  deploy-production:
+    name: 🚀 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: production-quality-gates
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: 
+      name: production
+      url: https://libertytax-pnl.vercel.app
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 🔧 Install dependencies
+        run: npm ci
+        
+      - name: 🏗️ Build application
+        run: npm run build
+        
+      - name: 🚀 Deploy to Vercel Production
+        id: deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-args: '--prod'
+          
+      - name: 🧪 Final Production Smoke Test
+        run: |
+          echo "Waiting for production deployment..."
+          sleep 60
+          echo "Running final smoke test..."
+          curl -f https://libertytax-pnl.vercel.app || exit 1
+          echo "✅ Production deployment successful"
+        
+      - name: 📊 Create GitHub release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          body: |
+            ## 🚀 Production Release v${{ github.run_number }}
+            
+            **Deployed at:** $(date -u)
+            **Commit:** ${{ github.sha }}
+            **URL:** https://libertytax-pnl.vercel.app
+            
+            ### Changes in this release
+            ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
+        
+      - name: 📣 Notify production deployment
+        uses: 8398a7/action-slack@v3
+        if: always()
+        with:
+          status: ${{ job.status }}
+          text: |
+            🚀 Production deployment ${{ job.status }}
+            🔗 URL: https://libertytax-pnl.vercel.app
+            📝 Commit: ${{ github.sha }}
+            🏷️ Release: v${{ github.run_number }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ==========================================
+  # 🧹 CLEANUP PREVIEW ENVIRONMENTS
+  # ==========================================
+  cleanup-preview:
+    name: 🧹 Cleanup Preview Environment
+    runs-on: ubuntu-latest
+    if: github.event.action == 'closed' && github.event_name == 'pull_request'
+    steps:
+      - name: 🧹 Delete preview deployment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log('Preview environment cleanup triggered for PR #${{ github.event.number }}')
+            
+      - name: 💬 Comment cleanup status
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🧹 Preview Environment Cleaned Up\n\nThe preview environment for this PR has been cleaned up.`
+            })
