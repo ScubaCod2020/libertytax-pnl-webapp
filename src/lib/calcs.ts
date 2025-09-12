@@ -16,6 +16,9 @@ export interface Inputs {
   otherIncome?: number // Other revenue streams (bookkeeping, notary, etc.)
   discountsPct: number
   
+  // Pre-calculated expense total from Page 2 (overrides field-based calculation)
+  calculatedTotalExpenses?: number
+  
   // All 17 expense fields
   salariesPct: number
   empDeductionsPct: number
@@ -153,13 +156,23 @@ export function calc(inputs: Inputs): Results {
   // Miscellaneous
   const misc = grossFees * (inputs.miscPct/100)
   
-  // Calculate totals
-  const totalExpenses = 
+  // Calculate totals - use pre-calculated value from Page 2 if available
+  const totalExpenses = inputs.calculatedTotalExpenses || (
     salaries + empDeductions + 
     rent + telephone + utilities +
     localAdv + insurance + postage + supplies + dues + bankFees + maintenance + travelEnt +
     royalties + advRoyalties + taxRushRoyalties +
     misc
+  )
+  
+  // 🔄 EXPENSE SYNC DEBUG: Log when using pre-calculated vs calculated expenses
+  if (inputs.calculatedTotalExpenses) {
+    console.log('💾 Using Page 2 pre-calculated expenses:', {
+      preCalculatedTotal: inputs.calculatedTotalExpenses,
+      fieldBasedTotal: salaries + empDeductions + rent + telephone + utilities + localAdv + insurance + postage + supplies + dues + bankFees + maintenance + travelEnt + royalties + advRoyalties + taxRushRoyalties + misc,
+      source: 'Page 2 actualTotalExpenses'
+    })
+  }
     
   const netIncome = totalRevenue - totalExpenses
   const totalReturns = inputs.taxPrepReturns + taxRush

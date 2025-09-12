@@ -76,6 +76,9 @@ export interface WizardAnswers {
   
   // Derived expense values for export
   expenses?: ExpenseValues
+  
+  // Pre-calculated expense total from Page 2 (overrides calc engine when available)
+  calculatedTotalExpenses?: number
 }
 
 // Growth options for the performance change dropdown

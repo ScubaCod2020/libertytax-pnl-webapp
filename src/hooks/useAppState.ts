@@ -26,6 +26,9 @@ export interface AppState {
   taxRushReturns: number
   discountsPct: number
   otherIncome: number
+  
+  // Pre-calculated expense total from Page 2 (overrides field-based calculation)
+  calculatedTotalExpenses?: number
 
   // All 17 expense fields
   salariesPct: number
@@ -62,6 +65,7 @@ export interface AppStateActions {
   setTaxRush: (value: number) => void
   setDisc: (value: number) => void
   setOtherIncome: (value: number) => void
+  setCalculatedTotalExpenses: (value: number | undefined) => void
 
   // Expense actions
   setSal: (value: number) => void
@@ -121,6 +125,7 @@ export function useAppState(): AppState & AppStateActions {
   const [taxRushReturns, setTaxRush] = useState(0)
   const [discountsPct, setDisc] = useState(3)
   const [otherIncome, setOtherIncome] = useState(0)
+  const [calculatedTotalExpenses, setCalculatedTotalExpenses] = useState<number | undefined>(undefined)
 
   // All 17 expense fields
   const [salariesPct, setSal] = useState(25)
@@ -213,6 +218,12 @@ export function useAppState(): AppState & AppStateActions {
     // Only set otherIncome if hasOtherIncome is enabled, otherwise force to 0
     setOtherIncome(answers.hasOtherIncome ? (answers.otherIncome ?? 0) : 0)
     
+    // 🔄 EXPENSE SYNC: Apply pre-calculated expense total from Page 2 if available
+    if (answers.calculatedTotalExpenses !== undefined) {
+      console.log('💾 Applying Page 2 calculated expense total:', answers.calculatedTotalExpenses)
+      setCalculatedTotalExpenses(answers.calculatedTotalExpenses)
+    }
+    
     // 🐛 FIXED: Apply TaxRush data from wizard (was previously hardcoded to 0)
     const taxRushReturns = answers.region === 'CA' && answers.handlesTaxRush 
       ? (answers.taxRushReturns ?? answers.projectedTaxRushReturns ?? 0)
@@ -258,6 +269,7 @@ export function useAppState(): AppState & AppStateActions {
     taxRushReturns,
     discountsPct,
     otherIncome,
+    calculatedTotalExpenses,
     salariesPct,
     empDeductionsPct,
     rentPct,
@@ -286,6 +298,7 @@ export function useAppState(): AppState & AppStateActions {
     setTaxRush,
     setDisc,
     setOtherIncome,
+    setCalculatedTotalExpenses,
     setSal,
     setEmpDeductions,
     setRent,

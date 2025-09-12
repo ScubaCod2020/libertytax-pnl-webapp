@@ -22,6 +22,9 @@ export interface CalculationInputs {
   discountsPct: number
   otherIncome: number
   
+  // Pre-calculated expense total from Page 2 (overrides field-based calculation)
+  calculatedTotalExpenses?: number
+  
   // All 17 expense fields
   salariesPct: number
   empDeductionsPct: number
@@ -62,6 +65,7 @@ export function useCalculations(inputs: CalculationInputs): CalculationResults {
       taxRushReturns: inputs.taxRushReturns,
       discountsPct: inputs.discountsPct,
       otherIncome: inputs.otherIncome,
+      calculatedTotalExpenses: inputs.calculatedTotalExpenses,
       
       // All 17 expense fields
       salariesPct: inputs.salariesPct,
@@ -86,7 +90,7 @@ export function useCalculations(inputs: CalculationInputs): CalculationResults {
     }),
     [
       inputs.region, inputs.scenario, inputs.avgNetFee, inputs.taxPrepReturns, inputs.taxRushReturns,
-      inputs.discountsPct, inputs.otherIncome, inputs.salariesPct, inputs.empDeductionsPct, inputs.rentPct, 
+      inputs.discountsPct, inputs.otherIncome, inputs.calculatedTotalExpenses, inputs.salariesPct, inputs.empDeductionsPct, inputs.rentPct, 
       inputs.telephoneAmt, inputs.utilitiesAmt, inputs.localAdvAmt, inputs.insuranceAmt, 
       inputs.postageAmt, inputs.suppliesPct, inputs.duesAmt, inputs.bankFeesAmt,
       inputs.maintenanceAmt, inputs.travelEntAmt, inputs.royaltiesPct, inputs.advRoyaltiesPct, 

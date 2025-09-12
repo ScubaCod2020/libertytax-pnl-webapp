@@ -1496,6 +1496,17 @@ export default function WizardInputs({
               return total
             }, 0)
             
+            // 🔄 AUTO-SAVE: Save calculated expense total to wizard answers for dashboard consistency
+            React.useEffect(() => {
+              if (actualTotalExpenses > 0 && Math.abs(actualTotalExpenses - (answers.calculatedTotalExpenses || 0)) > 1) {
+                console.log('💾 Page 2 → Wizard: Saving calculated expense total', {
+                  actualTotalExpenses: Math.round(actualTotalExpenses),
+                  previousValue: answers.calculatedTotalExpenses
+                })
+                updateAnswers({ calculatedTotalExpenses: Math.round(actualTotalExpenses) })
+              }
+            }, [actualTotalExpenses, answers.calculatedTotalExpenses, updateAnswers])
+            
             // Use same strategic calculation as the targets section - operational best practices (76% target)
             const rawExpenseTotal = relevantFields.reduce((total, field) => {
               // Special handling for TaxRush Royalties - calculated on TaxRush gross fees only
