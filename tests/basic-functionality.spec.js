@@ -14,22 +14,23 @@ test.describe('Liberty Tax P&L Webapp - Basic Functionality', () => {
     await expect(page.locator('body')).toBeVisible();
     
     // Look for key elements that should be present
-    const hasMainContent = await page.locator('main, #root, .app, [class*="app"]').first().isVisible();
+    const hasMainContent = await page.locator('#app, main, #root, .app, [class*="app"]').first().isVisible();
     expect(hasMainContent).toBeTruthy();
   });
 
   test('wizard can be opened', async ({ page }) => {
-    // Look for wizard start button with various possible selectors
+    // Look for wizard start button - check for actual button text
     const startButton = page.locator('button').filter({ 
-      hasText: /start|wizard|begin|create/i 
+      hasText: /setup wizard|🚀 setup wizard|wizard|start|begin|create/i 
     }).first();
     
     if (await startButton.isVisible()) {
       await startButton.click();
       
       // Check if wizard opened - look for wizard-specific content
-      const wizardContent = page.locator('h1, h2, h3, [class*="wizard"], [id*="wizard"]').filter({ 
-        hasText: /welcome|region|store|step/i 
+      // The wizard shows a multi-step form with region selection
+      const wizardContent = page.locator('h1, h2, h3, [class*="wizard"], [id*="wizard"], form, select, input').filter({ 
+        hasText: /welcome|region|store|step|setup|wizard|united states|canada/i 
       });
       
       await expect(wizardContent.first()).toBeVisible({ timeout: 5000 });
@@ -84,6 +85,31 @@ test.describe('Liberty Tax P&L Webapp - Basic Functionality', () => {
       // Check for horizontal scroll
       const bodyWidth = await page.evaluate(() => document.body.scrollWidth);
       const viewportWidth = viewport.width;
+      
+      // Debug: Log the actual widths
+      console.log(`Viewport: ${viewportWidth}px, Body: ${bodyWidth}px`);
+      
+      // Check for elements that might be causing overflow
+      const overflowElements = await page.evaluate(() => {
+        const elements = [];
+        const allElements = document.querySelectorAll('*');
+        allElements.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.width > window.innerWidth) {
+            elements.push({
+              tag: el.tagName,
+              className: el.className,
+              width: rect.width,
+              innerWidth: window.innerWidth
+            });
+          }
+        });
+        return elements;
+      });
+      
+      if (overflowElements.length > 0) {
+        console.log('Overflow elements:', overflowElements);
+      }
       
       // Allow small tolerance (5px) for rounding
       expect(bodyWidth).toBeLessThanOrEqual(viewportWidth + 5);

@@ -3,6 +3,9 @@
 
 import type { Region } from '../lib/calcs'
 
+// Re-export Region type for convenience
+export type { Region }
+
 // Brand asset types
 export interface BrandAssets {
   logo: string          // Main logo (stacked version)

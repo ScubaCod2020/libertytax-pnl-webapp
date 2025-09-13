@@ -183,7 +183,7 @@ const savedAt = (() => {
             persistence={persistence} // Pass persistence for loading saved answers
           />
         ) : (
-            <div className="container" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 350px) minmax(400px, 500px) minmax(600px, 1fr)', gap: '1.5rem', alignItems: 'start' }}>
+            <div className="container responsive-grid">
               <ProjectedPerformancePanel 
                 grossFees={calculations.grossFees}
                 discounts={calculations.discounts}

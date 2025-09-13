@@ -23,11 +23,13 @@ export default function BrandLogo({
   const assets = useBrandAssets(region)
   
   // Choose the appropriate logo variant
-  const logoUrl = variant === 'wide' 
-    ? assets.logoWide || assets.logoUrl  // Use wide logo or fall back to standard
-    : variant === 'watermark'
-    ? assets.watermarkUrl
-    : assets.logoUrl
+  const logoUrl = assets ? (
+    variant === 'wide' 
+      ? assets.logoWide || assets.logoUrl  // Use wide logo or fall back to standard
+      : variant === 'watermark'
+      ? assets.watermarkUrl
+      : assets.logoUrl
+  ) : '/logo.png' // Fallback logo
 
   // Size configurations
   const sizeStyles = {

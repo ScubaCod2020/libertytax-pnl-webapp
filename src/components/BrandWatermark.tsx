@@ -27,7 +27,7 @@ export default function BrandWatermark({ region }: BrandWatermarkProps) {
       }}
     >
       <img
-        src={assets.watermarkUrl}
+        src={assets?.watermarkUrl || '/watermark.png'}
         alt={`${region === 'US' ? 'Liberty Tax' : 'Liberty Tax Canada'} watermark`}
         style={{
           width: '800px',
@@ -71,7 +71,7 @@ export function TextWatermark({ region }: BrandWatermarkProps) {
         whiteSpace: 'nowrap'
       }}
     >
-      {brand.name.toUpperCase()}
+      {brand?.name?.toUpperCase() || 'LIBERTY TAX'}
     </div>
   )
 }

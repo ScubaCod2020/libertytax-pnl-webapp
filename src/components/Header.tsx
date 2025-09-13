@@ -53,13 +53,16 @@ export default function Header({ region, setRegion, onReset, onShowWizard, onSho
         alignItems: 'center',
         justifySelf: 'center'
       }}>
-        <div style={{
-          fontSize: '1.5rem',
-          fontWeight: 600,
-          color: '#1e40af',
-          lineHeight: '1.2',
-          textAlign: 'center'
-        }}>
+        <div 
+          data-testid="app-title"
+          style={{
+            fontSize: '1.5rem',
+            fontWeight: 600,
+            color: '#1e40af',
+            lineHeight: '1.2',
+            textAlign: 'center'
+          }}
+        >
           P&L Budget & Forecast
         </div>
         <span style={{
@@ -89,6 +92,7 @@ export default function Header({ region, setRegion, onReset, onShowWizard, onSho
           {/* Launch Setup Wizard / Review Setup - Hide when user is actively in wizard */}
           {!showWizard && (
             <button
+              data-testid="wizard-launch-btn"
               onClick={onShowWizard}
               aria-label={wizardCompleted ? "Review Setup" : "Launch Setup Wizard"}
               title={wizardCompleted ? "Review and edit your setup configuration" : "Launch Setup Wizard"}
@@ -114,6 +118,7 @@ export default function Header({ region, setRegion, onReset, onShowWizard, onSho
           {/* Dashboard Button - Only show when NOT on dashboard */}
           {wizardCompleted && onShowDashboard && currentPage !== 'dashboard' && (
             <button
+              data-testid="dashboard-btn"
               onClick={onShowDashboard}
               style={{ 
                 background: 'linear-gradient(45deg, #1e40af, #3b82f6)', 

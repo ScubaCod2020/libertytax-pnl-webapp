@@ -10,7 +10,7 @@
 *{box-sizing:border-box}
 html,body,#app{height:100%}
 body{margin:0;font-family:var(--brand-font-stack, "Proxima Nova", "Inter", "Source Sans Pro", Arial, sans-serif);color:var(--ink);background:#fff}
-.container{display:grid;grid-template-columns:320px 1fr;gap:16px;max-width:1200px;margin:24px auto;padding:0 16px}
+.container{display:grid;grid-template-columns:320px 1fr;gap:16px;max-width:100%;margin:24px auto;padding:0 16px;width:100%}
 .header{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid #e5e7eb}
 .brand{font-weight:800;color:var(--liberty-navy);font-family:var(--brand-font-stack, "Proxima Nova", "Inter", Arial, sans-serif);letter-spacing:1px}
 .card{background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
@@ -40,6 +40,99 @@ body{margin:0;font-family:var(--brand-font-stack, "Proxima Nova", "Inter", "Sour
   grid-template-columns: 320px minmax(0, 1fr); /* left rail fixed, right flexible */
   gap: 16px;               /* a bit more breathing room */
   align-items: start;      /* keep cards from stretching vertically */
+}
+
+/* ==== Responsive Grid Layout ==== */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ==== Responsive Design ==== */
+@media (max-width: 1200px) {
+  .responsive-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr; /* Stack on mobile */
+    gap: 12px;
+    margin: 12px auto;
+    padding: 0 12px;
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .responsive-grid {
+    grid-template-columns: 1fr; /* Stack all columns on mobile */
+    gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+  
+  .header > div {
+    width: 100%;
+  }
+  
+  .header > div:first-child {
+    order: 1;
+  }
+  
+  .header > div:nth-child(2) {
+    order: 2;
+  }
+  
+  .header > div:last-child {
+    order: 3;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 8px;
+    gap: 8px;
+    margin: 8px auto;
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .responsive-grid {
+    width: 100%;
+    max-width: 100%;
+    gap: 8px;
+  }
+  
+  .card {
+    padding: 12px;
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .input-row input,
+  .input-row select {
+    width: 120px;
+    font-size: 12px;
+  }
+  
+  /* Force all elements to respect viewport width */
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 /* Ensure grid children can shrink instead of overflowing their cells */

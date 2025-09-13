@@ -225,7 +225,7 @@ test.describe('Performance & Responsiveness', () => {
   test('loads within acceptable time', async ({ page }) => {
     const startTime = Date.now()
     await page.goto('/')
-    await page.locator('text=Liberty Tax • P&L Budget & Forecast').waitFor()
+    await page.locator('text=P&L Budget & Forecast').waitFor()
     const loadTime = Date.now() - startTime
     
     expect(loadTime).toBeLessThan(3000) // 3 seconds max
