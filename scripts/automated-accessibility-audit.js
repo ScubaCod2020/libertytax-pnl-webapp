@@ -9,6 +9,7 @@
 
 import { chromium } from 'playwright';
 import { AxePuppeteer } from '@axe-core/playwright';
+import fs from 'fs';
 
 class AccessibilityAuditor {
   
@@ -297,7 +298,6 @@ ${auditResults.summary.recommendations
    */
   async saveResults(auditResults, outputDir = 'reports/accessibility') {
     // Create output directory
-    const fs = await import('fs');
     if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir, { recursive: true });
     }

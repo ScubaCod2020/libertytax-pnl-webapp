@@ -1,5 +1,5 @@
 // Auto-generated test file for WizardInputs
-// Generated on: 2025-09-11T17:07:36.366Z
+// Generated on: 2025-09-13T22:05:53.332Z
 
 import { test, expect } from '@playwright/test';
 

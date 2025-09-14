@@ -35,7 +35,7 @@ jobs:
       - name: 🔧 Install dependencies
         run: npm ci
         
-      - name: 🔍 Quality Gate 1: Lint & Type Check
+      - name: 🔍 Quality Gate 1 - Lint & Type Check
         id: lint-type
         run: |
           echo "Running lint and type checks..."
@@ -43,14 +43,14 @@ jobs:
           npm run type-check
           echo "✅ Lint and type checks passed"
           
-      - name: 🧪 Quality Gate 2: Unit Tests
+      - name: 🧪 Quality Gate 2 - Unit Tests
         id: unit-tests
         run: |
           echo "Running unit tests..."
           npm run test:unit
           echo "✅ Unit tests passed"
           
-      - name: 🏗️ Quality Gate 3: Build Validation
+      - name: 🏗️ Quality Gate 3 - Build Validation
         id: build-check
         run: |
           echo "Building application..."
@@ -191,7 +191,7 @@ jobs:
           npm audit --audit-level=moderate
           # Add Snyk scan if token available
           if [ -n "${{ secrets.SNYK_TOKEN }}" ]; then
-            npx snyk test
+            npx snyk test --token=${{ secrets.SNYK_TOKEN }}
           fi
 
   # ==========================================
@@ -239,18 +239,6 @@ jobs:
           echo "Running final validation tests..."
           curl -f ${{ steps.deploy.outputs.preview-url }} || exit 1
           echo "✅ Staging deployment successful"
-          
-      - name: 📣 Notify staging deployment
-        uses: 8398a7/action-slack@v3
-        if: always()
-        with:
-          status: ${{ job.status }}
-          text: |
-            🎯 Staging deployment ${{ job.status }}
-            🔗 URL: ${{ steps.deploy.outputs.preview-url }}
-            📝 Commit: ${{ github.sha }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   # ==========================================
   # ⚡ STAGE 3: PRODUCTION QUALITY GATES
@@ -297,7 +285,7 @@ jobs:
         run: |
           npm audit --audit-level=high
           if [ -n "${{ secrets.SNYK_TOKEN }}" ]; then
-            npx snyk test
+            npx snyk test --token=${{ secrets.SNYK_TOKEN }}
           fi
           
       - name: 🧪 Smoke Test Rollback Procedure
@@ -370,19 +358,6 @@ jobs:
             ${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
-        
-      - name: 📣 Notify production deployment
-        uses: 8398a7/action-slack@v3
-        if: always()
-        with:
-          status: ${{ job.status }}
-          text: |
-            🚀 Production deployment ${{ job.status }}
-            🔗 URL: https://libertytax-pnl.vercel.app
-            📝 Commit: ${{ github.sha }}
-            🏷️ Release: v${{ github.run_number }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   # ==========================================
   # 🧹 CLEANUP PREVIEW ENVIRONMENTS

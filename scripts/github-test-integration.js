@@ -5,8 +5,8 @@
  * Enhanced testing with GitHub Actions integration and reporting
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 console.log('🔗 Liberty Tax P&L GitHub Integration Testing Suite\n');
 
