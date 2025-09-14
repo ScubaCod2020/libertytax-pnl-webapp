@@ -124,6 +124,21 @@ export class PersistenceService {
     }
   }
 
+  dumpStorage(): void {
+    try {
+      const envelope = this.loadEnvelope();
+      console.group('💾 Storage Dump');
+      console.log('Storage Key:', this.STORAGE_KEY);
+      console.log('App Version:', this.APP_VERSION);
+      console.log('Origin:', this.ORIGIN);
+      console.log('Envelope:', envelope);
+      console.log('Raw localStorage:', localStorage.getItem(this.STORAGE_KEY));
+      console.groupEnd();
+    } catch (error) {
+      console.error('💾 Failed to dump storage:', error);
+    }
+  }
+
   dbg(message: string, data?: any): void {
     if (this.DEBUG) {
       console.log(`[Persistence] ${message}`, data);

@@ -1,0 +1,168 @@
+name: 🤖 AI Code Review Request
+description: Request code review and analysis from AI assistants
+title: "[AI REVIEW] "
+labels: ["ai-review", "code-quality"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Request comprehensive code review from AI assistants like @codex. This template provides the context AI needs for effective analysis.
+
+  - type: dropdown
+    id: review-type
+    attributes:
+      label: Review Type
+      description: What type of code review do you need?
+      options:
+        - Code Quality & Best Practices
+        - Performance Analysis
+        - Security Review
+        - Testing Strategy
+        - Architecture Review
+        - Bug Investigation
+        - Mobile Compatibility
+        - Calculation Logic
+    validations:
+      required: true
+
+  - type: textarea
+    id: code-context
+    attributes:
+      label: Code Context
+      description: Provide the code that needs review
+      placeholder: |
+        ```javascript
+        // Paste your code here
+        const calculateNetMargin = (netIncome, taxPrepIncome) => {
+          if (taxPrepIncome === 0) return 0;
+          return (netIncome / taxPrepIncome) * 100;
+        };
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: specific-concerns
+    attributes:
+      label: Specific Concerns
+      description: What specific aspects are you concerned about?
+      placeholder: |
+        - Mathematical accuracy of the formula
+        - Edge case handling (division by zero)
+        - Performance with large datasets
+        - Type safety in TypeScript
+        - etc.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Code Complexity
+      description: How complex is this code?
+      options:
+        - Simple - Basic logic, few dependencies
+        - Medium - Multiple components, some complexity
+        - Complex - Advanced logic, many interdependencies
+    validations:
+      required: true
+
+  - type: dropdown
+    id: risk-level
+    attributes:
+      label: Risk Level
+      description: What's the risk level of this change?
+      options:
+        - Low - Minor changes, well-tested areas
+        - Medium - Moderate impact, some risk
+        - High - Critical functionality, major changes
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: focus-areas
+    attributes:
+      label: AI Review Focus Areas
+      description: What should the AI focus on? (check all that apply)
+      options:
+        - label: Mathematical accuracy (calculations)
+        - label: React hooks usage and best practices
+        - label: TypeScript type safety
+        - label: Performance optimization
+        - label: Error handling and edge cases
+        - label: Security considerations
+        - label: Mobile responsiveness
+        - label: Accessibility compliance
+        - label: Code maintainability
+        - label: Testing coverage
+
+  - type: textarea
+    id: business-context
+    attributes:
+      label: Business Context
+      description: Provide context about what this code does in the application
+      placeholder: |
+        This code handles the dual-entry expense calculation system where users can enter either a percentage or dollar amount, and the system automatically calculates and syncs the corresponding value.
+        
+        Key business rules:
+        - Percentage is based on gross fees for most categories
+        - Employee deductions are based on salary amount
+        - Some fields are fixed dollar amounts only
+    validations:
+      required: true
+
+  - type: textarea
+    id: test-data
+    attributes:
+      label: Test Data & Expected Results
+      description: Provide sample inputs and expected outputs
+      placeholder: |
+        Sample test case:
+        Input: 
+        - Gross Fees: $206,186
+        - Salaries Percentage: 25%
+        
+        Expected Output:
+        - Salaries Dollar Amount: $51,547
+        - Back-calculation: 25.0%
+
+  - type: textarea
+    id: ai-questions
+    attributes:
+      label: Specific Questions for AI
+      description: Tag @codex with specific questions
+      placeholder: |
+        @codex Please analyze this code and help with:
+        
+        1. Is the calculation logic mathematically correct?
+        2. How should I handle the division by zero case?
+        3. Are there performance implications I should consider?
+        4. What edge cases am I missing?
+        5. Is this the most maintainable approach?
+      value: "@codex "
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-issues
+    attributes:
+      label: Current Issues (if any)
+      description: Describe any problems you're experiencing
+      placeholder: |
+        - Calculation results seem inconsistent
+        - Performance is slow with large datasets
+        - Getting TypeScript errors
+        - Mobile layout breaks
+        - etc.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other relevant information
+      placeholder: |
+        - Related files or components
+        - Previous attempts at solving this
+        - Constraints or requirements
+        - Links to documentation

@@ -36,7 +36,7 @@ import { WizardShellComponent } from './components/wizard-shell/wizard-shell.com
             [region]="appState.region"
             [persistence]="persistence"
             (setRegion)="onSetRegion($event)"
-            (onComplete)="onWizardComplete($event)"
+            (wizardComplete)="onWizardComplete($event)"
             (onCancel)="onWizardCancel()">
           </app-wizard-shell>
         </div>

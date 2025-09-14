@@ -1,0 +1,39 @@
+<header class="app-header">
+  <div class="header-content">
+    <div class="brand-section">
+      <img 
+        [src]="region === 'US' 
+          ? './assets/brands/us/LT-2022-Wide-RGB.png'
+          : './assets/brands/ca/LT-Canada-Wide-Red.png'"
+        [alt]="region === 'CA' ? 'Liberty Tax Canada' : 'Liberty Tax US'"
+        class="brand-logo"
+        (error)="onLogoError($event)"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <div class="title-section">
+      <h1 [class.region-us]="region === 'US'" [class.region-ca]="region === 'CA'">P&L Budget & Forecast</h1>
+      <span class="version-badge">v0.5 preview</span>
+    </div>
+    <div class="actions-section">
+      <button 
+        *ngIf="!showWizard" 
+        (click)="onShowWizardClick()" 
+        class="btn btn-secondary">
+        {{ wizardCompleted ? '⚙️ Review Setup' : '🚀 Setup Wizard' }}
+      </button>
+      <button 
+        *ngIf="showWizard && wizardCompleted" 
+        (click)="onShowDashboardClick()" 
+        class="btn btn-secondary">
+        📊 Show Dashboard
+      </button>
+      <button 
+        (click)="onResetClick()" 
+        class="btn btn-danger">
+        🔄 Reset
+      </button>
+    </div>
+  </div>
+</header>

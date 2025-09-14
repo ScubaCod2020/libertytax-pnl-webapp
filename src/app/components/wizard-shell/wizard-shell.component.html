@@ -1,0 +1,423 @@
+<div class="wizard-container">
+  <!-- Welcome Step -->
+  <div *ngIf="currentStep === 'welcome'" class="welcome-step">
+    <div class="welcome-header">
+      <h2>Welcome – Quick Start Wizard</h2>
+      <p>Create your customized P&L dashboard in just a few quick steps</p>
+    </div>
+
+        <!-- Region Selection -->
+        <div class="form-field">
+          <label for="region-select" class="form-label">
+            Region <span class="required">*</span>
+          </label>
+          <div class="form-input-container">
+            <select 
+              id="region-select"
+              [(ngModel)]="answers.region"
+              (ngModelChange)="onRegionChange($event)"
+              class="form-select">
+              <option value="US">United States</option>
+              <option value="CA">Canada</option>
+            </select>
+          </div>
+          <p class="form-help">Affects tax calculations and available features</p>
+        </div>
+
+    <!-- Store Type Selection -->
+    <div class="form-field">
+      <label for="store-type-select" class="form-label">
+        Store Type <span class="required">*</span>
+      </label>
+      <div class="form-input-container">
+        <select 
+          id="store-type-select"
+          [(ngModel)]="answers.storeType"
+          (ngModelChange)="onStoreTypeChange($event)"
+          (focus)="onFieldInteraction('storeType')"
+          (blur)="onFieldInteraction('storeType')"
+          [class.invalid]="!isFieldValid('storeType')"
+          class="form-select">
+          <option value="" disabled>Select store type...</option>
+          <option value="new">New Store (First year)</option>
+          <option value="existing">Existing Store</option>
+        </select>
+      </div>
+      <p class="form-help">New stores use regional stats, existing stores use your historical data</p>
+    </div>
+
+    <!-- New Store Setup Banner -->
+    <div *ngIf="answers.storeType === 'new'" class="setup-banner" [class.region-us]="answers.region === 'US'" [class.region-ca]="answers.region === 'CA'">
+      <div class="banner-content">
+        <span class="banner-icon">💡</span>
+        <div class="banner-text">
+          <h4>New Store Setup - Forecasting</h4>
+          <p>Set your target performance goals below. These will be used for business planning and can be adjusted as you learn more about your market.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TaxRush Section (Canada only) -->
+    <div *ngIf="answers.region === 'CA' && answers.storeType" class="taxrush-section" [class.region-ca]="answers.region === 'CA'">
+      <h3 class="section-title">TaxRush Returns</h3>
+      <p class="section-description">
+        Will your office handle TaxRush returns? (TaxRush is Liberty Tax's same-day refund service)
+      </p>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input 
+            type="radio" 
+            name="handlesTaxRush" 
+            [value]="true"
+            [(ngModel)]="answers.handlesTaxRush"
+            (ngModelChange)="onTaxRushChange($event)">
+          <span class="radio-label">Yes, we will handle TaxRush returns</span>
+        </label>
+        <label class="radio-option">
+          <input 
+            type="radio" 
+            name="handlesTaxRush" 
+            [value]="false"
+            [(ngModel)]="answers.handlesTaxRush"
+            (ngModelChange)="onTaxRushChange($event)">
+          <span class="radio-label">No, we don't handle TaxRush</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Additional Revenue Streams Section -->
+    <div *ngIf="answers.storeType" class="revenue-streams-section" [class.region-ca]="answers.region === 'CA'">
+      <h3 class="section-title">Additional Revenue Streams</h3>
+      <p class="section-description">
+        Does your office have additional revenue streams beyond tax preparation? (e.g., notary services, business consulting, bookkeeping)
+      </p>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input 
+            type="radio" 
+            name="hasOtherIncome" 
+            [value]="true"
+            [checked]="answers.hasOtherIncome === true"
+            (change)="onOtherIncomeChange(true)">
+          <span class="radio-label">Yes, we have other income sources</span>
+        </label>
+        <label class="radio-option">
+          <input 
+            type="radio" 
+            name="hasOtherIncome" 
+            [value]="false"
+            [checked]="answers.hasOtherIncome === false"
+            (change)="onOtherIncomeChange(false)">
+          <span class="radio-label">No, only tax preparation</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Target Performance Goals Section (New Store only) -->
+    <div *ngIf="answers.storeType === 'new'" class="performance-goals-section" [class.region-us]="answers.region === 'US'" [class.region-ca]="answers.region === 'CA'">
+      <div class="section-header">
+        <h3 class="section-title">Target Performance Goals</h3>
+        <button 
+          type="button"
+          (click)="resetTargetPerformance()"
+          class="btn btn-danger btn-sm">
+          🔄 Reset Goals
+        </button>
+      </div>
+      
+          <!-- Target Performance Goals - Stacked vertically -->
+          <div class="form-field">
+            <label for="taxPrepReturns" class="form-label">Tax Prep Returns <span class="required">*</span></label>
+            <div class="form-input-container">
+              <span class="field-symbol">#</span>
+              <input
+                type="number"
+                id="taxPrepReturns"
+                [(ngModel)]="answers.taxPrepReturns"
+                (ngModelChange)="onFieldChange('taxPrepReturns', $event)"
+                (focus)="onFieldInteraction('taxPrepReturns')"
+                (blur)="onFieldInteraction('taxPrepReturns')"
+                [placeholder]="formatNumber(1600)"
+                class="form-input required-field"
+                [class.invalid]="!isFieldValid('taxPrepReturns')"
+                [class.user-interacted]="isUserInteracted('taxPrepReturns')"
+              />
+            </div>
+            <p class="form-help">Your target number of tax returns</p>
+          </div>
+
+          <div class="form-field">
+            <label for="avgNetFee" class="form-label">Average Net Fee <span class="required">*</span></label>
+            <div class="form-input-container">
+              <span class="field-symbol">$</span>
+              <input
+                type="number"
+                id="avgNetFee"
+                [(ngModel)]="answers.avgNetFee"
+                (ngModelChange)="onFieldChange('avgNetFee', $event)"
+                (focus)="onFieldInteraction('avgNetFee')"
+                (blur)="onFieldInteraction('avgNetFee')"
+                [placeholder]="formatCurrencyValue(125)"
+                class="form-input required-field"
+                [class.invalid]="!isFieldValid('avgNetFee')"
+                [class.user-interacted]="isUserInteracted('avgNetFee')"
+              />
+            </div>
+            <p class="form-help">Your target average net fee per return</p>
+          </div>
+
+          <div class="form-field">
+            <label for="grossTaxPrepFees" class="form-label">Gross Tax Prep Fees</label>
+            <div class="form-input-container">
+              <span class="field-symbol">$</span>
+              <input
+                type="number"
+                id="grossTaxPrepFees"
+                [(ngModel)]="answers.grossTaxPrepFees"
+                (ngModelChange)="onFieldChange('grossTaxPrepFees', $event)"
+                (focus)="onFieldInteraction('grossTaxPrepFees')"
+                (blur)="onFieldInteraction('grossTaxPrepFees')"
+                [placeholder]="formatCurrencyValue(calculatedGrossTaxPrepFees)"
+                class="form-input"
+                [class.user-interacted]="isUserInteracted('grossTaxPrepFees')"
+              />
+            </div>
+            <p class="form-help">Auto-calculated: Average Net Fee x Tax Prep Returns (you can override)</p>
+          </div>
+
+          <!-- TaxRush Fields (Canada only) -->
+          <div *ngIf="answers.region === 'CA' && answers.handlesTaxRush" class="taxrush-group">
+            <div class="taxrush-group-header">
+              <h4>TaxRush Returns</h4>
+            </div>
+            
+            <div class="form-field">
+              <label for="taxRushReturns" class="form-label">TaxRush Returns</label>
+              <div class="form-input-container">
+                <div class="dual-input-container">
+                  <span class="field-symbol">#</span>
+                  <input
+                    type="number"
+                    id="taxRushReturns"
+                    [(ngModel)]="answers.taxRushReturns"
+                  (ngModelChange)="onTaxRushReturnsChange($event)"
+                  (focus)="onFieldInteraction('taxRushReturns')"
+                  (blur)="onFieldInteraction('taxRushReturns')"
+                  [placeholder]="formatNumber(calculatedTaxRushReturns)"
+                  class="form-input"
+                  [class.user-interacted]="isUserInteracted('taxRushReturns')"
+                  />
+                  <input
+                    type="number"
+                    id="taxRushPercentage"
+                    [(ngModel)]="answers.taxRushPercentage"
+                    (ngModelChange)="onTaxRushPercentageChange($event)"
+                    (focus)="onFieldInteraction('taxRushPercentage')"
+                    (blur)="onFieldInteraction('taxRushPercentage')"
+                    [placeholder]="formatNumber(15)"
+                    step="0.1"
+                    min="0"
+                    max="100"
+                    class="form-input percentage-input"
+                    [class.user-interacted]="isUserInteracted('taxRushPercentage')"
+                  />
+                  <span class="field-symbol">%</span>
+                </div>
+              </div>
+              <p class="form-help">Default: 15% • Enter either return count or percentage - the other will auto-calculate</p>
+            </div>
+            
+            <div class="form-field">
+              <label for="taxRushFee" class="form-label">TaxRush Average Net Fee <span class="required">*</span></label>
+              <div class="form-input-container">
+                <span class="field-symbol">$</span>
+                <input
+                  type="number"
+                  id="taxRushFee"
+                  [(ngModel)]="answers.taxRushFee"
+                  (ngModelChange)="onFieldChange('taxRushFee', $event)"
+                  (focus)="onFieldInteraction('taxRushFee')"
+                  (blur)="onFieldInteraction('taxRushFee')"
+                  [placeholder]="formatCurrencyValue(0)"
+                  class="form-input required-field"
+                  [class.invalid]="!isFieldValid('taxRushFee')"
+                  [class.user-interacted]="isUserInteracted('taxRushFee')"
+                />
+              </div>
+              <p class="form-help">Fee per TaxRush return</p>
+            </div>
+            
+            <div class="form-field">
+              <label for="grossTaxRushFees" class="form-label">Gross TaxRush Fees</label>
+              <div class="form-input-container">
+                <span class="field-symbol">$</span>
+                <input
+                  type="number"
+                  id="grossTaxRushFees"
+                  [(ngModel)]="answers.grossTaxRushFees"
+                  (ngModelChange)="onFieldChange('grossTaxRushFees', $event)"
+                  (focus)="onFieldInteraction('grossTaxRushFees')"
+                  (blur)="onFieldInteraction('grossTaxRushFees')"
+                  [placeholder]="formatCurrencyValue(calculatedGrossTaxRushFees)"
+                  class="form-input"
+                  [class.user-interacted]="isUserInteracted('grossTaxRushFees')"
+                />
+              </div>
+              <p class="form-help">Auto-calculated: TaxRush Returns x TaxRush Average Net Fee</p>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="customerDiscounts" class="form-label">Customer Discounts</label>
+            <div class="form-input-container">
+              <div class="dual-input-container">
+                <span class="field-symbol">$</span>
+                <input
+                  type="number"
+                  id="discountsAmt"
+                  [(ngModel)]="answers.discountsAmt"
+                  (ngModelChange)="onDiscountAmountChange($event)"
+                  (focus)="onFieldInteraction('discountsAmt')"
+                  (blur)="onFieldInteraction('discountsAmt')"
+                  [placeholder]="formatCurrencyValue(6000)"
+                  class="form-input"
+                  [class.user-interacted]="isUserInteracted('discountsAmt')"
+                />
+                <span class="dual-input-separator">=</span>
+                <input
+                  type="number"
+                  id="discountsPct"
+                  [(ngModel)]="answers.discountsPct"
+                  (ngModelChange)="onDiscountPercentageChange($event)"
+                  (focus)="onFieldInteraction('discountsPct')"
+                  (blur)="onFieldInteraction('discountsPct')"
+                  [placeholder]="formatNumber(3.0)"
+                  step="0.1"
+                  min="0"
+                  max="100"
+                  class="form-input percentage-input"
+                  [class.user-interacted]="isUserInteracted('discountsPct')"
+                />
+                <span class="field-symbol">%</span>
+              </div>
+            </div>
+            <p class="form-help">Default: 3% • Enter either dollar amount or percentage - the other will auto-calculate</p>
+          </div>
+
+          <div class="form-field">
+            <label for="netTaxPrepFees" class="form-label">Net Tax Prep Fees</label>
+            <div class="form-input-container">
+              <span class="field-symbol">$</span>
+              <input
+                type="number"
+                id="netTaxPrepFees"
+                [(ngModel)]="answers.netTaxPrepFees"
+                (ngModelChange)="onFieldChange('netTaxPrepFees', $event)"
+                (focus)="onFieldInteraction('netTaxPrepFees')"
+                (blur)="onFieldInteraction('netTaxPrepFees')"
+                [placeholder]="formatCurrencyValue(calculatedNetTaxPrepFees)"
+                class="form-input"
+                [class.user-interacted]="isUserInteracted('netTaxPrepFees')"
+              />
+            </div>
+            <p class="form-help">Auto-calculated: Gross Tax Prep Fees - Customer Discounts (you can override)</p>
+          </div>
+
+          <!-- Other Income Field (only show if hasOtherIncome is true) -->
+          <div *ngIf="answers.hasOtherIncome" class="form-field">
+            <label for="otherIncome" class="form-label">Other Income <span class="required">*</span></label>
+            <div class="form-input-container">
+              <span class="field-symbol">$</span>
+              <input
+                type="number"
+                id="otherIncome"
+                [(ngModel)]="answers.otherIncome"
+                (ngModelChange)="onFieldChange('otherIncome', $event)"
+                (focus)="onFieldInteraction('otherIncome')"
+                (blur)="onFieldInteraction('otherIncome')"
+                [placeholder]="formatCurrencyValue(0)"
+                class="form-input required-field"
+                [class.invalid]="!isFieldValid('otherIncome')"
+                [class.user-interacted]="isUserInteracted('otherIncome')"
+              />
+            </div>
+            <p class="form-help">Enter your additional revenue from other sources</p>
+          </div>
+
+          <div class="form-field">
+            <label for="totalExpenses" class="form-label">Total Expenses</label>
+            <div class="form-input-container">
+              <span class="field-symbol">$</span>
+              <input
+                type="number"
+                id="totalExpenses"
+                [(ngModel)]="answers.totalExpenses"
+                (ngModelChange)="onFieldChange('totalExpenses', $event)"
+                (focus)="onFieldInteraction('totalExpenses')"
+                (blur)="onFieldInteraction('totalExpenses')"
+                [placeholder]="formatCurrencyValue(calculatedTotalExpenses)"
+                class="form-input"
+                [class.user-interacted]="isUserInteracted('totalExpenses')"
+              />
+            </div>
+            <p class="form-help">Industry standard: 76% of (Net Tax Prep Fees + Gross TaxRush Fees) (you can override)</p>
+          </div>
+
+    </div>
+
+    <!-- Target Net Income Summary - Only show if store type is selected -->
+    <div *ngIf="answers.storeType" class="performance-summary">
+      <div class="summary-content">
+        <div class="summary-text-large">Target Net Income: {{ formatCurrency(calculatedNetIncome) }}</div>
+        <div class="summary-text-small">Net Margin: {{ calculatedNetMargin }}%</div>
+      </div>
+    </div>
+
+
+    <!-- Navigation -->
+    <div class="wizard-navigation">
+      <div class="nav-left">
+        <button 
+          type="button"
+          (click)="onResetData()" 
+          class="btn btn-danger">
+          🔄 Reset Data
+        </button>
+        <button 
+          type="button"
+          (click)="onCancel()" 
+          class="btn btn-outline">
+          ❌ Cancel & Exit
+        </button>
+      </div>
+      <button 
+        type="button"
+        (click)="onNext()" 
+        [disabled]="!canProceed()"
+        class="btn btn-success"
+        [class.disabled]="!canProceed()">
+        Next Step: Detailed Inputs →
+      </button>
+    </div>
+  </div>
+
+  <!-- Inputs Step (placeholder for now) -->
+  <div *ngIf="currentStep === 'inputs'" class="inputs-step">
+    <h2>Detailed Inputs</h2>
+    <p>This step will contain detailed expense inputs...</p>
+    <div class="wizard-navigation">
+      <button (click)="goToStep('welcome')" class="btn btn-secondary">← Back</button>
+      <button (click)="goToStep('review')" class="btn btn-primary">Review →</button>
+    </div>
+  </div>
+
+  <!-- Review Step (placeholder for now) -->
+  <div *ngIf="currentStep === 'review'" class="review-step">
+    <h2>Review & Confirm</h2>
+    <p>Review your inputs before creating the dashboard...</p>
+    <div class="wizard-navigation">
+      <button (click)="goToStep('inputs')" class="btn btn-secondary">← Back</button>
+      <button (click)="onComplete()" class="btn btn-primary">Create Dashboard →</button>
+    </div>
+  </div>
+</div>

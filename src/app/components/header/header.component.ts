@@ -1,90 +1,17 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Region } from '../../models/wizard.models';
+import { BrandingService } from '../../services/branding.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <header class="app-header">
-      <div class="header-content">
-        <div class="brand-section">
-          <span class="brand-text">Liberty Tax {{ region === 'CA' ? 'Canada' : 'US' }}</span>
-        </div>
-        <div class="title-section">
-          <h1>P&L Budget & Forecast v0.5 preview</h1>
-        </div>
-        <div class="actions-section">
-          <button 
-            *ngIf="!showWizard" 
-            (click)="onShowWizard()" 
-            class="btn btn-secondary">
-            🧙‍♂️ Setup Wizard
-          </button>
-          <button 
-            *ngIf="showWizard" 
-            (click)="onShowDashboard()" 
-            class="btn btn-secondary">
-            📊 Dashboard
-          </button>
-          <button 
-            (click)="onReset()" 
-            class="btn btn-danger">
-            🔄 Reset
-          </button>
-        </div>
-      </div>
-    </header>
-  `,
-  styles: [`
-    .app-header {
-      background: white;
-      border-bottom: 1px solid #e2e8f0;
-      padding: 1rem 0;
-    }
-
-    .header-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .brand-section .brand-text {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #1e40af;
-    }
-
-    .title-section h1 {
-      font-size: 1.125rem;
-      font-weight: 500;
-      color: #6b7280;
-      margin: 0;
-    }
-
-    .actions-section {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    @media (max-width: 768px) {
-      .header-content {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      .actions-section {
-        width: 100%;
-        justify-content: center;
-      }
-    }
-  `]
+  imports: [CommonModule, FormsModule],
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnChanges {
   @Input() region: Region = 'US';
   @Input() showWizard: boolean = true;
   @Input() wizardCompleted: boolean = false;
@@ -97,6 +24,31 @@ export class HeaderComponent {
   @Output() onShowDashboard = new EventEmitter<void>();
   @Output() onShowReports = new EventEmitter<void>();
 
+  brandAssets: any = {};
+
+  constructor(private brandingService: BrandingService) {}
+
+  ngOnInit(): void {
+    this.updateBranding();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['region']) {
+      this.updateBranding();
+    }
+  }
+
+  private updateBranding(): void {
+    this.brandAssets = this.brandingService.getBrandAssets(this.region);
+    this.brandingService.applyBrand(this.region);
+  }
+
+  onRegionChange(region: Region): void {
+    this.region = region;
+    this.setRegion.emit(region);
+    this.updateBranding();
+  }
+
   onShowWizardClick(): void {
     this.onShowWizard.emit();
   }
@@ -107,5 +59,14 @@ export class HeaderComponent {
 
   onResetClick(): void {
     this.onReset.emit();
+  }
+
+  onLogoError(event: any): void {
+    console.warn('Failed to load logo image, falling back to text');
+    console.warn('Attempted to load:', event.target.src);
+    // Hide the image and show text fallback
+    (event.target as HTMLElement).style.display = 'none';
+    const brandSection = event.target.parentElement;
+    brandSection.innerHTML = `<span class="brand-text">Liberty Tax ${this.region === 'CA' ? 'Canada' : 'US'}</span>`;
   }
 }

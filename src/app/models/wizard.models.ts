@@ -15,6 +15,8 @@ export interface WizardAnswers {
   taxPrepReturns?: number;
   discountsAmt?: number;
   discountsPct?: number;
+  grossTaxPrepFees?: number;
+  netTaxPrepFees?: number;
   totalExpenses?: number;
   
   // Existing store data
@@ -27,6 +29,9 @@ export interface WizardAnswers {
   
   // TaxRush data (Canada only)
   taxRushReturns?: number;
+  taxRushPercentage?: number;
+  taxRushFee?: number;
+  grossTaxRushFees?: number;
   taxRushGrossFees?: number;
   
   // Other income
@@ -92,4 +97,71 @@ export interface AppState {
   taxRushRoyaltiesPct: number;
   miscPct: number;
   thresholds: any;
+}
+
+// Brand Colors interface
+export interface BrandColors {
+  // Primary brand colors
+  primary: string;
+  primaryHover: string;
+  primaryLight: string;
+  
+  // Secondary colors
+  secondary: string;
+  secondaryHover: string;
+  secondaryLight: string;
+  
+  // Accent colors
+  accent: string;
+  accentLight: string;
+  
+  // Status colors
+  success: string;
+  warning: string;
+  error: string;
+  info: string;
+  
+  // Background colors for auto-calculating fields
+  autoCalcEditable: string;    // Light primary tint for editable auto-calc fields
+  autoCalcDisplayOnly: string; // Light gray for display-only auto-calc fields
+  
+  // Text colors
+  textPrimary: string;
+  textSecondary: string;
+  textMuted: string;
+}
+
+// Brand Typography interface
+export interface BrandTypography {
+  // Font families
+  primaryFont: string;        // Main brand font with fallbacks
+  printFont: string;         // Font for print/PDF documents
+  
+  // Font weights following Proxima Nova hierarchy
+  weights: {
+    regular: number;         // 400 - Proxima Nova Regular
+    medium: number;          // 500 - Proxima Nova Medium  
+    semibold: number;        // 600 - Proxima Nova Semibold
+    extrabold: number;       // 800 - Proxima Nova Extrabold
+  };
+  
+  // Letter spacing for headlines (+200 tracking as per guidelines)
+  headlineSpacing: string;
+}
+
+// Brand Assets interface
+export interface BrandAssets {
+  logoUrl: string;
+  logoWide?: string;        // Wide/horizontal version for headers
+  watermarkUrl: string;
+  faviconUrl: string;
+}
+
+// Regional Brand interface
+export interface RegionalBrand {
+  colors: BrandColors;
+  typography: BrandTypography;
+  assets: BrandAssets;
+  name: string;
+  country: string;
 }

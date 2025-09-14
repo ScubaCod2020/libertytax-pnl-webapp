@@ -1,0 +1,17 @@
+.eslintrc.cjs
+.github/ISSUE_TEMPLATE/bug_report.yml
+.github/ISSUE_TEMPLATE/feature_request.yml
+.github/pull_request_template.md
+.prettierrc
+docs/VIRTUAL_TEAM_GUIDE.md
+lighthouserc.js
+package.json
+playwright.config.ts
+playwright.mobile.config.js
+src/App.test.tsx
+src/lib/calcs.test.ts
+src/test/setup.ts
+tests/app.spec.ts
+tests/mobile/responsive.spec.js
+vite.config.ts
+vitest.integration.config.ts

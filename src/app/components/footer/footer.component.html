@@ -1,0 +1,43 @@
+<footer class="footer-section">
+  <div class="footer-grid">
+    <div class="footer-column">
+      <h4 class="footer-title">Navigation</h4>
+      <ul class="footer-links">
+        <li><a href="#" class="footer-link" [class.active]="currentPage === 'wizard'" (click)="onNavigateClick('wizard')">Setup Wizard</a></li>
+        <li><a href="#" class="footer-link" [class.active]="currentPage === 'dashboard'" (click)="onNavigateClick('dashboard')">Dashboard</a></li>
+        <li><a href="#" class="footer-link" (click)="onNavigateClick('reports')">Reports</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-column">
+      <h4 class="footer-title">Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="#" class="footer-link" (click)="onNavigateClick('pro-tips')">Pro-Tips</a></li>
+        <li><a href="#" class="footer-link" (click)="onNavigateClick('practice')">Practice Problems</a></li>
+        <li><a href="#" class="footer-link" (click)="onNavigateClick('export')">Export (PDF/Excel)</a></li>
+        <li><a href="#" class="footer-link" (click)="onNavigateClick('support')">Support Center</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-column">
+      <h4 class="footer-title">Resources</h4>
+      <ul class="footer-links">
+        <li><a href="#" class="footer-link" (click)="onNavigateClick('settings')">Settings</a></li>
+        <li><a href="#" class="footer-link" (click)="onNavigateClick('training')">Training Materials</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-column">
+      <h4 class="footer-title">About & Status</h4>
+      <div class="footer-content">
+        <p class="footer-text">P&L Budget & Forecast</p>
+        <p class="footer-text">Version 0.5 Preview</p>
+        <p class="footer-text">Liberty Tax Service</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-copyright">
+    © 2024 Liberty Tax Service. All rights reserved. P&L Budget & Forecast v0.5 Preview
+  </div>
+</footer>
