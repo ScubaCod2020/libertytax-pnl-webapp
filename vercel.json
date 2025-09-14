@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/libertytax-pnl-angular",
+  "outputDirectory": "dist/libertytax-pnl-angular/browser",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
