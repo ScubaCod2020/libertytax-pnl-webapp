@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Region, WizardAnswers, WizardStep } from '../../models/wizard.models';
 import { PersistenceService } from '../../services/persistence.service';
+import { IncomeDriversComponent } from '../income-drivers/income-drivers.component';
 
 @Component({
   selector: 'app-wizard-shell',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, IncomeDriversComponent],
   templateUrl: './wizard-shell.component.html',
   styleUrls: ['./wizard-shell.component.scss']
 })
@@ -161,6 +162,51 @@ export class WizardShellComponent implements OnInit, OnChanges {
     console.log('👆 User interacted with field:', fieldName);
     this.userInteracted.add(fieldName);
     this.debugValidation(`FIELD INTERACTION - After ${fieldName} interaction`);
+  }
+
+  // Income Drivers Component integration
+  getIncomeDriverData(): any {
+    return {
+      avgNetFee: this.answers.avgNetFee || 125,
+      taxPrepReturns: this.answers.taxPrepReturns || 1600,
+      taxRushReturns: this.answers.taxRushReturns || 0,
+      discountsPct: this.answers.discountsPct || 3,
+      otherIncome: this.answers.otherIncome || 0,
+      handlesTaxRush: this.answers.handlesTaxRush || false,
+      hasOtherIncome: this.answers.hasOtherIncome || false
+    };
+  }
+
+  onIncomeDriverChange(data: any): void {
+    console.log('💰 Income driver data changed:', data);
+    
+    // Update wizard answers with data from IncomeDriversComponent
+    this.answers.avgNetFee = data.avgNetFee;
+    this.answers.taxPrepReturns = data.taxPrepReturns;
+    this.answers.taxRushReturns = data.taxRushReturns;
+    this.answers.discountsPct = data.discountsPct;
+    this.answers.otherIncome = data.otherIncome;
+    
+    // Mark fields as user-interacted
+    ['avgNetFee', 'taxPrepReturns', 'taxRushReturns', 'discountsPct', 'otherIncome'].forEach(field => {
+      this.userInteracted.add(field);
+    });
+
+    this.updateCalculatedFields();
+    this.debugValidation('INCOME DRIVER CHANGE - After income driver update');
+  }
+
+  onIncomeCalculatedValues(calculatedValues: any): void {
+    console.log('📊 Income calculated values updated:', calculatedValues);
+    
+    // Store calculated values for use in wizard
+    this.calculatedGrossTaxPrepFees = calculatedValues.grossFees;
+    this.calculatedNetTaxPrepFees = calculatedValues.taxPrepIncome;
+    
+    // Update other calculated fields if needed
+    if (calculatedValues.taxRushIncome > 0) {
+      this.calculatedGrossTaxRushFees = calculatedValues.taxRushIncome;
+    }
   }
 
   isUserInteracted(fieldName: string): boolean {

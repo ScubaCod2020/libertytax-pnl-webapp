@@ -113,6 +113,18 @@
       </div>
     </div>
 
+    <!-- Income Drivers Component (Existing Store only) -->
+    <div *ngIf="answers.storeType === 'existing'">
+      <app-income-drivers
+        [region]="answers.region"
+        [handlesTaxRush]="answers.handlesTaxRush || false"
+        [hasOtherIncome]="answers.hasOtherIncome || false"
+        [initialData]="getIncomeDriverData()"
+        (dataChange)="onIncomeDriverChange($event)"
+        (calculatedValues)="onIncomeCalculatedValues($event)">
+      </app-income-drivers>
+    </div>
+
     <!-- Target Performance Goals Section (New Store only) -->
     <div *ngIf="answers.storeType === 'new'" class="performance-goals-section" [class.region-us]="answers.region === 'US'" [class.region-ca]="answers.region === 'CA'">
       <div class="section-header">
