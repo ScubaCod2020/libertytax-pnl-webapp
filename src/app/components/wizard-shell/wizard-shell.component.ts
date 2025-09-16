@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Region, WizardAnswers, WizardStep } from '../../models/wizard.models';
 import { PersistenceService } from '../../services/persistence.service';
-import { IncomeDriversComponent } from '../income-drivers/income-drivers.component';
+import { LegacyIncomeDriversComponent } from '../income-drivers/legacy-income-drivers.component';
 
 @Component({
   selector: 'app-wizard-shell',
   standalone: true,
-  imports: [CommonModule, FormsModule, IncomeDriversComponent],
+  imports: [CommonModule, FormsModule, LegacyIncomeDriversComponent],
   templateUrl: './wizard-shell.component.html',
   styleUrls: ['./wizard-shell.component.scss']
 })
