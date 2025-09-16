@@ -1,10 +1,12 @@
 // dashboard.component.ts - Main dashboard component with KPIs and expense breakdown
-// Based on React app Dashboard component
+// Updated to consume live data from ExistingStoreSummary via KpiService adapter
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { KpiStoplightComponent } from '../kpi-stoplight/kpi-stoplight.component';
 import { formatCurrency, formatPercentage, getKPIStatus, getKPIStatusClass } from '../../utils/calculation.utils';
+import { KpiService } from '../../services/kpi.service';
+import { ExistingStoreSummary } from '../../pages/existing-store/existing-store-page.component';
 
 export interface CalculationResults {
   netIncome: number;
@@ -52,7 +54,7 @@ export interface CalculationResults {
           <app-kpi-stoplight [active]="niStatus"></app-kpi-stoplight>
           <div class="kpi-content">
             <div class="kpi-label">Net Income</div>
-            <div class="kpi-value">{{ formatCurrency(results.netIncome) }}</div>
+            <div class="kpi-value">{{ formatCurrency(currentResults.netIncome) }}</div>
             <div class="kpi-description">Income − Expenses</div>
           </div>
         </div>
@@ -61,7 +63,7 @@ export interface CalculationResults {
           <app-kpi-stoplight [active]="nimStatus"></app-kpi-stoplight>
           <div class="kpi-content">
             <div class="kpi-label">Net Margin</div>
-            <div class="kpi-value">{{ formatPercentage(results.netMarginPct) }}</div>
+            <div class="kpi-value">{{ formatPercentage(currentResults.netMarginPct) }}</div>
             <div class="kpi-description">Net Income ÷ Tax-Prep Income</div>
           </div>
         </div>
@@ -70,7 +72,7 @@ export interface CalculationResults {
           <app-kpi-stoplight [active]="cprStatus"></app-kpi-stoplight>
           <div class="kpi-content">
             <div class="kpi-label">Cost / Return</div>
-            <div class="kpi-value">{{ formatCurrency(results.costPerReturn) }}</div>
+            <div class="kpi-value">{{ formatCurrency(currentResults.costPerReturn) }}</div>
             <div class="kpi-description">Total Expenses ÷ Returns</div>
           </div>
         </div>
@@ -102,39 +104,39 @@ export interface CalculationResults {
             <div class="revenue-section">
               <div class="revenue-line">
                 <span>Gross Tax Prep Fees:</span>
-                <strong>{{ formatCurrency(results.grossFees) }}</strong>
+                <strong>{{ formatCurrency(currentResults.grossFees) }}</strong>
               </div>
               <div class="revenue-detail">
                 <span>Returns: {{ getTaxPrepReturnsCount() }} @ {{ formatCurrency(getAverageNetFee()) }}</span>
               </div>
               <div class="revenue-line discount">
                 <span>Less Discounts ({{ getDiscountPercentage() }}%):</span>
-                <strong>-{{ formatCurrency(results.discounts) }}</strong>
+                <strong>-{{ formatCurrency(currentResults.discounts) }}</strong>
               </div>
             </div>
 
             <!-- Tax Prep Net Revenue -->
             <div class="revenue-line net-revenue">
               <span>Tax Prep Net Revenue:</span>
-              <strong>{{ formatCurrency(results.taxPrepIncome) }}</strong>
+              <strong>{{ formatCurrency(currentResults.taxPrepIncome) }}</strong>
             </div>
 
             <!-- TaxRush Revenue (if applicable) -->
-            <div *ngIf="results.taxRushIncome > 0" class="revenue-line taxrush-revenue">
+            <div *ngIf="currentResults.taxRushIncome > 0" class="revenue-line taxrush-revenue">
               <span>TaxRush Revenue:</span>
-              <strong>{{ formatCurrency(results.taxRushIncome) }}</strong>
+              <strong>{{ formatCurrency(currentResults.taxRushIncome) }}</strong>
             </div>
 
             <!-- Other Revenue -->
-            <div *ngIf="hasOtherIncome && results.otherIncome > 0" class="revenue-line other-revenue">
+            <div *ngIf="hasOtherIncome && currentResults.otherIncome > 0" class="revenue-line other-revenue">
               <span>Other Revenue:</span>
-              <strong>{{ formatCurrency(results.otherIncome) }}</strong>
+              <strong>{{ formatCurrency(currentResults.otherIncome) }}</strong>
             </div>
             
             <!-- Total Gross Revenue -->
             <div class="revenue-line total-revenue">
               <span>Total Gross Revenue:</span>
-              <strong>{{ formatCurrency(results.totalRevenue) }}</strong>
+              <strong>{{ formatCurrency(currentResults.totalRevenue) }}</strong>
             </div>
           </div>
         </div>
@@ -145,30 +147,30 @@ export interface CalculationResults {
         <div class="card">
           <div class="card-title expense-title">
             💰 Expense Breakdown
-            <span class="expense-total">(Total: {{ formatCurrency(results.totalExpenses) }})</span>
+            <span class="expense-total">(Total: {{ formatCurrency(currentResults.totalExpenses) }})</span>
           </div>
           
           <div class="expense-categories">
             <!-- Personnel -->
             <div class="expense-category">
               <div class="category-header">
-                👥 Personnel ({{ formatCurrency(results.salaries + results.empDeductions) }} • {{ getPersonnelPercentage() }}%)
+                👥 Personnel ({{ formatCurrency(currentResults.salaries + currentResults.empDeductions) }} • {{ getPersonnelPercentage() }}%)
               </div>
               <div class="category-details">
-                <div>Salaries: {{ formatCurrency(results.salaries) }} ({{ getSalariesPercentage() }}%)</div>
-                <div>Emp. Deductions: {{ formatCurrency(results.empDeductions) }} ({{ getEmpDeductionsPercentage() }}%)</div>
+                <div>Salaries: {{ formatCurrency(currentResults.salaries) }} ({{ getSalariesPercentage() }}%)</div>
+                <div>Emp. Deductions: {{ formatCurrency(currentResults.empDeductions) }} ({{ getEmpDeductionsPercentage() }}%)</div>
               </div>
             </div>
 
             <!-- Facility -->
             <div class="expense-category">
               <div class="category-header">
-                🏢 Facility ({{ formatCurrency(results.rent + results.telephone + results.utilities) }} • {{ getFacilityPercentage() }}%)
+                🏢 Facility ({{ formatCurrency(currentResults.rent + currentResults.telephone + currentResults.utilities) }} • {{ getFacilityPercentage() }}%)
               </div>
               <div class="category-details">
-                <div>Rent: {{ formatCurrency(results.rent) }} ({{ getRentPercentage() }}%)</div>
-                <div>Telephone: {{ formatCurrency(results.telephone) }} ({{ getTelephonePercentage() }}%)</div>
-                <div>Utilities: {{ formatCurrency(results.utilities) }} ({{ getUtilitiesPercentage() }}%)</div>
+                <div>Rent: {{ formatCurrency(currentResults.rent) }} ({{ getRentPercentage() }}%)</div>
+                <div>Telephone: {{ formatCurrency(currentResults.telephone) }} ({{ getTelephonePercentage() }}%)</div>
+                <div>Utilities: {{ formatCurrency(currentResults.utilities) }} ({{ getUtilitiesPercentage() }}%)</div>
               </div>
             </div>
 
@@ -178,9 +180,9 @@ export interface CalculationResults {
                 ⚙️ Operations ({{ formatCurrency(getOperationsTotal()) }} • {{ getOperationsPercentage() }}%)
               </div>
               <div class="category-details">
-                <div>Local Advertising: {{ formatCurrency(results.localAdv) }} ({{ getLocalAdvPercentage() }}%)</div>
-                <div>Insurance: {{ formatCurrency(results.insurance) }} ({{ getInsurancePercentage() }}%)</div>
-                <div>Office Supplies: {{ formatCurrency(results.supplies) }} ({{ getSuppliesPercentage() }}%)</div>
+                <div>Local Advertising: {{ formatCurrency(currentResults.localAdv) }} ({{ getLocalAdvPercentage() }}%)</div>
+                <div>Insurance: {{ formatCurrency(currentResults.insurance) }} ({{ getInsurancePercentage() }}%)</div>
+                <div>Office Supplies: {{ formatCurrency(currentResults.supplies) }} ({{ getSuppliesPercentage() }}%)</div>
                 <div>Other Ops: {{ formatCurrency(getOtherOpsTotal()) }} ({{ getOtherOpsPercentage() }}%)</div>
               </div>
             </div>
@@ -191,19 +193,19 @@ export interface CalculationResults {
                 🏪 Franchise ({{ formatCurrency(getFranchiseTotal()) }} • {{ getFranchisePercentage() }}%)
               </div>
               <div class="category-details">
-                <div>Tax Prep Royalties: {{ formatCurrency(results.royalties) }} ({{ getRoyaltiesPercentage() }}%)</div>
-                <div>Adv. Royalties: {{ formatCurrency(results.advRoyalties) }} ({{ getAdvRoyaltiesPercentage() }}%)</div>
-                <div *ngIf="results.taxRushRoyalties > 0">
-                  TaxRush Royalties: {{ formatCurrency(results.taxRushRoyalties) }} ({{ getTaxRushRoyaltiesPercentage() }}%)
+                <div>Tax Prep Royalties: {{ formatCurrency(currentResults.royalties) }} ({{ getRoyaltiesPercentage() }}%)</div>
+                <div>Adv. Royalties: {{ formatCurrency(currentResults.advRoyalties) }} ({{ getAdvRoyaltiesPercentage() }}%)</div>
+                <div *ngIf="currentResults.taxRushRoyalties > 0">
+                  TaxRush Royalties: {{ formatCurrency(currentResults.taxRushRoyalties) }} ({{ getTaxRushRoyaltiesPercentage() }}%)
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Miscellaneous -->
-          <div *ngIf="results.misc > 0" class="misc-section">
+          <div *ngIf="currentResults.misc > 0" class="misc-section">
             <div class="category-header">
-              📝 Miscellaneous: {{ formatCurrency(results.misc) }} ({{ getMiscPercentage() }}%)
+              📝 Miscellaneous: {{ formatCurrency(currentResults.misc) }} ({{ getMiscPercentage() }}%)
             </div>
           </div>
         </div>
@@ -420,21 +422,54 @@ export interface CalculationResults {
     }
   `]
 })
-export class DashboardComponent {
-  @Input() results!: CalculationResults;
+export class DashboardComponent implements OnChanges {
+  // Legacy input for backward compatibility
+  @Input() results?: CalculationResults;
   @Input() hasOtherIncome: boolean = false;
+  
+  // New input for live data from shell summary
+  @Input() summaryData?: ExistingStoreSummary;
+  
+  // Internal computed results (from either input source)
+  computedResults: CalculationResults = this.getEmptyResults();
 
-  // KPI Status calculations
+  constructor(private kpiService: KpiService) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Priority: use summaryData if available (live data), otherwise use legacy results
+    if (changes['summaryData'] && this.summaryData) {
+      this.computedResults = this.kpiService.adaptSummaryToResults(this.summaryData);
+    } else if (changes['results'] && this.results) {
+      this.computedResults = { ...this.results };
+    }
+  }
+
+  // Computed results accessor for template
+  get currentResults(): CalculationResults {
+    return this.computedResults;
+  }
+
+  private getEmptyResults(): CalculationResults {
+    return {
+      netIncome: 0, netMarginPct: 0, costPerReturn: 0, grossFees: 0, discounts: 0,
+      taxPrepIncome: 0, taxRushIncome: 0, otherIncome: 0, totalRevenue: 0, totalExpenses: 0,
+      totalReturns: 0, salaries: 0, empDeductions: 0, rent: 0, telephone: 0, utilities: 0,
+      localAdv: 0, insurance: 0, postage: 0, supplies: 0, dues: 0, bankFees: 0,
+      maintenance: 0, travelEnt: 0, royalties: 0, advRoyalties: 0, taxRushRoyalties: 0, misc: 0
+    };
+  }
+
+  // KPI Status calculations using live data
   get niStatus() {
-    return getKPIStatus('netIncome', this.results.netIncome);
+    return getKPIStatus('netIncome', this.currentResults.netIncome);
   }
 
   get nimStatus() {
-    return getKPIStatus('netMargin', this.results.netMarginPct);
+    return getKPIStatus('netMargin', this.currentResults.netMarginPct);
   }
 
   get cprStatus() {
-    return getKPIStatus('costPerReturn', this.results.costPerReturn);
+    return getKPIStatus('costPerReturn', this.currentResults.costPerReturn);
   }
 
   // Utility methods
@@ -443,53 +478,53 @@ export class DashboardComponent {
   getKPIStatusClass = getKPIStatusClass;
 
   getTaxPrepReturnsCount(): string {
-    const taxRushReturns = this.results.taxRushIncome > 0 ? Math.round(this.results.taxRushIncome / 125) : 0;
-    return (this.results.totalReturns - taxRushReturns).toLocaleString();
+    const taxRushReturns = this.currentResults.taxRushIncome > 0 ? Math.round(this.currentResults.taxRushIncome / 125) : 0;
+    return (this.currentResults.totalReturns - taxRushReturns).toLocaleString();
   }
 
   getAverageNetFee(): number {
-    const taxRushReturns = this.results.taxRushIncome > 0 ? Math.round(this.results.taxRushIncome / 125) : 0;
-    const taxPrepReturns = this.results.totalReturns - taxRushReturns;
-    return taxPrepReturns > 0 ? Math.round(this.results.grossFees / taxPrepReturns) : 0;
+    const taxRushReturns = this.currentResults.taxRushIncome > 0 ? Math.round(this.currentResults.taxRushIncome / 125) : 0;
+    const taxPrepReturns = this.currentResults.totalReturns - taxRushReturns;
+    return taxPrepReturns > 0 ? Math.round(this.currentResults.grossFees / taxPrepReturns) : 0;
   }
 
   getDiscountPercentage(): string {
-    const percentage = this.results.grossFees > 0 ? (this.results.discounts / this.results.grossFees) * 100 : 0;
+    const percentage = this.currentResults.grossFees > 0 ? (this.currentResults.discounts / this.currentResults.grossFees) * 100 : 0;
     return percentage.toFixed(0);
   }
 
   getPersonnelPercentage(): string {
-    return this.getPercentage(this.results.salaries + this.results.empDeductions);
+    return this.getPercentage(this.currentResults.salaries + this.currentResults.empDeductions);
   }
 
   getSalariesPercentage(): string {
-    return this.getPercentage(this.results.salaries);
+    return this.getPercentage(this.currentResults.salaries);
   }
 
   getEmpDeductionsPercentage(): string {
-    return this.getPercentage(this.results.empDeductions);
+    return this.getPercentage(this.currentResults.empDeductions);
   }
 
   getFacilityPercentage(): string {
-    return this.getPercentage(this.results.rent + this.results.telephone + this.results.utilities);
+    return this.getPercentage(this.currentResults.rent + this.currentResults.telephone + this.currentResults.utilities);
   }
 
   getRentPercentage(): string {
-    return this.getPercentage(this.results.rent);
+    return this.getPercentage(this.currentResults.rent);
   }
 
   getTelephonePercentage(): string {
-    return this.getPercentage(this.results.telephone);
+    return this.getPercentage(this.currentResults.telephone);
   }
 
   getUtilitiesPercentage(): string {
-    return this.getPercentage(this.results.utilities);
+    return this.getPercentage(this.currentResults.utilities);
   }
 
   getOperationsTotal(): number {
-    return this.results.localAdv + this.results.insurance + this.results.postage + 
-           this.results.supplies + this.results.dues + this.results.bankFees + 
-           this.results.maintenance + this.results.travelEnt;
+    return this.currentResults.localAdv + this.currentResults.insurance + this.currentResults.postage + 
+           this.currentResults.supplies + this.currentResults.dues + this.currentResults.bankFees + 
+           this.currentResults.maintenance + this.currentResults.travelEnt;
   }
 
   getOperationsPercentage(): string {
@@ -497,20 +532,20 @@ export class DashboardComponent {
   }
 
   getLocalAdvPercentage(): string {
-    return this.getPercentage(this.results.localAdv);
+    return this.getPercentage(this.currentResults.localAdv);
   }
 
   getInsurancePercentage(): string {
-    return this.getPercentage(this.results.insurance);
+    return this.getPercentage(this.currentResults.insurance);
   }
 
   getSuppliesPercentage(): string {
-    return this.getPercentage(this.results.supplies);
+    return this.getPercentage(this.currentResults.supplies);
   }
 
   getOtherOpsTotal(): number {
-    return this.results.postage + this.results.dues + this.results.bankFees + 
-           this.results.maintenance + this.results.travelEnt;
+    return this.currentResults.postage + this.currentResults.dues + this.currentResults.bankFees + 
+           this.currentResults.maintenance + this.currentResults.travelEnt;
   }
 
   getOtherOpsPercentage(): string {
@@ -518,7 +553,7 @@ export class DashboardComponent {
   }
 
   getFranchiseTotal(): number {
-    return this.results.royalties + this.results.advRoyalties + this.results.taxRushRoyalties;
+    return this.currentResults.royalties + this.currentResults.advRoyalties + this.currentResults.taxRushRoyalties;
   }
 
   getFranchisePercentage(): string {
@@ -526,22 +561,22 @@ export class DashboardComponent {
   }
 
   getRoyaltiesPercentage(): string {
-    return this.getPercentage(this.results.royalties);
+    return this.getPercentage(this.currentResults.royalties);
   }
 
   getAdvRoyaltiesPercentage(): string {
-    return this.getPercentage(this.results.advRoyalties);
+    return this.getPercentage(this.currentResults.advRoyalties);
   }
 
   getTaxRushRoyaltiesPercentage(): string {
-    return this.getPercentage(this.results.taxRushRoyalties);
+    return this.getPercentage(this.currentResults.taxRushRoyalties);
   }
 
   getMiscPercentage(): string {
-    return this.getPercentage(this.results.misc);
+    return this.getPercentage(this.currentResults.misc);
   }
 
   private getPercentage(value: number): string {
-    return this.results.totalRevenue > 0 ? ((value / this.results.totalRevenue) * 100).toFixed(1) : '0.0';
+    return this.currentResults.totalRevenue > 0 ? ((value / this.currentResults.totalRevenue) * 100).toFixed(1) : '0.0';
   }
 }
