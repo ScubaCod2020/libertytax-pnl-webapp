@@ -464,17 +464,15 @@ export class DebugToolComponent implements OnInit {
         formState: {
           valid: wizardState.wizardCompleted,
           completed: wizardState.wizardCompleted,
-          currentStep: wizardState.currentStep,
           errors: [],
-          lastUpdated: wizardState.lastSaved
+          lastUpdated: 'Unknown' // wizardState doesn't have lastSaved property
         }
       },
       
       expensesState: {
         items: [], // Would be populated from ExpensesComponent state
         total: currentResults.totalExpenses || 0,
-        valid: true,
-        note: 'Expenses component state integration pending'
+        valid: true
       },
       
       dashboardKPIs: {

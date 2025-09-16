@@ -36,6 +36,7 @@ export class WizardShellComponent implements OnInit, OnChanges {
     taxRushFee: 0
   };
 
+
   ngOnInit(): void {
     console.log('🚀 WIZARD INIT - Starting component initialization');
     console.log('📊 Initial answers state:', JSON.stringify(this.answers, null, 2));
@@ -199,14 +200,11 @@ export class WizardShellComponent implements OnInit, OnChanges {
   onIncomeCalculatedValues(calculatedValues: any): void {
     console.log('📊 Income calculated values updated:', calculatedValues);
     
-    // Store calculated values for use in wizard
-    this.calculatedGrossTaxPrepFees = calculatedValues.grossFees;
-    this.calculatedNetTaxPrepFees = calculatedValues.taxPrepIncome;
-    
-    // Update other calculated fields if needed
-    if (calculatedValues.taxRushIncome > 0) {
-      this.calculatedGrossTaxRushFees = calculatedValues.taxRushIncome;
-    }
+    // The calculated values are now computed by getters based on this.answers
+    // No assignment needed since getters handle the calculations
+    console.log('📊 Current calculated gross fees:', this.calculatedGrossTaxPrepFees);
+    console.log('📊 Current calculated net fees:', this.calculatedNetTaxPrepFees);
+    console.log('📊 Current calculated rush fees:', this.calculatedGrossTaxRushFees);
   }
 
   isUserInteracted(fieldName: string): boolean {

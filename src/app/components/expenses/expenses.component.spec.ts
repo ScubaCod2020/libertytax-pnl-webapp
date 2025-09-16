@@ -10,6 +10,8 @@ import { amountFromPct, pctFromAmount } from '../../utils/calculation.utils';
 
 // Test host component to test input/output behavior
 @Component({
+  standalone: true,
+  imports: [ExpensesComponent],
   template: `
     <app-expenses
       [mode]="mode"
@@ -42,8 +44,7 @@ describe('ExpensesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestHostComponent],
-      imports: [ReactiveFormsModule, ExpensesComponent],
+      imports: [ReactiveFormsModule, ExpensesComponent, TestHostComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);

@@ -195,30 +195,30 @@ interface IncomeDriverData {
         </div>
 
         <!-- Calculated Revenue Summary -->
-        <div class="revenue-summary" *ngIf="calculatedValues.totalRevenue > 0">
+        <div class="revenue-summary" *ngIf="currentCalculatedValues.totalRevenue > 0">
           <div class="summary-row">
             <span class="summary-label">Gross Tax Prep Fees:</span>
-            <span class="summary-value">{{ formatCurrency(calculatedValues.grossFees) }}</span>
+            <span class="summary-value">{{ formatCurrency(currentCalculatedValues.grossFees) }}</span>
           </div>
           <div class="summary-row">
             <span class="summary-label">Less: Customer Discounts:</span>
-            <span class="summary-value negative">{{ formatCurrency(calculatedValues.discounts) }}</span>
+            <span class="summary-value negative">{{ formatCurrency(currentCalculatedValues.discounts) }}</span>
           </div>
           <div class="summary-row">
             <span class="summary-label">Net Tax Prep Income:</span>
-            <span class="summary-value">{{ formatCurrency(calculatedValues.taxPrepIncome) }}</span>
+            <span class="summary-value">{{ formatCurrency(currentCalculatedValues.taxPrepIncome) }}</span>
           </div>
-          <div *ngIf="calculatedValues.taxRushIncome > 0" class="summary-row">
+          <div *ngIf="currentCalculatedValues.taxRushIncome > 0" class="summary-row">
             <span class="summary-label">TaxRush Income:</span>
-            <span class="summary-value">{{ formatCurrency(calculatedValues.taxRushIncome) }}</span>
+            <span class="summary-value">{{ formatCurrency(currentCalculatedValues.taxRushIncome) }}</span>
           </div>
-          <div *ngIf="calculatedValues.otherIncome > 0" class="summary-row">
+          <div *ngIf="currentCalculatedValues.otherIncome > 0" class="summary-row">
             <span class="summary-label">Other Income:</span>
-            <span class="summary-value">{{ formatCurrency(calculatedValues.otherIncome) }}</span>
+            <span class="summary-value">{{ formatCurrency(currentCalculatedValues.otherIncome) }}</span>
           </div>
           <div class="summary-row total-row">
             <span class="summary-label">Total Revenue:</span>
-            <span class="summary-value">{{ formatCurrency(calculatedValues.totalRevenue) }}</span>
+            <span class="summary-value">{{ formatCurrency(currentCalculatedValues.totalRevenue) }}</span>
           </div>
         </div>
       </form>
@@ -440,7 +440,7 @@ export class IncomeDriversComponent implements OnInit, OnDestroy {
   visibleFields: IncomeDriverField[] = [];
   
   // Calculated values for display (derived via calc.util pattern)
-  calculatedValues = {
+  currentCalculatedValues = {
     grossFees: 0,
     discounts: 0,
     taxPrepIncome: 0,
@@ -528,7 +528,7 @@ export class IncomeDriversComponent implements OnInit, OnDestroy {
     const totalRevenue = taxPrepIncome + taxRushIncome + otherIncome;
 
     // Update calculated values
-    this.calculatedValues = {
+    this.currentCalculatedValues = {
       grossFees,
       discounts,
       taxPrepIncome,
@@ -538,7 +538,7 @@ export class IncomeDriversComponent implements OnInit, OnDestroy {
     };
 
     // Emit calculated values for parent components
-    this.calculatedValues.emit(this.calculatedValues);
+    this.calculatedValues.emit(this.currentCalculatedValues);
   }
 
   private emitDataChange() {
@@ -572,9 +572,9 @@ export class IncomeDriversComponent implements OnInit, OnDestroy {
     // Return derived/calculated values for display
     switch (fieldId) {
       case 'grossTaxPrepFees':
-        return this.calculatedValues.grossFees;
+        return this.currentCalculatedValues.grossFees;
       case 'netTaxPrepIncome':
-        return this.calculatedValues.taxPrepIncome;
+        return this.currentCalculatedValues.taxPrepIncome;
       default:
         return null;
     }
@@ -610,15 +610,15 @@ export class IncomeDriversComponent implements OnInit, OnDestroy {
 
   getDiscountDollarAmount(): number {
     const discountsPct = this.incomeForm.get('discountsPct')?.value || 0;
-    return this.calculatedValues.grossFees * (discountsPct / 100);
+    return this.currentCalculatedValues.grossFees * (discountsPct / 100);
   }
 
   onDiscountDollarChange(event: Event) {
     const target = event.target as HTMLInputElement;
     const dollarAmount = parseFloat(target.value) || 0;
     
-    if (this.calculatedValues.grossFees > 0) {
-      const newPercentage = (dollarAmount / this.calculatedValues.grossFees) * 100;
+    if (this.currentCalculatedValues.grossFees > 0) {
+      const newPercentage = (dollarAmount / this.currentCalculatedValues.grossFees) * 100;
       const cappedPercentage = Math.max(0, Math.min(50, newPercentage));
       
       this.incomeForm.get('discountsPct')?.setValue(cappedPercentage, { emitEvent: true });
