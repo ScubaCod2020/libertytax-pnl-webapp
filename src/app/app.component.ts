@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterOutlet } from '@angular/router';
 import { Region, WizardAnswers } from './models/wizard.models';
 import { AppStateService } from './services/app-state.service';
 import { CalculationService } from './services/calculation.service';
@@ -12,7 +13,7 @@ import { WizardShellComponent } from './components/wizard-shell/wizard-shell.com
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, WizardShellComponent],
+  imports: [CommonModule, FormsModule, RouterOutlet, HeaderComponent, FooterComponent, WizardShellComponent],
   template: `
     <div class="app-container">
       <!-- Header -->
@@ -56,6 +57,9 @@ import { WizardShellComponent } from './components/wizard-shell/wizard-shell.com
         [currentPage]="appState.showWizard ? 'wizard' : 'dashboard'"
         (onNavigate)="onNavigate($event)">
       </app-footer>
+
+      <!-- Router Outlet for additional routes like /debug -->
+      <router-outlet></router-outlet>
     </div>
   `,
   styles: [`
@@ -175,6 +179,10 @@ export class AppComponent implements OnInit {
         if (this.persistence.getWizardState().wizardCompleted) {
           this.appStateService.setShowWizard(false);
         }
+        break;
+      case 'debug':
+        // Navigate to debug route - open in new tab for dev tools
+        window.open('/debug', '_blank');
         break;
       case 'pro-tips':
         console.log('🔮 Pro-Tips feature coming soon!');
