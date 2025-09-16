@@ -37,16 +37,15 @@ jobs:
               owner, repo,
               issue_number: issue.number,
               body: `🚨 **High Priority Issue Detected**
+              This issue has been automatically flagged as high priority and assigned for immediate attention.
               
-This issue has been automatically flagged as high priority and assigned for immediate attention.
-
-**Next Steps:**
-- [ ] Initial investigation within 24 hours
-- [ ] Root cause analysis
-- [ ] Fix implementation
-- [ ] Testing and validation
-
-*Automated triage by project management system*`
+              **Next Steps:**
+              - [ ] Initial investigation within 24 hours
+              - [ ] Root cause analysis
+              - [ ] Fix implementation
+              - [ ] Testing and validation
+              
+              *Automated triage by project management system*`
             });
           } else if (issue.labels.some(l => l.name === 'enhancement')) {
             priority = 'Low';
@@ -56,16 +55,15 @@ This issue has been automatically flagged as high priority and assigned for imme
               owner, repo,
               issue_number: issue.number,
               body: `✨ **Enhancement Request Received**
+              Thank you for the feature suggestion! This has been added to our enhancement backlog.
               
-Thank you for the feature suggestion! This has been added to our enhancement backlog.
-
-**Evaluation Process:**
-- [ ] Requirements analysis
-- [ ] Technical feasibility assessment
-- [ ] Priority ranking against other features
-- [ ] Implementation planning
-
-*Automated response from product management*`
+              **Evaluation Process:**
+              - [ ] Requirements analysis
+              - [ ] Technical feasibility assessment
+              - [ ] Priority ranking against other features
+              - [ ] Implementation planning
+              
+              *Automated response from product management*`
             });
           }
           
