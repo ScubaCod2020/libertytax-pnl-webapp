@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { Region, WizardAnswers } from './models/wizard.models';
 import { AppStateService } from './services/app-state.service';
 import { CalculationService } from './services/calculation.service';
@@ -16,97 +17,116 @@ import { InputsPanelComponent } from './components/inputs-panel/inputs-panel.com
 import { InputsPanelData } from './models/expense.models';
 import { ProjectedPerformanceComponent, ProjectedPerformanceData } from './components/projected-performance/projected-performance.component';
 import { DebugSystemComponent } from './components/debug-system/debug-system.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, WizardShellComponent, BrandWatermarkComponent, DashboardComponent, InputsPanelComponent, ProjectedPerformanceComponent, DebugSystemComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    HeaderComponent,
+    FooterComponent,
+    WizardShellComponent,
+    BrandWatermarkComponent,
+    DashboardComponent,
+    InputsPanelComponent,
+    ProjectedPerformanceComponent,
+    DebugSystemComponent,
+  ],
   template: `
     <div class="app-container">
-      <!-- Regional Brand Watermark -->
-      <app-brand-watermark [region]="appState.region"></app-brand-watermark>
-      
-      <!-- Main Content -->
-      <div class="main-wrapper">
-        <!-- Header -->
-        <app-header
-          [region]="appState.region"
-          [showWizard]="appState.showWizard"
-          [wizardCompleted]="persistence.getWizardState().wizardCompleted"
-          [currentPage]="appState.showWizard ? 'wizard' : 'dashboard'"
-          [storeType]="persistence.loadWizardAnswers()?.storeType"
-          (setRegion)="onSetRegion($event)"
-          (onReset)="onReset()"
-          (onShowWizard)="onShowWizard()"
-          (onShowDashboard)="onShowDashboard()"
-          (onShowReports)="onShowReports()">
-        </app-header>
+      <ng-container *ngIf="!isExistingStoreRoute; else existingStore">
+        <!-- Regional Brand Watermark -->
+        <app-brand-watermark [region]="appState.region"></app-brand-watermark>
 
         <!-- Main Content -->
-        <main class="main-content">
-          <div *ngIf="appState.showWizard" class="wizard-wrapper">
-            <app-wizard-shell
-              [region]="appState.region"
-              [persistence]="persistence"
-              [resetTrigger]="resetCounter"
-              (setRegion)="onSetRegion($event)"
-              (wizardComplete)="onWizardComplete($event)"
-              (wizardCancel)="onWizardCancel()">
-            </app-wizard-shell>
-          </div>
+        <div class="main-wrapper">
+          <!-- Header -->
+          <app-header
+            [region]="appState.region"
+            [showWizard]="appState.showWizard"
+            [wizardCompleted]="persistence.getWizardState().wizardCompleted"
+            [currentPage]="appState.showWizard ? 'wizard' : 'dashboard'"
+            [storeType]="persistence.loadWizardAnswers()?.storeType"
+            (setRegion)="onSetRegion($event)"
+            (onReset)="onReset()"
+            (onShowWizard)="onShowWizard()"
+            (onShowDashboard)="onShowDashboard()"
+            (onShowReports)="onShowReports()">
+          </app-header>
 
-          <div *ngIf="!appState.showWizard" class="dashboard-wrapper">
-            <div class="dashboard-container">
-              <!-- Dashboard Grid Layout -->
-              <div class="dashboard-grid">
-                <!-- Left Column: Inputs Panel -->
-                <div class="dashboard-left">
-                  <app-inputs-panel
-                    [data]="inputsData"
-                    (dataChange)="onInputsChange($event)">
-                  </app-inputs-panel>
-                </div>
+          <!-- Main Content -->
+          <main class="main-content">
+            <div *ngIf="appState.showWizard" class="wizard-wrapper">
+              <app-wizard-shell
+                [region]="appState.region"
+                [persistence]="persistence"
+                [resetTrigger]="resetCounter"
+                (setRegion)="onSetRegion($event)"
+                (wizardComplete)="onWizardComplete($event)"
+                (wizardCancel)="onWizardCancel()">
+              </app-wizard-shell>
+            </div>
 
-                <!-- Right Column: Dashboard and Performance -->
-                <div class="dashboard-right">
-                  <!-- Main Dashboard -->
-                  <app-dashboard
-                    [results]="calculationResults"
-                    [hasOtherIncome]="inputsData.hasOtherIncome || false">
-                  </app-dashboard>
+            <div *ngIf="!appState.showWizard" class="dashboard-wrapper">
+              <div class="dashboard-container">
+                <!-- Dashboard Grid Layout -->
+                <div class="dashboard-grid">
+                  <!-- Left Column: Inputs Panel -->
+                  <div class="dashboard-left">
+                    <app-inputs-panel
+                      [data]="inputsData"
+                      (dataChange)="onInputsChange($event)">
+                    </app-inputs-panel>
+                  </div>
 
-                  <!-- Projected Performance Panel -->
-                  <app-projected-performance
-                    [data]="projectedPerformanceData">
-                  </app-projected-performance>
+                  <!-- Right Column: Dashboard and Performance -->
+                  <div class="dashboard-right">
+                    <!-- Main Dashboard -->
+                    <app-dashboard
+                      [results]="calculationResults"
+                      [hasOtherIncome]="inputsData.hasOtherIncome || false">
+                    </app-dashboard>
+
+                    <!-- Projected Performance Panel -->
+                    <app-projected-performance
+                      [data]="projectedPerformanceData">
+                    </app-projected-performance>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
 
-        <!-- Footer -->
-        <app-footer
-          [showWizard]="appState.showWizard"
-          [wizardCompleted]="persistence.getWizardState().wizardCompleted"
-          [currentPage]="appState.showWizard ? 'wizard' : 'dashboard'"
-          (onNavigate)="onNavigate($event)">
-        </app-footer>
-      </div>
+          <!-- Footer -->
+          <app-footer
+            [showWizard]="appState.showWizard"
+            [wizardCompleted]="persistence.getWizardState().wizardCompleted"
+            [currentPage]="appState.showWizard ? 'wizard' : 'dashboard'"
+            (onNavigate)="onNavigate($event)">
+          </app-footer>
+        </div>
 
-      <!-- Debug System -->
-      <app-debug-system
-        [showDebugToggle]="true"
-        [region]="appState.region"
-        [calculations]="calculationResults"
-        [appState]="inputsData"
-        (saveNow)="onDebugSaveNow()"
-        (dumpStorage)="onDebugDumpStorage()"
-        (copyJSON)="onDebugCopyJSON()"
-        (clearStorage)="onDebugClearStorage()"
-        (showWizard)="onShowWizard()"
-        (thresholdsChange)="onDebugThresholdsChange($event)">
-      </app-debug-system>
+        <!-- Debug System -->
+        <app-debug-system
+          [showDebugToggle]="true"
+          [region]="appState.region"
+          [calculations]="calculationResults"
+          [appState]="inputsData"
+          (saveNow)="onDebugSaveNow()"
+          (dumpStorage)="onDebugDumpStorage()"
+          (copyJSON)="onDebugCopyJSON()"
+          (clearStorage)="onDebugClearStorage()"
+          (showWizard)="onShowWizard()"
+          (thresholdsChange)="onDebugThresholdsChange($event)">
+        </app-debug-system>
+      </ng-container>
+
+      <ng-template #existingStore>
+        <router-outlet></router-outlet>
+      </ng-template>
     </div>
   `,
   styles: [`
@@ -192,10 +212,12 @@ import { DebugSystemComponent } from './components/debug-system/debug-system.com
     }
   `]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   appState: any = { region: 'US', showWizard: false };
   resetCounter: number = 0;
-  
+
+  isExistingStoreRoute = false;
+
   // Dashboard data
   inputsData: InputsPanelData = {
     region: 'US',
@@ -276,11 +298,14 @@ export class AppComponent implements OnInit {
     handlesTaxRush: false
   };
 
+  private routerSub?: Subscription;
+
   constructor(
     private appStateService: AppStateService,
     private calculationService: CalculationService,
     private brandingService: BrandingService,
-    public persistence: PersistenceService
+    public persistence: PersistenceService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -314,6 +339,17 @@ export class AppComponent implements OnInit {
         this.initializeDashboardFromWizard(savedAnswers);
       }
     }
+
+    this.isExistingStoreRoute = this.router.url.includes('existing-store');
+    this.routerSub = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.isExistingStoreRoute = event.urlAfterRedirects.includes('existing-store');
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.routerSub?.unsubscribe();
   }
 
   onSetRegion(region: Region): void {
