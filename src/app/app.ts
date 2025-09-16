@@ -16,11 +16,23 @@ import { InputsPanelComponent } from './components/inputs-panel/inputs-panel.com
 import { InputsPanelData } from './models/expense.models';
 import { ProjectedPerformanceComponent, ProjectedPerformanceData } from './components/projected-performance/projected-performance.component';
 import { DebugSystemComponent } from './components/debug-system/debug-system.component';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, WizardShellComponent, BrandWatermarkComponent, DashboardComponent, InputsPanelComponent, ProjectedPerformanceComponent, DebugSystemComponent],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    HeaderComponent, 
+    FooterComponent, 
+    WizardShellComponent, 
+    BrandWatermarkComponent, 
+    DashboardComponent, 
+    InputsPanelComponent, 
+    ProjectedPerformanceComponent,
+    ...(environment.DEBUG_TOOL_ENABLED ? [DebugSystemComponent] : [])
+  ],
   template: `
     <div class="app-container">
       <!-- Regional Brand Watermark -->
@@ -94,8 +106,9 @@ import { DebugSystemComponent } from './components/debug-system/debug-system.com
         </app-footer>
       </div>
 
-      <!-- Debug System -->
+      <!-- Debug System (dev-only) -->
       <app-debug-system
+        *ngIf="debugEnabled"
         [showDebugToggle]="true"
         [region]="appState.region"
         [calculations]="calculationResults"
@@ -194,6 +207,11 @@ import { DebugSystemComponent } from './components/debug-system/debug-system.com
 })
 export class AppComponent implements OnInit {
   appState: any = { region: 'US', showWizard: false };
+  
+  // Debug system visibility controlled by environment flag
+  get debugEnabled(): boolean {
+    return environment.DEBUG_TOOL_ENABLED;
+  }
   resetCounter: number = 0;
   
   // Dashboard data

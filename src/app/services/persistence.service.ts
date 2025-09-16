@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { WizardAnswers, AppState } from '../models/wizard.models';
+import { environment } from '../../environments/environment';
+import { STORAGE_KEYS } from './storage.keys';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersistenceService {
-  private readonly STORAGE_KEY = 'liberty-tax-pnl-data';
+  private readonly STORAGE_KEY = STORAGE_KEYS.PROD_DATA;
   private readonly APP_VERSION = '0.5';
   private readonly ORIGIN = 'liberty-tax-pnl-angular';
 
@@ -146,7 +148,32 @@ export class PersistenceService {
   }
 
   get DEBUG(): boolean {
-    return typeof window !== 'undefined' && 
-           new URLSearchParams(window.location.search).get('debug') === '1';
+    if (typeof window === 'undefined') return false;
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasDebugParam = urlParams.get('debug') === '1';
+    
+    // In production, strip debug query param and never honor debug mode
+    if (environment.production) {
+      if (hasDebugParam) {
+        this.stripDebugQueryParam();
+      }
+      return false;
+    }
+    
+    // In development, honor debug query parameter
+    return hasDebugParam;
+  }
+
+  private stripDebugQueryParam(): void {
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('debug');
+      
+      // Replace current URL without debug param (no page reload)
+      window.history.replaceState({}, '', url.toString());
+    } catch (error) {
+      console.warn('Failed to strip debug query parameter:', error);
+    }
   }
 }

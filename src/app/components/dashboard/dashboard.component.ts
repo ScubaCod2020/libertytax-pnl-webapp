@@ -49,31 +49,40 @@ export interface CalculationResults {
       <div class="card-title">Dashboard</div>
 
       <!-- KPI Section -->
-      <div class="kpi-vertical">
+      <div *ngIf="summaryData; else noDataTemplate" class="kpi-vertical">
+        <div class="kpi-item" [ngClass]="getKPIStatusClass(revenueStatus)">
+          <app-kpi-stoplight [active]="revenueStatus"></app-kpi-stoplight>
+          <div class="kpi-content">
+            <div class="kpi-label">Revenue</div>
+            <div class="kpi-value">{{ formatCurrency(currentResults.totalRevenue) }}</div>
+            <div class="kpi-description">Total Income</div>
+          </div>
+        </div>
+
+        <div class="kpi-item" [ngClass]="getKPIStatusClass(expensesStatus)">
+          <app-kpi-stoplight [active]="expensesStatus"></app-kpi-stoplight>
+          <div class="kpi-content">
+            <div class="kpi-label">Expenses</div>
+            <div class="kpi-value">{{ formatCurrency(currentResults.totalExpenses) }}</div>
+            <div class="kpi-description">Total Costs</div>
+          </div>
+        </div>
+
         <div class="kpi-item" [ngClass]="getKPIStatusClass(niStatus)">
           <app-kpi-stoplight [active]="niStatus"></app-kpi-stoplight>
           <div class="kpi-content">
-            <div class="kpi-label">Net Income</div>
+            <div class="kpi-label">Net</div>
             <div class="kpi-value">{{ formatCurrency(currentResults.netIncome) }}</div>
-            <div class="kpi-description">Income − Expenses</div>
+            <div class="kpi-description">Revenue − Expenses</div>
           </div>
         </div>
 
         <div class="kpi-item" [ngClass]="getKPIStatusClass(nimStatus)">
           <app-kpi-stoplight [active]="nimStatus"></app-kpi-stoplight>
           <div class="kpi-content">
-            <div class="kpi-label">Net Margin</div>
+            <div class="kpi-label">Margin %</div>
             <div class="kpi-value">{{ formatPercentage(currentResults.netMarginPct) }}</div>
-            <div class="kpi-description">Net Income ÷ Tax-Prep Income</div>
-          </div>
-        </div>
-
-        <div class="kpi-item" [ngClass]="getKPIStatusClass(cprStatus)">
-          <app-kpi-stoplight [active]="cprStatus"></app-kpi-stoplight>
-          <div class="kpi-content">
-            <div class="kpi-label">Cost / Return</div>
-            <div class="kpi-value">{{ formatCurrency(currentResults.costPerReturn) }}</div>
-            <div class="kpi-description">Total Expenses ÷ Returns</div>
+            <div class="kpi-description">Net ÷ Revenue × 100</div>
           </div>
         </div>
       </div>
@@ -84,12 +93,12 @@ export interface CalculationResults {
         <div class="card pro-tips-card">
           <div class="card-title">Pro-Tips</div>
           <ul class="pro-tips-list">
-            <li *ngIf="cprStatus === 'red'">Cost/Return is high — review Personnel and Facility costs.</li>
-            <li *ngIf="nimStatus === 'red'">Margin is low — consider raising ANF or reducing discounts.</li>
-            <li *ngIf="niStatus === 'red'">Net Income negative — check Franchise fees and Operations costs.</li>
-            <li *ngIf="niStatus === 'yellow'">Close to breakeven — small changes in ANF or Returns can flip green.</li>
-            <li *ngIf="cprStatus === 'green' && nimStatus === 'green' && niStatus === 'green'">
-              Great! Consider "Best" scenario to stress-test capacity.
+            <li *ngIf="expensesStatus === 'red'">Expenses are high — review Personnel and Facility costs.</li>
+            <li *ngIf="nimStatus === 'red'">Margin is low — consider raising fees or reducing discounts.</li>
+            <li *ngIf="niStatus === 'red'">Net Income negative — check major expense categories.</li>
+            <li *ngIf="niStatus === 'yellow'">Close to breakeven — small revenue increases can flip green.</li>
+            <li *ngIf="revenueStatus === 'green' && expensesStatus === 'green' && nimStatus === 'green' && niStatus === 'green'">
+              Excellent performance across all metrics!
             </li>
           </ul>
         </div>
@@ -211,6 +220,13 @@ export interface CalculationResults {
         </div>
       </div>
     </div>
+
+    <!-- No Data Template -->
+    <ng-template #noDataTemplate>
+      <div class="no-data-message">
+        <p>No data available yet. Configure income drivers and expenses to see dashboard KPIs.</p>
+      </div>
+    </ng-template>
   `,
   styles: [`
     .dashboard-card {
@@ -420,6 +436,13 @@ export interface CalculationResults {
     .misc-section .category-header {
       font-size: 14px;
     }
+
+    .no-data-message {
+      text-align: center;
+      padding: 2rem;
+      color: #6b7280;
+      font-style: italic;
+    }
   `]
 })
 export class DashboardComponent implements OnChanges {
@@ -468,8 +491,12 @@ export class DashboardComponent implements OnChanges {
     return getKPIStatus('netMargin', this.currentResults.netMarginPct);
   }
 
-  get cprStatus() {
-    return getKPIStatus('costPerReturn', this.currentResults.costPerReturn);
+  get revenueStatus() {
+    return getKPIStatus('totalRevenue', this.currentResults.totalRevenue);
+  }
+
+  get expensesStatus() {
+    return getKPIStatus('totalExpenses', this.currentResults.totalExpenses);
   }
 
   // Utility methods

@@ -8,6 +8,8 @@ import { DebugSidebarComponent, Thresholds } from './debug-sidebar.component';
 import { DebugLogger, enableDebugging, disableDebugging } from '../../utils/debug.utils';
 import { CalculationResults } from '../../models/calculation.models';
 import { InputsPanelData } from '../../models/expense.models';
+import { STORAGE_KEYS } from '../../services/storage.keys';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-debug-system',
@@ -57,7 +59,7 @@ export class DebugSystemComponent implements OnInit, OnDestroy {
   @Output() thresholdsChange = new EventEmitter<Thresholds>();
 
   isSidebarOpen: boolean = false;
-  storageKey: string = 'liberty-tax-pnl-angular';
+  storageKey: string = STORAGE_KEYS.PROD_DATA;
   origin: string = window.location.origin;
   appVersion: string = '1.0.0';
   isReady: boolean = true;
@@ -145,7 +147,7 @@ export class DebugSystemComponent implements OnInit, OnDestroy {
 
   private loadDebugSettings(): void {
     try {
-      const saved = localStorage.getItem('debug-settings');
+      const saved = localStorage.getItem(STORAGE_KEYS.DEBUG_SETTINGS);
       if (saved) {
         const settings = JSON.parse(saved);
         this.thresholds = { ...this.thresholds, ...settings.thresholds };
@@ -158,12 +160,17 @@ export class DebugSystemComponent implements OnInit, OnDestroy {
   }
 
   private saveDebugSettings(): void {
+    // Never save debug settings in production
+    if (environment.production) {
+      return;
+    }
+    
     try {
       const settings = {
         thresholds: this.thresholds,
         savedAt: new Date().toISOString()
       };
-      localStorage.setItem('debug-settings', JSON.stringify(settings));
+      localStorage.setItem(STORAGE_KEYS.DEBUG_SETTINGS, JSON.stringify(settings));
       DebugLogger.log('DebugSystem', 'saveDebugSettings', { settings });
     } catch (error) {
       console.error('Failed to save debug settings:', error);
@@ -231,11 +238,16 @@ export class DebugSystemComponent implements OnInit, OnDestroy {
 
   private clearLocalStorage(): void {
     try {
-      // Clear all app-related localStorage items
+      // Clear all app-related localStorage items using centralized keys
       const keysToRemove = [];
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key && (key.startsWith('liberty-tax-pnl') || key.startsWith('debug-'))) {
+        if (key && (
+          key === STORAGE_KEYS.PROD_DATA ||
+          key === STORAGE_KEYS.DEBUG_SETTINGS ||
+          key.startsWith('liberty-tax-pnl') || // Legacy pattern for safety
+          key.startsWith('debug-') // Legacy pattern for safety
+        )) {
           keysToRemove.push(key);
         }
       }
@@ -271,8 +283,3 @@ export class DebugSystemComponent implements OnInit, OnDestroy {
     return !environment.production;
   }
 }
-
-// Simple environment check (you might need to adjust this based on your Angular setup)
-const environment = {
-  production: false // This would come from your environment files
-};

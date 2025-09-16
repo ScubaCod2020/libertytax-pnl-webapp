@@ -58,15 +58,16 @@ export interface ExpenseBases {
                class="expense-row" 
                [class]="getRowClass(i)">
             
+            <ng-container *ngIf="getField(i); let field">
             <div class="expense-row-header">
               <label class="expense-label">
-                {{ getField(i).label }}
+                {{ field.label }}
                 <span class="kpi-badge" [class]="getKpiClass(i)">{{ getKpiBadge(i) }}</span>
               </label>
               <button type="button" 
                       class="help-button" 
-                      [title]="getField(i).description"
-                      *ngIf="getField(i).description">
+                      [title]="field.description"
+                      *ngIf="field.description">
                 ℹ️
               </button>
             </div>
@@ -77,9 +78,9 @@ export interface ExpenseBases {
                 <input type="number"
                        formControlName="pct"
                        (focus)="onFieldFocus(i, 'pct')"
-                       [min]="getField(i).min"
-                       [max]="getField(i).max"
-                       [step]="getField(i).step"
+                       [min]="field.min"
+                       [max]="field.max"
+                       [step]="field.step"
                        class="pct-input">
                 <span class="unit-symbol">%</span>
               </div>
@@ -104,16 +105,17 @@ export interface ExpenseBases {
               <input type="range"
                      formControlName="sliderValue"
                      (focus)="onFieldFocus(i, 'slider')"
-                     [min]="getField(i).min"
-                     [max]="Math.min(getField(i).max, 50)"
-                     [step]="getField(i).step"
+                     [min]="field.min"
+                     [max]="Math.min(field.max, 50)"
+                     [step]="field.step"
                      class="expense-slider">
             </div>
 
             <!-- Field Description -->
-            <div *ngIf="getField(i).description" class="field-description">
-              {{ getField(i).description }}
+            <div *ngIf="field.description" class="field-description">
+              {{ field.description }}
             </div>
+            </ng-container>
           </div>
         </div>
       </form>
@@ -501,17 +503,17 @@ export class ExpensesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   // Template helper methods
-  getField(index: number): ExpenseField {
-    return this.expenseFields[index];
-  }
-
   isFixedAmount(index: number): boolean {
-    return this.expenseFields[index].calculationBase === 'fixed_amount';
+    return this.expenseFields[index]?.calculationBase === 'fixed_amount';
   }
 
   getRowClass(index: number): string {
     const field = this.expenseFields[index];
-    return field.id.includes('taxRush') ? 'taxrush-field' : '';
+    return field?.id.includes('taxRush') ? 'taxrush-field' : '';
+  }
+
+  getField(index: number): ExpenseField | undefined {
+    return this.expenseFields[index];
   }
 
   getKpiClass(index: number): string {

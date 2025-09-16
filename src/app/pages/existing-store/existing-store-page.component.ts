@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { IncomeDriversComponent } from '../../components/income-drivers/income-drivers.component';
 import { ExpensesComponent, ExpensesState, ExpenseBases } from '../../components/expenses/expenses.component';
+import { DashboardComponent } from '../../components/dashboard/dashboard.component';
 import { Region } from '../../models/wizard.models';
 
 // Interface for IncomeDriverData (matching IncomeDriversComponent)
@@ -72,7 +73,7 @@ export interface ExistingStoreSummary {
 @Component({
   selector: 'app-existing-store-page',
   standalone: true,
-  imports: [CommonModule, IncomeDriversComponent, ExpensesComponent],
+  imports: [CommonModule, IncomeDriversComponent, ExpensesComponent, DashboardComponent],
   template: `
     <div class="existing-store-container">
       <!-- Page Header -->
@@ -121,28 +122,8 @@ export interface ExistingStoreSummary {
           </div>
         </div>
 
-        <!-- KPI Cards -->
-        <div class="kpi-cards">
-          <div class="kpi-card revenue">
-            <div class="kpi-label">Total Revenue</div>
-            <div class="kpi-value">{{ formatCurrency(summary.revenue.totalRevenue) }}</div>
-          </div>
-          
-          <div class="kpi-card expenses">
-            <div class="kpi-label">Total Expenses</div>
-            <div class="kpi-value">{{ formatCurrency(summary.expenses.totalExpenses) }}</div>
-          </div>
-          
-          <div class="kpi-card net-income" [class]="getNetIncomeClass()">
-            <div class="kpi-label">Net Income</div>
-            <div class="kpi-value">{{ formatCurrency(summary.kpis.netIncome) }}</div>
-          </div>
-          
-          <div class="kpi-card margin" [class]="getMarginClass()">
-            <div class="kpi-label">Net Margin</div>
-            <div class="kpi-value">{{ formatPercentage(summary.kpis.netMarginPct) }}</div>
-          </div>
-        </div>
+        <!-- Dashboard KPIs -->
+        <app-dashboard [summaryData]="summary"></app-dashboard>
 
         <!-- Additional Metrics -->
         <div class="metrics-row">
