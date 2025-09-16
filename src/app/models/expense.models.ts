@@ -274,6 +274,33 @@ export function getFieldById(id: string): ExpenseField | undefined {
   return expenseFields.find(field => field.id === id);
 }
 
+// Core function for ExpensesComponent - filters expense fields for FormArray
+export function expensesFor(mode: string, region: 'US' | 'CA', storeType?: string): ExpenseField[] {
+  return expenseFields.filter(field => {
+    // Region filtering
+    const regionMatch = !field.regionSpecific || 
+      field.regionSpecific === region || 
+      field.regionSpecific === 'both';
+    
+    if (!regionMatch) return false;
+    
+    // TaxRush-specific fields only for CA region
+    const isTaxRushField = field.id.includes('taxRush');
+    if (isTaxRushField && region !== 'CA') return false;
+    
+    // For existing store mode, include all relevant fields
+    if (mode === 'existing-store') return true;
+    
+    // For wizard mode, exclude advanced fields
+    if (mode === 'wizard') {
+      const advancedFields = ['empDeductionsPct', 'duesAmt', 'bankFeesAmt', 'maintenanceAmt', 'travelEntAmt'];
+      return !advancedFields.includes(field.id);
+    }
+    
+    return true;
+  });
+}
+
 // Inputs Panel Data Interface
 export interface InputsPanelData {
   region: 'US' | 'CA';

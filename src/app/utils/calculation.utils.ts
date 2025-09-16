@@ -84,6 +84,33 @@ export function getKPIStatusClass(status: KPIStatus): string {
   }
 }
 
+// Dual-entry calculation utilities for $↔% conversions
+export function amountFromPct(pct: number, base: number): number {
+  if (!pct || !base || isNaN(pct) || isNaN(base)) return 0;
+  return (pct / 100) * base;
+}
+
+export function pctFromAmount(amount: number, base: number): number {
+  if (!amount || !base || isNaN(amount) || isNaN(base)) return 0;
+  return (amount / base) * 100;
+}
+
+// Calculate calculation base from expense field type and available values
+export function getCalculationBase(field: any, bases: any): number {
+  switch (field.calculationBase) {
+    case 'percentage_gross':
+      return bases.grossFees || 0;
+    case 'percentage_tp_income':
+      return bases.taxPrepIncome || 0;
+    case 'percentage_salaries':
+      return bases.salaries || 0;
+    case 'fixed_amount':
+      return 1; // For fixed amounts, base is 1 (amount = amount)
+    default:
+      return bases.grossFees || 0;
+  }
+}
+
 // Performance status for projected performance panel
 export interface PerformanceStatus {
   status: 'excellent' | 'good' | 'fair' | 'poor' | 'neutral';
