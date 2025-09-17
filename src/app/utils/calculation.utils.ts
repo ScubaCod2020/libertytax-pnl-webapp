@@ -136,3 +136,44 @@ export function getPerformanceStatus(metric: string, value: number): Performance
       return { status: 'neutral', color: '#6b7280', icon: '📊' };
   }
 }
+
+// Build comprehensive summary from priorYear, projected, and expenses data
+export function buildSummary(priorYear: any, projected: any, expenses: any): any {
+  console.log('🏗️ Building summary from:', { priorYear, projected, expenses });
+  
+  // Calculate revenue components
+  const taxPrepIncome = projected.netTaxIncome || priorYear.taxPrepIncome || 0;
+  const taxRushIncome = projected.taxRushIncome || priorYear.taxRushIncome || 0;
+  const otherIncome = projected.otherIncome || priorYear.otherIncome || 0;
+  const discounts = projected.discounts || priorYear.discounts || 0;
+  
+  const totalRevenue = taxPrepIncome + taxRushIncome + otherIncome - discounts;
+  
+  // Calculate expenses by category
+  const expensesByCategory = {
+    personnel: (expenses.salariesTotal || 0) + (expenses.empDeductionsTotal || 0),
+    facility: (expenses.rentTotal || 0) + (expenses.utilitiesTotal || 0) + (expenses.insuranceTotal || 0),
+    operations: (expenses.suppliesTotal || 0) + (expenses.postageTotal || 0) + (expenses.localAdvTotal || 0),
+    franchise: (expenses.royaltiesTotal || 0) + (expenses.advRoyaltiesTotal || 0) + (expenses.taxRushRoyaltiesTotal || 0),
+    misc: expenses.miscTotal || 0
+  };
+  
+  const totalExpenses = Object.values(expensesByCategory).reduce((sum, value) => sum + value, 0);
+  const netIncome = totalRevenue - totalExpenses;
+  const netMarginPct = totalRevenue > 0 ? (netIncome / totalRevenue) * 100 : 0;
+  
+  const summary = {
+    totalRevenue,
+    totalExpenses,
+    netIncome,
+    netMarginPct,
+    taxPrepIncome,
+    taxRushIncome,
+    otherIncome,
+    discounts,
+    expensesByCategory
+  };
+  
+  console.log('📊 Built summary:', summary);
+  return summary;
+}

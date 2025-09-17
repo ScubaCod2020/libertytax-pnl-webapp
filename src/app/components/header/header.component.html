@@ -16,19 +16,20 @@
       <h1 [class.region-us]="region === 'US'" [class.region-ca]="region === 'CA'">P&L Budget & Forecast</h1>
       <span class="version-badge">v0.5 preview</span>
     </div>
+    <div class="nav-section">
+      <nav class="nav-links">
+        <a routerLink="/wizard/step-1" routerLinkActive="active" class="nav-link">
+          🚀 Setup Wizard
+        </a>
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+          📊 Dashboard
+        </a>
+        <a routerLink="/reports" routerLinkActive="active" class="nav-link">
+          📋 Reports
+        </a>
+      </nav>
+    </div>
     <div class="actions-section">
-      <button 
-        *ngIf="!showWizard" 
-        (click)="onShowWizardClick()" 
-        class="btn btn-secondary">
-        {{ wizardCompleted ? '⚙️ Review Setup' : '🚀 Setup Wizard' }}
-      </button>
-      <button 
-        *ngIf="showWizard && wizardCompleted" 
-        (click)="onShowDashboardClick()" 
-        class="btn btn-secondary">
-        📊 Show Dashboard
-      </button>
       <button 
         (click)="onResetClick()" 
         class="btn btn-danger">

@@ -1,7 +1,8 @@
 // projected-performance.component.ts - Prior Year vs Projected performance comparison
 // Based on React app ProjectedPerformancePanel component
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { formatCurrency, formatPercentage, getPerformanceStatus, PerformanceStatus } from '../../utils/calculation.utils';
 
@@ -27,10 +28,18 @@ export interface ProjectedPerformanceData {
   handlesTaxRush?: boolean;
 }
 
+export interface PriorYearMetrics {
+  taxPrepIncome: number;
+  totalRevenue: number;
+  netIncome: number;
+  discountsPct: number;
+  taxRushIncome: number;
+}
+
 @Component({
   selector: 'app-projected-performance',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   template: `
     <div class="card projected-performance-card">
       <div class="card-title performance-title">
@@ -173,8 +182,87 @@ export interface ProjectedPerformanceData {
     }
   `]
 })
-export class ProjectedPerformanceComponent {
-  @Input() data!: ProjectedPerformanceData;
+export class ProjectedPerformanceComponent implements OnInit {
+  @Input() region: string = 'US';
+  @Input() priorYearMetrics?: PriorYearMetrics;
+  @Input() data?: ProjectedPerformanceData;
+  @Output() projectionChange = new EventEmitter<any>();
+
+  projectedForm: FormGroup;
+  
+  constructor(private fb: FormBuilder) {
+    this.projectedForm = this.fb.group({
+      scenario: ['good'],
+      growthDelta: [1],
+      applyToReturns: [true],
+      applyToAvgFee: [false],
+      targetReturns: [1600],
+      avgNetFee: [125]
+    });
+  }
+
+  ngOnInit() {
+    this.projectedForm.valueChanges.subscribe(value => {
+      const projectionData = {
+        ...value,
+        calculatedRevenue: this.calculatedRevenue,
+        calculatedReturns: this.calculatedReturns,
+        calculatedAvgFee: this.calculatedAvgFee,
+        calculatedGrowthRate: this.calculatedGrowthRate
+      };
+      this.projectionChange.emit(projectionData);
+    });
+  }
+
+  get growthDelta(): number {
+    return this.projectedForm.get('growthDelta')?.value || 0;
+  }
+
+  get calculatedRevenue(): number {
+    return this.calculatedReturns * this.calculatedAvgFee;
+  }
+
+  get calculatedReturns(): number {
+    const baseReturns = this.projectedForm.get('targetReturns')?.value || 1600;
+    if (this.projectedForm.get('applyToReturns')?.value) {
+      return baseReturns * (1 + this.growthDelta / 100);
+    }
+    return baseReturns;
+  }
+
+  get calculatedAvgFee(): number {
+    const baseAvgFee = this.projectedForm.get('avgNetFee')?.value || 125;
+    if (this.projectedForm.get('applyToAvgFee')?.value) {
+      return baseAvgFee * (1 + this.growthDelta / 100);
+    }
+    return baseAvgFee;
+  }
+
+  get calculatedGrowthRate(): number {
+    return this.growthDelta;
+  }
+
+  getMinDelta(): number {
+    const scenario = this.projectedForm.get('scenario')?.value;
+    switch (scenario) {
+      case 'good': return 0;
+      case 'better': return 2;
+      case 'best': return 5;
+      default: return 0;
+    }
+  }
+
+  getMaxDelta(): number {
+    const scenario = this.projectedForm.get('scenario')?.value;
+    switch (scenario) {
+      case 'good': return 2;
+      case 'better': return 5;
+      case 'best': return 8;
+      default: return 10;
+    }
+  }
+
+  formatCurrency = formatCurrency;
 
   // Prior year calculations
   get pyNetIncome(): number {

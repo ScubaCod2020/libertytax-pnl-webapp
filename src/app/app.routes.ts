@@ -10,7 +10,26 @@ export const routes: Routes = [
     title: 'Debug Tool - App State Snapshots'
   },
   
-  // Existing store analysis page
+  // Wizard routes
+  {
+    path: 'wizard/step-1',
+    loadComponent: () => import('./pages/wizard/step1-page.component').then(m => m.Step1PageComponent),
+    title: 'Setup Wizard - Step 1'
+  },
+  {
+    path: 'wizard/step-2',
+    loadComponent: () => import('./pages/wizard/step2-page.component').then(m => m.Step2PageComponent),
+    title: 'Setup Wizard - Step 2'
+  },
+  
+  // Dashboard page
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./pages/dashboard/dashboard-page.component').then(m => m.DashboardPageComponent),
+    title: 'P&L Dashboard'
+  },
+  
+  // Existing store analysis page (legacy)
   {
     path: 'existing-store',
     component: ExistingStorePageComponent,
@@ -24,10 +43,10 @@ export const routes: Routes = [
     title: 'P&L Reports'
   },
   
-  // Default redirect to main app (handled by AppComponent)
+  // Default redirect to wizard step 1
   {
     path: '',
-    redirectTo: '',
+    redirectTo: '/wizard/step-1',
     pathMatch: 'full'
   }
 ];

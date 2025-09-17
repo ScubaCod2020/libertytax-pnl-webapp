@@ -1,6 +1,24 @@
 // calculation.models.ts - Data models for calculation results
 // Based on React app calculation models
 
+export interface ExistingStoreSummary {
+  totalRevenue: number;
+  totalExpenses: number;
+  netIncome: number;
+  netMarginPct: number;
+  taxPrepIncome: number;
+  taxRushIncome: number;
+  otherIncome: number;
+  discounts: number;
+  expensesByCategory: {
+    personnel: number;
+    facility: number;
+    operations: number;
+    franchise: number;
+    misc: number;
+  };
+}
+
 export interface CalculationResults {
   netIncome: number;
   netMarginPct: number;

@@ -36,6 +36,29 @@ export class PersistenceService {
     }
   }
 
+  // Generic data save/load methods for priorYear, projected, expenses
+  saveGenericData(key: 'priorYear' | 'projected' | 'expenses', data: any): void {
+    try {
+      const envelope = this.loadEnvelope();
+      envelope[key] = data;
+      envelope.meta.savedAtISO = new Date().toISOString();
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(envelope));
+      console.log(`💾 Saved ${key} data:`, data);
+    } catch (error) {
+      console.error(`💾 Failed to save ${key} data:`, error);
+    }
+  }
+
+  loadGenericData(key: 'priorYear' | 'projected' | 'expenses'): any | null {
+    try {
+      const envelope = this.loadEnvelope();
+      return envelope[key] || null;
+    } catch (error) {
+      console.error(`💾 Failed to load ${key} data:`, error);
+      return null;
+    }
+  }
+
   loadWizardAnswers(): WizardAnswers | null {
     try {
       const envelope = this.loadEnvelope();

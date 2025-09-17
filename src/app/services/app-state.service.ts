@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AppState, Region } from '../models/wizard.models';
 
@@ -204,6 +204,39 @@ export class AppStateService {
       miscPct: 0,
       thresholds: {}
     });
+  }
+
+  // Readonly signals for state management
+  private priorYearSignal = signal<any>({});
+  private projectedSignal = signal<any>({});
+  private expensesSignal = signal<any>({});
+  private summarySignal = signal<any>({});
+
+  // Public readonly signals
+  readonly priorYear = this.priorYearSignal.asReadonly();
+  readonly projected = this.projectedSignal.asReadonly();
+  readonly expenses = this.expensesSignal.asReadonly();
+  readonly summary = this.summarySignal.asReadonly();
+
+  // Update methods for signals
+  updatePriorYear(data: any): void {
+    this.priorYearSignal.set(data);
+    console.log('📊 Prior year state updated:', data);
+  }
+
+  updateProjected(data: any): void {
+    this.projectedSignal.set(data);
+    console.log('📈 Projected state updated:', data);
+  }
+
+  updateExpenses(data: any): void {
+    this.expensesSignal.set(data);
+    console.log('💰 Expenses state updated:', data);
+  }
+
+  updateSummary(data: any): void {
+    this.summarySignal.set(data);
+    console.log('📋 Summary state updated:', data);
   }
 
   private updateState(updates: Partial<AppState>): void {
