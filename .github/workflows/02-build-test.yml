@@ -67,15 +67,19 @@ jobs:
       run: |
         echo "🏗️ Building application..."
         npm run build
-        
+
+        # Set Angular dist paths
+        DIST_DIR="dist/libertytax-pnl-angular/browser"
+        INDEX_HTML="$DIST_DIR/index.html"
+
         # Validate build artifacts
-        [ -f "dist/index.html" ] || (echo "❌ Missing index.html" && exit 1)
-        [ -f dist/assets/index-*.js ] || (echo "❌ Missing JavaScript bundle" && exit 1)
-        [ -f dist/assets/index-*.css ] || (echo "❌ Missing CSS bundle" && exit 1)
-        
+        [ -f "$INDEX_HTML" ] || (echo "❌ Missing index.html at $INDEX_HTML" && exit 1)                            
+        [ -f "$DIST_DIR"/main*.js ] || (echo "❌ Missing main JavaScript bundle" && exit 1)                
+        [ -f "$DIST_DIR"/styles*.css ] || (echo "❌ Missing CSS bundle" && exit 1)                      
+
         # Calculate bundle sizes
-        MAIN_BUNDLE=$(find dist/assets -name "index-*.js" -exec stat -c%s {} \; | sort -n | tail -1)
-        VENDOR_BUNDLE=$(find dist/assets -name "vendor-*.js" -exec stat -c%s {} \; | sort -n | tail -1 || echo "0")
+        MAIN_BUNDLE=$(find "$DIST_DIR" -name "main*.js" -exec stat -c%s {} \; | sort -n | tail -1)    
+        VENDOR_BUNDLE=$(find "$DIST_DIR" -name "vendor*.js" -exec stat -c%s {} \; | sort -n | tail -1 || echo "0")                                         
         TOTAL_SIZE=$((MAIN_BUNDLE + VENDOR_BUNDLE))
         
         echo "bundle_size=$((TOTAL_SIZE / 1024))" >> $GITHUB_OUTPUT
@@ -118,20 +122,20 @@ jobs:
         done
         
         # Test critical functionality
-        RESPONSE=$(curl -s http://localhost:4173)
-        
-        if echo "$RESPONSE" | grep -q "Liberty Tax"; then
-          echo "✅ Liberty Tax branding found"
+        RESPONSE=$(curl -s http://localhost:4173)   
+
+        if echo "$RESPONSE" | grep -E "<app-root|<title>" > /dev/null; then                                               
+          echo "✅ Angular app root found"      
         else
-          echo "❌ Liberty Tax branding missing"
+          echo "❌ Angular app root missing"    
           kill $SERVER_PID
           exit 1
         fi
-        
-        if echo "$RESPONSE" | grep -q "script"; then
-          echo "✅ JavaScript bundle loaded"
+
+        if echo "$RESPONSE" | grep -q "Liberty Tax"; then                                               
+          echo "✅ Liberty Tax branding found"      
         else
-          echo "❌ JavaScript bundle missing"
+          echo "❌ Liberty Tax branding missing"    
           kill $SERVER_PID
           exit 1
         fi
@@ -145,7 +149,7 @@ jobs:
       with:
         name: build-artifacts-${{ github.sha }}
         path: |
-          dist/
+          dist/libertytax-pnl-angular/browser/
           package.json
           package-lock.json
         retention-days: 7
