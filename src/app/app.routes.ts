@@ -17,6 +17,13 @@ export const routes: Routes = [
     title: 'Existing Store Analysis'
   },
   
+  // Reports page
+  {
+    path: 'reports',
+    loadComponent: () => import('./pages/reports/reports-page.component').then(m => m.ReportsPageComponent),
+    title: 'P&L Reports'
+  },
+  
   // Default redirect to main app (handled by AppComponent)
   {
     path: '',

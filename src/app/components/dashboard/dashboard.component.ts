@@ -797,21 +797,10 @@ export class DashboardComponent implements OnChanges {
     return this.currentResults.salaries + this.currentResults.empDeductions;
   }
 
+  // getFacilityTotal method for category cards (enhanced to include insurance)
   getFacilityTotal(): number {
     return this.currentResults.rent + this.currentResults.telephone + 
            this.currentResults.utilities + this.currentResults.insurance;
-  }
-
-  getOperationsTotal(): number {
-    return this.currentResults.localAdv + this.currentResults.postage + 
-           this.currentResults.supplies + this.currentResults.dues + 
-           this.currentResults.bankFees + this.currentResults.maintenance + 
-           this.currentResults.travelEnt;
-  }
-
-  getFranchiseTotal(): number {
-    return this.currentResults.royalties + this.currentResults.advRoyalties + 
-           this.currentResults.taxRushRoyalties;
   }
 
   getMiscTotal(): number {
@@ -827,7 +816,9 @@ export class DashboardComponent implements OnChanges {
         categoryTotal = this.getPersonnelTotal();
         break;
       case 'facility':
-        categoryTotal = this.getFacilityTotal();
+        // Use existing method but add missing insurance
+        categoryTotal = this.currentResults.rent + this.currentResults.telephone + 
+                       this.currentResults.utilities + this.currentResults.insurance;
         break;
       case 'operations':
         categoryTotal = this.getOperationsTotal();
