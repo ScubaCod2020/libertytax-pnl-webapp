@@ -61,58 +61,58 @@ export interface ExpenseBases {
             <ng-container *ngIf="getField(i); let field">
             <div class="expense-row-header">
               <label class="expense-label">
-                {{ field.label }}
+                {{ field?.label || 'Unknown Field' }}
                 <span class="kpi-badge" [class]="getKpiClass(i)">{{ getKpiBadge(i) }}</span>
               </label>
               <button type="button" 
                       class="help-button" 
-                      [title]="field.description"
-                      *ngIf="field.description">
+                      [title]="field?.description || ''"
+                      *ngIf="field?.description">
                 ℹ️
               </button>
             </div>
 
-            <div class="expense-controls">
+              <div class="expense-controls">
               <!-- Percentage Input (for percentage-based fields) -->
-              <div *ngIf="!isFixedAmount(i)" class="input-group">
+              <div *ngIf="!isFixedAmount(i) && field" class="input-group">
                 <input type="number"
                        formControlName="pct"
                        (focus)="onFieldFocus(i, 'pct')"
-                       [min]="field.min"
-                       [max]="field.max"
-                       [step]="field.step"
+                       [min]="field?.min || 0"
+                       [max]="field?.max || 100"
+                       [step]="field?.step || 0.1"
                        class="pct-input">
                 <span class="unit-symbol">%</span>
               </div>
 
               <!-- Amount Input -->
-              <div class="input-group">
+              <div class="input-group" *ngIf="field">
                 <span class="unit-symbol">$</span>
                 <input type="number"
                        formControlName="amount"
                        (focus)="onFieldFocus(i, 'amount')"
                        [min]="0"
-                       [step]="isFixedAmount(i) ? getField(i).step : 1"
+                       [step]="isFixedAmount(i) ? (field?.step || 100) : 1"
                        class="amount-input">
               </div>
 
               <!-- Equals symbol for dual-entry -->
-              <span *ngIf="!isFixedAmount(i)" class="equals-symbol">=</span>
+              <span *ngIf="!isFixedAmount(i) && field" class="equals-symbol">=</span>
             </div>
 
             <!-- Slider (for percentage-based fields) -->
-            <div *ngIf="!isFixedAmount(i)" class="slider-container">
+            <div *ngIf="!isFixedAmount(i) && field" class="slider-container">
               <input type="range"
                      formControlName="sliderValue"
                      (focus)="onFieldFocus(i, 'slider')"
-                     [min]="field.min"
-                     [max]="Math.min(field.max, 50)"
-                     [step]="field.step"
+                     [min]="field?.min || 0"
+                     [max]="Math.min(field?.max || 50, 50)"
+                     [step]="field?.step || 0.1"
                      class="expense-slider">
             </div>
 
             <!-- Field Description -->
-            <div *ngIf="field.description" class="field-description">
+            <div *ngIf="field?.description" class="field-description">
               {{ field.description }}
             </div>
             </ng-container>
