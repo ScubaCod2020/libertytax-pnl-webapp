@@ -87,18 +87,99 @@ export interface CalculationResults {
         </div>
       </div>
 
+      <!-- Category Breakdown Cards -->
+      <div class="category-cards-grid">
+        <div class="category-card personnel" [class]="getCategoryStatusClass('personnel')">
+          <div class="category-header">
+            <span class="category-icon">👥</span>
+            <span class="category-name">Personnel</span>
+          </div>
+          <div class="category-amount">{{ formatCurrency(getPersonnelTotal()) }}</div>
+          <div class="category-percentage">{{ getCategoryPercentage('personnel') }}% of revenue</div>
+        </div>
+
+        <div class="category-card facility" [class]="getCategoryStatusClass('facility')">
+          <div class="category-header">
+            <span class="category-icon">🏢</span>
+            <span class="category-name">Facility</span>
+          </div>
+          <div class="category-amount">{{ formatCurrency(getFacilityTotal()) }}</div>
+          <div class="category-percentage">{{ getCategoryPercentage('facility') }}% of revenue</div>
+        </div>
+
+        <div class="category-card operations" [class]="getCategoryStatusClass('operations')">
+          <div class="category-header">
+            <span class="category-icon">⚙️</span>
+            <span class="category-name">Operations</span>
+          </div>
+          <div class="category-amount">{{ formatCurrency(getOperationsTotal()) }}</div>
+          <div class="category-percentage">{{ getCategoryPercentage('operations') }}% of revenue</div>
+        </div>
+
+        <div class="category-card franchise" [class]="getCategoryStatusClass('franchise')">
+          <div class="category-header">
+            <span class="category-icon">🏪</span>
+            <span class="category-name">Franchise</span>
+          </div>
+          <div class="category-amount">{{ formatCurrency(getFranchiseTotal()) }}</div>
+          <div class="category-percentage">{{ getCategoryPercentage('franchise') }}% of revenue</div>
+        </div>
+
+        <div class="category-card misc" [class]="getCategoryStatusClass('misc')">
+          <div class="category-header">
+            <span class="category-icon">📝</span>
+            <span class="category-name">Miscellaneous</span>
+          </div>
+          <div class="category-amount">{{ formatCurrency(getMiscTotal()) }}</div>
+          <div class="category-percentage">{{ getCategoryPercentage('misc') }}% of revenue</div>
+        </div>
+      </div>
+
       <!-- Pro-Tips and Income Summary Grid -->
       <div class="dashboard-grid">
         <!-- Pro-Tips Card -->
         <div class="card pro-tips-card">
           <div class="card-title">Pro-Tips</div>
           <ul class="pro-tips-list">
-            <li *ngIf="expensesStatus === 'red'">Expenses are high — review Personnel and Facility costs.</li>
-            <li *ngIf="nimStatus === 'red'">Margin is low — consider raising fees or reducing discounts.</li>
-            <li *ngIf="niStatus === 'red'">Net Income negative — check major expense categories.</li>
-            <li *ngIf="niStatus === 'yellow'">Close to breakeven — small revenue increases can flip green.</li>
+            <!-- Expense Category Tips -->
+            <li *ngIf="getCategoryStatusClass('personnel') === 'category-high'">
+              Personnel costs are high ({{ getCategoryPercentage('personnel') }}%) — review salary levels and employee deductions.
+            </li>
+            <li *ngIf="getCategoryStatusClass('facility') === 'category-high'">
+              Facility costs elevated ({{ getCategoryPercentage('facility') }}%) — consider rent negotiation or space optimization.
+            </li>
+            <li *ngIf="getCategoryStatusClass('operations') === 'category-high'">
+              Operations expenses high ({{ getCategoryPercentage('operations') }}%) — review utilities, supplies, and maintenance.
+            </li>
+            <li *ngIf="getCategoryStatusClass('franchise') === 'category-high'">
+              Franchise fees impacting margins ({{ getCategoryPercentage('franchise') }}%) — focus on revenue growth to offset.
+            </li>
+            
+            <!-- Overall Performance Tips -->
+            <li *ngIf="expensesStatus === 'red'">
+              Total expenses are high — prioritize Personnel and Facility cost reviews.
+            </li>
+            <li *ngIf="nimStatus === 'red'">
+              Margin is low ({{ formatPercentage(currentResults.netMarginPct) }}) — consider raising fees or reducing discounts.
+            </li>
+            <li *ngIf="niStatus === 'red'">
+              Net Income negative — check major expense categories and revenue opportunities.
+            </li>
+            <li *ngIf="niStatus === 'yellow'">
+              Close to breakeven — small revenue increases or cost reductions can flip green.
+            </li>
+            
+            <!-- Positive Performance Tips -->
             <li *ngIf="revenueStatus === 'green' && expensesStatus === 'green' && nimStatus === 'green' && niStatus === 'green'">
-              Excellent performance across all metrics!
+              🎉 Excellent performance across all metrics! Consider "Best" scenario to test capacity.
+            </li>
+            <li *ngIf="revenueStatus === 'green' && nimStatus === 'green' && getTotalExpenseRatio() < 75">
+              Strong cost control — expense ratio {{ getTotalExpenseRatio() | number:'1.0-0' }}% is below 75% benchmark.
+            </li>
+            
+            <!-- Strategic Growth Tips -->
+            <li *ngIf="currentResults.totalRevenue > 150000 && nimStatus === 'green'">
+              Revenue over $150K with good margins — consider expansion opportunities.
             </li>
           </ul>
         </div>
@@ -443,6 +524,110 @@ export interface CalculationResults {
       color: #6b7280;
       font-style: italic;
     }
+
+    /* Category Breakdown Cards */
+    .category-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .category-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .category-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .category-card {
+      background: #f8fafc;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .category-card.category-good {
+      border-color: #22c55e;
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    }
+
+    .category-card.category-medium {
+      border-color: #f59e0b;
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    }
+
+    .category-card.category-high {
+      border-color: #ef4444;
+      background: linear-gradient(135deg, #fef2f2, #fecaca);
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .category-icon {
+      font-size: 1.25rem;
+    }
+
+    .category-name {
+      font-weight: 600;
+      color: #374151;
+      font-size: 0.9rem;
+    }
+
+    .category-amount {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 0.25rem;
+    }
+
+    .category-percentage {
+      font-size: 0.8rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .category-card.category-good .category-amount {
+      color: #059669;
+    }
+
+    .category-card.category-medium .category-amount {
+      color: #d97706;
+    }
+
+    .category-card.category-high .category-amount {
+      color: #dc2626;
+    }
+
+    /* Enhanced Pro-Tips */
+    .pro-tips-list li {
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
+      color: #374151;
+      font-size: 0.9rem;
+    }
+
+    .pro-tips-list li:last-child {
+      margin-bottom: 0;
+    }
   `]
 })
 export class DashboardComponent implements OnChanges {
@@ -605,5 +790,98 @@ export class DashboardComponent implements OnChanges {
 
   private getPercentage(value: number): string {
     return this.currentResults.totalRevenue > 0 ? ((value / this.currentResults.totalRevenue) * 100).toFixed(1) : '0.0';
+  }
+
+  // Category aggregation methods for new category tiles
+  getPersonnelTotal(): number {
+    return this.currentResults.salaries + this.currentResults.empDeductions;
+  }
+
+  getFacilityTotal(): number {
+    return this.currentResults.rent + this.currentResults.telephone + 
+           this.currentResults.utilities + this.currentResults.insurance;
+  }
+
+  getOperationsTotal(): number {
+    return this.currentResults.localAdv + this.currentResults.postage + 
+           this.currentResults.supplies + this.currentResults.dues + 
+           this.currentResults.bankFees + this.currentResults.maintenance + 
+           this.currentResults.travelEnt;
+  }
+
+  getFranchiseTotal(): number {
+    return this.currentResults.royalties + this.currentResults.advRoyalties + 
+           this.currentResults.taxRushRoyalties;
+  }
+
+  getMiscTotal(): number {
+    return this.currentResults.misc;
+  }
+
+  getCategoryPercentage(category: string): number {
+    if (this.currentResults.totalRevenue === 0) return 0;
+    
+    let categoryTotal = 0;
+    switch (category) {
+      case 'personnel':
+        categoryTotal = this.getPersonnelTotal();
+        break;
+      case 'facility':
+        categoryTotal = this.getFacilityTotal();
+        break;
+      case 'operations':
+        categoryTotal = this.getOperationsTotal();
+        break;
+      case 'franchise':
+        categoryTotal = this.getFranchiseTotal();
+        break;
+      case 'misc':
+        categoryTotal = this.getMiscTotal();
+        break;
+      default:
+        return 0;
+    }
+    
+    return (categoryTotal / this.currentResults.totalRevenue) * 100;
+  }
+
+  getCategoryStatusClass(category: string): string {
+    const percentage = this.getCategoryPercentage(category);
+    
+    // Category-specific thresholds based on industry benchmarks
+    let highThreshold = 0;
+    let mediumThreshold = 0;
+    
+    switch (category) {
+      case 'personnel':
+        highThreshold = 35; // Personnel should be < 35% of revenue
+        mediumThreshold = 25;
+        break;
+      case 'facility':
+        highThreshold = 20; // Facility costs should be < 20% of revenue
+        mediumThreshold = 15;
+        break;
+      case 'operations':
+        highThreshold = 15; // Operations should be < 15% of revenue
+        mediumThreshold = 10;
+        break;
+      case 'franchise':
+        highThreshold = 25; // Franchise fees typically 20-25%
+        mediumThreshold = 20;
+        break;
+      case 'misc':
+        highThreshold = 10; // Misc should be minimal
+        mediumThreshold = 5;
+        break;
+    }
+    
+    if (percentage > highThreshold) return 'category-high';
+    if (percentage > mediumThreshold) return 'category-medium';
+    return 'category-good';
+  }
+
+  getTotalExpenseRatio(): number {
+    if (this.currentResults.totalRevenue === 0) return 0;
+    return (this.currentResults.totalExpenses / this.currentResults.totalRevenue) * 100;
   }
 }
