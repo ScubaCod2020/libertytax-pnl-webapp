@@ -81,9 +81,9 @@ export interface PriorYearMetrics {
         </div>
         
         <div class="prior-year-details">
-          <div>Revenue: {{ formatCurrency(data.lastYearRevenue || 0) }}</div>
-          <div>Expenses: {{ formatCurrency(data.lastYearExpenses || 0) }}</div>
-          <div>Returns: {{ (data.lastYearReturns || 0).toLocaleString() }}</div>
+          <div>Revenue: {{ formatCurrency(_d.lastYearRevenue) }}</div>
+          <div>Expenses: {{ formatCurrency(_d.lastYearExpenses) }}</div>
+          <div>Returns: {{ _d.lastYearReturns.toLocaleString() }}</div>
         </div>
       </div>
 

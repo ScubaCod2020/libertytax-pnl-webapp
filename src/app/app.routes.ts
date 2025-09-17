@@ -3,6 +3,13 @@ import { DebugToolComponent } from './components/debug-tool/debug-tool.component
 import { ExistingStorePageComponent } from './pages/existing-store/existing-store-page.component';
 
 export const routes: Routes = [
+  // Health check route (production diagnostics)
+  {
+    path: 'health',
+    loadComponent: () => import('./pages/health/health.component').then(m => m.HealthComponent),
+    title: 'Health Check - Boot Diagnostics'
+  },
+
   // Debug route (dev-only)
   {
     path: 'debug',
