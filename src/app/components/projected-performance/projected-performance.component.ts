@@ -6,6 +6,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { formatCurrency, formatPercentage, getPerformanceStatus, PerformanceStatus } from '../../utils/calculation.utils';
 
+export interface PriorYearSnapshot {
+  lastYearRevenue: number;
+  lastYearExpenses: number;
+  lastYearReturns: number;
+  avgNetFee: number;
+}
+
 export interface ProjectedPerformanceData {
   // Projected performance (current inputs)
   grossFees: number;
@@ -24,6 +31,7 @@ export interface ProjectedPerformanceData {
   lastYearRevenue?: number;
   lastYearExpenses?: number;
   lastYearReturns?: number;
+  avgNetFee?: number;
   expectedGrowthPct?: number;
   handlesTaxRush?: boolean;
 }
@@ -185,7 +193,7 @@ export interface PriorYearMetrics {
 export class ProjectedPerformanceComponent implements OnInit {
   @Input() region: string = 'US';
   @Input() priorYearMetrics?: PriorYearMetrics;
-  @Input() data?: ProjectedPerformanceData;
+  @Input() data?: Partial<PriorYearSnapshot>;
   @Output() projectionChange = new EventEmitter<any>();
 
   projectedForm: FormGroup;
@@ -262,21 +270,27 @@ export class ProjectedPerformanceComponent implements OnInit {
     }
   }
 
-  formatCurrency = formatCurrency;
+  private get _d(): Required<PriorYearSnapshot> {
+    const d = this.data ?? {};
+    return {
+      lastYearRevenue: d.lastYearRevenue ?? 0,
+      lastYearExpenses: d.lastYearExpenses ?? 0,
+      lastYearReturns: d.lastYearReturns ?? 0,
+      avgNetFee: d.avgNetFee ?? 0,
+    };
+  }
 
   // Prior year calculations
   get pyNetIncome(): number {
-    return (this.data.lastYearRevenue || 0) - (this.data.lastYearExpenses || 0);
+    return this._d.lastYearRevenue - this._d.lastYearExpenses;
   }
 
   get pyNetMarginPct(): number {
-    const revenue = this.data.lastYearRevenue || 0;
-    return revenue > 0 ? (this.pyNetIncome / revenue) * 100 : 0;
+    return this._d.lastYearRevenue > 0 ? (this.pyNetIncome / this._d.lastYearRevenue) * 100 : 0;
   }
 
   get pyCostPerReturn(): number {
-    const returns = this.data.lastYearReturns || 0;
-    return returns > 0 ? (this.data.lastYearExpenses || 0) / returns : 0;
+    return this._d.lastYearReturns > 0 ? this._d.lastYearExpenses / this._d.lastYearReturns : 0;
   }
 
   // Performance status indicators
@@ -289,10 +303,10 @@ export class ProjectedPerformanceComponent implements OnInit {
   }
 
   get hasPriorYearData(): boolean {
-    return (this.data.lastYearRevenue || 0) > 0 && (this.data.lastYearExpenses || 0) > 0;
+    return this._d.lastYearRevenue > 0 && this._d.lastYearExpenses > 0;
   }
 
-  // Utility methods
+  // Utility methods (single declaration)
   formatCurrency = formatCurrency;
   formatPercentage = formatPercentage;
 
