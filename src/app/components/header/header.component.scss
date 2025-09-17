@@ -26,9 +26,15 @@
   max-width: 12rem;
   width: auto;
   object-fit: contain;
-  image-rendering: -webkit-optimize-contrast; /* Edge 79+ support */
-  image-rendering: -moz-crisp-edges; /* Firefox */
-  image-rendering: crisp-edges; /* Modern browsers */
+  
+  /* Cross-browser image-rendering fallbacks with comprehensive Edge support */
+  image-rendering: auto;                      /* Fallback for older browsers */
+  image-rendering: -moz-crisp-edges;          /* Firefox */
+  image-rendering: -o-crisp-edges;            /* Opera legacy */
+  image-rendering: -webkit-optimize-contrast; /* Edge 79+ (Microsoft Edge Tools compatible) */
+  image-rendering: crisp-edges;               /* Chrome, Safari, modern browsers */
+  
+  /* Ensures Edge Tools compatibility with explicit -webkit-optimize-contrast before crisp-edges */
 }
 
 .brand-text {

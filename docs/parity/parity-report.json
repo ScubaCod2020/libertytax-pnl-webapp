@@ -1,0 +1,56 @@
+{
+  "paths": {
+    "angularRoot": "src/app",
+    "reactRoot": "react-reference/stable-main/src"
+  },
+  "angularRoutes": {
+    "label": "Angular route files present",
+    "ok": true,
+    "detail": [
+      "app-routing.module.ts"
+    ]
+  },
+  "angularPages": {
+    "label": "Angular pages present",
+    "ok": false,
+    "detail": [
+      "pages/wizard/step-1",
+      "pages/wizard/step-2"
+    ]
+  },
+  "angularMustHave": {
+    "label": "Angular must-have components present",
+    "ok": true,
+    "detail": []
+  },
+  "reactRoutes": {
+    "label": "React route files present",
+    "ok": true,
+    "detail": [
+      "router.tsx",
+      "routes.tsx"
+    ]
+  },
+  "reactPages": {
+    "label": "React pages present",
+    "ok": false,
+    "detail": [
+      "pages/ExpenseManagement",
+      "pages/IncomeExpense",
+      "pages/QuickStart",
+      "pages/Reports"
+    ]
+  },
+  "reactMustHave": {
+    "label": "React must-have components present",
+    "ok": false,
+    "detail": [
+      "components/ExpenseManagement",
+      "components/ProjectedPerformance"
+    ]
+  },
+  "notes": [
+    "This is a structure/landmark audit, not a logic diff.",
+    "Use the missing Angular items to drive exact Cursor tasks."
+  ]
+}

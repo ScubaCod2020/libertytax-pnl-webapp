@@ -1,0 +1,592 @@
+{
+  "root": "react-app-main-reference/src",
+  "files": [
+    {
+      "rel": "App.test.tsx",
+      "parts": [
+        "App.test.tsx"
+      ],
+      "name": "App.test",
+      "kebab": "app.test",
+      "kind": "other"
+    },
+    {
+      "rel": "App.tsx",
+      "parts": [
+        "App.tsx"
+      ],
+      "name": "App",
+      "kebab": "app",
+      "kind": "other"
+    },
+    {
+      "rel": "assets/brands/index.ts",
+      "parts": [
+        "assets",
+        "brands",
+        "index.ts"
+      ],
+      "name": "index",
+      "kebab": "index",
+      "kind": "other"
+    },
+    {
+      "rel": "components/BrandLogo.tsx",
+      "parts": [
+        "components",
+        "BrandLogo.tsx"
+      ],
+      "name": "BrandLogo",
+      "kebab": "brand-logo",
+      "kind": "component"
+    },
+    {
+      "rel": "components/BrandWatermark.tsx",
+      "parts": [
+        "components",
+        "BrandWatermark.tsx"
+      ],
+      "name": "BrandWatermark",
+      "kebab": "brand-watermark",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Dashboard/Dashboard.tsx",
+      "parts": [
+        "components",
+        "Dashboard",
+        "Dashboard.tsx"
+      ],
+      "name": "Dashboard",
+      "kebab": "dashboard",
+      "kind": "component"
+    },
+    {
+      "rel": "components/DebugPanel.tsx",
+      "parts": [
+        "components",
+        "DebugPanel.tsx"
+      ],
+      "name": "DebugPanel",
+      "kebab": "debug-panel",
+      "kind": "component"
+    },
+    {
+      "rel": "components/DebugSystem/DebugErrorBoundary.tsx",
+      "parts": [
+        "components",
+        "DebugSystem",
+        "DebugErrorBoundary.tsx"
+      ],
+      "name": "DebugErrorBoundary",
+      "kebab": "debug-error-boundary",
+      "kind": "component"
+    },
+    {
+      "rel": "components/DebugSystem/DebugSidebar.tsx",
+      "parts": [
+        "components",
+        "DebugSystem",
+        "DebugSidebar.tsx"
+      ],
+      "name": "DebugSidebar",
+      "kebab": "debug-sidebar",
+      "kind": "component"
+    },
+    {
+      "rel": "components/DebugSystem/DebugToggle.tsx",
+      "parts": [
+        "components",
+        "DebugSystem",
+        "DebugToggle.tsx"
+      ],
+      "name": "DebugToggle",
+      "kebab": "debug-toggle",
+      "kind": "component"
+    },
+    {
+      "rel": "components/DebugSystem/SuggestionManager.tsx",
+      "parts": [
+        "components",
+        "DebugSystem",
+        "SuggestionManager.tsx"
+      ],
+      "name": "SuggestionManager",
+      "kebab": "suggestion-manager",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Examples/ModularDemo.tsx",
+      "parts": [
+        "components",
+        "Examples",
+        "ModularDemo.tsx"
+      ],
+      "name": "ModularDemo",
+      "kebab": "modular-demo",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Footer.tsx",
+      "parts": [
+        "components",
+        "Footer.tsx"
+      ],
+      "name": "Footer",
+      "kebab": "footer",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Header.tsx",
+      "parts": [
+        "components",
+        "Header.tsx"
+      ],
+      "name": "Header",
+      "kebab": "header",
+      "kind": "component"
+    },
+    {
+      "rel": "components/InputsPanel.tsx",
+      "parts": [
+        "components",
+        "InputsPanel.tsx"
+      ],
+      "name": "InputsPanel",
+      "kebab": "inputs-panel",
+      "kind": "component"
+    },
+    {
+      "rel": "components/KPIStoplight.tsx",
+      "parts": [
+        "components",
+        "KPIStoplight.tsx"
+      ],
+      "name": "KPIStoplight",
+      "kebab": "kpistoplight",
+      "kind": "component"
+    },
+    {
+      "rel": "components/ProjectedPerformancePanel.tsx",
+      "parts": [
+        "components",
+        "ProjectedPerformancePanel.tsx"
+      ],
+      "name": "ProjectedPerformancePanel",
+      "kebab": "projected-performance-panel",
+      "kind": "component"
+    },
+    {
+      "rel": "components/ScenarioSelector.tsx",
+      "parts": [
+        "components",
+        "ScenarioSelector.tsx"
+      ],
+      "name": "ScenarioSelector",
+      "kebab": "scenario-selector",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Shared/AnalysisBlock.tsx",
+      "parts": [
+        "components",
+        "Shared",
+        "AnalysisBlock.tsx"
+      ],
+      "name": "AnalysisBlock",
+      "kebab": "analysis-block",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Shared/AppHeader.tsx",
+      "parts": [
+        "components",
+        "Shared",
+        "AppHeader.tsx"
+      ],
+      "name": "AppHeader",
+      "kebab": "app-header",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Shared/PerformanceCard.tsx",
+      "parts": [
+        "components",
+        "Shared",
+        "PerformanceCard.tsx"
+      ],
+      "name": "PerformanceCard",
+      "kebab": "performance-card",
+      "kind": "component"
+    },
+    {
+      "rel": "components/ValidatedInput.tsx",
+      "parts": [
+        "components",
+        "ValidatedInput.tsx"
+      ],
+      "name": "ValidatedInput",
+      "kebab": "validated-input",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard.tsx",
+      "parts": [
+        "components",
+        "Wizard.tsx"
+      ],
+      "name": "Wizard",
+      "kebab": "wizard",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/ExistingStoreSection.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "ExistingStoreSection.tsx"
+      ],
+      "name": "ExistingStoreSection",
+      "kebab": "existing-store-section",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/ExistingStoreSectionNew.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "ExistingStoreSectionNew.tsx"
+      ],
+      "name": "ExistingStoreSectionNew",
+      "kebab": "existing-store-section-new",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/FormField.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "FormField.tsx"
+      ],
+      "name": "FormField",
+      "kebab": "form-field",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/FormSection.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "FormSection.tsx"
+      ],
+      "name": "FormSection",
+      "kebab": "form-section",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/NewStoreSection.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "NewStoreSection.tsx"
+      ],
+      "name": "NewStoreSection",
+      "kebab": "new-store-section",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/StrategicAnalysis.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "StrategicAnalysis.tsx"
+      ],
+      "name": "StrategicAnalysis",
+      "kebab": "strategic-analysis",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/SuggestedFormField.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "SuggestedFormField.tsx"
+      ],
+      "name": "SuggestedFormField",
+      "kebab": "suggested-form-field",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/SuggestedInputDemo.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "SuggestedInputDemo.tsx"
+      ],
+      "name": "SuggestedInputDemo",
+      "kebab": "suggested-input-demo",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/ToggleQuestion.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "ToggleQuestion.tsx"
+      ],
+      "name": "ToggleQuestion",
+      "kebab": "toggle-question",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/WizardPage.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "WizardPage.tsx"
+      ],
+      "name": "WizardPage",
+      "kebab": "wizard-page",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/calculations.ts",
+      "parts": [
+        "components",
+        "Wizard",
+        "calculations.ts"
+      ],
+      "name": "calculations",
+      "kebab": "calculations",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/types.ts",
+      "parts": [
+        "components",
+        "Wizard",
+        "types.ts"
+      ],
+      "name": "types",
+      "kebab": "types",
+      "kind": "component"
+    },
+    {
+      "rel": "components/WizardInputs.tsx",
+      "parts": [
+        "components",
+        "WizardInputs.tsx"
+      ],
+      "name": "WizardInputs",
+      "kebab": "wizard-inputs",
+      "kind": "component"
+    },
+    {
+      "rel": "components/WizardReview.tsx",
+      "parts": [
+        "components",
+        "WizardReview.tsx"
+      ],
+      "name": "WizardReview",
+      "kebab": "wizard-review",
+      "kind": "component"
+    },
+    {
+      "rel": "components/WizardShell.tsx",
+      "parts": [
+        "components",
+        "WizardShell.tsx"
+      ],
+      "name": "WizardShell",
+      "kebab": "wizard-shell",
+      "kind": "component"
+    },
+    {
+      "rel": "data/presets.ts",
+      "parts": [
+        "data",
+        "presets.ts"
+      ],
+      "name": "presets",
+      "kebab": "presets",
+      "kind": "other"
+    },
+    {
+      "rel": "hooks/useAppState.ts",
+      "parts": [
+        "hooks",
+        "useAppState.ts"
+      ],
+      "name": "useAppState",
+      "kebab": "use-app-state",
+      "kind": "other"
+    },
+    {
+      "rel": "hooks/useBranding.ts",
+      "parts": [
+        "hooks",
+        "useBranding.ts"
+      ],
+      "name": "useBranding",
+      "kebab": "use-branding",
+      "kind": "other"
+    },
+    {
+      "rel": "hooks/useCalculations.ts",
+      "parts": [
+        "hooks",
+        "useCalculations.ts"
+      ],
+      "name": "useCalculations",
+      "kebab": "use-calculations",
+      "kind": "other"
+    },
+    {
+      "rel": "hooks/usePersistence.ts",
+      "parts": [
+        "hooks",
+        "usePersistence.ts"
+      ],
+      "name": "usePersistence",
+      "kebab": "use-persistence",
+      "kind": "other"
+    },
+    {
+      "rel": "hooks/usePresets.ts",
+      "parts": [
+        "hooks",
+        "usePresets.ts"
+      ],
+      "name": "usePresets",
+      "kebab": "use-presets",
+      "kind": "other"
+    },
+    {
+      "rel": "lib/calcs.test.ts",
+      "parts": [
+        "lib",
+        "calcs.test.ts"
+      ],
+      "name": "calcs.test",
+      "kebab": "calcs.test",
+      "kind": "other"
+    },
+    {
+      "rel": "lib/calcs.ts",
+      "parts": [
+        "lib",
+        "calcs.ts"
+      ],
+      "name": "calcs",
+      "kebab": "calcs",
+      "kind": "other"
+    },
+    {
+      "rel": "main.tsx",
+      "parts": [
+        "main.tsx"
+      ],
+      "name": "main",
+      "kebab": "main",
+      "kind": "other"
+    },
+    {
+      "rel": "styles.css",
+      "parts": [
+        "styles.css"
+      ],
+      "name": "styles",
+      "kebab": "styles",
+      "kind": "other"
+    },
+    {
+      "rel": "styles/branding.ts",
+      "parts": [
+        "styles",
+        "branding.ts"
+      ],
+      "name": "branding",
+      "kebab": "branding",
+      "kind": "other"
+    },
+    {
+      "rel": "test/setup.ts",
+      "parts": [
+        "test",
+        "setup.ts"
+      ],
+      "name": "setup",
+      "kebab": "setup",
+      "kind": "other"
+    },
+    {
+      "rel": "types/expenses.ts",
+      "parts": [
+        "types",
+        "expenses.ts"
+      ],
+      "name": "expenses",
+      "kebab": "expenses",
+      "kind": "other"
+    },
+    {
+      "rel": "types/images.d.ts",
+      "parts": [
+        "types",
+        "images.d.ts"
+      ],
+      "name": "images.d",
+      "kebab": "images.d",
+      "kind": "other"
+    },
+    {
+      "rel": "types/index.ts",
+      "parts": [
+        "types",
+        "index.ts"
+      ],
+      "name": "index",
+      "kebab": "index",
+      "kind": "other"
+    },
+    {
+      "rel": "utils/dataFlowValidation.ts",
+      "parts": [
+        "utils",
+        "dataFlowValidation.ts"
+      ],
+      "name": "dataFlowValidation",
+      "kebab": "data-flow-validation",
+      "kind": "other"
+    },
+    {
+      "rel": "utils/suggestionEngine.ts",
+      "parts": [
+        "utils",
+        "suggestionEngine.ts"
+      ],
+      "name": "suggestionEngine",
+      "kebab": "suggestion-engine",
+      "kind": "other"
+    },
+    {
+      "rel": "utils/validation.ts",
+      "parts": [
+        "utils",
+        "validation.ts"
+      ],
+      "name": "validation",
+      "kebab": "validation",
+      "kind": "other"
+    },
+    {
+      "rel": "vite-env.d.ts",
+      "parts": [
+        "vite-env.d.ts"
+      ],
+      "name": "vite-env.d",
+      "kebab": "vite-env.d",
+      "kind": "other"
+    }
+  ]
+}

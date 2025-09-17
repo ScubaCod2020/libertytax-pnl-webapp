@@ -1,0 +1,160 @@
+:root{
+  --liberty-navy:#002D72;
+  --liberty-red:#EA0029;
+  --ok-green:#00B050;
+  --warn-yellow:#FFC000;
+  --bad-red:#C00000;
+  --muted:#F1F3F5;
+  --ink:#2D2D2D;
+}
+*{box-sizing:border-box}
+html,body,#app{height:100%}
+body{margin:0;font-family:var(--brand-font-stack, "Proxima Nova", "Inter", "Source Sans Pro", Arial, sans-serif);color:var(--ink);background:#fff}
+.container{display:grid;grid-template-columns:320px 1fr;gap:16px;max-width:1200px;margin:24px auto;padding:0 16px}
+.header{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid #e5e7eb}
+.brand{font-weight:800;color:var(--liberty-navy);font-family:var(--brand-font-stack, "Proxima Nova", "Inter", Arial, sans-serif);letter-spacing:1px}
+.card{background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+.card-title{font-weight:600;margin-bottom:6px;font-family:var(--brand-font-stack, "Proxima Nova", "Inter", Arial, sans-serif)}
+.small{font-size:12px;color:#64748b}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.input-row{display:flex;align-items:center;justify-content:space-between;margin:8px 0}
+.input-row label{font-size:13px;color:#334155;margin-right:8px}
+.input-row input,.input-row select{width:140px;padding:8px 10px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px}
+.kpi-vertical{display:flex;flex-direction:column;gap:12px}
+.kpi{display:flex;align-items:center;gap:12px;background:var(--muted);border-radius:14px;border:2px solid transparent;padding:12px}
+.kpi .value{font-size:20px;font-weight:800}
+.stoplight{width:22px;height:66px;border-radius:10px;background:#3b3b3b;display:flex;flex-direction:column;justify-content:space-between;padding:3px}
+.lens{width:16px;height:16px;border-radius:50%;opacity:.35;border:1px solid rgba(255,255,255,.6)}
+.lens.active{opacity:1;border-color:#fff}
+.kpi.green{border-color:var(--ok-green)}
+.kpi.yellow{border-color:var(--warn-yellow)}
+.kpi.red{border-color:var(--bad-red)}
+.badge{font-size:11px;padding:3px 8px;border-radius:999px;background:#EEF2FF;color:#1e293b;border:1px solid #CBD5E1}
+.section-title{font-weight:600;margin:8px 0 6px 0;color:#0f172a;font-family:var(--brand-font-stack, "Proxima Nova", "Inter", Arial, sans-serif)}
+.btn-link{background:none;border:none;color:var(--liberty-navy);cursor:pointer;text-decoration:underline;padding:0}
+.footer{max-width:1200px;margin:12px auto 32px;padding:0 16px;color:#64748b;font-size:12px}
+
+/* ==== Layout: two-column container ==== */
+.container {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr); /* left rail fixed, right flexible */
+  gap: 16px;               /* a bit more breathing room */
+  align-items: start;      /* keep cards from stretching vertically */
+}
+
+/* Ensure grid children can shrink instead of overflowing their cells */
+.container > * { min-width: 0; }
+
+/* Left column “stack” */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 2;              /* sit above, just in case */
+  min-width: 0;
+}
+
+/* Generic card wrapper */
+.card {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  min-width: 0;            /* prevent overflow in grid cells */
+  overflow: hidden;        /* stop charts/contents from spilling out */
+}
+
+/* Two-up grids used for inputs and totals */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Inputs: keep labels & fields tidy and non-overflowing */
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+.input-row > label {
+  font-size: 12px;
+  color: #6B7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* don't push layout if label is long */
+  font-family: var(--brand-font-stack, "Proxima Nova", "Inter", Arial, sans-serif);
+  font-weight: 400;
+}
+.input-row > input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Vertical KPI stack on the right */
+.kpi-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* Optional: if you want to belt-and-suspenders the whole app */
+.grid > * { min-width: 0; } /* safe guard if you use other .grid blocks */
+
+/* In the left rail's grid-2, stack label above input per field */
+.stack .grid-2 .input-row {
+  grid-template-columns: 1fr;   /* label above input */
+}
+
+.stack .grid-2 .input-row > label {
+  margin-bottom: 4px;
+  white-space: normal;
+}
+
+.stack .grid-2 .input-row > input {
+  width: 100%;
+}
+
+
+/* === Left rail: give it a little more room + breathing space between columns === */
+.container {
+  grid-template-columns: 360px minmax(0, 1fr); /* was 320px */
+  gap: 24px;                                    /* was 16px */
+  padding: 0 24px;                               /* a touch more side padding */
+}
+
+/* === KPI/Expense labels: wrap instead of cutting off === */
+.stack .grid-2 .input-row > label {
+  display: block;             /* ensures wrapping takes effect */
+  white-space: normal;        /* allow multi-line */
+  overflow-wrap: anywhere;    /* break long phrases if needed */
+  line-height: 1.2;
+  font-size: 12px;            /* slightly smaller to fit nicely */
+  margin-bottom: 4px;         /* space above the input */
+}
+
+/* Inputs: fill the available column width cleanly */
+.stack .grid-2 .input-row > input {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Limit dropdown width in the left rail (Quick Inputs) */
+.stack select {
+  width: auto;          /* size to content */
+  max-width: 160px;     /* cap so it never stretches awkwardly */
+  min-width: 110px;     /* keep it tappable */
+}
+
+/* If ScenarioSelector renders inside .input-row, this keeps it neat */
+.stack .input-row select {
+  width: auto;
+  max-width: 160px;
+  min-width: 110px;
+}
