@@ -113,6 +113,18 @@
       </div>
     </div>
 
+    <!-- Prior Year Performance Section (Existing Store Only) -->
+    <div *ngIf="answers.storeType === 'existing'" class="prior-year-section">
+      <app-prior-year-performance
+        [region]="answers.region"
+        [storeType]="answers.storeType"
+        [hasOtherIncome]="answers.hasOtherIncome || false"
+        [initialData]="priorYearData"
+        (dataChange)="onPriorYearDataChange($event)"
+        (metricsChange)="onPriorYearMetricsChange($event)">
+      </app-prior-year-performance>
+    </div>
+
     <!-- Income Drivers Component (Existing Store only) -->
     <div *ngIf="answers.storeType === 'existing'">
       <app-income-drivers

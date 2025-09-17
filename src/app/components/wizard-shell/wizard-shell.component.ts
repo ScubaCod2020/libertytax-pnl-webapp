@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Region, WizardAnswers, WizardStep } from '../../models/wizard.models';
 import { PersistenceService } from '../../services/persistence.service';
 import { IncomeDriversComponent } from '../income-drivers/income-drivers.component';
+import { PriorYearPerformanceComponent, PriorYearData, PriorYearMetrics } from '../prior-year-performance/prior-year-performance.component';
 
 @Component({
   selector: 'app-wizard-shell',
   standalone: true,
-  imports: [CommonModule, FormsModule, IncomeDriversComponent],
+  imports: [CommonModule, FormsModule, IncomeDriversComponent, PriorYearPerformanceComponent],
   templateUrl: './wizard-shell.component.html',
   styleUrls: ['./wizard-shell.component.scss']
 })
@@ -34,6 +35,16 @@ export class WizardShellComponent implements OnInit, OnChanges {
     taxRushReturns: 0,
     taxRushPercentage: 15,
     taxRushFee: 0
+  };
+
+  // Prior year data for existing stores
+  priorYearData: PriorYearData = {};
+  priorYearMetrics: PriorYearMetrics = {
+    taxPrepIncome: 0,
+    totalRevenue: 0,
+    netIncome: 0,
+    discountsPct: 0,
+    taxRushIncome: 0
   };
 
 
@@ -536,4 +547,23 @@ export class WizardShellComponent implements OnInit, OnChanges {
     }).format(value);
   }
 
+  // Prior year data handlers for existing stores
+  onPriorYearDataChange(data: PriorYearData): void {
+    console.log('📊 Prior year data changed:', data);
+    this.priorYearData = data;
+    
+    // Merge prior year data into wizard answers for persistence
+    Object.assign(this.answers, data);
+    
+    // Save to persistence if available
+    if (this.persistence) {
+      console.log('💾 Saving wizard answers with prior year data');
+      this.persistence.saveWizardAnswers(this.answers);
+    }
+  }
+
+  onPriorYearMetricsChange(metrics: PriorYearMetrics): void {
+    console.log('📈 Prior year metrics updated:', metrics);
+    this.priorYearMetrics = metrics;
+  }
 }
