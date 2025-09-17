@@ -26,8 +26,9 @@
   max-width: 12rem;
   width: auto;
   object-fit: contain;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
+  image-rendering: -webkit-optimize-contrast; /* Edge 79+ support */
+  image-rendering: -moz-crisp-edges; /* Firefox */
+  image-rendering: crisp-edges; /* Modern browsers */
 }
 
 .brand-text {

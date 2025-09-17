@@ -6,6 +6,7 @@
           ? './assets/brands/us/LT-2022-Wide-RGB.png'
           : './assets/brands/ca/LT-Canada-Wide-Red.png'"
         [alt]="region === 'CA' ? 'Liberty Tax Canada' : 'Liberty Tax US'"
+        [title]="region === 'CA' ? 'Liberty Tax Canada - P&L Budget & Forecast Tool' : 'Liberty Tax US - P&L Budget & Forecast Tool'"
         class="brand-logo"
         (error)="onLogoError($event)"
         loading="lazy"
