@@ -357,7 +357,7 @@ interface ReportData {
       max-width: 1000px;
       margin: 0 auto;
       background: white;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Proxima Nova', Arial, sans-serif;
     }
 
     /* Export Section */
@@ -371,7 +371,10 @@ interface ReportData {
     .export-header h2 {
       margin: 0 0 0.5rem 0;
       color: #1e40af;
+      font-family: 'Proxima Nova', Arial, sans-serif;
+      font-weight: 800;
       font-size: 1.5rem;
+      letter-spacing: -0.025em;
     }
 
     .export-description {
@@ -460,10 +463,13 @@ interface ReportData {
     }
 
     .report-title {
+      font-family: 'Proxima Nova', Arial, sans-serif;
       font-size: 1.75rem;
-      font-weight: 700;
+      font-weight: 800;
       margin: 0 0 1rem 0;
       color: #111827;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
     }
 
     .config-summary {
@@ -490,12 +496,14 @@ interface ReportData {
     }
 
     .section-title {
+      font-family: 'Proxima Nova', Arial, sans-serif;
       font-size: 1.25rem;
-      font-weight: 700;
+      font-weight: 600;
       color: #1f2937;
       margin: 0 0 1rem 0;
       padding-bottom: 0.5rem;
       border-bottom: 1px solid #e5e7eb;
+      letter-spacing: -0.025em;
     }
 
     /* Tables */
@@ -683,7 +691,7 @@ interface ReportData {
         margin: 0;
         padding: 0;
         background: white;
-        font-family: "Times New Roman", serif;
+        font-family: "Proxima Nova", "Times New Roman", serif;
         font-size: 10pt;
         line-height: 1.2;
         color: black;

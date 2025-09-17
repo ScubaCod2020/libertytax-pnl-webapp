@@ -18,8 +18,8 @@ const CA_ASSETS: BrandAssets = {
 
 // Shared typography configuration for both regions
 const BRAND_TYPOGRAPHY: BrandTypography = {
-  primaryFont: 'var(--brand-font-stack, "Proxima Nova", "Inter", "Source Sans Pro", Arial, sans-serif)',
-  printFont: '"Times New Roman", serif',
+  primaryFont: '"Proxima Nova", Arial, sans-serif',
+  printFont: '"Proxima Nova", "Times New Roman", serif',
   weights: {
     regular: 400,    // Proxima Nova Regular / Inter Regular
     medium: 500,     // Proxima Nova Medium / Inter Medium

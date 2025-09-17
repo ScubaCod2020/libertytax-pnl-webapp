@@ -156,16 +156,21 @@ export interface ExistingStoreSummary {
     .page-title {
       margin: 0 0 1rem 0;
       color: #374151;
+      font-family: 'Proxima Nova', Arial, sans-serif;
       font-size: 1.75rem;
-      font-weight: 600;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
     }
 
     .page-description {
       color: #6b7280;
+      font-family: 'Proxima Nova', Arial, sans-serif;
+      font-weight: 400;
       font-size: 1rem;
       max-width: 600px;
       margin: 0 auto;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     .analysis-grid {

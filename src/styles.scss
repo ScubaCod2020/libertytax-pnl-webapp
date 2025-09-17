@@ -1,5 +1,6 @@
 /* Global styles for Angular P&L app */
 @use 'app/app.scss';
+@use 'app/theme/utilities';
 
 /* Reset and base styles */
 * {
@@ -9,9 +10,7 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Proxima Nova', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f8f9fa;

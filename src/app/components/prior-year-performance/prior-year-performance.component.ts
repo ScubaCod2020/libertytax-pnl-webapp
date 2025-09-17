@@ -228,6 +228,7 @@ export interface PriorYearMetrics {
       border-radius: 8px;
       padding: 1.5rem;
       margin-bottom: 1.5rem;
+      font-family: 'Proxima Nova', Arial, sans-serif;
     }
 
     .card-header {
@@ -239,9 +240,11 @@ export interface PriorYearMetrics {
       align-items: center;
       gap: 0.5rem;
       margin: 0 0 0.5rem 0;
+      font-family: 'Proxima Nova', Arial, sans-serif;
       font-size: 1.25rem;
       font-weight: 600;
       color: #374151;
+      letter-spacing: -0.025em;
     }
 
     .card-icon {
@@ -275,9 +278,11 @@ export interface PriorYearMetrics {
     .form-label {
       display: block;
       margin-bottom: 0.5rem;
+      font-family: 'Proxima Nova', Arial, sans-serif;
       font-weight: 500;
       color: #374151;
       font-size: 0.9rem;
+      line-height: 1.4;
     }
 
     .required {
@@ -304,8 +309,12 @@ export interface PriorYearMetrics {
       padding: 0.75rem 0.75rem 0.75rem 2rem;
       border: 1px solid #d1d5db;
       border-radius: 6px;
+      font-family: 'Proxima Nova', Arial, sans-serif;
+      font-weight: 400;
       font-size: 0.9rem;
+      line-height: 1.4;
       transition: all 0.2s ease;
+      background: white;
     }
 
     .form-input:focus {
