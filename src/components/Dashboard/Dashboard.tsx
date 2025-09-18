@@ -14,6 +14,11 @@ interface DashboardProps {
 export default function Dashboard({ results, hasOtherIncome }: DashboardProps) {
   const { cprStatus, nimStatus, niStatus } = results
 
+  // Compute ANF safely from projected results flowing into the hook
+  const avgNetFee = results.totalReturns > 0
+    ? results.grossFees / results.totalReturns
+    : 0
+
   return (
     <div className="card" data-dashboard style={{ minWidth: '600px', width: '100%', maxWidth: '100%' }}>
       <div className="card-title">Dashboard</div>
@@ -48,7 +53,7 @@ export default function Dashboard({ results, hasOtherIncome }: DashboardProps) {
         </div>
       </div>
 
-      {/* Two-column grid for Pro-Tips + Income Summary */}
+      {/* Pro-Tips + Income Summary */}
       <div
         style={{
           marginTop: 20,
@@ -72,7 +77,7 @@ export default function Dashboard({ results, hasOtherIncome }: DashboardProps) {
           </ul>
         </div>
 
-        {/* Income Summary Card */}
+        {/* Income Summary Card (ordered to match the app-wide template) */}
         <div className="card" style={{ order: 1 }}>
           <div
             className="card-title"
@@ -81,25 +86,25 @@ export default function Dashboard({ results, hasOtherIncome }: DashboardProps) {
             💰 Income Summary
           </div>
           <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
-            {/* Tax Prep Returns */}
+            {/* 1) Tax Prep Returns */}
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
               <span>Tax Prep Returns:</span>
               <strong>{results.totalReturns.toLocaleString()}</strong>
             </div>
 
-            {/* Average Net Fee */}
+            {/* 2) Average Net Fee */}
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
               <span>Average Net Fee:</span>
-              <strong>{currency(results.avgNetFee)}</strong>
+              <strong>{currency(avgNetFee)}</strong>
             </div>
 
-            {/* Gross Tax Prep Fees */}
+            {/* 3) Gross Tax Prep Fees */}
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
               <span>Gross Tax Prep Fees:</span>
               <strong>{currency(results.grossFees)}</strong>
             </div>
 
-            {/* TaxRush Revenue (if applicable) */}
+            {/* 4) TaxRush Revenue (if applicable) */}
             {results.taxRushIncome > 0 && (
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                 <span style={{ fontWeight: 'bold', color: '#0ea5e9' }}>TaxRush Revenue:</span>
@@ -107,13 +112,16 @@ export default function Dashboard({ results, hasOtherIncome }: DashboardProps) {
               </div>
             )}
 
-            {/* Customer Discounts */}
+            {/* 5) Customer Discounts */}
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem', color: '#dc2626' }}>
-              <span>Less Discounts ({((results.discounts / results.grossFees) * 100).toFixed(0)}%):</span>
+              <span>
+                Less Discounts:{' '}
+                {results.grossFees > 0 ? ((results.discounts / results.grossFees) * 100).toFixed(0) : '0'}%
+              </span>
               <strong>-{currency(results.discounts)}</strong>
             </div>
 
-            {/* Other Revenue */}
+            {/* 6) Other Income */}
             {hasOtherIncome && results.otherIncome > 0 && (
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                 <span style={{ fontWeight: 'bold', color: '#6b7280' }}>Other Revenue:</span>
@@ -121,7 +129,7 @@ export default function Dashboard({ results, hasOtherIncome }: DashboardProps) {
               </div>
             )}
 
-            {/* Total Expenses */}
+            {/* 7) Total Expenses */}
             <div
               style={{
                 display: 'flex',
@@ -134,7 +142,7 @@ export default function Dashboard({ results, hasOtherIncome }: DashboardProps) {
               <strong>{currency(results.totalExpenses)}</strong>
             </div>
 
-            {/* Total Gross Revenue */}
+            {/* Total Revenue (footer) */}
             <div
               style={{
                 borderTop: '2px solid #059669',
@@ -147,7 +155,7 @@ export default function Dashboard({ results, hasOtherIncome }: DashboardProps) {
                 color: '#059669',
               }}
             >
-              <span>Total Gross Revenue:</span>
+              <span>Total Revenue:</span>
               <strong>{currency(results.totalRevenue)}</strong>
             </div>
           </div>
