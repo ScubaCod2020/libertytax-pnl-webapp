@@ -464,5 +464,59 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* Other Income */}
-        {answers.hasOtherIncome
+{/* Other Income */}
+{answers.hasOtherIncome && (
+  <FormField label="Other Income">
+    <CurrencyInput
+      value={answers.otherIncome}
+      onChange={(value) => updateAnswers({ otherIncome: value })}
+    />
+  </FormField>
+)}
+
+{/* Total Expenses */}
+<FormField label="Total Expenses" helpText="Auto: (Tax Prep Income + Other Income) × 76%">
+  <CurrencyInput
+    value={
+      answers.projectedExpenses ??
+      (() => {
+        const taxPrepIncome =
+          answers.projectedTaxPrepIncome ??
+          (answers.avgNetFee && answers.taxPrepReturns
+            ? answers.avgNetFee * answers.taxPrepReturns - (answers.discountsAmt ?? 0)
+            : 0)
+        const other = answers.hasOtherIncome ? answers.otherIncome ?? 0 : 0
+        const base = taxPrepIncome + other
+        return base > 0 ? Math.round(base * 0.76) : undefined
+      })()
+    }
+    placeholder="Auto-calculated"
+    onChange={(value) => updateAnswers({ projectedExpenses: value })}
+    backgroundColor={answers.projectedExpenses !== undefined ? 'white' : '#f9fafb'}
+  />
+</FormField>
+
+{/* Projected Net Income Summary */}
+{(answers.avgNetFee && answers.taxPrepReturns) && (
+  <div
+    style={{
+      padding: '0.5rem',
+      backgroundColor: '#e0f2fe',
+      borderRadius: '4px',
+      fontWeight: 600,
+      fontSize: '0.9rem',
+      color: '#0369a1',
+      marginTop: '1rem',
+    }}
+  >
+    Projected Net Income: $
+    {(() => {
+      const gross = answers.avgNetFee * answers.taxPrepReturns
+      const discounts = answers.discountsAmt ?? 0
+      const other = answers.hasOtherIncome ? answers.otherIncome ?? 0 : 0
+      const income = gross - discounts + other
+      const expenses = answers.projectedExpenses ?? 0
+      return Math.round(income - expenses).toLocaleString()
+    })()}
+  </div>
+)}
