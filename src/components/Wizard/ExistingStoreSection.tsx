@@ -72,20 +72,30 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* Gross Tax Prep Fees (auto from Returns × Avg Fee, overrideable) */}
-        <FormField label="Gross Tax Prep Fees" helpText="Auto: Returns × Avg Net Fee (you can override)">
-          <CurrencyInput
-            value={
-              answers.lastYearGrossFees ??
-              (answers.lastYearTaxPrepReturns && answers.manualAvgNetFee
-                ? answers.lastYearTaxPrepReturns * answers.manualAvgNetFee
-                : undefined)
-            }
-            placeholder="Auto-calculated"
-            onChange={(value) => updateAnswers({ lastYearGrossFees: value })}
-            backgroundColor={answers.lastYearGrossFees !== undefined ? 'white' : '#f9fafb'}
-          />
-        </FormField>
+       // Auto-calc Gross when no manual override
+useEffect(() => {
+  if (
+    answers.lastYearGrossFees === undefined && // only if no override
+    answers.lastYearTaxPrepReturns &&
+    answers.manualAvgNetFee
+  ) {
+    const autoGross = answers.lastYearTaxPrepReturns * answers.manualAvgNetFee
+    updateAnswers({ lastYearGrossFees: autoGross })
+  }
+}, [answers.lastYearTaxPrepReturns, answers.manualAvgNetFee, answers.lastYearGrossFees, updateAnswers])
+
+<FormField
+  label="Gross Tax Prep Fees"
+  helpText="Auto: Returns × Avg Net Fee (you can override)"
+>
+  <CurrencyInput
+    value={answers.lastYearGrossFees}
+    placeholder="Auto-calculated"
+    onChange={(value) => updateAnswers({ lastYearGrossFees: value })}
+    backgroundColor={answers.lastYearGrossFees !== undefined ? 'white' : '#f9fafb'}
+  />
+</FormField>
+
 
         {/* TaxRush (last year, NewStore-style) */}
         {region === 'CA' && answers.handlesTaxRush && (
@@ -332,35 +342,66 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
         </FormField>
 
         {/* Tax Prep Returns (preload from lastYear × growth) */}
-        <FormField label="Tax Prep Returns">
-          <NumberInput
-            value={
-              answers.taxPrepReturns ??
-              (answers.lastYearTaxPrepReturns && answers.expectedGrowthPct !== undefined
-                ? Math.round(answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100))
-                : undefined)
-            }
-            placeholder="e.g., 1,680"
-            prefix="#"
-            onChange={(value) => updateAnswers({ taxPrepReturns: value })}
-          />
-        </FormField>
+       // Auto-calc Tax Prep Returns when no manual override
+useEffect(() => {
+  if (
+    answers.taxPrepReturns === undefined &&
+    answers.lastYearTaxPrepReturns &&
+    answers.expectedGrowthPct !== undefined
+  ) {
+    const autoReturns = Math.round(
+      answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100)
+    )
+    updateAnswers({ taxPrepReturns: autoReturns })
+  }
+}, [answers.lastYearTaxPrepReturns, answers.expectedGrowthPct, answers.taxPrepReturns, updateAnswers])
+
+<FormField label="Tax Prep Returns">
+  <NumberInput
+    value={answers.taxPrepReturns}
+    placeholder="e.g., 1,680"
+    prefix="#"
+    onChange={(value) => updateAnswers({ taxPrepReturns: value })}
+  />
+</FormField>
+
 
         {/* Average Net Fee (preload from lastYear × growth) */}
-        <FormField label="Average Net Fee">
-          <CurrencyInput
-            value={
-              answers.avgNetFee ??
-              (answers.manualAvgNetFee && answers.expectedGrowthPct !== undefined
-                ? Math.round(answers.manualAvgNetFee * (1 + answers.expectedGrowthPct / 100))
-                : undefined)
-            }
-            placeholder="e.g., 130"
-            onChange={(value) => updateAnswers({ avgNetFee: value })}
-          />
-        </FormField>
+        // Auto-calc Avg Net Fee when no manual override
+useEffect(() => {
+  if (
+    answers.avgNetFee === undefined &&
+    answers.manualAvgNetFee &&
+    answers.expectedGrowthPct !== undefined
+  ) {
+    const autoAvgNetFee = Math.round(
+      answers.manualAvgNetFee * (1 + answers.expectedGrowthPct / 100)
+    )
+    updateAnswers({ avgNetFee: autoAvgNetFee })
+  }
+}, [answers.manualAvgNetFee, answers.expectedGrowthPct, answers.avgNetFee, updateAnswers])
+
+<FormField label="Average Net Fee">
+  <CurrencyInput
+    value={answers.avgNetFee}
+    placeholder="e.g., 130"
+    onChange={(value) => updateAnswers({ avgNetFee: value })}
+  />
+</FormField>
+
 
         {/* Gross Tax Prep Fees */}
+        useEffect(() => {
+  if (
+    answers.projectedGrossFees === undefined &&
+    answers.taxPrepReturns &&
+    answers.avgNetFee
+  ) {
+    const autoGross = answers.taxPrepReturns * answers.avgNetFee
+    updateAnswers({ projectedGrossFees: autoGross })
+  }
+}, [answers.taxPrepReturns, answers.avgNetFee, answers.projectedGrossFees, updateAnswers])
+
         <FormField label="Gross Tax Prep Fees">
           <CurrencyInput
             value={
