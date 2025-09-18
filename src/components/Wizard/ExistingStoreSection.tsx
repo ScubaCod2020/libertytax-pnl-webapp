@@ -1,5 +1,5 @@
 // ExistingStoreSection.tsx - Last Year Performance & Projected Performance for existing stores
-// Golden ticket layout applied, all fields overrideable, ANF drives Gross Fees, Total Expenses auto 76% of (Tax Prep Income + Other Income)
+// Golden ticket layout applied: stacked input fields like NewStore, all overrideable
 
 import { useEffect } from 'react'
 import type { WizardSectionProps } from './types'
@@ -9,14 +9,12 @@ import FormField, { CurrencyInput, NumberInput } from './FormField'
 import ToggleQuestion from './ToggleQuestion'
 
 export default function ExistingStoreSection({ answers, updateAnswers, region }: WizardSectionProps) {
-  // === Auto-calculation effects preserved from original (unchanged) ===
+  // Ensure default growth % set
   useEffect(() => {
-    if (answers.lastYearGrossFees && answers.lastYearTaxPrepReturns) {
-      if (answers.expectedGrowthPct === undefined) {
-        updateAnswers({ expectedGrowthPct: 0 })
-      }
+    if (answers.avgNetFee && answers.taxPrepReturns && answers.expectedGrowthPct === undefined) {
+      updateAnswers({ expectedGrowthPct: 0 })
     }
-  }, [answers.lastYearGrossFees, answers.lastYearTaxPrepReturns, answers.expectedGrowthPct, updateAnswers])
+  }, [answers.avgNetFee, answers.taxPrepReturns, answers.expectedGrowthPct, updateAnswers])
 
   return (
     <>
@@ -52,8 +50,13 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
       />
 
       {/* === Last Year Performance === */}
-      <FormSection title="Last Year Performance" icon="📊" backgroundColor="#f8fafc" borderColor="#6b7280">
-        {/* 1. Tax Prep Returns */}
+      <FormSection
+        title="Last Year Performance"
+        icon="📊"
+        backgroundColor="#f8fafc"
+        borderColor="#6b7280"
+      >
+        {/* Tax Prep Returns */}
         <FormField label="Tax Prep Returns" required>
           <NumberInput
             value={answers.lastYearTaxPrepReturns}
@@ -61,7 +64,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* 2. Average Net Fee (manual input drives Gross Fees) */}
+        {/* Average Net Fee */}
         <FormField label="Average Net Fee">
           <CurrencyInput
             value={answers.manualAvgNetFee}
@@ -70,7 +73,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* 3. Gross Tax Prep Fees (auto = Returns × ANF, overrideable) */}
+        {/* Gross Fees */}
         <FormField label="Gross Tax Prep Fees">
           <CurrencyInput
             value={
@@ -79,14 +82,21 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                 ? answers.lastYearTaxPrepReturns * answers.manualAvgNetFee
                 : undefined)
             }
-            placeholder="Auto"
             onChange={(value) => updateAnswers({ lastYearGrossFees: value })}
           />
         </FormField>
 
-        {/* 4. TaxRush (last year) */}
+        {/* TaxRush (last year) */}
         {region === 'CA' && answers.handlesTaxRush && (
-          <div style={{ border: '2px solid #0ea5e9', borderRadius: '8px', backgroundColor: '#f0f9ff', margin: '0.5rem 0', padding: '0.75rem' }}>
+          <div
+            style={{
+              border: '2px solid #0ea5e9',
+              borderRadius: '8px',
+              backgroundColor: '#f0f9ff',
+              margin: '0.5rem 0',
+              padding: '0.75rem',
+            }}
+          >
             <FormField label="TaxRush Returns">
               <NumberInput
                 value={answers.lastYearTaxRushReturns}
@@ -113,7 +123,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           </div>
         )}
 
-        {/* 5. Customer Discounts */}
+        {/* Customer Discounts */}
         <FormField label="Customer Discounts">
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             <input
@@ -143,7 +153,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           </div>
         </FormField>
 
-        {/* 6. Total Tax Prep Income */}
+        {/* Total Tax Prep Income */}
         <FormField label="Total Tax Prep Income">
           <CurrencyInput
             value={
@@ -156,7 +166,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* 7. Other Income */}
+        {/* Other Income */}
         {answers.hasOtherIncome && (
           <FormField label="Other Income">
             <CurrencyInput
@@ -166,7 +176,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           </FormField>
         )}
 
-        {/* 8. Total Expenses */}
+        {/* Total Expenses */}
         <FormField label="Total Expenses" helpText="Auto: (Tax Prep Income + Other Income) × 76%">
           <CurrencyInput
             value={
@@ -186,8 +196,13 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
       </FormSection>
 
       {/* === Projected Performance === */}
-      <FormSection title="Projected Performance" icon="📈" backgroundColor="#f8fafc" borderColor="#059669">
-        {/* Growth controls */}
+      <FormSection
+        title="Projected Performance"
+        icon="📈"
+        backgroundColor="#f8fafc"
+        borderColor="#059669"
+      >
+        {/* Growth controls at the top */}
         <FormField label="Performance Change">
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <input
@@ -231,7 +246,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* 1. Tax Prep Returns */}
+        {/* Tax Prep Returns */}
         <FormField label="Tax Prep Returns">
           <NumberInput
             value={answers.taxPrepReturns}
@@ -239,7 +254,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* 2. Average Net Fee */}
+        {/* Average Net Fee */}
         <FormField label="Average Net Fee">
           <CurrencyInput
             value={answers.avgNetFee}
@@ -247,7 +262,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* 3. Gross Tax Prep Fees */}
+        {/* Gross Fees */}
         <FormField label="Gross Tax Prep Fees">
           <CurrencyInput
             value={
@@ -260,9 +275,17 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* 4. TaxRush (projected) */}
+        {/* TaxRush (projected) */}
         {region === 'CA' && answers.handlesTaxRush && (
-          <div style={{ border: '2px solid #0ea5e9', borderRadius: '8px', backgroundColor: '#f0f9ff', margin: '0.5rem 0', padding: '0.75rem' }}>
+          <div
+            style={{
+              border: '2px solid #0ea5e9',
+              borderRadius: '8px',
+              backgroundColor: '#f0f9ff',
+              margin: '0.5rem 0',
+              padding: '0.75rem',
+            }}
+          >
             <FormField label="TaxRush Returns">
               <NumberInput
                 value={answers.taxRushReturns}
@@ -289,7 +312,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           </div>
         )}
 
-        {/* 5. Customer Discounts */}
+        {/* Customer Discounts */}
         <FormField label="Customer Discounts">
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             <input
@@ -321,7 +344,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           </div>
         </FormField>
 
-        {/* 6. Total Tax Prep Income */}
+        {/* Total Tax Prep Income */}
         <FormField label="Total Tax Prep Income">
           <CurrencyInput
             value={
@@ -334,7 +357,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* 7. Other Income */}
+        {/* Other Income */}
         {answers.hasOtherIncome && (
           <FormField label="Other Income">
             <CurrencyInput
@@ -344,8 +367,8 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           </FormField>
         )}
 
-        {/* 8. Total Expenses */}
-        <FormField label="Total Expenses" helpText="Auto: (Tax Prep Income + Other Income) × 76%">
+        {/* Total Expenses */}
+        <FormField label="Total Expenses" helpText="Auto: Tax Prep Income × 76%">
           <CurrencyInput
             value={
               answers.projectedExpenses ??
