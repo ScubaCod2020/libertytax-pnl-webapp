@@ -1,7 +1,7 @@
 // NewStoreSection.tsx - Target Performance Goals for new stores
 // Manual entry forecasting without growth slider
 
-import React from 'react'
+import { useEffect } from 'react'
 import type { WizardSectionProps } from './types'
 import { calculateNetIncome, formatCurrency, parseCurrencyInput } from './calculations'
 import FormSection from './FormSection'
@@ -77,6 +77,17 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
         </FormField>
 
         {/* 3. Gross Tax Prep Fees (auto-calc) */}
+       // Auto-calc Gross when no manual override
+useEffect(() => {
+  if (
+    answers.grossFees === undefined && // only if no override
+    answers.taxPrepReturns &&
+    answers.avgNetFee
+  ) {
+    const autoGross = answers.taxPrepReturns * answers.avgNetFee
+    updateAnswers({ grossFees: autoGross })
+  }
+}, [answers.taxPrepReturns, answers.avgNetFee, answers.grossFees, updateAnswers])      
         <FormField label="Gross Tax Prep Fees" helpText="Auto-calculated: Returns × Avg Net Fee">
           <CurrencyInput
             value={answers.taxPrepReturns && answers.avgNetFee ? answers.taxPrepReturns * answers.avgNetFee : undefined}
