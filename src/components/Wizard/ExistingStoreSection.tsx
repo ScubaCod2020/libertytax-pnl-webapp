@@ -129,48 +129,85 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           </div>
         )}
 
-        {/* Customer Discounts */}
-        <FormField label="Customer Discounts">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            {/* Dollar Input */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-              <input
-                type="number"
-                min="0"
-                step="1"
-                placeholder={answers.lastYearGrossFees ? Math.round(answers.lastYearGrossFees * 0.03).toString() : '6,000'}
-                value={answers.lastYearDiscountsAmt ?? ''}
-                onChange={(e) => {
-                  const newAmt = parseFloat(e.target.value) || undefined
-                  updateAnswers({ lastYearDiscountsAmt: newAmt })
-                  if (newAmt && answers.lastYearGrossFees) {
-                    const pct = (newAmt / answers.lastYearGrossFees) * 100
-                    updateAnswers({ lastYearDiscountsPct: Math.round(pct * 10) / 10 })
-                  }
-                }}
-              />
-            </div>
-            <span>=</span>
-            {/* Percentage Input */}
-            <input
-              type="number"
-              step="0.1"
-              min="0"
-              max="20"
-              placeholder="3.0"
-              value={answers.lastYearDiscountsPct ?? ''}
-              onChange={(e) => {
-                const newPct = parseFloat(e.target.value) || undefined
-                updateAnswers({ lastYearDiscountsPct: newPct })
-                if (newPct && answers.lastYearGrossFees) {
-                  updateAnswers({ lastYearDiscountsAmt: Math.round(answers.lastYearGrossFees * (newPct / 100)) })
-                }
-              }}
-            />
-            <span>%</span>
-          </div>
-        </FormField>
+        {/* Customer Discounts (styled like NewStore) */}
+<FormField
+  label="Customer Discounts"
+  helpText="Dollar amount or % of gross fees given as discounts. Enter either field; the other auto-calculates."
+>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+    {/* Dollar Input */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+      <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+      <input
+        type="number"
+        min="0"
+        step="1"
+        placeholder={
+          answers.lastYearGrossFees
+            ? Math.round(answers.lastYearGrossFees * 0.03).toString()
+            : '6,000'
+        }
+        value={answers.lastYearDiscountsAmt ?? ''}
+        onChange={(e) => {
+          const newAmt = parseFloat(e.target.value) || undefined
+          updateAnswers({ lastYearDiscountsAmt: newAmt })
+          if (newAmt && answers.lastYearGrossFees) {
+            const pct = (newAmt / answers.lastYearGrossFees) * 100
+            updateAnswers({ lastYearDiscountsPct: Math.round(pct * 10) / 10 })
+          }
+        }}
+        style={{
+          width: '80px',
+          textAlign: 'right',
+          border: '1px solid #d1d5db',
+          borderRadius: '4px',
+          padding: '0.5rem',
+        }}
+      />
+    </div>
+
+    <span style={{ color: '#6b7280' }}>=</span>
+
+    {/* Percentage Input */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+      <input
+        type="number"
+        step="0.1"
+        min="0"
+        max="20"
+        placeholder="3.0"
+        value={answers.lastYearDiscountsPct ?? ''}
+        onChange={(e) => {
+          const newPct = parseFloat(e.target.value) || undefined
+          updateAnswers({ lastYearDiscountsPct: newPct })
+          if (newPct && answers.lastYearGrossFees) {
+            const calcAmt = answers.lastYearGrossFees * (newPct / 100)
+            updateAnswers({ lastYearDiscountsAmt: Math.round(calcAmt) })
+          }
+        }}
+        style={{
+          width: '80px',
+          textAlign: 'right',
+          border: '1px solid #d1d5db',
+          borderRadius: '4px',
+          padding: '0.5rem',
+        }}
+      />
+      <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
+    </div>
+  </div>
+  <div
+    style={{
+      marginTop: '0.25rem',
+      fontSize: '0.75rem',
+      color: '#6b7280',
+      fontStyle: 'italic',
+    }}
+  >
+    Default: 3% • Enter either dollar amount or percentage - the other will auto-calc
+  </div>
+</FormField>
+
 
         {/* Total Tax Prep Income = Gross − Discounts */}
         <FormField label="Total Tax Prep Income">
@@ -359,57 +396,112 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           </div>
         )}
 
-        {/* Customer Discounts */}
-        <FormField label="Customer Discounts">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
-              <input
-                type="number"
-                value={answers.discountsAmt ?? ''}
-                placeholder="e.g., 6,000"
-                onChange={(e) => {
-                  const amt = parseFloat(e.target.value) || undefined
-                  updateAnswers({ discountsAmt: amt })
-                  if (amt && answers.avgNetFee && answers.taxPrepReturns) {
-                    const gross = answers.avgNetFee * answers.taxPrepReturns
-                    updateAnswers({ discountsPct: Math.round((amt / gross) * 1000) / 10 })
-                  }
-                }}
-              />
-            </div>
-            <span>=</span>
-            <input
-              type="number"
-              value={answers.discountsPct ?? ''}
-              placeholder="3.0"
-              onChange={(e) => {
-                const pct = parseFloat(e.target.value) || undefined
-                updateAnswers({ discountsPct: pct })
-                if (pct && answers.avgNetFee && answers.taxPrepReturns) {
-                  const gross = answers.avgNetFee * answers.taxPrepReturns
-                  updateAnswers({ discountsAmt: Math.round(gross * (pct / 100)) })
-                }
-              }}
-            />
-            <span>%</span>
-          </div>
-        </FormField>
-
-        {/* Total Tax Prep Income = Gross − Discounts */}
-        <FormField label="Total Tax Prep Income">
-          <CurrencyInput
-            value={
-              answers.projectedTaxPrepIncome ??
-              (answers.avgNetFee && answers.taxPrepReturns
-                ? answers.avgNetFee * answers.taxPrepReturns - (answers.discountsAmt ?? 0)
-                : undefined)
+       {/* Customer Discounts (styled like NewStore) */}
+<FormField
+  label="Customer Discounts"
+  helpText="Dollar amount or % of gross fees given as discounts. Enter either field; the other auto-calculates."
+>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+    {/* Dollar Input */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+      <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+      <input
+        type="number"
+        min="0"
+        step="1"
+        placeholder={
+          answers.avgNetFee && answers.taxPrepReturns
+            ? Math.round(answers.avgNetFee * answers.taxPrepReturns * 0.03).toString()
+            : '6,000'
+        }
+        value={
+          answers.discountsAmt ??
+          (answers.avgNetFee && answers.taxPrepReturns
+            ? Math.round(answers.avgNetFee * answers.taxPrepReturns * 0.03)
+            : '')
+        }
+        onChange={(e) => {
+          const newAmt = parseFloat(e.target.value) || undefined
+          updateAnswers({ discountsAmt: newAmt })
+          if (newAmt && answers.avgNetFee && answers.taxPrepReturns) {
+            const gross = answers.avgNetFee * answers.taxPrepReturns
+            if (gross > 0) {
+              updateAnswers({ discountsPct: Math.round((newAmt / gross) * 1000) / 10 })
             }
-            placeholder="Auto-calculated"
-            onChange={(value) => updateAnswers({ projectedTaxPrepIncome: value })}
-            backgroundColor="#f9fafb"
-          />
-        </FormField>
+          }
+        }}
+        style={{
+          width: '80px',
+          textAlign: 'right',
+          border: '1px solid #d1d5db',
+          borderRadius: '4px',
+          padding: '0.5rem',
+        }}
+      />
+    </div>
+
+    <span style={{ color: '#6b7280' }}>=</span>
+
+    {/* Percentage Input */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+      <input
+        type="number"
+        step="0.1"
+        min="0"
+        max="20"
+        placeholder="3.0"
+        value={
+          answers.discountsPct ??
+          (answers.avgNetFee && answers.taxPrepReturns && answers.discountsAmt
+            ? Math.round(((answers.discountsAmt / (answers.avgNetFee * answers.taxPrepReturns)) * 100) * 10) / 10
+            : '')
+        }
+        onChange={(e) => {
+          const newPct = parseFloat(e.target.value) || undefined
+          updateAnswers({ discountsPct: newPct })
+          if (newPct && answers.avgNetFee && answers.taxPrepReturns) {
+            const gross = answers.avgNetFee * answers.taxPrepReturns
+            updateAnswers({ discountsAmt: Math.round(gross * (newPct / 100)) })
+          }
+        }}
+        style={{
+          width: '80px',
+          textAlign: 'right',
+          border: '1px solid #d1d5db',
+          borderRadius: '4px',
+          padding: '0.5rem',
+        }}
+      />
+      <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
+    </div>
+  </div>
+  <div
+    style={{
+      marginTop: '0.25rem',
+      fontSize: '0.75rem',
+      color: '#6b7280',
+      fontStyle: 'italic',
+    }}
+  >
+    Default: 3% • Enter either dollar amount or percentage - the other will auto-calc
+  </div>
+</FormField>
+
+{/* Total Tax Prep Income = Gross − Discounts */}
+<FormField label="Total Tax Prep Income" helpText="Gross Tax Prep Fees minus Customer Discounts">
+  <CurrencyInput
+    value={
+      answers.projectedTaxPrepIncome ??
+      (answers.avgNetFee && answers.taxPrepReturns
+        ? answers.avgNetFee * answers.taxPrepReturns - (answers.discountsAmt ?? 0)
+        : undefined)
+    }
+    placeholder="Auto-calculated"
+    onChange={(value) => updateAnswers({ projectedTaxPrepIncome: value })}
+    backgroundColor="#f9fafb"
+  />
+</FormField>
+
 
         {/* Other Income */}
         {answers.hasOtherIncome && (
