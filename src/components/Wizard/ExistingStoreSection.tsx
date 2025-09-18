@@ -520,3 +520,31 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
     })()}
   </div>
 )}
+        {/* Projected Net Income Summary */}
+        {(answers.avgNetFee && answers.taxPrepReturns) && (
+          <div
+            style={{
+              padding: '0.5rem',
+              backgroundColor: '#e0f2fe',
+              borderRadius: '4px',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              color: '#0369a1',
+              marginTop: '1rem',
+            }}
+          >
+            Projected Net Income: $
+            {(() => {
+              const gross = answers.avgNetFee * answers.taxPrepReturns
+              const discounts = answers.discountsAmt ?? 0
+              const other = answers.hasOtherIncome ? answers.otherIncome ?? 0 : 0
+              const income = gross - discounts + other
+              const expenses = answers.projectedExpenses ?? 0
+              return Math.round(income - expenses).toLocaleString()
+            })()}
+          </div>
+        )}
+      </FormSection>   {/* 👈 CLOSE THE Projected Performance FormSection */}
+    </>
+  )
+}
