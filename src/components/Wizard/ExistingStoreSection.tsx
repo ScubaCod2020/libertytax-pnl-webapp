@@ -29,6 +29,42 @@ useEffect(() => {
     updateAnswers({ lastYearGrossFees: autoGross })
   }
 }, [answers.lastYearTaxPrepReturns, answers.manualAvgNetFee, answers.lastYearGrossFees, updateAnswers])
+ // Auto-calc Tax Prep Returns when no manual override
+useEffect(() => {
+  if (
+    answers.taxPrepReturns === undefined &&
+    answers.lastYearTaxPrepReturns &&
+    answers.expectedGrowthPct !== undefined
+  ) {
+    const autoReturns = Math.round(
+      answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100)
+    )
+    updateAnswers({ taxPrepReturns: autoReturns })
+  }
+}, [answers.lastYearTaxPrepReturns, answers.expectedGrowthPct, answers.taxPrepReturns, updateAnswers])
+        // Auto-calc Avg Net Fee when no manual override
+useEffect(() => {
+  if (
+    answers.avgNetFee === undefined &&
+    answers.manualAvgNetFee &&
+    answers.expectedGrowthPct !== undefined
+  ) {
+    const autoAvgNetFee = Math.round(
+      answers.manualAvgNetFee * (1 + answers.expectedGrowthPct / 100)
+    )
+    updateAnswers({ avgNetFee: autoAvgNetFee })
+  }
+}, [answers.manualAvgNetFee, answers.expectedGrowthPct, answers.avgNetFee, updateAnswers])
+        useEffect(() => {
+  if (
+    answers.projectedGrossFees === undefined &&
+    answers.taxPrepReturns &&
+    answers.avgNetFee
+  ) {
+    const autoGross = answers.taxPrepReturns * answers.avgNetFee
+    updateAnswers({ projectedGrossFees: autoGross })
+  }
+}, [answers.taxPrepReturns, answers.avgNetFee, answers.projectedGrossFees, updateAnswers])
 
   return (
     <>
@@ -342,19 +378,7 @@ useEffect(() => {
         </FormField>
 
         {/* Tax Prep Returns (preload from lastYear × growth) */}
-       // Auto-calc Tax Prep Returns when no manual override
-useEffect(() => {
-  if (
-    answers.taxPrepReturns === undefined &&
-    answers.lastYearTaxPrepReturns &&
-    answers.expectedGrowthPct !== undefined
-  ) {
-    const autoReturns = Math.round(
-      answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100)
-    )
-    updateAnswers({ taxPrepReturns: autoReturns })
-  }
-}, [answers.lastYearTaxPrepReturns, answers.expectedGrowthPct, answers.taxPrepReturns, updateAnswers])
+      
 
 <FormField label="Tax Prep Returns">
   <NumberInput
@@ -367,19 +391,6 @@ useEffect(() => {
 
 
         {/* Average Net Fee (preload from lastYear × growth) */}
-        // Auto-calc Avg Net Fee when no manual override
-useEffect(() => {
-  if (
-    answers.avgNetFee === undefined &&
-    answers.manualAvgNetFee &&
-    answers.expectedGrowthPct !== undefined
-  ) {
-    const autoAvgNetFee = Math.round(
-      answers.manualAvgNetFee * (1 + answers.expectedGrowthPct / 100)
-    )
-    updateAnswers({ avgNetFee: autoAvgNetFee })
-  }
-}, [answers.manualAvgNetFee, answers.expectedGrowthPct, answers.avgNetFee, updateAnswers])
 
 <FormField label="Average Net Fee">
   <CurrencyInput
@@ -391,16 +402,6 @@ useEffect(() => {
 
 
         {/* Gross Tax Prep Fees */}
-        useEffect(() => {
-  if (
-    answers.projectedGrossFees === undefined &&
-    answers.taxPrepReturns &&
-    answers.avgNetFee
-  ) {
-    const autoGross = answers.taxPrepReturns * answers.avgNetFee
-    updateAnswers({ projectedGrossFees: autoGross })
-  }
-}, [answers.taxPrepReturns, answers.avgNetFee, answers.projectedGrossFees, updateAnswers])
 
         <FormField label="Gross Tax Prep Fees">
           <CurrencyInput
