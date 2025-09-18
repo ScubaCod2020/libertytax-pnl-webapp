@@ -18,6 +18,18 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
     }
   }, [answers.avgNetFee, answers.taxPrepReturns, answers.expectedGrowthPct, updateAnswers])
 
+    // Auto-calc Gross when no manual override
+useEffect(() => {
+  if (
+    answers.lastYearGrossFees === undefined && // only if no override
+    answers.lastYearTaxPrepReturns &&
+    answers.manualAvgNetFee
+  ) {
+    const autoGross = answers.lastYearTaxPrepReturns * answers.manualAvgNetFee
+    updateAnswers({ lastYearGrossFees: autoGross })
+  }
+}, [answers.lastYearTaxPrepReturns, answers.manualAvgNetFee, answers.lastYearGrossFees, updateAnswers])
+
   return (
     <>
       {/* Toggles */}
@@ -71,18 +83,6 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
             onChange={(value) => updateAnswers({ manualAvgNetFee: value })}
           />
         </FormField>
-
-       // Auto-calc Gross when no manual override
-useEffect(() => {
-  if (
-    answers.lastYearGrossFees === undefined && // only if no override
-    answers.lastYearTaxPrepReturns &&
-    answers.manualAvgNetFee
-  ) {
-    const autoGross = answers.lastYearTaxPrepReturns * answers.manualAvgNetFee
-    updateAnswers({ lastYearGrossFees: autoGross })
-  }
-}, [answers.lastYearTaxPrepReturns, answers.manualAvgNetFee, answers.lastYearGrossFees, updateAnswers])
 
 <FormField
   label="Gross Tax Prep Fees"
