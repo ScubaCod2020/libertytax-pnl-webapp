@@ -233,21 +233,24 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           </FormField>
         )}
 
-        {/* Total Expenses */}
-        <FormField label="Total Expenses" helpText="Auto: (Tax Prep Income + Other Income) × 76%">
-          <CurrencyInput
-            value={
-              answers.lastYearExpenses ??
-              (() => {
-                const income = answers.lastYearGrossFees ? answers.lastYearGrossFees - (answers.lastYearDiscountsAmt ?? 0) : 0
-                const other = answers.hasOtherIncome ? answers.lastYearOtherIncome ?? 0 : 0
-                const base = income + other
-                return base > 0 ? Math.round(base * 0.76) : undefined
-              })()
-            }
-            onChange={(value) => updateAnswers({ lastYearExpenses: value })}
-          />
-        </FormField>
+        {/* Total Tax Prep Income = Gross − Discounts */}
+<FormField
+  label="Total Tax Prep Income"
+  helpText="Gross Tax Prep Fees minus Customer Discounts (you can override)"
+>
+  <CurrencyInput
+    value={
+      answers.manualTaxPrepIncome ??
+      (answers.lastYearGrossFees
+        ? answers.lastYearGrossFees - (answers.lastYearDiscountsAmt ?? 0)
+        : undefined)
+    }
+    placeholder="Auto-calculated"
+    onChange={(value) => updateAnswers({ manualTaxPrepIncome: value })}
+    backgroundColor={answers.manualTaxPrepIncome !== undefined ? 'white' : '#f9fafb'}
+  />
+</FormField>
+
 
         {/* Net Income Summary */}
         {(answers.lastYearGrossFees || answers.lastYearExpenses) && (
