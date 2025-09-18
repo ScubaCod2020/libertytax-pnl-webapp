@@ -1,5 +1,5 @@
 // ExistingStoreSection.tsx - Last Year Performance & Projected Performance for existing stores
-// Golden ticket layout applied: stacked input fields like NewStore, all overrideable
+// Golden ticket layout: stacked inputs, all overrideable, with Net Income summaries
 
 import { useEffect } from 'react'
 import type { WizardSectionProps } from './types'
@@ -9,7 +9,7 @@ import FormField, { CurrencyInput, NumberInput } from './FormField'
 import ToggleQuestion from './ToggleQuestion'
 
 export default function ExistingStoreSection({ answers, updateAnswers, region }: WizardSectionProps) {
-  // Ensure default growth % set
+  // Ensure default growth % is set
   useEffect(() => {
     if (answers.avgNetFee && answers.taxPrepReturns && answers.expectedGrowthPct === undefined) {
       updateAnswers({ expectedGrowthPct: 0 })
@@ -50,16 +50,13 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
       />
 
       {/* === Last Year Performance === */}
-      <FormSection
-        title="Last Year Performance"
-        icon="📊"
-        backgroundColor="#f8fafc"
-        borderColor="#6b7280"
-      >
+      <FormSection title="Last Year Performance" icon="📊" backgroundColor="#f8fafc" borderColor="#6b7280">
         {/* Tax Prep Returns */}
         <FormField label="Tax Prep Returns" required>
           <NumberInput
             value={answers.lastYearTaxPrepReturns}
+            placeholder="e.g., 1,680"
+            prefix="#"
             onChange={(value) => updateAnswers({ lastYearTaxPrepReturns: value })}
           />
         </FormField>
@@ -73,8 +70,8 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* Gross Fees */}
-        <FormField label="Gross Tax Prep Fees">
+        {/* Gross Tax Prep Fees */}
+        <FormField label="Gross Tax Prep Fees" helpText="Auto: Returns × Avg Net Fee">
           <CurrencyInput
             value={
               answers.lastYearGrossFees ??
@@ -82,24 +79,19 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                 ? answers.lastYearTaxPrepReturns * answers.manualAvgNetFee
                 : undefined)
             }
+            placeholder="Auto-calculated"
             onChange={(value) => updateAnswers({ lastYearGrossFees: value })}
+            backgroundColor="#f9fafb"
           />
         </FormField>
 
         {/* TaxRush (last year) */}
         {region === 'CA' && answers.handlesTaxRush && (
-          <div
-            style={{
-              border: '2px solid #0ea5e9',
-              borderRadius: '8px',
-              backgroundColor: '#f0f9ff',
-              margin: '0.5rem 0',
-              padding: '0.75rem',
-            }}
-          >
+          <div style={{ border: '2px solid #0ea5e9', borderRadius: '8px', backgroundColor: '#f0f9ff', margin: '0.5rem 0', padding: '0.75rem' }}>
             <FormField label="TaxRush Returns">
               <NumberInput
                 value={answers.lastYearTaxRushReturns}
+                prefix="#"
                 onChange={(value) => updateAnswers({ lastYearTaxRushReturns: value })}
               />
             </FormField>
@@ -125,31 +117,72 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
 
         {/* Customer Discounts */}
         <FormField label="Customer Discounts">
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <input
-              type="number"
-              value={answers.lastYearDiscountsAmt ?? ''}
-              onChange={(e) => {
-                const amt = parseFloat(e.target.value) || undefined
-                updateAnswers({ lastYearDiscountsAmt: amt })
-                if (amt && answers.lastYearGrossFees) {
-                  updateAnswers({ lastYearDiscountsPct: Math.round((amt / answers.lastYearGrossFees) * 1000) / 10 })
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            {/* Dollar Input */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+              <input
+                type="number"
+                min="0"
+                step="1"
+                placeholder={
+                  answers.lastYearGrossFees
+                    ? Math.round(answers.lastYearGrossFees * 0.03).toString()
+                    : '6,000'
                 }
-              }}
-            />
-            <span>=</span>
-            <input
-              type="number"
-              value={answers.lastYearDiscountsPct ?? ''}
-              onChange={(e) => {
-                const pct = parseFloat(e.target.value) || undefined
-                updateAnswers({ lastYearDiscountsPct: pct })
-                if (pct && answers.lastYearGrossFees) {
-                  updateAnswers({ lastYearDiscountsAmt: Math.round(answers.lastYearGrossFees * (pct / 100)) })
+                value={
+                  answers.lastYearDiscountsAmt ??
+                  (answers.lastYearGrossFees
+                    ? Math.round(answers.lastYearGrossFees * 0.03)
+                    : '')
                 }
-              }}
-            />
-            <span>%</span>
+                onChange={(e) => {
+                  const newAmt = parseFloat(e.target.value) || undefined
+                  updateAnswers({ lastYearDiscountsAmt: newAmt })
+                  if (newAmt && answers.lastYearGrossFees) {
+                    const calcPct = (newAmt / answers.lastYearGrossFees) * 100
+                    updateAnswers({ lastYearDiscountsPct: Math.round(calcPct * 10) / 10 })
+                  }
+                }}
+                style={{
+                  width: '80px',
+                  textAlign: 'right',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '4px',
+                  padding: '0.5rem',
+                }}
+              />
+            </div>
+
+            <span style={{ color: '#6b7280' }}>=</span>
+
+            {/* Percentage Input */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <input
+                type="number"
+                step="0.1"
+                min="0"
+                max="20"
+                placeholder="3.0"
+                value={answers.lastYearDiscountsPct ?? ''}
+                onChange={(e) => {
+                  const newPct = parseFloat(e.target.value) || undefined
+                  updateAnswers({ lastYearDiscountsPct: newPct })
+                  if (newPct && answers.lastYearGrossFees) {
+                    const calcAmt = answers.lastYearGrossFees * (newPct / 100)
+                    updateAnswers({ lastYearDiscountsAmt: Math.round(calcAmt) })
+                  }
+                }}
+                style={{
+                  width: '80px',
+                  textAlign: 'right',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '4px',
+                  padding: '0.5rem',
+                }}
+              />
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
+            </div>
           </div>
         </FormField>
 
@@ -162,7 +195,9 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                 ? answers.lastYearGrossFees - (answers.lastYearDiscountsAmt ?? 0)
                 : undefined)
             }
+            placeholder="Auto-calculated"
             onChange={(value) => updateAnswers({ manualTaxPrepIncome: value })}
+            backgroundColor="#f9fafb"
           />
         </FormField>
 
@@ -184,7 +219,9 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
               (() => {
                 const taxPrepIncome =
                   answers.manualTaxPrepIncome ??
-                  (answers.lastYearGrossFees ? answers.lastYearGrossFees - (answers.lastYearDiscountsAmt ?? 0) : 0)
+                  (answers.lastYearGrossFees
+                    ? answers.lastYearGrossFees - (answers.lastYearDiscountsAmt ?? 0)
+                    : 0)
                 const other = answers.hasOtherIncome ? answers.lastYearOtherIncome ?? 0 : 0
                 const base = taxPrepIncome + other
                 return base > 0 ? Math.round(base * 0.76) : undefined
@@ -193,16 +230,36 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
             onChange={(value) => updateAnswers({ lastYearExpenses: value })}
           />
         </FormField>
+
+        {/* Last Year Net Income Summary */}
+        {(answers.lastYearGrossFees || answers.lastYearExpenses) && (
+          <div
+            style={{
+              padding: '0.5rem',
+              backgroundColor: '#e0f2fe',
+              borderRadius: '4px',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              color: '#0369a1',
+              marginTop: '1rem',
+            }}
+          >
+            Last Year Net Income: $
+            {(() => {
+              const gross = answers.lastYearGrossFees ?? 0
+              const discounts = answers.lastYearDiscountsAmt ?? 0
+              const other = answers.hasOtherIncome ? answers.lastYearOtherIncome ?? 0 : 0
+              const income = gross - discounts + other
+              const expenses = answers.lastYearExpenses ?? 0
+              return Math.round(income - expenses).toLocaleString()
+            })()}
+          </div>
+        )}
       </FormSection>
 
       {/* === Projected Performance === */}
-      <FormSection
-        title="Projected Performance"
-        icon="📈"
-        backgroundColor="#f8fafc"
-        borderColor="#059669"
-      >
-        {/* Growth controls at the top */}
+      <FormSection title="Projected Performance" icon="📈" backgroundColor="#f8fafc" borderColor="#059669">
+        {/* Growth controls */}
         <FormField label="Performance Change">
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <input
@@ -250,6 +307,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
         <FormField label="Tax Prep Returns">
           <NumberInput
             value={answers.taxPrepReturns}
+            prefix="#"
             onChange={(value) => updateAnswers({ taxPrepReturns: value })}
           />
         </FormField>
@@ -262,7 +320,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* Gross Fees */}
+        {/* Gross Tax Prep Fees */}
         <FormField label="Gross Tax Prep Fees">
           <CurrencyInput
             value={
@@ -277,18 +335,11 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
 
         {/* TaxRush (projected) */}
         {region === 'CA' && answers.handlesTaxRush && (
-          <div
-            style={{
-              border: '2px solid #0ea5e9',
-              borderRadius: '8px',
-              backgroundColor: '#f0f9ff',
-              margin: '0.5rem 0',
-              padding: '0.75rem',
-            }}
-          >
+          <div style={{ border: '2px solid #0ea5e9', borderRadius: '8px', backgroundColor: '#f0f9ff', margin: '0.5rem 0', padding: '0.75rem' }}>
             <FormField label="TaxRush Returns">
               <NumberInput
                 value={answers.taxRushReturns}
+                prefix="#"
                 onChange={(value) => updateAnswers({ taxRushReturns: value })}
               />
             </FormField>
@@ -314,23 +365,28 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
 
         {/* Customer Discounts */}
         <FormField label="Customer Discounts">
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <input
-              type="number"
-              value={answers.discountsAmt ?? ''}
-              onChange={(e) => {
-                const amt = parseFloat(e.target.value) || undefined
-                updateAnswers({ discountsAmt: amt })
-                if (amt && answers.avgNetFee && answers.taxPrepReturns) {
-                  const gross = answers.avgNetFee * answers.taxPrepReturns
-                  updateAnswers({ discountsPct: Math.round((amt / gross) * 1000) / 10 })
-                }
-              }}
-            />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
+              <input
+                type="number"
+                value={answers.discountsAmt ?? ''}
+                placeholder="e.g., 6,000"
+                onChange={(e) => {
+                  const amt = parseFloat(e.target.value) || undefined
+                  updateAnswers({ discountsAmt: amt })
+                  if (amt && answers.avgNetFee && answers.taxPrepReturns) {
+                    const gross = answers.avgNetFee * answers.taxPrepReturns
+                    updateAnswers({ discountsPct: Math.round((amt / gross) * 1000) / 10 })
+                  }
+                }}
+              />
+            </div>
             <span>=</span>
             <input
               type="number"
               value={answers.discountsPct ?? ''}
+              placeholder="3.0"
               onChange={(e) => {
                 const pct = parseFloat(e.target.value) || undefined
                 updateAnswers({ discountsPct: pct })
@@ -353,7 +409,9 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                 ? answers.avgNetFee * answers.taxPrepReturns - (answers.discountsAmt ?? 0)
                 : undefined)
             }
+            placeholder="Auto-calculated"
             onChange={(value) => updateAnswers({ projectedTaxPrepIncome: value })}
+            backgroundColor="#f9fafb"
           />
         </FormField>
 
@@ -368,7 +426,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
         )}
 
         {/* Total Expenses */}
-        <FormField label="Total Expenses" helpText="Auto: Tax Prep Income × 76%">
+        <FormField label="Total Expenses">
           <CurrencyInput
             value={
               answers.projectedExpenses ??
@@ -386,6 +444,31 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
             onChange={(value) => updateAnswers({ projectedExpenses: value })}
           />
         </FormField>
+
+        {/* Projected Net Income Summary */}
+        {(answers.avgNetFee && answers.taxPrepReturns) && (
+          <div
+            style={{
+              padding: '0.5rem',
+              backgroundColor: '#e0f2fe',
+              borderRadius: '4px',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              color: '#0369a1',
+              marginTop: '1rem',
+            }}
+          >
+            Projected Net Income: $
+            {(() => {
+              const gross = answers.avgNetFee * answers.taxPrepReturns
+              const discounts = answers.discountsAmt ?? 0
+              const other = answers.hasOtherIncome ? answers.otherIncome ?? 0 : 0
+              const income = gross - discounts + other
+              const expenses = answers.projectedExpenses ?? 0
+              return Math.round(income - expenses).toLocaleString()
+            })()}
+          </div>
+        )}
       </FormSection>
     </>
   )
