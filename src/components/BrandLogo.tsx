@@ -21,10 +21,19 @@ export default function BrandLogo({
   style 
 }: BrandLogoProps) {
   const assets = useBrandAssets(region)
-  
-  // Choose the appropriate logo variant
+
+  // If no assets loaded, fallback to text
+  if (!assets) {
+    return (
+      <div className={className} style={style}>
+        {region === 'US' ? 'Liberty Tax' : 'Liberty Tax Canada'}
+      </div>
+    )
+  }
+
+  // Choose logo variant
   const logoUrl = variant === 'wide' 
-    ? assets.logoWide || assets.logoUrl  // Use wide logo or fall back to standard
+    ? assets.logoWide || assets.logoUrl
     : variant === 'watermark'
     ? assets.watermarkUrl
     : assets.logoUrl
@@ -48,32 +57,18 @@ export default function BrandLogo({
         objectFit: 'contain',
         ...style
       }}
-      onError={(e) => {
+      onError={() => {
         console.warn(`Failed to load ${variant} logo for ${region} region`)
-        // Could fallback to text or different logo variant
       }}
     />
   )
 }
 
-// Convenience components for specific use cases
+// Convenience components
 export function HeaderLogo({ region }: { region: Region }) {
-  return (
-    <BrandLogo 
-      region={region} 
-      variant="wide" 
-      size="medium"
-      style={{ maxWidth: '200px' }}
-    />
-  )
+  return <BrandLogo region={region} variant="wide" size="medium" style={{ maxWidth: '200px' }} />
 }
 
 export function CompactLogo({ region }: { region: Region }) {
-  return (
-    <BrandLogo 
-      region={region} 
-      variant="main" 
-      size="small"
-    />
-  )
+  return <BrandLogo region={region} variant="main" size="small" />
 }
