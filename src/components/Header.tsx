@@ -160,7 +160,7 @@ export default function Header({ region, setRegion, onReset, onShowWizard, onSho
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <button
             onClick={onReset}
-            aria-label="Reset entire application to defaults"
+            aria-label="Reset to defaults"
             title="Reset entire application - clears ALL data and starts fresh"
             style={{ 
               background: 'linear-gradient(45deg, #dc2626, #ef4444)', 

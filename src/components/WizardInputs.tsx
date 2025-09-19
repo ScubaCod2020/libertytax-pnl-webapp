@@ -28,47 +28,46 @@ export default function WizardInputs({
   onBack, 
   canProceed 
 }: WizardInputsProps) {
-  // Auto-initialize income drivers from Page 1 projections (on mount)
-useEffect(() => {
-  if (answers.storeType === 'existing') {
-    if (
-      answers.expectedGrowthPct !== undefined &&
-      answers.avgNetFee &&
-      answers.taxPrepReturns &&
-      (answers.projectedAvgNetFee === undefined || answers.projectedTaxPrepReturns === undefined)
-    ) {
-      updateAnswers({
-        projectedAvgNetFee:
-          answers.projectedAvgNetFee ??
-          Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)),
-        projectedTaxPrepReturns:
-          answers.projectedTaxPrepReturns ??
-          Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)),
-      })
-    }
-  }
+  // Scroll to top on load for better UX when arriving from Step 1
+  useEffect(() => {
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } catch {}
+  }, [])
+  // Unified projection recalculation effect (prevents duplication and ensures live sync)
+  useEffect(() => {
+    let nextProjectedAvg: number | undefined
+    let nextProjectedReturns: number | undefined
 
-  if (answers.storeType === 'new') {
     if (
-      answers.avgNetFee &&
-      answers.taxPrepReturns &&
-      (answers.projectedAvgNetFee === undefined || answers.projectedTaxPrepReturns === undefined)
+      answers.storeType === 'existing' &&
+      answers.expectedGrowthPct !== undefined &&
+      answers.avgNetFee !== undefined &&
+      answers.taxPrepReturns !== undefined
     ) {
-      updateAnswers({
-        projectedAvgNetFee: answers.projectedAvgNetFee ?? answers.avgNetFee,
-        projectedTaxPrepReturns: answers.projectedTaxPrepReturns ?? answers.taxPrepReturns,
-      })
+      nextProjectedAvg = Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100))
+      nextProjectedReturns = Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100))
+    } else if (
+      answers.storeType === 'new' &&
+      answers.avgNetFee !== undefined &&
+      answers.taxPrepReturns !== undefined
+    ) {
+      nextProjectedAvg = answers.avgNetFee
+      nextProjectedReturns = answers.taxPrepReturns
     }
-  }
-}, [
-  answers.storeType,
-  answers.avgNetFee,
-  answers.taxPrepReturns,
-  answers.expectedGrowthPct,
-  answers.projectedAvgNetFee,
-  answers.projectedTaxPrepReturns,
-  updateAnswers,
-])
+
+    const updates: Partial<WizardAnswers> = {}
+    if (nextProjectedAvg !== undefined && nextProjectedAvg !== answers.projectedAvgNetFee) {
+      updates.projectedAvgNetFee = nextProjectedAvg
+    }
+    if (nextProjectedReturns !== undefined && nextProjectedReturns !== answers.projectedTaxPrepReturns) {
+      updates.projectedTaxPrepReturns = nextProjectedReturns
+    }
+
+    if (Object.keys(updates).length > 0) {
+      updateAnswers(updates)
+    }
+  }, [answers.storeType, answers.avgNetFee, answers.taxPrepReturns, answers.expectedGrowthPct, answers.projectedAvgNetFee, answers.projectedTaxPrepReturns, updateAnswers])
 
 
   // Validation tracking state (addresses critical QA issue: input validation)
@@ -549,7 +548,7 @@ useEffect(() => {
         but customizing them will give you more accurate P&L projections.
       </p>
 
-      {/* Income Drivers Section */}
+      {/* Income Drivers Section (Locked display; configured in Step 1) */}
       <div className="expense-section" style={{ 
         marginBottom: '1.5rem',
         border: '1px solid #d1d5db',
@@ -603,79 +602,9 @@ useEffect(() => {
           )}
         </div>
 
-        {/* Performance-based calculations for existing stores */}
-        {answers.expectedRevenue && (
-          <div style={{ 
-            padding: '0.75rem', 
-            backgroundColor: '#f0f9ff', 
-            border: '1px solid #0ea5e9', 
-            borderRadius: '6px',
-            marginBottom: '1rem',
-            fontSize: '0.9rem'
-          }}>
-            <div style={{ fontWeight: 'bold', color: '#0369a1', marginBottom: '0.5rem' }}>
-              📊 Performance-Based Targets
-            </div>
-            <div style={{ color: '#0369a1' }}>
-              Expected Net Income: <strong>${answers.expectedRevenue.toLocaleString()}</strong>
-              {answers.expectedGrowthPct !== undefined && (
-                <span> (based on {answers.expectedGrowthPct > 0 ? '+' : ''}{answers.expectedGrowthPct}% growth projection)</span>
-              )}
-            </div>
-            
-            {/* Show Strategic Target Breakdown */}
-            {answers.storeType === 'existing' && answers.expectedGrowthPct !== undefined && answers.avgNetFee && answers.taxPrepReturns && (
-              <div style={{ color: '#0369a1', marginTop: '0.5rem', fontSize: '0.85rem' }}>
-                <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>Strategic Targets:</div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                  <div>
-                    <div style={{ fontWeight: 'bold', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Tax Prep Targets:</div>
-                    <div>Average Net Fee: <strong>${Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></div>
-                    <div>Tax Prep Returns: <strong>{Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></div>
-                    <div>Gross Tax Prep Fees: <strong>${Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100) * answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></div>
-                  </div>
-                  {answers.region === 'CA' && answers.handlesTaxRush && answers.taxRushReturns && (
-                    <div style={{ paddingLeft: '0.75rem', borderLeft: '2px solid #0ea5e9' }}>
-                      <div style={{ fontWeight: 'bold', marginBottom: '0.25rem', fontSize: '0.8rem' }}>TaxRush Targets:</div>
-                      <div>TaxRush Returns: <strong>{Math.round(answers.taxRushReturns * (1 + answers.expectedGrowthPct / 100)).toLocaleString()}</strong></div>
-                      <div>TaxRush Avg Net Fee: <strong>${answers.taxRushAvgNetFee ? Math.round(answers.taxRushAvgNetFee * (1 + answers.expectedGrowthPct / 100)).toLocaleString() : 'Same as Tax Prep'}</strong></div>
-                      <div>TaxRush Gross Fees: <strong>${answers.taxRushGrossFees ? Math.round(answers.taxRushGrossFees * (1 + answers.expectedGrowthPct / 100)).toLocaleString() : 'Auto-calculated'}</strong></div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-            
-            {/* Show Target Breakdown for New Stores */}
-            {answers.storeType === 'new' && answers.avgNetFee && answers.taxPrepReturns && (
-              <div style={{ color: '#0369a1', marginTop: '0.5rem', fontSize: '0.85rem' }}>
-                <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>Target Goals:</div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                  <div>
-                    <div style={{ fontWeight: 'bold', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Tax Prep Targets:</div>
-                    <div>Average Net Fee: <strong>${answers.avgNetFee.toLocaleString()}</strong></div>
-                    <div>Tax Prep Returns: <strong>{answers.taxPrepReturns.toLocaleString()}</strong></div>
-                    <div>Gross Tax Prep Fees: <strong>${Math.round(answers.avgNetFee * answers.taxPrepReturns).toLocaleString()}</strong></div>
-                  </div>
-                  {answers.region === 'CA' && answers.handlesTaxRush && answers.taxRushReturns && (
-                    <div style={{ paddingLeft: '0.75rem', borderLeft: '2px solid #0ea5e9' }}>
-                      <div style={{ fontWeight: 'bold', marginBottom: '0.25rem', fontSize: '0.8rem' }}>TaxRush Targets:</div>
-                      <div>TaxRush Returns: <strong>{answers.taxRushReturns.toLocaleString()}</strong></div>
-                      <div>TaxRush Avg Net Fee: <strong>${answers.taxRushAvgNetFee ? answers.taxRushAvgNetFee.toLocaleString() : 'Same as Tax Prep'}</strong></div>
-                      <div>TaxRush Gross Fees: <strong>${answers.taxRushGrossFees ? answers.taxRushGrossFees.toLocaleString() : 'Auto-calculated'}</strong></div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-            
-            <div className="small" style={{ color: '#0369a1', marginTop: '0.25rem' }}>
-              Build your gross revenue below, then set expenses to achieve this net income target
-            </div>
-          </div>
-        )}
+        {/* Removed old performance-based target blocks to avoid duplication */}
         
-        {/* Average Net Fee */}
+        {/* Average Net Fee (locked - configured in Step 1) */}
         <div style={{ 
           marginBottom: '0.75rem',
           display: 'grid',
@@ -703,85 +632,31 @@ useEffect(() => {
             <span style={{ fontWeight: 500, color: '#6b7280' }}>$</span>
             <input
               type="number"
-              min={50}
-              max={500}
-                step={1}
-                value={
-                  // Priority order: manual projected value > calculated projection > direct input
-                  answers.projectedAvgNetFee !== undefined ? answers.projectedAvgNetFee :
-                  answers.storeType === 'existing' && answers.expectedGrowthPct !== undefined && answers.avgNetFee
-                    ? Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100))
-                    : (answers.avgNetFee || '')
-                }
-                onChange={e => {
-                  const newValue = +e.target.value || undefined
-                  
-                  // Independent field tracking: calculate individual growth without affecting global projection
-                  if (answers.storeType === 'existing' && newValue && answers.avgNetFee) {
-                    const originalAvgNetFee = answers.avgNetFee
-                      
-                    if (originalAvgNetFee && originalAvgNetFee > 0) {
-                      // Calculate individual growth for this field only
-                      const individualGrowthPct = calculateFieldGrowth(newValue, originalAvgNetFee)
-                      console.log('🔄 INDEPENDENT TRACKING - Average Net Fee manually adjusted:', {
-                        newValue,
-                        originalAvgNetFee, 
-                        individualGrowthPct,
-                        globalProjection: answers.expectedGrowthPct
-                      })
-                      
-                      // Store the manual projected value (don't update global growth percentage)
-                      updateAnswers({ 
-                        projectedAvgNetFee: newValue
-                      })
-                      return
-                    }
-                  }
-                  
-                  // Standard update for new stores
-                  updateAnswers({ avgNetFee: newValue })
-                }}
-                placeholder="e.g., 125"
-              required
-                style={{
-                  width: '140px', 
-                  textAlign: 'right', 
-                  border: '1px solid #d1d5db', 
-                  borderRadius: '4px', 
-                  padding: '0.5rem',
-                  ...(answers.storeType === 'existing' ? { backgroundColor: '#f0f9ff', borderColor: '#0ea5e9' } : {})
-                }}
-              />
+              value={answers.projectedAvgNetFee ?? ''}
+              placeholder={answers.avgNetFee !== undefined ? String(answers.avgNetFee) : ''}
+              disabled
+              title="Configured in Step 1"
+              style={{
+                width: '140px', 
+                textAlign: 'right', 
+                border: '1px solid #d1d5db', 
+                borderRadius: '4px', 
+                padding: '0.5rem',
+                backgroundColor: '#f3f4f6',
+                color: '#6b7280'
+              }}
+            />
           </div>
           <div className="small" style={{ 
             opacity: 0.7,
             gridColumn: '2',
             gridRow: '2'
           }}>
-            {(() => {
-              if (answers.storeType !== 'existing') {
-                return 'Average fee per tax return after discounts'
-              }
-              
-              if (answers.expectedGrowthPct === undefined) {
-                return '📋 Carried forward from page 1 (you can adjust)'
-              }
-              
-              // Calculate current field growth vs original
-              const currentValue = answers.projectedAvgNetFee !== undefined ? answers.projectedAvgNetFee :
-                answers.avgNetFee ? Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)) : 0
-              
-              if (answers.avgNetFee && currentValue) {
-                const actualGrowth = calculateFieldGrowth(currentValue, answers.avgNetFee)
-                return getFieldVarianceMessage('fee', actualGrowth, answers.expectedGrowthPct)
-              }
-              
-              return `📋 Projected fee with ${answers.expectedGrowthPct > 0 ? '+' : ''}${answers.expectedGrowthPct}% growth`
-            })()}
+            Configured in Step 1
           </div>
         </div>
 
-        {/* Tax Prep Returns */}
+        {/* Tax Prep Returns (locked - configured in Step 1) */}
         <div style={{ 
           marginBottom: '0.75rem',
           display: 'grid',
@@ -809,81 +684,27 @@ useEffect(() => {
             <span style={{ fontWeight: 500, color: '#6b7280' }}>#</span>
             <input
               type="number"
-              min={100}
-              max={10000}
-                step={1}
-                value={
-                  // Priority order: manual projected value > calculated projection > direct input
-                  answers.projectedTaxPrepReturns !== undefined ? answers.projectedTaxPrepReturns :
-                  answers.storeType === 'existing' && answers.expectedGrowthPct !== undefined && answers.taxPrepReturns
-                    ? Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100))
-                    : (answers.taxPrepReturns || '')
-                }
-                onChange={e => {
-                  const newValue = +e.target.value || undefined
-                  
-                  // Independent field tracking: calculate individual growth without affecting global projection
-                  if (answers.storeType === 'existing' && newValue && answers.taxPrepReturns) {
-                    const originalTaxPrepReturns = answers.taxPrepReturns
-                      
-                    if (originalTaxPrepReturns && originalTaxPrepReturns > 0) {
-                      // Calculate individual growth for this field only
-                      const individualGrowthPct = calculateFieldGrowth(newValue, originalTaxPrepReturns)
-                      console.log('🔄 INDEPENDENT TRACKING - Tax Prep Returns manually adjusted:', {
-                        newValue,
-                        originalTaxPrepReturns, 
-                        individualGrowthPct,
-                        globalProjection: answers.expectedGrowthPct
-                      })
-                      
-                      // Store the manual projected value (don't update global growth percentage)
-                      updateAnswers({ 
-                        projectedTaxPrepReturns: newValue
-                      })
-                      return
-                    }
-                  }
-                  
-                  // Standard update for new stores
-                  updateAnswers({ taxPrepReturns: newValue })
-                }}
-                placeholder="e.g., 1,600"
-              required
-                style={{
-                  width: '140px', 
-                  textAlign: 'right', 
-                  border: '1px solid #d1d5db', 
-                  borderRadius: '4px', 
-                  padding: '0.5rem',
-                  ...(answers.storeType === 'existing' ? { backgroundColor: '#f0f9ff', borderColor: '#0ea5e9' } : {})
-                }}
-              />
+              value={answers.projectedTaxPrepReturns ?? ''}
+              placeholder={answers.taxPrepReturns !== undefined ? String(answers.taxPrepReturns) : ''}
+              disabled
+              title="Configured in Step 1"
+              style={{
+                width: '140px', 
+                textAlign: 'right', 
+                border: '1px solid #d1d5db', 
+                borderRadius: '4px', 
+                padding: '0.5rem',
+                backgroundColor: '#f3f4f6',
+                color: '#6b7280'
+              }}
+            />
           </div>
           <div className="small" style={{ 
             opacity: 0.7,
             gridColumn: '2',
             gridRow: '2'
           }}>
-            {(() => {
-              if (answers.storeType !== 'existing') {
-                return 'Expected number of tax returns for the season'
-              }
-              
-              if (answers.expectedGrowthPct === undefined) {
-                return '📋 Carried forward from page 1 (you can adjust)'
-              }
-              
-              // Calculate current field growth vs original
-              const currentValue = answers.projectedTaxPrepReturns !== undefined ? answers.projectedTaxPrepReturns :
-                answers.taxPrepReturns ? Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)) : 0
-              
-              if (answers.taxPrepReturns && currentValue) {
-                const actualGrowth = calculateFieldGrowth(currentValue, answers.taxPrepReturns)
-                return getFieldVarianceMessage('returns', actualGrowth, answers.expectedGrowthPct)
-              }
-              
-              return `📋 Projected returns with ${answers.expectedGrowthPct > 0 ? '+' : ''}${answers.expectedGrowthPct}% growth`
-            })()}
+            Configured in Step 1
           </div>
         </div>
 
@@ -1079,7 +900,7 @@ useEffect(() => {
           </div>
         )}
 
-        {/* Customer Discounts */}
+        {/* Customer Discounts (locked - configured in Step 1) */}
         <div style={{ 
           marginBottom: '0.75rem',
           display: 'grid',
@@ -1106,45 +927,56 @@ useEffect(() => {
           }}>
             <input
               type="number"
-              min={0}
-              max={20}
-              step={0.1}
               value={answers.discountsPct ?? 3}
-              onChange={e => updateAnswers({ discountsPct: +e.target.value })}
-              placeholder="3"
-                style={{
-                  width: '140px', 
-                  textAlign: 'right', 
-                  border: '1px solid #d1d5db', 
-                  borderRadius: '4px', 
-                  padding: '0.5rem'
-                }}
-              />
-              <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
+              placeholder={String(answers.discountsPct ?? 3)}
+              disabled
+              title="Configured in Step 1"
+              style={{
+                width: '140px', 
+                textAlign: 'right', 
+                border: '1px solid #d1d5db', 
+                borderRadius: '4px', 
+                padding: '0.5rem',
+                backgroundColor: '#f3f4f6',
+                color: '#6b7280'
+              }}
+            />
+            <span style={{ fontWeight: 500, color: '#6b7280' }}>%</span>
           </div>
           <div className="small" style={{ 
             opacity: 0.7,
             gridColumn: '2',
             gridRow: '2'
           }}>
-            <strong>Should not exceed 3%</strong> of gross tax prep fees - reduces your net revenue
+            Configured in Step 1
           </div>
         </div>
 
 
 
-        {/* Revenue Breakdown with Stoplight Colors */}
-        {(answers.avgNetFee && answers.taxPrepReturns) && (() => {
-          // Use the same projected logic as the input fields display
-          const currentAvgNetFee = answers.projectedAvgNetFee !== undefined ? answers.projectedAvgNetFee :
-            answers.storeType === 'existing' && answers.expectedGrowthPct !== undefined && answers.avgNetFee
-              ? Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100))
-              : answers.avgNetFee
-          
-          const currentTaxPrepReturns = answers.projectedTaxPrepReturns !== undefined ? answers.projectedTaxPrepReturns :
-            answers.storeType === 'existing' && answers.expectedGrowthPct !== undefined && answers.taxPrepReturns
-              ? Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100))
-              : answers.taxPrepReturns
+        {/* Projected Gross Revenue Breakdown */}
+        {(() => {
+          // Derive projected values even if props not updated (tests/mock)
+          const derivedAvg = (() => {
+            if (answers.projectedAvgNetFee !== undefined) return answers.projectedAvgNetFee
+            if (answers.storeType === 'existing' && answers.expectedGrowthPct !== undefined && answers.avgNetFee !== undefined) {
+              return Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100))
+            }
+            return answers.avgNetFee || 0
+          })()
+
+          const derivedReturns = (() => {
+            if (answers.projectedTaxPrepReturns !== undefined) return answers.projectedTaxPrepReturns
+            if (answers.storeType === 'existing' && answers.expectedGrowthPct !== undefined && answers.taxPrepReturns !== undefined) {
+              return Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100))
+            }
+            return answers.taxPrepReturns || 0
+          })()
+
+          if (!derivedAvg || !derivedReturns) return null
+
+          const currentAvgNetFee = derivedAvg
+          const currentTaxPrepReturns = derivedReturns
           
           const currentTaxRushReturns = answers.region === 'CA' && answers.handlesTaxRush && answers.taxRushReturns 
             ? (answers.storeType === 'existing' && answers.expectedGrowthPct !== undefined 
@@ -1155,8 +987,9 @@ useEffect(() => {
           // Fix double counting: Subtract TaxRush returns from Tax Prep returns since they have different fees
           const adjustedTaxPrepReturns = currentTaxRushReturns > 0 ? (currentTaxPrepReturns || 0) - currentTaxRushReturns : (currentTaxPrepReturns || 0)
           
-          const grossTaxPrepFees = (currentAvgNetFee || 0) * adjustedTaxPrepReturns
-          const discountAmount = grossTaxPrepFees * (answers.discountsPct || 3) / 100
+          const grossTaxPrepFees = currentAvgNetFee * adjustedTaxPrepReturns
+          const discountPct = answers.discountsPct ?? 3
+          const discountAmount = grossTaxPrepFees * discountPct / 100
           const taxPrepIncome = grossTaxPrepFees - discountAmount
           
           // TaxRush income calculation - NOW ENABLED with proper fee handling
@@ -1164,7 +997,7 @@ useEffect(() => {
           const grossTaxRushFees = answers.region === 'CA' && answers.handlesTaxRush && currentTaxRushReturns > 0
             ? currentTaxRushAvgNetFee * currentTaxRushReturns
             : 0
-          const taxRushDiscountAmount = grossTaxRushFees * (answers.discountsPct || 3) / 100
+          const taxRushDiscountAmount = grossTaxRushFees * discountPct / 100
           const taxRushIncome = grossTaxRushFees - taxRushDiscountAmount
           
           const totalRevenue = taxPrepIncome + taxRushIncome + (answers.otherIncome || 0)
@@ -1196,8 +1029,7 @@ useEffect(() => {
           
           // Calculate performance vs strategic targets for stoplight colors  
           const strategicTarget = answers.expectedRevenue || 0
-          const hasRevenueMismatch = strategicTarget > 0 && Math.abs(totalRevenue - strategicTarget) > 1000
-          const revenueVariance = !hasRevenueMismatch && strategicTarget > 0 ? ((totalRevenue - strategicTarget) / strategicTarget) * 100 : 0
+          const revenueVariance = strategicTarget > 0 ? ((totalRevenue - strategicTarget) / strategicTarget) * 100 : 0
           
           // Determine stoplight color with consistent thresholds
           let borderColor, backgroundColor, statusColor, statusIcon, statusText
@@ -1240,13 +1072,13 @@ useEffect(() => {
                 </span>
               </div>
               
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '0.5rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: answers.region === 'CA' && answers.handlesTaxRush ? '1fr 1fr' : '1fr', gap: '1rem', marginBottom: '0.5rem' }}>
                 {/* Tax Prep Revenue Breakdown */}
                 <div>
                   <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: statusColor, marginBottom: '0.25rem' }}>Tax Prep Revenue:</div>
                   <div style={{ color: statusColor, fontSize: '0.8rem' }}>Gross Tax Prep Fees: <strong>${grossTaxPrepFees.toLocaleString()}</strong></div>
                   <div style={{ color: statusColor, fontSize: '0.8rem' }}>Returns: {adjustedTaxPrepReturns.toLocaleString()} @ ${(currentAvgNetFee || 0).toLocaleString()}</div>
-                  <div style={{ color: '#dc2626', fontSize: '0.8rem' }}>Less Discounts ({answers.discountsPct || 3}%): <strong>-${Math.round(discountAmount).toLocaleString()}</strong></div>
+                  <div style={{ color: '#dc2626', fontSize: '0.8rem' }}>Less Discounts ({discountPct}%): <strong>-${Math.round(discountAmount).toLocaleString()}</strong></div>
                   <div style={{ fontWeight: 'bold', color: '#059669', fontSize: '0.85rem' }}>Net Tax Prep Income: <strong>${Math.round(taxPrepIncome).toLocaleString()}</strong></div>
                 </div>
                 
@@ -1256,7 +1088,7 @@ useEffect(() => {
                     <div style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#0369a1', marginBottom: '0.25rem' }}>TaxRush Revenue:</div>
                     <div style={{ color: '#0369a1', fontSize: '0.8rem' }}>Gross TaxRush Fees: <strong>${grossTaxRushFees.toLocaleString()}</strong></div>
                     <div style={{ color: '#0369a1', fontSize: '0.8rem' }}>Returns: {currentTaxRushReturns.toLocaleString()} @ ${currentTaxRushAvgNetFee.toLocaleString()}</div>
-                    <div style={{ color: '#dc2626', fontSize: '0.8rem' }}>Less Discounts ({answers.discountsPct || 3}%): <strong>-${Math.round(taxRushDiscountAmount).toLocaleString()}</strong></div>
+                    <div style={{ color: '#dc2626', fontSize: '0.8rem' }}>Less Discounts ({discountPct}%): <strong>-${Math.round(taxRushDiscountAmount).toLocaleString()}</strong></div>
                     <div style={{ fontWeight: 'bold', color: '#059669', fontSize: '0.85rem' }}>Net TaxRush Income: <strong>${Math.round(taxRushIncome).toLocaleString()}</strong></div>
                   </div>
                 )}
@@ -1273,7 +1105,7 @@ useEffect(() => {
                 color: statusColor
               }}>
                 Total Gross Revenue: <strong>${Math.round(totalRevenue).toLocaleString()}</strong>
-                {strategicTarget > 0 && !hasRevenueMismatch && Math.abs(revenueVariance) >= 1 && (
+                {strategicTarget > 0 && (
                   <span style={{ fontSize: '0.85rem', marginLeft: '0.5rem' }}>
                     ({revenueVariance > 0 ? '+' : ''}{Math.round(revenueVariance)}% vs target)
                   </span>

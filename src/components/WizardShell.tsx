@@ -26,6 +26,7 @@ interface WizardShellProps {
 
 export default function WizardShell({ region, setRegion, onComplete, onCancel, persistence }: WizardShellProps) {
   const [currentStep, setCurrentStep] = useState<WizardStep>('welcome')
+  const [visitedSteps, setVisitedSteps] = useState<Record<WizardStep, boolean>>({ welcome: true, inputs: false, review: false })
   
   // Initialize answers from saved data if available, otherwise start fresh
   const [answers, setAnswers] = useState<WizardAnswers>(() => {
@@ -80,9 +81,11 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
   const handleNext = () => {
     switch (currentStep) {
       case 'welcome':
+        setVisitedSteps(prev => ({ ...prev, inputs: true }))
         setCurrentStep('inputs')
         break
       case 'inputs':
+        setVisitedSteps(prev => ({ ...prev, review: true }))
         setCurrentStep('review')
         break
       case 'review':
@@ -101,6 +104,41 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
         break
     }
   }
+
+  const stepNav = (
+    <div style={{ display: 'flex', gap: '8px', padding: '0.5rem 0', marginBottom: '0.5rem' }}>
+      {([
+        { id: 'welcome', label: 'Step 1 · Welcome' },
+        { id: 'inputs', label: 'Step 2 · Inputs' },
+        { id: 'review', label: 'Step 3 · Review' },
+      ] as { id: WizardStep, label: string }[]).map(step => {
+        const isActive = currentStep === step.id
+        const isEnabled = visitedSteps[step.id] || step.id === 'welcome'
+        return (
+          <button
+            key={step.id}
+            type="button"
+            onClick={() => isEnabled && setCurrentStep(step.id)}
+            disabled={!isEnabled}
+            style={{
+              padding: '6px 10px',
+              borderRadius: '9999px',
+              border: '1px solid #d1d5db',
+              backgroundColor: isActive ? '#dbeafe' : isEnabled ? '#ffffff' : '#f3f4f6',
+              color: isActive ? '#1e40af' : '#374151',
+              fontWeight: isActive ? 700 : 500,
+              cursor: isEnabled ? 'pointer' : 'not-allowed'
+            }}
+            aria-current={isActive ? 'step' : undefined}
+            aria-disabled={!isEnabled}
+            title={isEnabled ? step.label : 'Complete previous steps first'}
+          >
+            {step.label}
+          </button>
+        )
+      })}
+    </div>
+  )
 
   const canProceed = () => {
     const hasProjectedBasics = (answers.avgNetFee ?? 0) > 0 && (answers.taxPrepReturns ?? 0) > 0
@@ -165,34 +203,47 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
   }, [answers.avgNetFee, answers.taxPrepReturns, answers.expectedGrowthPct, answers.lastYearDiscountsPct, answers.lastYearOtherIncome, answers.lastYearTaxRushReturns, answers.region, answers.storeType, answers.discountsPct, answers.otherIncome, answers.taxRushReturns])
 
   if (currentStep === 'inputs') {
-    return <WizardInputs 
-      answers={answers} 
-      updateAnswers={updateAnswers} 
-      onNext={handleNext} 
-      onBack={handleBack} 
-      canProceed={canProceed()} 
-    />
+    return (
+      <div style={{ paddingLeft: '1rem' }}>
+        {stepNav}
+        <WizardInputs 
+          answers={answers} 
+          updateAnswers={updateAnswers} 
+          onNext={handleNext} 
+          onBack={handleBack} 
+          canProceed={canProceed()} 
+        />
+      </div>
+    )
   }
 
   if (currentStep === 'review') {
-    return <WizardReview 
-      answers={answers} 
-      onNext={() => onComplete(answers)} 
-      onBack={handleBack} 
-    />
+    return (
+      <div style={{ paddingLeft: '1rem' }}>
+        {stepNav}
+        <WizardReview 
+          answers={answers} 
+          onNext={() => onComplete(answers)} 
+          onBack={handleBack} 
+        />
+      </div>
+    )
   }
 
   return (
-    <WelcomeStep 
-      region={region} 
-      setRegion={setRegion}
-      answers={answers}
-      updateAnswers={updateAnswers}
-      onNext={handleNext}
-      onCancel={onCancel}
-      onResetData={handleResetWizardData}
-      canProceed={canProceed}
-    />
+    <div style={{ paddingLeft: '1rem' }}>
+      {stepNav}
+      <WelcomeStep 
+        region={region} 
+        setRegion={setRegion}
+        answers={answers}
+        updateAnswers={updateAnswers}
+        onNext={handleNext}
+        onCancel={onCancel}
+        onResetData={handleResetWizardData}
+        canProceed={canProceed}
+      />
+    </div>
   )
 }
 
@@ -246,10 +297,11 @@ function WelcomeStep({
         helpText="Affects tax calculations and available features"
         required
       >
+        <label htmlFor="region-select" style={{ fontWeight: 500, display: 'none' }}>Region</label>
         <select 
           id="region-select"
           title="Select region"
-          aria-label="Select region"
+          aria-label="Region"
           value={region} 
           onChange={e => {
             const newRegion = e.target.value as Region
@@ -275,6 +327,7 @@ function WelcomeStep({
         helpText="New stores use regional stats, existing stores use your historical data"
         required
       >
+        <label htmlFor="store-type-select" style={{ fontWeight: 500, display: 'none' }}>Store Type</label>
         <select 
           id="store-type-select"
           title="Select your store type"
@@ -353,6 +406,7 @@ function WelcomeStep({
           <button 
             onClick={onResetData} 
             title="Reset all wizard data and start fresh (stays in wizard)"
+            aria-label="Clear wizard data"
             style={{
               background: 'linear-gradient(45deg, #dc2626, #ef4444)', 
               color: 'white', 
