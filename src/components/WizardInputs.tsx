@@ -28,6 +28,48 @@ export default function WizardInputs({
   onBack, 
   canProceed 
 }: WizardInputsProps) {
+  // Auto-initialize income drivers from Page 1 projections (on mount)
+useEffect(() => {
+  if (answers.storeType === 'existing') {
+    if (
+      answers.expectedGrowthPct !== undefined &&
+      answers.avgNetFee &&
+      answers.taxPrepReturns &&
+      (answers.projectedAvgNetFee === undefined || answers.projectedTaxPrepReturns === undefined)
+    ) {
+      updateAnswers({
+        projectedAvgNetFee:
+          answers.projectedAvgNetFee ??
+          Math.round(answers.avgNetFee * (1 + answers.expectedGrowthPct / 100)),
+        projectedTaxPrepReturns:
+          answers.projectedTaxPrepReturns ??
+          Math.round(answers.taxPrepReturns * (1 + answers.expectedGrowthPct / 100)),
+      })
+    }
+  }
+
+  if (answers.storeType === 'new') {
+    if (
+      answers.avgNetFee &&
+      answers.taxPrepReturns &&
+      (answers.projectedAvgNetFee === undefined || answers.projectedTaxPrepReturns === undefined)
+    ) {
+      updateAnswers({
+        projectedAvgNetFee: answers.projectedAvgNetFee ?? answers.avgNetFee,
+        projectedTaxPrepReturns: answers.projectedTaxPrepReturns ?? answers.taxPrepReturns,
+      })
+    }
+  }
+}, [
+  answers.storeType,
+  answers.avgNetFee,
+  answers.taxPrepReturns,
+  answers.expectedGrowthPct,
+  answers.projectedAvgNetFee,
+  answers.projectedTaxPrepReturns,
+  updateAnswers,
+])
+
 
   // Validation tracking state (addresses critical QA issue: input validation)
   const [validationErrors, setValidationErrors] = useState<Record<string, boolean>>({})
@@ -1699,4 +1741,5 @@ function getCategoryIcon(category: ExpenseCategory): string {
     case 'misc': return '📝'
     default: return '📊'
   }
+
 }
