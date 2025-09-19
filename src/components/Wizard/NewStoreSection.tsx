@@ -5,15 +5,15 @@ import type { WizardSectionProps } from './types'
 import FormSection from './FormSection'
 import FormField, { CurrencyInput, NumberInput } from './FormField'
 import ToggleQuestion from './ToggleQuestion'
+import NetIncomeSummary from './NetIncomeSummary'
 
 export default function NewStoreSection({ answers, updateAnswers, region }: WizardSectionProps) {
   // ---- Effective (live) values ----
   // Gross Fees: manual override if provided, else Returns × Avg Net Fee
   const effectiveGrossFees =
-    answers.grossFees ??
-    (answers.taxPrepReturns && answers.avgNetFee
+    answers.taxPrepReturns && answers.avgNetFee
       ? answers.taxPrepReturns * answers.avgNetFee
-      : undefined)
+      : undefined
 
   // Customer discounts use gross fees as the denominator for % math
   const effectiveDiscountsAmt = answers.discountsAmt ?? 0
@@ -107,13 +107,13 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
           />
         </FormField>
 
-        {/* 3. Gross Tax Prep Fees (auto, but override allowed) */}
-        <FormField label="Gross Tax Prep Fees" helpText="Auto: Returns × Avg Net Fee (you can override)">
+        {/* 3. Gross Tax Prep Fees (auto; computed locally) */}
+        <FormField label="Gross Tax Prep Fees" helpText="Auto: Returns × Avg Net Fee">
           <CurrencyInput
-            value={answers.grossFees ?? effectiveGrossFees}
+            value={effectiveGrossFees}
             placeholder="Auto-calculated"
-            onChange={(value) => updateAnswers({ grossFees: value })}
-            backgroundColor={answers.grossFees !== undefined ? 'white' : '#f9fafb'}
+            onChange={() => { /* read-only auto value; no state write */ }}
+            backgroundColor={'#f9fafb'}
           />
         </FormField>
 
@@ -147,12 +147,14 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
 
             <FormField label="TaxRush Gross Fees" helpText="Auto: Returns × Avg Net Fee (override allowed)">
               <CurrencyInput
-                value={
-                  answers.taxRushGrossFees ??
-                  (answers.taxRushReturns && (answers.taxRushAvgNetFee ?? answers.avgNetFee)
-                    ? answers.taxRushReturns * (answers.taxRushAvgNetFee ?? answers.avgNetFee)
-                    : undefined)
-                }
+                value={(() => {
+                  const anf = answers.taxRushAvgNetFee ?? answers.avgNetFee
+                  if (answers.taxRushGrossFees !== undefined) return answers.taxRushGrossFees
+                  if (answers.taxRushReturns !== undefined && anf !== undefined) {
+                    return answers.taxRushReturns * anf
+                  }
+                  return undefined
+                })()}
                 placeholder="Auto-calculated"
                 onChange={(value) => updateAnswers({ taxRushGrossFees: value })}
                 backgroundColor={answers.taxRushGrossFees !== undefined ? 'white' : '#f9fafb'}
@@ -274,7 +276,7 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
      {/* Target Net Income Summary */}
 <NetIncomeSummary
   label="Target"
-  gross={answers.grossFees ?? 0}
+  gross={effectiveGrossFees ?? 0}
   discounts={answers.discountsAmt ?? 0}
   otherIncome={answers.hasOtherIncome ? answers.otherIncome ?? 0 : 0}
   expenses={answers.projectedExpenses ?? 0}

@@ -21,6 +21,7 @@ interface WizardReviewProps {
 }
 
 export default function WizardReview({ answers, onNext, onBack }: WizardReviewProps) {
+  if (!answers || !answers.region) return <div>Loading…</div>
   // ——— PRINT STYLES (CPA one-pager) ———
   React.useEffect(() => {
     const printStyles = document.createElement('style')
@@ -343,6 +344,7 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                     border: '1px solid #ddd',
                     textAlign: 'right',
                     fontWeight: 700,
+                    color: results.costPerReturn <= 85 ? '#059669' : results.costPerReturn <= 100 ? '#f59e0b' : '#dc2626',
                   }}
                 >
                   ${Math.round(results.costPerReturn).toLocaleString()}
@@ -358,6 +360,7 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                     border: '1px solid #ddd',
                     textAlign: 'right',
                     fontWeight: 700,
+                    color: (results.netIncome / Math.max(results.totalReturns, 1)) >= 0 ? '#059669' : '#dc2626',
                   }}
                 >
                   ${Math.round(profitPerReturn).toLocaleString()}

@@ -1,5 +1,5 @@
 // src/components/BrandWatermark.tsx
-import React from 'react'
+import React, { useState } from 'react'
 import { useBrandAssets, useBranding } from '../hooks/useBranding'
 import type { Region } from '../lib/calcs'
 
@@ -9,8 +9,9 @@ interface BrandWatermarkProps {
 
 export default function BrandWatermark({ region }: BrandWatermarkProps) {
   const assets = useBrandAssets(region)
+  const [imgError, setImgError] = useState(false)
 
-  if (!assets) return null
+  if (!assets || imgError || !assets.watermarkUrl) return <TextWatermark region={region} />
 
   return (
     <div
@@ -38,9 +39,9 @@ export default function BrandWatermark({ region }: BrandWatermarkProps) {
           objectFit: 'contain',
           filter: 'grayscale(20%)',
         }}
-        onError={(e) => {
+        onError={() => {
           console.warn(`Failed to load watermark for ${region} region`)
-          e.currentTarget.style.display = 'none'
+          setImgError(true)
         }}
       />
     </div>
@@ -65,10 +66,12 @@ export function TextWatermark({ region }: BrandWatermarkProps) {
         opacity: 0.03,
         userSelect: 'none',
         fontSize: '8rem',
-        fontWeight: 100,
-        color: 'var(--brand-primary)',
+        fontWeight: 800,
+        color: '#1e40af',
         letterSpacing: '0.2em',
         whiteSpace: 'nowrap',
+        fontFamily: '"Proxima Nova", Arial, sans-serif',
+        textTransform: 'uppercase',
       }}
     >
       {name.toUpperCase()}

@@ -7,6 +7,7 @@ import { GROWTH_OPTIONS } from './calculations'
 import FormSection from './FormSection'
 import FormField, { CurrencyInput, NumberInput } from './FormField'
 import ToggleQuestion from './ToggleQuestion'
+import NetIncomeSummary from './NetIncomeSummary'
 
 export default function ExistingStoreSection({ answers, updateAnswers, region }: WizardSectionProps) {
   // ===== Derived values (auto unless overridden) =====
@@ -42,6 +43,14 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
   }, [projReturns, projAnf])
 
   const projGross = answers.projectedGrossFees ?? projGrossAuto
+
+  const lyTaxRushAnf = answers.lastYearTaxRushAvgNetFee ?? answers.manualAvgNetFee
+  const lyTaxRushGrossAuto = useMemo(() => {
+    if (answers.lastYearTaxRushReturns !== undefined && lyTaxRushAnf !== undefined) {
+      return answers.lastYearTaxRushReturns * lyTaxRushAnf
+    }
+    return undefined
+  }, [answers.lastYearTaxRushReturns, lyTaxRushAnf])
 
   // ===== Small UX nicety from production: default growth to 0 once projected fields exist =====
   useEffect(() => {
@@ -148,14 +157,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
 
             <FormField label="TaxRush Gross Fees" helpText="Auto: Returns × Avg Net Fee (override allowed)">
               <CurrencyInput
-                value={
-                  answers.lastYearTaxRushGrossFees ??
-                  (answers.lastYearTaxRushReturns &&
-                  (answers.lastYearTaxRushAvgNetFee ?? answers.manualAvgNetFee)
-                    ? answers.lastYearTaxRushReturns *
-                      (answers.lastYearTaxRushAvgNetFee ?? answers.manualAvgNetFee)
-                    : undefined)
-                }
+                value={answers.lastYearTaxRushGrossFees ?? lyTaxRushGrossAuto}
                 placeholder="Auto-calculated"
                 onChange={(value) => updateAnswers({ lastYearTaxRushGrossFees: value })}
                 backgroundColor="#f9fafb"
