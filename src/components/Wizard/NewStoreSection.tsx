@@ -223,7 +223,7 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
                 style={{
                   width: '80px',
                   textAlign: 'right',
-                  border: '1px solid '#d1d5db'",
+                  border: '1px solid #d1d5db'",
                   borderRadius: '4px',
                   padding: '0.5rem',
                 }}
