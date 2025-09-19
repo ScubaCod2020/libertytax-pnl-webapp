@@ -74,3 +74,4 @@ export interface SuggestionProfile {
 
 // Re-export wizard types for convenience
 export type { WizardAnswers, WizardStep, WizardSectionProps } from '../components/Wizard/types'
+export type { Region } from '../lib/calcs'
