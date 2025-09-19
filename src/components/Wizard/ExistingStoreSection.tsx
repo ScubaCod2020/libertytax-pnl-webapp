@@ -279,13 +279,13 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
         {(lyGross !== undefined || answers.lastYearExpenses !== undefined) && (
           <div
             style={{
-              padding: '0.5rem',
-              backgroundColor: '#e0f2fe',
-              borderRadius: '4px',
-              fontWeight: 600,
-              fontSize: '0.9rem',
-              color: '#0369a1',
-              marginTop: '1rem',
+              padding: '1rem', 
+            backgroundColor: '#f0fdf4', 
+            border: '2px solid #16a34a', 
+            borderRadius: '6px',
+            fontWeight: 700,
+            fontSize: '1.1rem',
+            color: '#15803d',
             }}
           >
             Last Year Net Income: $
@@ -534,13 +534,13 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
         {(projReturns && projAnf) && (
           <div
             style={{
-              padding: '0.5rem',
-              backgroundColor: '#e0f2fe',
-              borderRadius: '4px',
-              fontWeight: 600,
-              fontSize: '0.9rem',
-              color: '#0369a1',
-              marginTop: '1rem',
+              padding: '1rem', 
+            backgroundColor: '#f0fdf4', 
+            border: '2px solid #16a34a', 
+            borderRadius: '6px',
+            fontWeight: 700,
+            fontSize: '1.1rem',
+            color: '#15803d',
             }}
           >
             Projected Net Income: $
