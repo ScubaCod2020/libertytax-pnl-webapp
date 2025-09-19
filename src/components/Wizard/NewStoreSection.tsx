@@ -26,7 +26,7 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
   // Other Income (only if toggle is on)
   const effectiveOtherIncome = answers.hasOtherIncome ? (answers.otherIncome ?? 0) : 0
 
-  // Total Expenses: manual override if provided, else (Tax Prep Income + Other) × 76%
+  // Total Expenses: manual override if provided, else Tax Prep Income × 76%
   const effectiveTotalExpenses =
     answers.projectedExpenses ??
     (effectiveTaxPrepIncome !== undefined
