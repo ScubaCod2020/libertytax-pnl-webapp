@@ -1,7 +1,5 @@
-// BrandWatermark.tsx - Regional brand watermark component
-// Displays centered, scrolling watermark logo with proper transparency
-
-import React from 'react'
+// src/components/BrandWatermark.tsx
+import React, { useState } from 'react'
 import { useBrandAssets, useBranding } from '../hooks/useBranding'
 import type { Region } from '../lib/calcs'
 
@@ -11,19 +9,22 @@ interface BrandWatermarkProps {
 
 export default function BrandWatermark({ region }: BrandWatermarkProps) {
   const assets = useBrandAssets(region)
+  const [imgError, setImgError] = useState(false)
+
+  if (!assets || imgError || !assets.watermarkUrl) return <TextWatermark region={region} />
 
   return (
-    <div 
+    <div
       className="brand-watermark"
       style={{
         position: 'fixed',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        zIndex: 0, // Behind all content
-        pointerEvents: 'none', // Don't interfere with clicks
-        opacity: 0.05, // Very subtle transparency
-        userSelect: 'none' // Can't be selected
+        zIndex: 0,
+        pointerEvents: 'none',
+        opacity: 0.05,
+        userSelect: 'none',
       }}
     >
       <img
@@ -32,28 +33,28 @@ export default function BrandWatermark({ region }: BrandWatermarkProps) {
         style={{
           width: '800px',
           height: 'auto',
-          maxWidth: '70vw', // More responsive sizing - fills more space
-          maxHeight: '70vh', // Taller on desktop
-          minWidth: '320px', // Minimum size for mobile
+          maxWidth: '70vw',
+          maxHeight: '70vh',
+          minWidth: '320px',
           objectFit: 'contain',
-          filter: 'grayscale(20%)' // Slightly reduce saturation for watermark effect
+          filter: 'grayscale(20%)',
         }}
-        onError={(e) => {
-          // Fallback if watermark image fails to load
+        onError={() => {
           console.warn(`Failed to load watermark for ${region} region`)
-          e.currentTarget.style.display = 'none'
+          setImgError(true)
         }}
       />
     </div>
   )
 }
 
-// Optional: Alternative text-based watermark if images aren't available
+// Optional text fallback
 export function TextWatermark({ region }: BrandWatermarkProps) {
-  const { brand } = useBranding(region)
+  const branding = useBranding(region)
+  const name = branding?.brand?.name ?? (region === 'US' ? 'Liberty Tax' : 'Liberty Tax Canada')
 
   return (
-    <div 
+    <div
       className="brand-watermark-text"
       style={{
         position: 'fixed',
@@ -65,13 +66,15 @@ export function TextWatermark({ region }: BrandWatermarkProps) {
         opacity: 0.03,
         userSelect: 'none',
         fontSize: '8rem',
-        fontWeight: 100,
-        color: 'var(--brand-primary)',
+        fontWeight: 800,
+        color: '#1e40af',
         letterSpacing: '0.2em',
-        whiteSpace: 'nowrap'
+        whiteSpace: 'nowrap',
+        fontFamily: '"Proxima Nova", Arial, sans-serif',
+        textTransform: 'uppercase',
       }}
     >
-      {brand.name.toUpperCase()}
+      {name.toUpperCase()}
     </div>
   )
 }

@@ -60,6 +60,7 @@ interface CurrencyInputProps {
   disabled?: boolean
   readOnly?: boolean
   backgroundColor?: string
+  ariaLabel?: string
 }
 
 export function CurrencyInput({ 
@@ -69,7 +70,8 @@ export function CurrencyInput({
   width = '140px', 
   disabled = false,
   readOnly = false,
-  backgroundColor = 'white'
+  backgroundColor = 'white',
+  ariaLabel
 }: CurrencyInputProps) {
   const formatValue = (val: number | string | undefined): string => {
     if (val === undefined || val === '') return ''
@@ -92,6 +94,7 @@ export function CurrencyInput({
         placeholder={placeholder}
         value={formatValue(value)}
         onChange={e => onChange(parseValue(e.target.value))}
+        aria-label={ariaLabel}
         disabled={disabled}
         readOnly={readOnly}
         style={{ 
@@ -118,6 +121,7 @@ interface NumberInputProps {
   disabled?: boolean
   min?: number
   max?: number
+  ariaLabel?: string
 }
 
 export function NumberInput({ 
@@ -129,7 +133,8 @@ export function NumberInput({
   width = '140px', 
   disabled = false,
   min,
-  max
+  max,
+  ariaLabel
 }: NumberInputProps) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
@@ -139,6 +144,7 @@ export function NumberInput({
         placeholder={placeholder}
         value={value || ''}
         onChange={e => onChange(parseFloat(e.target.value) || undefined)}
+        aria-label={ariaLabel}
         disabled={disabled}
         min={min}
         max={max}

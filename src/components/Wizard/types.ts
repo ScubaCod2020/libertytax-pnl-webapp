@@ -49,6 +49,8 @@ export interface WizardAnswers {
   // Projected values (for bidirectional wizard flow)
   projectedAvgNetFee?: number // manually adjusted projected value
   projectedTaxPrepReturns?: number // manually adjusted projected value
+  projectedGrossFees?: number // derived or manually overridden projected gross fees
+  projectedTaxPrepIncome?: number // derived or manually overridden projected tax prep income
   
   // Manual override fields for auto-calculated values
   manualAvgNetFee?: number // override for calculated average net fee

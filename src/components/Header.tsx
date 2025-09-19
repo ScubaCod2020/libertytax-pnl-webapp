@@ -60,7 +60,7 @@ export default function Header({ region, setRegion, onReset, onShowWizard, onSho
           lineHeight: '1.2',
           textAlign: 'center'
         }}>
-          P&L Budget & Forecast
+          Liberty Tax • P&L Budget & Forecast
         </div>
         <span style={{
           fontSize: '0.75rem',
@@ -73,6 +73,7 @@ export default function Header({ region, setRegion, onReset, onShowWizard, onSho
         }}>
           v0.5 preview
         </span>
+        <span style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>Debug</span>
       </div>
 
       {/* Right Column: Action Buttons - Stacked for better 3-column distribution */}
@@ -110,6 +111,16 @@ export default function Header({ region, setRegion, onReset, onShowWizard, onSho
               {wizardCompleted ? '⚙️ Review Setup' : '🚀 Setup Wizard'}
             </button>
           )}
+          <select
+            aria-label="Region"
+            value={region}
+            onChange={(e) => setRegion(e.target.value as Region)}
+            style={{ padding: '4px 6px', border: '1px solid #d1d5db', borderRadius: 4 }}
+            title="Region"
+          >
+            <option value="US">US</option>
+            <option value="CA">CA</option>
+          </select>
 
           {/* Dashboard Button - Only show when NOT on dashboard */}
           {wizardCompleted && onShowDashboard && currentPage !== 'dashboard' && (
@@ -160,7 +171,7 @@ export default function Header({ region, setRegion, onReset, onShowWizard, onSho
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <button
             onClick={onReset}
-            aria-label="Reset entire application to defaults"
+            aria-label="Reset to defaults"
             title="Reset entire application - clears ALL data and starts fresh"
             style={{ 
               background: 'linear-gradient(45deg, #dc2626, #ef4444)', 
