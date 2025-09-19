@@ -271,25 +271,46 @@ export default function NewStoreSection({ answers, updateAnswers, region }: Wiza
         </FormField>
       </FormSection>
 
-      {/* Target Net Income Summary */}
-      {(summaryNetIncome !== undefined) && (
-        <div
-          style={{
-            padding: '0.5rem',
-            backgroundColor: '#e0f2fe',
-            borderRadius: '4px',
-            fontWeight: 600,
-            fontSize: '0.9rem',
-            color: '#0369a1',
-            marginBottom: '1rem',
-          }}
-        >
-          Target Net Income: ${summaryNetIncome.toLocaleString()}
+     {/* Target Net Income Summary */}
+{summaryNetIncome !== undefined && (
+  <div
+    style={{
+      padding: '0.5rem',
+      backgroundColor: '#e0f2fe',
+      borderRadius: '4px',
+      fontWeight: 600,
+      fontSize: '0.9rem',
+      color: '#0369a1',
+      marginBottom: '1rem',
+    }}
+  >
+    {(() => {
+      const gross = answers.grossFees ?? (answers.taxPrepReturns && answers.avgNetFee
+        ? answers.taxPrepReturns * answers.avgNetFee
+        : 0)
+
+      const discounts = answers.discountsAmt ?? 0
+      const netTaxPrep = gross - discounts
+      const other = answers.hasOtherIncome ? answers.otherIncome ?? 0 : 0
+      const totalRevenue = netTaxPrep + other
+      const expenses = answers.projectedExpenses ?? 0
+      const netIncome = totalRevenue - expenses
+
+      const pct =
+        totalRevenue > 0 ? Math.round((netIncome / totalRevenue) * 1000) / 10 : 0 // 1 decimal
+
+      return (
+        <>
+          Target Net Income: ${Math.round(netIncome).toLocaleString()}
           <div style={{ fontSize: '0.8rem', fontWeight: 'normal' }}>
-            Net Margin: 24% (industry standard)
+            Net Margin: {pct}% (calculated)
           </div>
-        </div>
-      )}
+        </>
+      )
+    })()}
+  </div>
+)}
+
     </>
   )
 }
