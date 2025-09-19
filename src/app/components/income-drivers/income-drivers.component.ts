@@ -1,11 +1,11 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl, FormsModule } from '@angular/forms';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 
 import { Region } from '../../models/wizard.models';
 import { ExpenseField, getFieldsForRegion } from '../../models/expense.models';
-import { formatCurrency, formatPercentage } from '../../utils/calculation.utils';
+import { formatCurrency, formatPercentage, amountFromPct, pctFromAmount } from '../../utils/calculation.utils';
 
 // Income driver field definitions following FIELDS pattern
 interface IncomeDriverField {
@@ -108,12 +108,29 @@ interface IncomeDriverData {
 @Component({
   selector: 'app-income-drivers',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   template: `
     <div class="income-drivers-container">
       <div class="section-header">
-        <h3>💰 Income Drivers</h3>
+        <h3>💰 {{ titleText }}</h3>
         <p class="section-description">Configure your income targets and revenue sources</p>
+      </div>
+
+      <!-- Presets and Scope Toggles -->
+      <div class="preset-controls">
+        <div class="scopes">
+          <label class="scope-toggle">
+            <input type="checkbox" [(ngModel)]="applyToReturns"> Apply to Returns
+          </label>
+          <label class="scope-toggle">
+            <input type="checkbox" [(ngModel)]="applyToAvgFee"> Apply to Avg Net Fee
+          </label>
+        </div>
+        <div class="presets">
+          <button type="button" (click)="applyPreset(2)">+2%</button>
+          <button type="button" (click)="applyPreset(5)">+5%</button>
+          <button type="button" (click)="applyPreset(10)">+10%</button>
+        </div>
       </div>
 
       <form [formGroup]="incomeForm" class="income-drivers-form">
@@ -428,6 +445,7 @@ interface IncomeDriverData {
   `]
 })
 export class IncomeDriversComponent implements OnInit, OnDestroy {
+  @Input() context: 'new' | 'existing' | 'generic' = 'generic';
   @Input() region: Region = 'US';
   @Input() initialData: Partial<IncomeDriverData> = {};
   @Input() handlesTaxRush: boolean = false;
@@ -438,6 +456,9 @@ export class IncomeDriversComponent implements OnInit, OnDestroy {
 
   incomeForm: FormGroup;
   visibleFields: IncomeDriverField[] = [];
+  applyToReturns = true;
+  applyToAvgFee = true;
+  selectedPreset: 'good' | 'better' | 'best' | null = null;
   
   // Calculated values for display (derived via calc.util pattern)
   currentCalculatedValues = {
@@ -517,7 +538,7 @@ export class IncomeDriversComponent implements OnInit, OnDestroy {
     
     // Core calculations following calc.util pattern
     const grossFees = (formValues.avgNetFee || 0) * (formValues.taxPrepReturns || 0);
-    const discounts = grossFees * ((formValues.discountsPct || 0) / 100);
+    const discounts = amountFromPct(formValues.discountsPct || 0, grossFees);
     const taxPrepIncome = grossFees - discounts;
     
     // TaxRush income (Canada only)
@@ -610,7 +631,7 @@ export class IncomeDriversComponent implements OnInit, OnDestroy {
 
   getDiscountDollarAmount(): number {
     const discountsPct = this.incomeForm.get('discountsPct')?.value || 0;
-    return this.currentCalculatedValues.grossFees * (discountsPct / 100);
+    return amountFromPct(discountsPct, this.currentCalculatedValues.grossFees);
   }
 
   onDiscountDollarChange(event: Event) {
@@ -618,9 +639,8 @@ export class IncomeDriversComponent implements OnInit, OnDestroy {
     const dollarAmount = parseFloat(target.value) || 0;
     
     if (this.currentCalculatedValues.grossFees > 0) {
-      const newPercentage = (dollarAmount / this.currentCalculatedValues.grossFees) * 100;
+      const newPercentage = pctFromAmount(dollarAmount, this.currentCalculatedValues.grossFees);
       const cappedPercentage = Math.max(0, Math.min(50, newPercentage));
-      
       this.incomeForm.get('discountsPct')?.setValue(cappedPercentage, { emitEvent: true });
     }
   }
@@ -628,4 +648,25 @@ export class IncomeDriversComponent implements OnInit, OnDestroy {
   // Expose utility functions to template
   formatCurrency = formatCurrency;
   formatPercentage = formatPercentage;
+
+  // Context-aware title
+  get titleText(): string {
+    if (this.context === 'new') return 'Target Performance';
+    if (this.context === 'existing') return 'Projected Performance';
+    return 'Income Drivers';
+  }
+
+  // Preset actions (+2, +5, +10)
+  applyPreset(deltaPct: number) {
+    const returns = this.incomeForm.get('taxPrepReturns')?.value || 0;
+    const avgFee = this.incomeForm.get('avgNetFee')?.value || 0;
+    const factor = 1 + (deltaPct / 100);
+
+    if (this.applyToReturns) {
+      this.incomeForm.get('taxPrepReturns')?.setValue(Math.round(returns * factor));
+    }
+    if (this.applyToAvgFee) {
+      this.incomeForm.get('avgNetFee')?.setValue(Math.round(avgFee * factor));
+    }
+  }
 }

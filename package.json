@@ -9,7 +9,8 @@
                     "test":  "ng test",
                     "preview":  "npx http-server dist/libertytax-pnl-angular/browser -p 4173 -s",
                     "parity:audit":  "node tools/parity-audit.mjs",
-                    "parity:inventory":  "node tools/parity-inventory.mjs"
+                "parity:inventory":  "node tools/parity-inventory.mjs",
+                "cursor:run": "pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass -File scripts/cursor-run.ps1"
                 },
     "prettier":  {
                      "printWidth":  100,
