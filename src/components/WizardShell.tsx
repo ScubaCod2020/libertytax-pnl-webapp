@@ -40,7 +40,8 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
     console.log('🧙‍♂️ Starting fresh wizard (no saved answers)')
     return { 
       region,
-      handlesTaxRush: false // Smart default: Most offices start without TaxRush
+      handlesTaxRush: false, // Smart default: Most offices start without TaxRush
+      hasOtherIncome: false // Default to No other income unless user opts in
     }
   })
   
@@ -70,7 +71,8 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
     console.log('🔄 Resetting wizard data - staying in wizard')
     setAnswers({ 
       region,
-      handlesTaxRush: false // Maintain smart default on reset
+      handlesTaxRush: false, // Maintain smart default on reset
+      hasOtherIncome: false // Reset to No other income by default
     })
     // Stay on current step - don't exit wizard
   }
@@ -101,12 +103,13 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
   }
 
   const canProceed = () => {
+    const hasProjectedBasics = (answers.avgNetFee ?? 0) > 0 && (answers.taxPrepReturns ?? 0) > 0
     if (answers.storeType === 'new') {
-      // New stores need target performance inputs
-      return !!(answers.avgNetFee && answers.taxPrepReturns)
+      return hasProjectedBasics
     }
-    // Existing stores need historical data and projections  
-    return !!(answers.avgNetFee && answers.taxPrepReturns && answers.expectedRevenue)
+    // Existing stores: allow proceed if either projected basics OR last-year basics are present
+    const hasLastYearBasics = (answers.lastYearTaxPrepReturns ?? 0) > 0 && (answers.manualAvgNetFee ?? 0) > 0
+    return hasProjectedBasics || hasLastYearBasics
   }
 
   // Calculate expected revenue when inputs change - Component-based calculation
