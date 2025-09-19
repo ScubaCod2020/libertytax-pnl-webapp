@@ -8,6 +8,7 @@ import { ExistingStoreSummary } from '../existing-store/existing-store-page.comp
 import { Region } from '../../models/wizard.models';
 import { formatCurrency, formatPercentage } from '../../utils/calculation.utils';
 import { KpiService } from '../../services/kpi.service';
+import { ConfigService } from '../../services/config.service';
 
 interface ReportData {
   // Company Info
@@ -747,7 +748,7 @@ export class ReportsPageComponent implements OnInit {
 
   reportData: ReportData = this.getEmptyReportData();
 
-  constructor(private kpiService: KpiService) {}
+  constructor(private kpiService: KpiService, private config: ConfigService) {}
 
   ngOnInit(): void {
     this.generateReportData();
@@ -853,6 +854,11 @@ export class ReportsPageComponent implements OnInit {
 
   getExpenseRatio(): number {
     return this.reportData.totalRevenue > 0 ? (this.reportData.totalExpenses / this.reportData.totalRevenue) * 100 : 0;
+  }
+
+  getExpenseTargetRange(): string {
+    const cfg = this.config.expensesPctConfig;
+    return `${(cfg.greenMin*100).toFixed(1)}% - ${(cfg.greenMax*100).toFixed(1)}%`;
   }
 
   // KPI Status Methods

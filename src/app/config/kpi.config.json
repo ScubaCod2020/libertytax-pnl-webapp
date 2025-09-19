@@ -1,0 +1,6 @@
+{
+  "expensesPct": { "greenMin": 0.745, "greenMax": 0.775, "yellowDelta": 0.03, "redDelta": 0.035 },
+  "netPct": { "mirrorFromExpenses": true }
+}
+
+
