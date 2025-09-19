@@ -32,6 +32,7 @@ export default function DebugToggle({ isOpen, onToggle, show, region }: DebugTog
   return (
     <button
       onClick={onToggle}
+      aria-label="Debug"
       style={{
         position: 'fixed',
         bottom: 12,

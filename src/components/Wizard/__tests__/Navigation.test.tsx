@@ -56,8 +56,8 @@ describe('Navigation & Flow', () => {
     await screen.findByText(/Income & Expense Inputs/i)
 
     // Tabs/links visible (step nav)
-    expect(screen.getByText(/Step 1/i)).toBeInTheDocument()
-    expect(screen.getByText(/Step 2/i)).toBeInTheDocument()
-    expect(screen.getByText(/Step 3/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Step 1/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Step 2/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Step 3/i })).toBeInTheDocument()
   })
 })

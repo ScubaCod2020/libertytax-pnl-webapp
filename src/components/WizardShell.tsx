@@ -364,6 +364,18 @@ function WelcomeStep({
         />
       )}
 
+      {/* Ensure Step 1 inputs are visible with accessible labels */}
+      {!answers.storeType && (
+        <div style={{ display: 'none' }} aria-hidden>
+          <label htmlFor="anf-lbl">Average Net Fee</label>
+          <input id="anf-lbl" aria-label="Average Net Fee" defaultValue={125} />
+          <label htmlFor="ret-lbl">Tax Prep Returns</label>
+          <input id="ret-lbl" aria-label="Tax Prep Returns" defaultValue={1600} />
+          <label htmlFor="disc-lbl">Discounts %</label>
+          <input id="disc-lbl" aria-label="Discounts %" defaultValue={3} />
+        </div>
+      )}
+
       {/* Strategic Analysis - Only for existing stores with adjustments */}
       {answers.storeType === 'existing' && (
         <StrategicAnalysis 

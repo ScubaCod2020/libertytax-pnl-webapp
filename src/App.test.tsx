@@ -51,12 +51,14 @@ describe('Liberty Tax P&L App', () => {
       render(<App />)
       
       // Income drivers
-      expect(screen.getByDisplayValue('125')).toBeInTheDocument() // Average Net Fee
-      expect(screen.getByDisplayValue('1600')).toBeInTheDocument() // Tax Prep Returns
+      const anfNumber = screen.getByLabelText(/Average Net Fee/)
+      const returnsNumber = screen.getByLabelText(/Tax Prep Returns/)
+      expect(anfNumber).toHaveValue(125)
+      expect(returnsNumber).toHaveValue(1600)
       
       // Expense percentages should be visible
-      expect(screen.getByDisplayValue('3')).toBeInTheDocument() // Discounts
-      expect(screen.getByDisplayValue('25')).toBeInTheDocument() // Salaries
+      expect(screen.getByLabelText(/Discounts %/)).toHaveValue(3)
+      expect(screen.getByLabelText(/Salaries %/)).toHaveValue(25)
     })
 
     it('renders KPI dashboard with calculated values', () => {
@@ -187,8 +189,8 @@ describe('Liberty Tax P&L App', () => {
       render(<App />)
       
       // Check that values were restored
-      expect(screen.getByDisplayValue('200')).toBeInTheDocument() // ANF
-      expect(screen.getByDisplayValue('2000')).toBeInTheDocument() // Returns
+      expect(screen.getByLabelText(/Average Net Fee/)).toHaveValue(200)
+      expect(screen.getByLabelText(/Tax Prep Returns/)).toHaveValue(2000)
       expect(screen.getByLabelText(/Region/)).toHaveValue('CA')
     })
 
@@ -272,7 +274,7 @@ describe('Liberty Tax P&L App', () => {
       
       // Should not crash and should render with defaults
       expect(() => render(<App />)).not.toThrow()
-      expect(screen.getByDisplayValue('125')).toBeInTheDocument() // Default ANF
+      expect(screen.getByLabelText(/Average Net Fee/)).toHaveValue(125) // Default ANF
     })
   })
 })

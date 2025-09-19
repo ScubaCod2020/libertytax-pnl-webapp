@@ -21,15 +21,17 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
   const lyGross = answers.lastYearGrossFees ?? lyGrossAuto
 
   const projReturnsAuto = useMemo(() => {
-    if (answers.lastYearTaxPrepReturns && answers.expectedGrowthPct !== undefined) {
-      return Math.round(answers.lastYearTaxPrepReturns * (1 + answers.expectedGrowthPct / 100))
+    if (answers.lastYearTaxPrepReturns) {
+      const growth = answers.expectedGrowthPct ?? 0
+      return Math.round(answers.lastYearTaxPrepReturns * (1 + growth / 100))
     }
     return undefined
   }, [answers.lastYearTaxPrepReturns, answers.expectedGrowthPct])
 
   const projAnfAuto = useMemo(() => {
-    if (answers.manualAvgNetFee && answers.expectedGrowthPct !== undefined) {
-      return Math.round(answers.manualAvgNetFee * (1 + answers.expectedGrowthPct / 100))
+    if (answers.manualAvgNetFee) {
+      const growth = answers.expectedGrowthPct ?? 0
+      return Math.round(answers.manualAvgNetFee * (1 + growth / 100))
     }
     return undefined
   }, [answers.manualAvgNetFee, answers.expectedGrowthPct])
@@ -213,6 +215,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                 max="20"
                 placeholder="3.0"
                 value={answers.lastYearDiscountsPct ?? ''}
+                aria-label="Discounts %"
                 onChange={(e) => {
                   const newPct = parseFloat(e.target.value) || undefined
                   updateAnswers({ lastYearDiscountsPct: newPct })
@@ -346,6 +349,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
             value={projReturns}
             placeholder="e.g., 1,680"
             prefix="#"
+            ariaLabel="Tax Prep Returns"
             onChange={(value) => updateAnswers({ taxPrepReturns: value })}
           />
         </FormField>
@@ -354,6 +358,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           <CurrencyInput
             value={projAnf}
             placeholder="e.g., 130"
+            ariaLabel="Average Net Fee"
             onChange={(value) => updateAnswers({ avgNetFee: value })}
           />
         </FormField>
@@ -456,6 +461,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                 max="20"
                 placeholder="3.0"
                 value={answers.discountsPct ?? ''}
+                aria-label="Discounts %"
                 onChange={(e) => {
                   const newPct = parseFloat(e.target.value) || undefined
                   updateAnswers({ discountsPct: newPct })
