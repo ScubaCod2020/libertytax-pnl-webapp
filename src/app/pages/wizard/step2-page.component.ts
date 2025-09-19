@@ -58,8 +58,8 @@ import { Region } from '../../models/wizard.models';
           <button 
             class="btn btn-primary"
             [disabled]="!isFormValid"
-            (click)="navigateToReview()">
-            Review & Confirm →
+            (click)="navigateToReports()">
+            Next → Reports
           </button>
         </div>
       </div>
@@ -289,10 +289,9 @@ export class Step2PageComponent implements OnInit, OnDestroy {
     this.router.navigate(['/wizard/step-1']);
   }
 
-  navigateToReview(): void {
+  navigateToReports(): void {
     if (this.isFormValid) {
-      // Navigate to dashboard or summary page
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/wizard/step-3/reports']);
     }
   }
 }

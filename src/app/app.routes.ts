@@ -28,6 +28,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/wizard/step2-page.component').then(m => m.Step2PageComponent),
     title: 'Setup Wizard - Step 2'
   },
+  {
+    path: 'wizard/step-3/reports',
+    loadComponent: () => import('./pages/wizard/step3/reports-page.component').then(m => m.ReportsWizardPageComponent),
+    title: 'Setup Wizard - Step 3 Reports'
+  },
   
   // Dashboard page
   {
