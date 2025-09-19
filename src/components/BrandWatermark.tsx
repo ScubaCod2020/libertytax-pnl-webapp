@@ -12,8 +12,13 @@ interface BrandWatermarkProps {
 export default function BrandWatermark({ region }: BrandWatermarkProps) {
   const assets = useBrandAssets(region)
 
+  if (!assets) {
+    // Fallback: just render nothing if brand assets aren’t ready
+    return null
+  }
+
   return (
-    <div 
+    <div
       className="brand-watermark"
       style={{
         position: 'fixed',
@@ -32,14 +37,13 @@ export default function BrandWatermark({ region }: BrandWatermarkProps) {
         style={{
           width: '800px',
           height: 'auto',
-          maxWidth: '70vw', // More responsive sizing - fills more space
-          maxHeight: '70vh', // Taller on desktop
-          minWidth: '320px', // Minimum size for mobile
+          maxWidth: '70vw',
+          maxHeight: '70vh',
+          minWidth: '320px',
           objectFit: 'contain',
-          filter: 'grayscale(20%)' // Slightly reduce saturation for watermark effect
+          filter: 'grayscale(20%)'
         }}
         onError={(e) => {
-          // Fallback if watermark image fails to load
           console.warn(`Failed to load watermark for ${region} region`)
           e.currentTarget.style.display = 'none'
         }}
@@ -52,8 +56,12 @@ export default function BrandWatermark({ region }: BrandWatermarkProps) {
 export function TextWatermark({ region }: BrandWatermarkProps) {
   const { brand } = useBranding(region)
 
+  if (!brand) {
+    return null
+  }
+
   return (
-    <div 
+    <div
       className="brand-watermark-text"
       style={{
         position: 'fixed',
