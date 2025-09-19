@@ -8,6 +8,7 @@ import { Subject, takeUntil, debounceTime, distinctUntilChanged, combineLatest }
 
 import { ExpenseField, expensesFor, ExpenseCategory } from '../../models/expense.models';
 import { amountFromPct, pctFromAmount, getCalculationBase, formatCurrency, formatPercentage } from '../../utils/calculation.utils';
+import { computeBaselineToTarget, anchoredResetMaintainTarget } from '../../utils/expense.math';
 
 // Interfaces for component communication
 export interface ExpenseRowData {
@@ -315,6 +316,7 @@ export class ExpensesComponent implements OnInit, OnDestroy, OnChanges {
   mainForm: FormGroup;
   expenseFields: ExpenseField[] = [];
   currentTotal = 0;
+  private baselineApplied = false;
 
   constructor(private fb: FormBuilder) {
     this.mainForm = this.fb.group({
@@ -325,6 +327,8 @@ export class ExpensesComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.initializeFields();
     this.setupFormSubscriptions();
+    // Apply baseline to ~76% on load using grossFees as revenue base
+    this.applyBaselineToTarget(0.76);
   }
 
   ngOnDestroy(): void {
@@ -429,6 +433,38 @@ export class ExpensesComponent implements OnInit, OnDestroy, OnChanges {
       const amount = control.get('amount')?.value || 0;
       return total + amount;
     }, 0);
+  }
+
+  private applyBaselineToTarget(targetPct: number): void {
+    if (this.baselineApplied) return;
+    const totalRevenue = this.bases.grossFees || 0;
+    const lines = this.expenseFields.map((f, idx) => ({
+      id: f.id,
+      amount: (this.formArray.at(idx) as FormGroup).get('amount')?.value || 0,
+      isFixed: f.calculationBase === 'fixed_amount'
+    }));
+    const updated = computeBaselineToTarget(totalRevenue, targetPct, lines);
+    updated.forEach((u, idx) => {
+      (this.formArray.at(idx) as FormGroup).get('amount')?.setValue(Math.round(u.amount), { emitEvent: false });
+    });
+    this.calculateTotals();
+    this.baselineApplied = true;
+  }
+
+  anchoredReset(anchorId: string, targetPct: number = 0.76): void {
+    const totalRevenue = this.bases.grossFees || 0;
+    const lines = this.expenseFields.map((f, idx) => ({
+      id: f.id,
+      amount: (this.formArray.at(idx) as FormGroup).get('amount')?.value || 0,
+      isFixed: f.calculationBase === 'fixed_amount'
+    }));
+    const updated = anchoredResetMaintainTarget(totalRevenue, targetPct, lines, anchorId);
+    updated.forEach((u, idx) => {
+      if (u.id !== anchorId) {
+        (this.formArray.at(idx) as FormGroup).get('amount')?.setValue(Math.round(u.amount), { emitEvent: false });
+      }
+    });
+    this.calculateTotals();
   }
 
   private updateKpiFlags(): void {
