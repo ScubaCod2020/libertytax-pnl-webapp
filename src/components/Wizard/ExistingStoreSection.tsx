@@ -275,44 +275,17 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-        {/* Last Year Net Income Summary */}
-{(lyGross !== undefined || answers.lastYearExpenses !== undefined) && (
-  <div
-    style={{
-      padding: '1rem',
-      backgroundColor: '#f0fdf4',
-      border: '2px solid #16a34a',
-      borderRadius: '6px',
-      fontWeight: 700,
-      fontSize: '1.1rem',
-      color: '#15803d',
-    }}
-  >
-    {(() => {
-      const gross = lyGross ?? 0
-      const discounts = answers.lastYearDiscountsAmt ?? 0
-      const netTaxPrep = gross - discounts
-      const other = answers.hasOtherIncome ? answers.lastYearOtherIncome ?? 0 : 0
-      const expenses = answers.lastYearExpenses ?? 0
-      const netRevenue = netTaxPrep + other - expenses
-      const totalRevenue = netTaxPrep + other
-
-      // Calculate % safely
-      const pct =
-        totalRevenue > 0 ? Math.round((netRevenue / totalRevenue) * 1000) / 10 : 0 // 1 decimal place
-
-      return (
-        <>
-          Last Year Net Income: ${Math.round(netRevenue).toLocaleString()}{' '}
-          <span style={{ fontWeight: 500, fontSize: '0.9rem', color: '#166534' }}>
-            ({pct}% margin)
-          </span>
-        </>
-      )
-    })()}
-  </div>
-)}
-
+      {/* Last Year Net Income Summary */}
+<NetIncomeSummary
+  label="Last Year"
+  gross={lyGross ?? 0}
+  discounts={answers.lastYearDiscountsAmt ?? 0}
+  otherIncome={answers.hasOtherIncome ? answers.lastYearOtherIncome ?? 0 : 0}
+  expenses={answers.lastYearExpenses ?? 0}
+  color="#15803d"
+  background="#f0fdf4"
+  border="2px solid #16a34a"
+/>
 
       </FormSection>
 
@@ -546,42 +519,17 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
         </FormField>
 
         {/* Projected Net Income Summary */}
-{(projReturns && projAnf) && (
-  <div
-    style={{
-      padding: '1rem',
-      backgroundColor: '#f0fdf4',
-      border: '2px solid #16a34a',
-      borderRadius: '6px',
-      fontWeight: 700,
-      fontSize: '1.1rem',
-      color: '#15803d',
-    }}
-  >
-    {(() => {
-      const gross = projGross ?? 0
-      const discounts = answers.discountsAmt ?? 0
-      const other = answers.hasOtherIncome ? answers.otherIncome ?? 0 : 0
-      const netTaxPrep = gross - discounts
-      const totalRevenue = netTaxPrep + other
-      const expenses = answers.projectedExpenses ?? 0
-      const netIncome = totalRevenue - expenses
+<NetIncomeSummary
+  label="Projected"
+  gross={projGross ?? 0}
+  discounts={answers.discountsAmt ?? 0}
+  otherIncome={answers.hasOtherIncome ? answers.otherIncome ?? 0 : 0}
+  expenses={answers.projectedExpenses ?? 0}
+  color="#15803d"
+  background="#f0fdf4"
+  border="2px solid #16a34a"
+/>
 
-      // % margin (Net Income ÷ Total Revenue)
-      const pct =
-        totalRevenue > 0 ? Math.round((netIncome / totalRevenue) * 1000) / 10 : 0 // one decimal place
-
-      return (
-        <>
-          Projected Net Income: ${Math.round(netIncome).toLocaleString()}{' '}
-          <span style={{ fontWeight: 500, fontSize: '0.9rem', color: '#166534' }}>
-            ({pct}% margin)
-          </span>
-        </>
-      )
-    })()}
-  </div>
-)}
 
       </FormSection>
     </>
