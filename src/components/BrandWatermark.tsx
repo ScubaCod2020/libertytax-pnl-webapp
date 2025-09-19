@@ -1,5 +1,6 @@
 // BrandWatermark.tsx - Regional brand watermark component
 // Displays centered, scrolling watermark logo with proper transparency
+// Falls back to text watermark if image assets are missing
 
 import React from 'react'
 import { useBrandAssets, useBranding } from '../hooks/useBranding'
@@ -11,56 +12,10 @@ interface BrandWatermarkProps {
 
 export default function BrandWatermark({ region }: BrandWatermarkProps) {
   const assets = useBrandAssets(region)
-
-  if (!assets) {
-    // Fallback: just render nothing if brand assets aren’t ready
-    return null
-  }
-
-  return (
-    <div
-      className="brand-watermark"
-      style={{
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        zIndex: 0, // Behind all content
-        pointerEvents: 'none', // Don't interfere with clicks
-        opacity: 0.05, // Very subtle transparency
-        userSelect: 'none' // Can't be selected
-      }}
-    >
-      <img
-        src={assets.watermarkUrl}
-        alt={`${region === 'US' ? 'Liberty Tax' : 'Liberty Tax Canada'} watermark`}
-        style={{
-          width: '800px',
-          height: 'auto',
-          maxWidth: '70vw',
-          maxHeight: '70vh',
-          minWidth: '320px',
-          objectFit: 'contain',
-          filter: 'grayscale(20%)'
-        }}
-        onError={(e) => {
-          console.warn(`Failed to load watermark for ${region} region`)
-          e.currentTarget.style.display = 'none'
-        }}
-      />
-    </div>
-  )
-}
-
-// Optional: Alternative text-based watermark if images aren't available
-export function TextWatermark({ region }: BrandWatermarkProps) {
   const { brand } = useBranding(region)
 
-  if (!brand) {
-    return null
-  }
-
-  return (
+  // Fallback text watermark (used if no assets or no image URL)
+  const renderTextWatermark = () => (
     <div
       className="brand-watermark-text"
       style={{
@@ -76,10 +31,53 @@ export function TextWatermark({ region }: BrandWatermarkProps) {
         fontWeight: 100,
         color: 'var(--brand-primary)',
         letterSpacing: '0.2em',
-        whiteSpace: 'nowrap'
+        whiteSpace: 'nowrap',
       }}
     >
-      {brand.name.toUpperCase()}
+      {(brand?.name ?? (region === 'US' ? 'Liberty Tax' : 'Liberty Tax Canada')).toUpperCase()}
+    </div>
+  )
+
+  if (!assets || !assets.watermarkUrl) {
+    return renderTextWatermark()
+  }
+
+  return (
+    <div
+      className="brand-watermark"
+      style={{
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: 0,
+        pointerEvents: 'none',
+        opacity: 0.05,
+        userSelect: 'none',
+      }}
+    >
+      <img
+        src={assets.watermarkUrl}
+        alt={`${region === 'US' ? 'Liberty Tax' : 'Liberty Tax Canada'} watermark`}
+        style={{
+          width: '800px',
+          height: 'auto',
+          maxWidth: '70vw',
+          maxHeight: '70vh',
+          minWidth: '320px',
+          objectFit: 'contain',
+          filter: 'grayscale(20%)',
+        }}
+        onError={(e) => {
+          console.warn(`Failed to load watermark for ${region} region, falling back to text`)
+          e.currentTarget.style.display = 'none'
+          // Replace image with text watermark if image fails
+          const container = e.currentTarget.parentElement
+          if (container) {
+            container.innerHTML = renderTextWatermark().props.children
+          }
+        }}
+      />
     </div>
   )
 }
