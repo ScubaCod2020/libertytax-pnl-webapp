@@ -100,6 +100,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
             value={answers.lastYearTaxPrepReturns}
             placeholder="e.g., 1,680"
             prefix="#"
+            ariaLabel="Tax Prep Returns"
             onChange={(value) => updateAnswers({ lastYearTaxPrepReturns: value })}
           />
         </FormField>
@@ -109,6 +110,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           <CurrencyInput
             value={answers.manualAvgNetFee}
             placeholder="e.g., 125"
+            ariaLabel="Average Net Fee"
             onChange={(value) => updateAnswers({ manualAvgNetFee: value })}
           />
         </FormField>
@@ -143,6 +145,7 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
                     : '240'
                 }
                 prefix="#"
+                ariaLabel="TaxRush Returns"
                 onChange={(value) => updateAnswers({ lastYearTaxRushReturns: value })}
               />
             </FormField>
