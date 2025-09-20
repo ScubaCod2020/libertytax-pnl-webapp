@@ -2,9 +2,9 @@ name: E2E Matrix
 
 on:
   push:
-    branches: [main, develop, 'feat/**', 'fix/**']
+    branches: [main, develop, Dev_09202025, 'feat/**', 'fix/**']
   pull_request:
-    branches: [main, develop]
+    branches: [main, develop, Dev_09202025]
 
 jobs:
   e2e:
