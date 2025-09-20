@@ -1,4 +1,34 @@
-# Liberty Tax P&L Budget & Forecast Tool — v0.5 (Code Package)
+# Liberty Tax P&L Budget & Forecast — Repository Overview
+Path: /
+
+Purpose: Top-level index for the codebase, docs, and workflows.
+
+## Maintenance & Auditing
+- Lessons Learned: [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md)
+- Components Inventory: [docs/COMPONENTS_TREE.md](docs/COMPONENTS_TREE.md)
+- Master Index: [MASTER_INDEX.md](MASTER_INDEX.md)
+- Components Graph (Mermaid): [docs/architecture/components-graph.md](docs/architecture/components-graph.md)
+
+## Getting Started for New Contributors
+- Project overview: [README.md](README.md)
+- Development guide: [DEVELOPMENT.md](DEVELOPMENT.md)
+- Setup Node/Tools: [NODEJS_SETUP_GUIDE.md](NODEJS_SETUP_GUIDE.md)
+- Testing strategy: [docs/AUTOMATED_TESTING_STRATEGY.md](docs/AUTOMATED_TESTING_STRATEGY.md)
+- CI/CD and approvals: [ops/README.md](ops/README.md), [.github/workflows/ci.yml](.github/workflows/ci.yml)
+- Architecture and scope: [ARCHITECTURE.md](ARCHITECTURE.md), [docs/SCOPE.md](docs/SCOPE.md)
+- Indexes and maps: [MASTER_INDEX.md](MASTER_INDEX.md), [docs/MAPPING.md](docs/MAPPING.md)
+
+## Dual-run React + Angular locally
+- React (Vite): http://localhost:3000
+- Angular (ng): http://localhost:4200
+
+Commands:
+- React only: `npm run dev:react`
+- Angular only: `npm run dev:angular`
+- Both: `npm run dev:dual`
+
+Notes:
+- **Repository blueprint ports take precedence** over app-level blueprints for local infra and shared tooling. If an app blueprint specifies a different `dev_port` (e.g., 3001), treat it as deprecated for local runs; use the repo blueprint ports above.
 
 This repository contains the **code and docs** to *generate* the v0.5 Excel workbook for the Liberty Tax P&L Budget & Forecast Tool.
 

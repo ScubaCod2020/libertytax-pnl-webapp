@@ -1,0 +1,10 @@
+angular:
+  - changed-files:
+      - any-glob-to-any-file: 'angular/**'
+react:
+  - changed-files:
+      - any-glob-to-any-file: 'src/**'
+ci-docs:
+  - changed-files:
+      - any-glob-to-any-file: '.github/**'
+      - any-glob-to-any-file: 'repo-blueprint.yml'
