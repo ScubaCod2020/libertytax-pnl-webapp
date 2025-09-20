@@ -1,0 +1,7 @@
+dist/
+coverage/
+playwright-report/
+playwright-report-mobile/
+node_modules/
+docs/architecture/components-graph.mmd
+docs/ui-snapshots/

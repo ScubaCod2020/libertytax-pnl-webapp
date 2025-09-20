@@ -1,0 +1,65 @@
+name: E2E Matrix
+
+on:
+  push:
+    branches: [main, develop, 'feat/**', 'fix/**']
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  e2e:
+    name: Playwright E2E (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: react
+            baseURL: http://localhost:3000
+          - target: angular
+            baseURL: http://localhost:4200
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install Angular dependencies (if present)
+        run: |
+          if [ -f "angular/package.json" ]; then
+            cd angular && npm ci
+          else
+            echo "No angular/package.json; skipping Angular deps"
+          fi
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+
+      - name: Start target server
+        run: |
+          if [ "${{ matrix.target }}" = "react" ]; then
+            npm run dev:react &
+            npx wait-on ${{ matrix.baseURL }}
+          else
+            cd angular && npx ng serve --port 4200 --configuration=development &
+            npx wait-on ${{ matrix.baseURL }}
+          fi
+
+      - name: Run Playwright tests
+        env:
+          PW_BASEURL: ${{ matrix.baseURL }}
+        run: npx playwright test
+
+      - name: Upload Playwright report (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.target }}
+          path: playwright-report/
