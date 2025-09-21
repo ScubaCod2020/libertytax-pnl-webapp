@@ -1,0 +1,46 @@
+<div class="container">
+<div class="page-header page-header--wide">
+  <div class="page-header__title h3 semibold">{{ title }}</div>
+  <div *ngIf="subtitle" class="text-sm" style="color:#6b7280; margin-top:2px">{{ subtitle }}</div>
+  <div class="page-header__controls">
+    <ng-container *ngIf="editable; else readonly">
+      <div class="card" style="padding:12px; display:grid; grid-template-columns: 1fr 1fr; gap:12px; width:100%">
+        <div>
+          <label class="text-xs" style="display:block; color:#6b7280; margin-bottom:4px">Region *</label>
+          <select [ngModel]="settings.region" (ngModelChange)="onRegionChange($event)" style="width:100%">
+            <option value="CA">Canada</option>
+            <option value="US">United States</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs" style="display:block; color:#6b7280; margin-bottom:4px">Store Type *</label>
+          <select [ngModel]="settings.storeType" (ngModelChange)="onStoreTypeChange($event)" style="width:100%">
+            <option value="existing">Existing Store</option>
+            <option value="new">New Store</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs" style="display:block; color:#6b7280; margin-bottom:4px">Tax Year</label>
+          <input type="number" [ngModel]="settings.taxYear" (ngModelChange)="onTaxYearChange($event)" style="width:100%" />
+        </div>
+        <div *ngIf="(appCfg.config$ | async)?.showTaxRush">
+          <div class="text-xs" style="color:#374151; margin-bottom:4px">TaxRush Returns</div>
+          <label class="text-xs"><input type="radio" name="taxrush" [checked]="settings.taxRush" (change)="onTaxRushChange(true)" /> Yes, we handle TaxRush returns</label>
+          <label class="text-xs" style="margin-left:12px"><input type="radio" name="taxrush" [checked]="!settings.taxRush" (change)="onTaxRushChange(false)" /> No, we don't handle TaxRush</label>
+        </div>
+        <div>
+          <div class="text-xs" style="color:#374151; margin-bottom:4px">Additional Revenue Streams</div>
+          <label class="text-xs"><input type="radio" name="otherincome" [checked]="settings.otherIncome" (change)="onOtherIncomeChange(true)" /> Yes, we have other income</label>
+          <label class="text-xs" style="margin-left:12px"><input type="radio" name="otherincome" [checked]="!settings.otherIncome" (change)="onOtherIncomeChange(false)" /> No, only tax prep</label>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #readonly>
+      <span class="text-sm" style="color:#6b7280">Region: {{ settings.region === 'CA' ? 'Canada' : 'United States' }} • Store: {{ settings.storeType === 'existing' ? 'Existing' : 'New' }} • TaxRush: {{ settings.taxRush ? 'Yes' : 'No' }} • Other income: {{ settings.otherIncome ? 'Yes' : 'No' }}</span>
+    </ng-template>
+  </div>
+  <hr />
+</div>
+</div>
+
+

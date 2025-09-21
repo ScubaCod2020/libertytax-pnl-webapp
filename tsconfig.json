@@ -12,5 +12,5 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": ["apps/react/src"]
+  "include": ["react-app-reference/react-app-reference/src"]
 }

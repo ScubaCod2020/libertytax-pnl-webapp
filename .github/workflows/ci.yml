@@ -54,6 +54,9 @@ jobs:
             npm run lint
           fi
 
+      - name: Markdown lint
+        run: npm run mdlint
+
       - name: Lint (Angular subfolder)
         if: steps.detect.outputs.angular_dir == 'angular'
         run: |

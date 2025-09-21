@@ -24,7 +24,7 @@ meta:
       reuse_existing_pr: true
       prefer_single_active_feature_branch: true
 
-app:
+  app:
   pages:
     - id: wizard_step_1
       path: '/wizard/step-1'
@@ -339,22 +339,57 @@ naming_and_structure_guardrails:
   - 'Blue (auto) vs White (manual) field backgrounds'
   - "Search 'archive/' before suggesting new files; reuse where reasonable"
 
-folder_structure:
+  folder_structure:
   src/app/:
-    pages/:
-      wizard/:
-        step-1/:
-          components/:
-        step-2/:
-          components/:
-        step-3/:
-          components/:
-      dashboard/:
-        components/:
-    components/: '*shared reusable components*'
+    app.component.{ts,html,scss}
+    app.routes.ts
+    components/: '*shared reusable components only (header, footer, toolbar, kpi-card)*'
     core/:
       contracts/:
       services/:
+    pages/:
+      dashboard/:
+        dashboard.component.{ts,html,scss}
+      wizard/:
+        income-drivers/:
+          income-drivers.component.{ts,html,scss}
+        expenses/:
+          expenses.component.{ts,html,scss}
+        pnl/:
+          pnl.component.{ts,html,scss}
+  progress:
+    last_updated: '2025-09-21'
+    milestones:
+      - id: app_boot
+        label: Angular app boots and routes load
+        state: done
+      - id: global_styles
+        label: Global styles consolidated + partials
+        state: done
+      - id: header_footer
+        label: Header + Footer (nav, version, layout)
+        state: done
+      - id: debug_panel
+        label: Debug panel placeholder (push-layout, desktop/mobile)
+        state: done
+      - id: brands_assets
+        label: Brand assets wired (logo/watermark)
+        state: done
+      - id: wizard_income
+        label: Wizard: Income Drivers page scaffolded
+        state: in_progress
+      - id: wizard_expenses
+        label: Wizard: Expenses page scaffolded
+        state: in_progress
+      - id: wizard_pnl
+        label: Wizard: P&L page scaffolded
+        state: in_progress
+      - id: calc_port
+        label: Port calculations from React reference
+        state: planned
+      - id: reports_export
+        label: Reports + Export flows
+        state: planned
 
 testing_focus:
   invariants:

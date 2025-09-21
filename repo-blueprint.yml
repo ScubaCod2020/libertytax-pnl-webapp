@@ -39,13 +39,32 @@ structure:
     - README.md
     - workflows: .github/workflows/ci.yml
   app:
-    - apps/react/src/components/**
-    - apps/react/src/hooks/**
-    - apps/react/src/lib/**
-    - apps/react/src/types/**
-    - apps/react/src/utils/**
+    angular:
+      src/app/:
+        - app.component.{ts,html,scss}
+        - app.routes.ts
+        - components/  # shared-only
+          - app-header/**
+          - app-footer/**
+          - form-toolbar/**
+          - kpi-card/**
+        - core/
+          - services/**
+          - contracts/**
+        - pages/
+          - dashboard/
+            - dashboard.component.{ts,html,scss}
+          - wizard/
+            - income-drivers/
+              - income-drivers.component.{ts,html,scss}
+            - expenses/
+              - expenses.component.{ts,html,scss}
+            - pnl/
+              - pnl.component.{ts,html,scss}
+      src/styles.scss: imports styles/_tokens.scss, _base.scss, _layout.scss, _kpi.scss
+      src/styles/: [_tokens.scss, _base.scss, _layout.scss, _kpi.scss]
   tests:
-    - unit: 'apps/react/src/**/*.test.ts{,x}'
+    - unit: 'react-app-reference/react-app-reference/src/**/*.test.ts{,x}'
     - e2e: 'test/e2e/**/*.{ts,js}'
 
 devServers:
@@ -67,7 +86,7 @@ qualityGates:
     - type-check
     - test
   codeOwners:
-    - path: 'apps/react/src/**'
+    - path: 'react-app-reference/react-app-reference/src/**'
       owners: ['@ScubaCod2020']
   reviewPolicy:
     requireCodeOwners: true

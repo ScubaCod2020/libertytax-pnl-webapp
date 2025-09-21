@@ -1,0 +1,35 @@
+.debug-panel {
+    position: fixed;
+    top: var(--app-header-h);
+    right: 0;
+    height: calc(100vh - var(--app-header-h) - var(--app-footer-h));
+    width: var(--debug-panel-w);
+    transform: translateX(100%);
+    transition: transform 200ms ease;
+    background: #ffffff;
+    color: #0f172a;
+    border-left: 3px solid var(--liberty-navy);
+    z-index: 1000;
+    box-shadow: -8px 0 24px rgba(0,0,0,0.08);
+}
+.debug-panel.open { transform: translateX(0); }
+.debug-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: #f3f4f6;
+    border-bottom: 1px solid #e5e7eb;
+}
+.debug-body { padding: 12px; overflow: auto; height: calc(100% - 43px); }
+
+@media (max-width: 768px) {
+    .debug-panel {
+        top: auto;
+        bottom: var(--app-footer-h);
+        height: 55vh;
+        width: 100%;
+        border-left: none;
+        border-top: 3px solid var(--liberty-navy);
+    }
+}

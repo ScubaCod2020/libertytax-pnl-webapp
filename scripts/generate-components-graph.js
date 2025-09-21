@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..');
 
-const componentsDir = path.join(repoRoot, 'apps', 'react', 'src', 'components');
+const componentsDir = path.join(repoRoot, 'react-app-reference', 'react-app-reference', 'src', 'components');
 const docsDir = path.join(repoRoot, 'docs', 'architecture');
 const outputMd = path.join(docsDir, 'components-graph.md');
 const outputMmd = path.join(docsDir, 'components-graph.mmd');
@@ -128,7 +128,7 @@ function buildGraph() {
   }
 
   const header =
-    '# Components Dependency Graph\\nPath: /docs/architecture\\n\\nPurpose: Visual map of component imports within apps/react/src/components (generated).';
+    '# Components Dependency Graph\\nPath: /docs/architecture\\n\\nPurpose: Visual map of component imports within react-app-reference/react-app-reference/src/components (generated).';
   const md = header.replace(/\\n/g, '\n') + '\n\n```mermaid\n' + mermaid + '```\n';
 
   fs.mkdirSync(docsDir, { recursive: true });

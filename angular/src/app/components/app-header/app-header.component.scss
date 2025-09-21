@@ -1,0 +1,26 @@
+header.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    height: var(--app-header-h);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.btn--wizard { background: linear-gradient(45deg, #4f46e5, #7c3aed); }
+.btn--dashboard { background: linear-gradient(45deg, #1e40af, #3b82f6); }
+.btn--reports { background: linear-gradient(45deg, #7c2d12, #dc2626); }
+.btn--reset { background: linear-gradient(45deg, #dc2626, #ef4444); }

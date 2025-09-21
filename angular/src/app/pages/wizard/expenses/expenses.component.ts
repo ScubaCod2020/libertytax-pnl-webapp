@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { ExpensesComponent as ExpensesBlock } from './components/expenses.component';
 
 @Component({
   selector: 'app-expenses',
-  imports: [],
+  standalone: true,
+  imports: [RouterLink, ExpensesBlock],
   templateUrl: './expenses.component.html',
-  styleUrl: './expenses.component.scss',
+  styleUrls: ['./expenses.component.scss'],
 })
 export class ExpensesComponent {}

@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { ReportsComponent } from './components/reports.component';
 
 @Component({
   selector: 'app-pnl',
-  imports: [],
+  standalone: true,
+  imports: [ReportsComponent],
   templateUrl: './pnl.component.html',
-  styleUrl: './pnl.component.scss',
+  styleUrls: ['./pnl.component.scss'],
 })
 export class PnlComponent {}

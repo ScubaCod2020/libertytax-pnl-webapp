@@ -16,18 +16,18 @@
     "test:mobile": "playwright test --config=playwright.mobile.config.js",
     "test:performance": "lhci autorun",
     "test:github": "node scripts/github-test-integration.js",
-    "lint": "eslint --no-eslintrc --config .eslintrc.cjs src --ext .ts,.tsx",
-    "lint:fix": "eslint --no-eslintrc --config .eslintrc.cjs src --ext .ts,.tsx --fix",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css,json,md}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json,md}\"",
+    "lint": "eslint --no-eslintrc --config .eslintrc.cjs react-app-reference/react-app-reference/src --ext .ts,.tsx",
+    "lint:fix": "eslint --no-eslintrc --config .eslintrc.cjs react-app-reference/react-app-reference/src --ext .ts,.tsx --fix",
+    "format": "prettier --write \"react-app-reference/react-app-reference/src/**/*.{ts,tsx,css,json,md}\"",
+    "format:check": "prettier --check \"react-app-reference/react-app-reference/src/**/*.{ts,tsx,css,json,md}\"",
     "type-check": "tsc --noEmit",
     "validate": "npm run type-check && npm run lint && npm run format:check && npm run test",
     "ai:generate-tests": "node scripts/ai-test-generator.js",
     "ai:audit-accessibility": "node scripts/automated-accessibility-audit.js",
     "ai:monitor-performance": "node scripts/automated-performance-monitor.js",
     "ai:full-audit": "npm run ai:audit-accessibility && npm run ai:monitor-performance",
-    "dev:react": "vite --port 3000",
-    "dev:angular": "ng serve --port 4200",
+    "dev:react": "vite --port 3000 --strictPort",
+    "dev:angular": "npm run dev:angular --prefix angular",
     "dev:dual": "concurrently -n react,angular -c blue,green \"npm run dev:react\" \"npm run dev:angular\"",
     "graph:components": "node scripts/generate-components-graph.js",
     "graph:render": "npx --yes @mermaid-js/mermaid-cli -i docs/architecture/components-graph.mmd -o docs/architecture/components-graph.svg",
@@ -40,12 +40,19 @@
     "api:types": "node scripts/generate-api-types.js",
     "deploy:staging": "echo 'Use GitHub Actions workflow: Deploy to Staging'",
     "prepare": "husky install",
-    "api:lint": "spectral lint openapi/openapi.yaml"
+    "hooks:doctor": "node -e \"console.log('Husky:', require('fs').existsSync('.husky/pre-commit') ? 'pre-commit present' : 'missing')\"",
+    "validate:progress-log": "node scripts/validate-progress-log.js",
+    "api:lint": "spectral lint openapi/openapi.yaml",
+    "mdlint": "markdownlint \"**/*.md\" --ignore node_modules",
+    "mdlint:fix": "markdownlint \"**/*.md\" --fix --ignore node_modules"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx,json,css,md}": [
+    "*.{ts,tsx,js,jsx,json,css}": [
       "prettier --write",
       "eslint --no-eslintrc --config .eslintrc.cjs --fix"
+    ],
+    "*.md": [
+      "markdownlint --fix"
     ]
   },
   "dependencies": {
@@ -75,6 +82,7 @@
     "jsdom": "^23.0.1",
     "lint-staged": "^15.5.2",
     "openapi-typescript": "^6.7.6",
+    "markdownlint-cli": "^0.41.0",
     "prettier": "^3.1.0",
     "typescript": "^5.9.2",
     "vite": "^7.1.6",

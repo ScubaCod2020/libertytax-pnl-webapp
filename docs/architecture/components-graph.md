@@ -2,7 +2,7 @@
 
 Path: /docs/architecture
 
-Purpose: Visual map of component imports within src/components (generated).
+Purpose: Visual map of component imports within react-app-reference/react-app-reference/src/components (generated).
 
 ```mermaid
 flowchart TD
@@ -86,7 +86,6 @@ flowchart TD
   Wizard/NewStoreSection_tsx --> Wizard/ToggleQuestion_tsx
   Wizard/NewStoreSection_tsx --> Wizard/NetIncomeSummary_tsx
   Wizard/StrategicAnalysis_tsx --> Wizard/types_ts
-  Wizard/StrategicAnalysis_tsx --> Wizard/calculations_ts
   Wizard/SuggestedFormField_tsx --> Wizard/FormField_tsx
   Wizard/SuggestedInputDemo_tsx --> Wizard/types_ts
   Wizard/SuggestedInputDemo_tsx --> Wizard/FormSection_tsx

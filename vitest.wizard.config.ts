@@ -6,10 +6,10 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./apps/react/src/test/setup.ts'],
+    setupFiles: ['./react-app-reference/react-app-reference/src/test/setup.ts'],
     include: [
-      'apps/react/src/components/Wizard/**/__tests__/**/*.{test,spec}.{ts,tsx}',
-      'apps/react/src/App.test.tsx',
+      'react-app-reference/react-app-reference/src/components/Wizard/**/__tests__/**/*.{test,spec}.{ts,tsx}',
+      'react-app-reference/react-app-reference/src/App.test.tsx',
     ],
     testTimeout: 20000,
     reporters: ['default'],

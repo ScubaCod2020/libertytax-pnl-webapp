@@ -1,0 +1,26 @@
+:root {
+    --liberty-navy: #002d72;
+    --liberty-red: #ea0029;
+    --ok-green: #00b050;
+    --warn-yellow: #ffc000;
+    --bad-red: #c00000;
+    --muted: #f1f3f5;
+    --ink: #2d2d2d;
+
+    /* Typography tokens */
+    --font-proxima: 'Proxima Nova', 'Inter', 'Source Sans Pro', Arial, sans-serif;
+    --font-fallback: 'Inter', 'Source Sans Pro', Arial, sans-serif;
+    --font-base: var(--font-proxima, var(--font-fallback));
+
+    --fz-xs: 12px;
+    --fz-sm: 14px;
+    --fz-md: 16px;
+    --fz-lg: 18px;
+    --fz-xl: 24px;
+    --fz-2xl: 30px;
+
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-semibold: 600;
+    --fw-extrabold: 800;
+}

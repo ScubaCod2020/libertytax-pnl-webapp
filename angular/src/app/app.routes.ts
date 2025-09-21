@@ -27,4 +27,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/dashboard/dashboard.component').then((m) => m.DashboardComponent),
   },
+  {
+    path: 'debug',
+    loadComponent: () =>
+      import('./components/debug-panel/debug-panel.component').then((m) => m.DebugPanelComponent),
+  },
 ];

@@ -2,26 +2,26 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  root: 'apps/react',
+  root: 'react-app-reference/react-app-reference',
   plugins: [react()],
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./apps/react/src/test/setup.ts'],
+    setupFiles: ['./react-app-reference/react-app-reference/src/test/setup.ts'],
     exclude: [
       'tests/**', // backward-compat: old path
       'test/**', // exclude Playwright/E2E specs from vitest
       '**/node_modules/**', // exclude any nested node_modules (e.g., angular/node_modules)
       'angular/**', // exclude Angular workspace tests from root vitest
       ...(process.env.CI
-        ? ['apps/react/src/components/Wizard/**/__tests__/**', 'apps/react/src/App.test.tsx']
+        ? ['react-app-reference/react-app-reference/src/components/Wizard/**/__tests__/**', 'react-app-reference/react-app-reference/src/App.test.tsx']
         : []),
     ],
     coverage: {
       reporter: ['text', 'json', 'html', 'lcov'],
       exclude: [
         'node_modules/',
-        'apps/react/src/test/',
+        'react-app-reference/react-app-reference/src/test/',
         '**/*.d.ts',
         '**/*.test.{ts,tsx}',
         '**/*.spec.{ts,tsx}',

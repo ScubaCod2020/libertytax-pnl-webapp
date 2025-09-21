@@ -1,5 +1,14 @@
 <section class="wizard-step">
   <h1>Income Drivers</h1>
-  <div class="step-body"><!-- paste React layout here (no math) --></div>
+  <div class="step-body">
+    <!-- Existing store shows PY + Projected; New store shows Target -->
+    <ng-container *ngIf="(appCfg.config$ | async)?.storeType === 'existing'; else newStore">
+      <app-py-income-drivers></app-py-income-drivers>
+      <app-projected-income-drivers></app-projected-income-drivers>
+    </ng-container>
+    <ng-template #newStore>
+      <app-target-income-drivers></app-target-income-drivers>
+    </ng-template>
+  </div>
   <footer class="step-footer"><a routerLink="/wizard/expenses">Next: Expenses</a></footer>
 </section>
