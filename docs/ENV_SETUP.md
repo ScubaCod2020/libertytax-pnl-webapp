@@ -1,4 +1,5 @@
 # Environment Setup
+
 Path: /docs
 
 Purpose: How to run both apps locally with consistent ports and API access.

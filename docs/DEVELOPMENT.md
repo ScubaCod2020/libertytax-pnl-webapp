@@ -5,26 +5,29 @@
 > "Code is read more often than it's written" - Focus on clarity and documentation
 
 ### Core Principles:
+
 1. **Document Everything** - Future you will thank present you
-2. **Small, Frequent Commits** - Deploy often, fail fast, recover quickly  
+2. **Small, Frequent Commits** - Deploy often, fail fast, recover quickly
 3. **Branch Per Feature** - Keep changes isolated and focused
 4. **Test Before Merge** - Every deployment should work
 
 ## 📝 Commit Message System
 
 ### Quick Setup:
+
 ```bash
 # Windows
 setup-commit-template.bat
 
-# Mac/Linux  
+# Mac/Linux
 chmod +x setup-commit-template.sh
 ./setup-commit-template.sh
 ```
 
 ### Commit Types:
+
 - `feat:` New features
-- `fix:` Bug fixes  
+- `fix:` Bug fixes
 - `refactor:` Code improvements (no functional changes)
 - `docs:` Documentation updates
 - `style:` Formatting, no logic changes
@@ -34,6 +37,7 @@ chmod +x setup-commit-template.sh
 ### Example Commit Messages:
 
 #### ✅ Good Examples:
+
 ```
 feat: add comprehensive 17-category expense wizard
 
@@ -63,7 +67,7 @@ PROBLEM:
 - Build failing with "character '}' is not valid inside JSX element"
 - Mismatched braces from merge conflict resolution
 
-SOLUTION:  
+SOLUTION:
 - Fixed orphaned closing brace after Wizard button
 - Added missing closing </div> tag for main container
 - Corrected JSX nesting structure
@@ -74,6 +78,7 @@ TESTING:
 ```
 
 #### ❌ Bad Examples:
+
 ```
 fix stuff              # Too vague
 updated files          # What files? Why?
@@ -85,12 +90,14 @@ working on wizard      # Not describing the actual change
 ### Location: `CHANGELOG.md`
 
 ### Structure:
+
 - **Unreleased** - Current development work
 - **[Version] - Date** - Released versions
 - **Added/Changed/Fixed** - Categorized changes
 - **Technical Details** - Implementation specifics
 
 ### Maintenance:
+
 1. Add changes to **Unreleased** as you work
 2. Move to versioned section when deploying
 3. Include dates and version numbers
@@ -99,6 +106,7 @@ working on wizard      # Not describing the actual change
 ## 🏗️ Architecture Decisions
 
 ### Current Structure (v0.5):
+
 ```
 src/
 ├── components/          # React components
@@ -117,6 +125,7 @@ src/
 ```
 
 ### Modularization Goals:
+
 - **App.tsx**: Currently 1267 lines → Target: ~100 lines
 - **Extract UI**: Dashboard, InputsPanel, Header components
 - **Extract Logic**: Calculation, persistence, state management hooks
@@ -125,12 +134,14 @@ src/
 ## 🚀 Deployment Strategy
 
 ### Branch Strategy:
+
 - `main` - Production-ready code
 - `feat/feature-name` - Individual features
 - `fix/issue-description` - Bug fixes
 - `refactor/component-name` - Code improvements
 
 ### Deployment Flow:
+
 1. **Create feature branch**: `git checkout -b feat/new-feature`
 2. **Develop & commit**: Use detailed commit messages
 3. **Test frequently**: Deploy to staging often
@@ -139,6 +150,7 @@ src/
 6. **Deploy to production**: Final deployment
 
 ### Testing Strategy:
+
 - **Build verification**: `npm run build` before every commit
 - **Functional testing**: Manual verification of key features
 - **Deployment testing**: Verify on staging before production
@@ -146,18 +158,21 @@ src/
 ## 🧠 Learning Resources
 
 ### JSX Understanding:
+
 - JSX = JavaScript + XML-like syntax
 - Every `{` needs a matching `}`
 - Every `<tag>` needs a matching `</tag>`
 - Only one root element per return
 
 ### React Patterns:
+
 - **Hooks**: `useState`, `useEffect`, `useMemo`
 - **Components**: Functional components with TypeScript
 - **Props**: Type-safe component interfaces
 - **State Management**: Local state with persistence
 
 ### TypeScript Benefits:
+
 - **Type Safety**: Catch errors at compile time
 - **Better IDE Support**: Autocomplete, refactoring
 - **Self-Documenting**: Types serve as documentation
@@ -166,6 +181,7 @@ src/
 ## 🔧 Development Tools
 
 ### Recommended VS Code Extensions:
+
 - **ES7+ React/Redux/React-Native snippets**
 - **TypeScript Importer**
 - **Auto Rename Tag**
@@ -173,6 +189,7 @@ src/
 - **GitLens**
 
 ### Useful Commands:
+
 ```bash
 # Development
 npm run dev              # Start dev server
@@ -188,18 +205,21 @@ git diff               # See what changed
 ## 💡 Pro Tips
 
 ### For Future You:
+
 1. **Write code like you're explaining it to someone else**
 2. **If you're confused now, you'll be more confused later**
 3. **Document the "why", not just the "what"**
 4. **Small commits are easier to debug than big ones**
 
 ### When Things Break:
+
 1. **Read the error message carefully** - It usually tells you exactly what's wrong
 2. **Check recent changes** - What did you change last?
 3. **Use git to compare** - `git diff` shows what changed
 4. **Deploy frequently** - Smaller changes are easier to debug
 
 ### Learning Strategy:
+
 1. **Understand before copying** - Don't just copy-paste code
 2. **Break things intentionally** - Learn by experimenting
 3. **Use AI tools effectively** - Ask "why" questions, not just "how"
@@ -207,4 +227,4 @@ git diff               # See what changed
 
 ---
 
-*Remember: Every expert was once a beginner. You're building great habits that will serve you well throughout your coding journey!*
+_Remember: Every expert was once a beginner. You're building great habits that will serve you well throughout your coding journey!_

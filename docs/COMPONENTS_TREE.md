@@ -1,4 +1,5 @@
 # Components Tree — Developer Guide
+
 Path: /docs
 
 Purpose: Inventory and quick-reference for React components with context for novices and AI tools.
@@ -135,4 +136,4 @@ Purpose: Inventory and quick-reference for React components with context for nov
   - What: Orchestrates wizard flow and persistence sync.
   - Why: Connects wizard answers with app state and storage.
 
-Tests and internal utilities within __tests__/ and calculations.ts are excluded from this list.
+Tests and internal utilities within **tests**/ and calculations.ts are excluded from this list.

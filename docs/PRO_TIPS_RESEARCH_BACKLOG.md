@@ -1,13 +1,16 @@
 # Pro-Tips Research Backlog
-*Data-driven insights to research for the Pro-Tips feature*
+
+_Data-driven insights to research for the Pro-Tips feature_
 
 ## 📋 Questions Discovered During App Development
 
 ### 🚀 **TaxRush Performance & Adoption**
+
 **Origin:** UX decision about TaxRush default selection  
 **Questions:**
+
 - What percentage of new Canadian franchises adopt TaxRush in Year 1 vs Year 2+?
-- Average revenue impact of TaxRush implementation ($X per TaxRush return)?  
+- Average revenue impact of TaxRush implementation ($X per TaxRush return)?
 - Regional adoption patterns (urban vs suburban vs rural)?
 - Performance benchmarks: TaxRush offices vs non-TaxRush offices?
 - TaxRush royalty rate validation (currently 40% - is this accurate?)
@@ -18,8 +21,10 @@
 ---
 
 ### 💰 **KPI Thresholds & Business Performance**
+
 **Origin:** KPI stoplight system and validation rules from spec analysis
 **Questions:**
+
 - Are the default KPI thresholds accurate for real franchise performance?
   - Cost per Return: Green ≤ $25, Yellow ≤ $35 (realistic?)
   - Net Margin: Green ≥ 20%, Yellow ≥ 10% (achievable?)
@@ -33,8 +38,10 @@
 ---
 
 ### 📊 **KPI Education & Plain Language Explanations**
+
 **Origin:** User confusion about KPI meanings and business implications
 **Questions:**
+
 - How do we explain "Cost per Return" in terms franchisees understand?
   - What does $35 per return actually mean for daily operations?
   - How does this compare to other service businesses?
@@ -62,8 +69,10 @@
 ---
 
 ### 🏗️ **Expense Category Benchmarks**
+
 **Origin:** 17 expense categories with preset validation rules
 **Questions:**
+
 - Validation of expense percentages from presets:
   - Salaries: Good=26%, Better=24%, Best=22% (realistic progression?)
   - Rent: Good=18%, Better=17%, Best=16% (achievable reductions?)
@@ -77,9 +86,11 @@
 
 ---
 
-### 🏪 **New Store vs Existing Store Patterns**  
+### 🏪 **New Store vs Existing Store Patterns**
+
 **Origin:** Store type selection and performance expectations
 **Questions:**
+
 - Typical performance trajectory for new stores (Month 1-12)?
 - When do new stores typically reach break-even?
 - Common mistakes new franchisees make in their projections?
@@ -92,8 +103,10 @@
 ---
 
 ### 🌍 **Regional Performance Differences**
+
 **Origin:** Canada vs US feature differences in the app
-**Questions:**  
+**Questions:**
+
 - How do Canadian vs US franchise performance metrics compare?
 - Seasonal variation patterns by region?
 - Tax law impact on profitability differences?
@@ -105,9 +118,11 @@
 
 ---
 
-### 📊 **Revenue Forecasting & Growth Assumptions** 
+### 📊 **Revenue Forecasting & Growth Assumptions**
+
 **Origin:** Projection calculations and growth assumptions
 **Questions:**
+
 - How accurate are typical first-year revenue projections?
 - What factors most commonly cause projections to be off?
 - Seasonal adjustment best practices?
@@ -120,8 +135,10 @@
 ---
 
 ### ⚠️ **Common User Errors & Validation Issues**
+
 **Origin:** QA analysis revealing critical validation gaps
 **Questions:**
+
 - Most common unrealistic input combinations users enter?
 - What input validation errors cause the most user confusion?
 - Business logic violations that indicate user misunderstanding?
@@ -136,8 +153,10 @@
 ---
 
 ### 🎯 **Scenario Preset Validation**
+
 **Origin:** Good/Better/Best preset analysis
 **Questions:**
+
 - Are the preset scenarios based on real franchise data?
 - What percentile of franchises achieve "Good" vs "Better" vs "Best"?
 - Do the preset progressions match real improvement patterns?
@@ -150,8 +169,10 @@
 ---
 
 ### 🔍 **Edge Cases & Risk Scenarios**
+
 **Origin:** Technical testing revealing business logic gaps  
 **Questions:**
+
 - What to do when projected expenses exceed revenue (turnaround advice)?
 - Guidance for extreme growth scenarios (100%+ growth projections)?
 - Red flag combinations (high rent + high salaries + low revenue)?
@@ -164,8 +185,10 @@
 ---
 
 ### 🤖 **AI-Driven Insights & Pattern Recognition**
+
 **Origin:** System architecture and data structure analysis
 **Questions:**
+
 - Can we identify performance patterns from user input combinations?
 - Predictive indicators for franchise success/failure?
 - Seasonal adjustment algorithms based on historical data?
@@ -179,22 +202,26 @@
 
 ## 🎯 **Research Strategy**
 
-### **Phase 1: Internal Data** 
+### **Phase 1: Internal Data**
+
 - Liberty Tax corporate performance data
-- Franchise development historical records  
+- Franchise development historical records
 - Regional manager insights
 
 ### **Phase 2: Franchisee Insights**
+
 - Survey existing franchisees
 - Interview high-performers vs strugglers
 - Regional focus groups
 
 ### **Phase 3: Industry Benchmarking**
+
 - Tax industry association data
 - Competitor analysis (where legally available)
 - Third-party industry reports
 
 ### **Phase 4: Pro-Tips Implementation**
+
 - Convert insights into actionable tips
 - Add confidence levels/data sources
 - Create contextual triggers in the app
@@ -204,6 +231,7 @@
 ## 📝 **Content Framework**
 
 Each Pro-Tip should include:
+
 - **Data Source:** "Based on analysis of 500+ Liberty Tax franchises (2022-2024)"
 - **Confidence Level:** High/Medium/Low based on sample size
 - **Actionable Insight:** Specific, practical advice
@@ -217,10 +245,11 @@ Each Pro-Tip should include:
 As we continue developing the app, add new questions using this format:
 
 ### **Question Category**
+
 **Origin:** [What part of app development sparked this question]
 **Questions:** [Specific data-driven questions]
 **Potential Sources:** [Where we might find answers]
 
 ---
 
-*This document grows as we discover more user insights during development*
+_This document grows as we discover more user insights during development_

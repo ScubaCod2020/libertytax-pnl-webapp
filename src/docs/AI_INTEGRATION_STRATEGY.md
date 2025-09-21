@@ -2,7 +2,7 @@
 
 ## **How Scuba's Modular Architecture Enables AI Features**
 
-*Connecting modular design with intelligent analysis capabilities*
+_Connecting modular design with intelligent analysis capabilities_
 
 ---
 
@@ -11,40 +11,42 @@
 ### **Why This Architecture is Perfect for AI:**
 
 **1. Standardized Data Collection**
+
 ```typescript
 // Every user interaction creates clean training data
 interface AITrainingRecord {
-  timestamp: string
+  timestamp: string;
   userProfile: {
-    region: 'US' | 'CA'
-    storeType: 'new' | 'existing'
-    experienceLevel: 'first-time' | 'experienced'
-  }
-  inputs: WizardAnswers
+    region: 'US' | 'CA';
+    storeType: 'new' | 'existing';
+    experienceLevel: 'first-time' | 'experienced';
+  };
+  inputs: WizardAnswers;
   adjustments: Array<{
-    field: string
-    originalValue: number
-    adjustedValue: number
-    reasoning?: string
-  }>
+    field: string;
+    originalValue: number;
+    adjustedValue: number;
+    reasoning?: string;
+  }>;
   outcomes: {
-    projectedRevenue: number
-    projectedNetIncome: number
-    strategicAlignment: number // 0-100 score
-  }
+    projectedRevenue: number;
+    projectedNetIncome: number;
+    strategicAlignment: number; // 0-100 score
+  };
 }
 ```
 
 **2. Component Integration Points**
+
 ```tsx
 // AI insights plug directly into existing components
-<AnalysisBlock 
+<AnalysisBlock
   data={{
     title: 'AI Performance Analysis',
     icon: '🤖',
     status: aiInsights.sentiment,
     primaryMetric: aiInsights.primaryRecommendation,
-    insights: aiInsights.recommendations
+    insights: aiInsights.recommendations,
   }}
 />
 ```
@@ -54,35 +56,39 @@ interface AITrainingRecord {
 ## **🚀 AI Module Integration Scenarios**
 
 ### **Scenario 1: Real-Time Strategic Guidance**
+
 ```tsx
 // User adjusts field → AI analyzes → Instant insights
 <FormField label="Average Net Fee" helpText="Your target fee per return">
-  <CurrencyInput 
+  <CurrencyInput
     value={answers.avgNetFee}
     onChange={async (value) => {
-      updateAnswers({ avgNetFee: value })
-      
+      updateAnswers({ avgNetFee: value });
+
       // Trigger AI analysis
       const aiAnalysis = await analyzeFieldChange({
         field: 'avgNetFee',
         newValue: value,
         userContext: answers,
-        industryData: benchmarkData
-      })
-      
+        industryData: benchmarkData,
+      });
+
       // Show AI insights
-      setAIInsights(aiAnalysis)
+      setAIInsights(aiAnalysis);
     }}
   />
-</FormField>
+</FormField>;
 
-{/* AI insights appear automatically */}
-{aiInsights && (
-  <AnalysisBlock data={aiInsights} size="small" />
-)}
+{
+  /* AI insights appear automatically */
+}
+{
+  aiInsights && <AnalysisBlock data={aiInsights} size="small" />;
+}
 ```
 
 ### **Scenario 2: Industry Benchmarking**
+
 ```tsx
 // AI compares user inputs against industry patterns
 const industryComparison = await ai.compareToIndustry({
@@ -101,7 +107,7 @@ const industryComparison = await ai.compareToIndustry({
       message: `Your average net fee of $${answers.avgNetFee} is ${industryComparison.percentile}th percentile for ${answers.region} stores`
     },
     {
-      type: 'opportunity', 
+      type: 'opportunity',
       message: industryComparison.recommendations.topOpportunity
     }
   ]
@@ -109,6 +115,7 @@ const industryComparison = await ai.compareToIndustry({
 ```
 
 ### **Scenario 3: Predictive Forecasting**
+
 ```tsx
 // AI predicts outcomes based on input patterns
 const aiForecasting = await ai.predictPerformance({
@@ -118,7 +125,7 @@ const aiForecasting = await ai.predictPerformance({
   seasonalPatterns: getSeasonalData()
 })
 
-<PerformanceCard 
+<PerformanceCard
   title="AI-Powered Forecasting"
   metrics={[
     {
@@ -138,51 +145,53 @@ const aiForecasting = await ai.predictPerformance({
 ## **📚 Data Sources for LLM Training**
 
 ### **User Interaction Patterns**
+
 ```typescript
 // Rich training data from every user session
 interface UserSession {
   demographics: {
-    region: Region
-    storeType: 'new' | 'existing'
-    businessSize: 'small' | 'medium' | 'large'
-  }
+    region: Region;
+    storeType: 'new' | 'existing';
+    businessSize: 'small' | 'medium' | 'large';
+  };
   inputJourney: {
-    initialValues: WizardAnswers
-    adjustmentPattern: FieldAdjustment[]
-    finalValues: WizardAnswers
-    timeToComplete: number
-  }
+    initialValues: WizardAnswers;
+    adjustmentPattern: FieldAdjustment[];
+    finalValues: WizardAnswers;
+    timeToComplete: number;
+  };
   businessOutcomes: {
-    projectedMetrics: PerformanceMetrics
-    strategicAlignment: number
-    riskFactors: string[]
-    opportunityAreas: string[]
-  }
+    projectedMetrics: PerformanceMetrics;
+    strategicAlignment: number;
+    riskFactors: string[];
+    opportunityAreas: string[];
+  };
 }
 ```
 
 ### **Industry Knowledge Base**
+
 ```typescript
 // Domain expertise becomes AI knowledge
 interface IndustryKnowledge {
   regionSpecificFactors: {
     [region: string]: {
-      averageNetFee: number
-      typicalReturnsCount: number
-      seasonalPatterns: SeasonalData[]
-      competitiveFactors: string[]
-    }
-  }
+      averageNetFee: number;
+      typicalReturnsCount: number;
+      seasonalPatterns: SeasonalData[];
+      competitiveFactors: string[];
+    };
+  };
   businessRules: {
-    franchiseRequirements: FranchiseRules[]
-    optimalPerformanceRanges: PerformanceThresholds
-    riskIndicators: RiskSignal[]
-  }
+    franchiseRequirements: FranchiseRules[];
+    optimalPerformanceRanges: PerformanceThresholds;
+    riskIndicators: RiskSignal[];
+  };
   strategicInsights: {
-    growthStrategies: Strategy[]
-    optimizationTactics: Tactic[]
-    commonPitfalls: Pitfall[]
-  }
+    growthStrategies: Strategy[];
+    optimizationTactics: Tactic[];
+    commonPitfalls: Pitfall[];
+  };
 }
 ```
 
@@ -191,23 +200,27 @@ interface IndustryKnowledge {
 ## **🎯 Implementation Roadmap**
 
 ### **Phase 1: Foundation** (Current)
+
 ✅ Modular component architecture  
 ✅ Standardized data models
 ✅ Consistent user interaction patterns
 
 ### **Phase 2: Data Collection**
+
 - Instrument user interactions for training data
-- Build knowledge base of industry benchmarks  
+- Build knowledge base of industry benchmarks
 - Create performance outcome tracking
 
 ### **Phase 3: AI Integration**
+
 - Simple insights engine (rules-based initially)
 - Progressive enhancement with LLM capabilities
 - Real-time analysis and recommendations
 
 ### **Phase 4: Advanced AI Features**
+
 - Predictive forecasting
-- Industry benchmarking  
+- Industry benchmarking
 - Personalized optimization suggestions
 - Multi-store strategic analysis
 

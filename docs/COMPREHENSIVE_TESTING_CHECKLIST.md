@@ -1,16 +1,18 @@
 # Comprehensive Testing Checklist
+
 ## Every Button, Every Field, Every Regression Test
 
-*Time Required: 45-60 minutes for complete testing*
-*Critical for major releases and before production deployment*
+_Time Required: 45-60 minutes for complete testing_
+_Critical for major releases and before production deployment_
 
 ---
 
 ## 🎯 PART 1: Complete Button Testing (15 minutes)
 
 ### Wizard Navigation Buttons
+
 - [ ] **Welcome → Inputs "Next"**: Click and verify page transition
-- [ ] **Inputs → Review "Next"**: Click and verify page transition  
+- [ ] **Inputs → Review "Next"**: Click and verify page transition
 - [ ] **Review → Complete "Confirm & Create Dashboard"**: Click and verify wizard completion
 - [ ] **Inputs ← Welcome "Back"**: Click and verify page transition
 - [ ] **Review ← Inputs "Back"**: Click and verify page transition
@@ -18,6 +20,7 @@
 - [ ] **"Start Wizard" button**: Click and verify wizard opens
 
 ### Debug Panel Buttons
+
 - [ ] **Debug Toggle (Footer)**: Click to open debug panel
 - [ ] **Debug Close (X)**: Click to close debug panel
 - [ ] **Storage Tab**: Click and verify content loads
@@ -27,6 +30,7 @@
 - [ ] **Thresholds Tab**: Click and verify threshold controls display
 
 ### Debug Panel Action Buttons
+
 - [ ] **"Save Now"**: Click and verify data saves
 - [ ] **"Dump Storage"**: Click and verify console output
 - [ ] **"Copy JSON"**: Click and verify clipboard copy
@@ -34,6 +38,7 @@
 - [ ] **"Show Wizard"**: Click and verify wizard opens
 
 ### Debug Thresholds Section Buttons
+
 - [ ] **KPI Thresholds Expand/Collapse**: Click header and verify toggle
 - [ ] **Scenario Presets Expand/Collapse**: Click header and verify toggle
 - [ ] **Expense Defaults Expand/Collapse**: Click header and verify toggle
@@ -43,6 +48,7 @@
 - [ ] **"Reset All to Factory Defaults"**: Click and verify complete reset
 
 ### Main Dashboard Buttons
+
 - [ ] **Scenario Selector Dropdown**: Test all options (Custom, Good, Better, Best)
 - [ ] **Region Toggle**: Switch between US/CA and verify TaxRush fields
 
@@ -53,7 +59,8 @@
 ### Wizard Page 1 Fields
 
 #### Basic Fields
-- [ ] **Region Dropdown**: 
+
+- [ ] **Region Dropdown**:
   - Select US → Verify TaxRush fields hidden
   - Select CA → Verify TaxRush fields visible
   - Switch back to US → Verify fields hide again
@@ -64,13 +71,15 @@
   - Switch back to "New Store" → Verify sections hide
 
 #### Existing Store Performance Fields (CA Region)
+
 - [ ] **Last Year Tax Prep Income**: Enter $200000, verify accepts
-- [ ] **Last Year Average Net Fee**: Enter $125, verify accepts  
+- [ ] **Last Year Average Net Fee**: Enter $125, verify accepts
 - [ ] **Last Year Tax Prep Returns**: Enter 1600, verify accepts
 - [ ] **Last Year TaxRush Returns**: Enter 400, verify accepts (CA only)
 - [ ] **Last Year Total Expenses**: Enter $150000, verify accepts
 
 #### Growth Calculation Testing
+
 - [ ] **Growth Dropdown**: Test each option:
   - [ ] -20% (Decline) → Verify projected values calculate
   - [ ] -10% (Slight decline) → Verify calculation
@@ -83,13 +92,15 @@
   - [ ] Custom percentage... → Verify custom input appears
 
 #### Custom Growth Testing
-- [ ] **Custom Growth Input**: 
+
+- [ ] **Custom Growth Input**:
   - Enter 12 → Verify dropdown shows "custom"
   - Enter -5 → Verify negative growth works
   - Enter 50 → Verify extreme positive growth
   - Clear field → Verify dropdown resets
 
 #### Projected Performance Override Testing
+
 - [ ] **Projected Tax Prep Income**: Edit calculated value, verify accepts
 - [ ] **Projected Average Net Fee**: Edit calculated value, verify accepts
 - [ ] **Projected Tax Prep Returns**: Edit calculated value, verify accepts
@@ -99,6 +110,7 @@
 ### Wizard Page 2 Fields
 
 #### Income Drivers Section
+
 - [ ] **Average Net Fee**: Verify carries forward from Page 1, test edit
 - [ ] **Tax Prep Returns**: Verify carries forward from Page 1, test edit
 - [ ] **TaxRush Returns**: Verify carries forward from Page 1 (CA only), test edit
@@ -106,7 +118,9 @@
 - [ ] **Discounts %**: Enter 3, verify accepts
 
 #### Dual-Entry Expense Testing (Test ALL 17 categories)
+
 For each expense field, perform this test:
+
 1. **Personnel - Salaries**:
    - [ ] Enter 25% → Verify dollar amount calculates and displays
    - [ ] Clear and enter $50000 → Verify percentage calculates
@@ -153,6 +167,7 @@ For each expense field, perform this test:
 ### Debug Panel Field Testing
 
 #### KPI Thresholds (5 numeric inputs)
+
 - [ ] **Cost/Return Green ≤ $**: Enter 20, verify dashboard color updates
 - [ ] **Cost/Return Yellow ≤ $**: Enter 30, verify dashboard color updates
 - [ ] **Net Margin Green ≥ %**: Enter 25, verify dashboard color updates
@@ -164,6 +179,7 @@ For each expense field, perform this test:
 ## 🔄 PART 3: Regression & Data Flow Testing (15 minutes)
 
 ### Cross-Step Data Consistency
+
 1. **Page 1 → Page 2 Flow**:
    - [ ] Enter data on Page 1 → Go to Page 2 → Verify all values carried forward
    - [ ] Modify Page 2 values → Go back to Page 1 → Verify original values preserved
@@ -180,13 +196,14 @@ For each expense field, perform this test:
    - [ ] Change thresholds → Verify dashboard colors update immediately
 
 ### Preset Regression Testing
+
 1. **Apply Good Preset**:
    - [ ] Click Good preset button
    - [ ] Verify ANF = $130, Returns = 1680, Salaries = 26%, Rent = 18%
    - [ ] Verify all other fields update appropriately
 
 2. **Apply Better Preset**:
-   - [ ] Click Better preset button  
+   - [ ] Click Better preset button
    - [ ] Verify ANF = $135, Returns = 1840, Salaries = 24%, Rent = 17%
    - [ ] Verify calculations update
 
@@ -196,6 +213,7 @@ For each expense field, perform this test:
    - [ ] Verify calculations update
 
 ### Regional Regression Testing
+
 1. **US → CA → US Flow**:
    - [ ] Start in US region with data
    - [ ] Switch to CA → Verify TaxRush fields appear
@@ -203,6 +221,7 @@ For each expense field, perform this test:
    - [ ] Switch back to US → Verify TaxRush fields hidden, data preserved
 
 ### Persistence Regression Testing
+
 1. **Data Survival Test**:
    - [ ] Enter complex data set
    - [ ] Refresh page → Verify all data persists
@@ -214,6 +233,7 @@ For each expense field, perform this test:
 ## 🚨 PART 4: Edge Cases & Error Handling (10 minutes)
 
 ### Invalid Input Testing
+
 - [ ] **Negative Values**: Enter -100 in expense fields → Verify validation
 - [ ] **Extreme Values**: Enter 999999999 → Verify handling
 - [ ] **Invalid Percentages**: Enter 150% → Verify validation prevents
@@ -221,11 +241,13 @@ For each expense field, perform this test:
 - [ ] **Non-numeric Input**: Enter "abc" in numeric fields → Verify handling
 
 ### Calculation Edge Cases
+
 - [ ] **Division by Zero**: Set returns to 0 → Verify cost/return handles gracefully
 - [ ] **Zero Revenue**: Set ANF to 0 → Verify percentage calculations handle
 - [ ] **Maximum Expenses**: Set all expenses to maximum → Verify negative income handles
 
 ### UI Edge Cases
+
 - [ ] **Rapid Clicking**: Click buttons rapidly → Verify no duplicate actions
 - [ ] **Tab Switching**: Switch debug tabs rapidly → Verify no errors
 - [ ] **Window Resize**: Resize browser → Verify responsive design works
@@ -235,16 +257,19 @@ For each expense field, perform this test:
 ## ✅ PART 5: Final Verification (5 minutes)
 
 ### Console Check
+
 - [ ] **No Errors**: Open dev tools console → Verify no red errors
 - [ ] **No Warnings**: Verify no yellow warnings during testing
 - [ ] **Network Tab**: Verify no failed requests
 
-### Performance Check  
+### Performance Check
+
 - [ ] **Smooth Interactions**: All clicks/inputs respond quickly
 - [ ] **No Memory Leaks**: Performance tab shows stable memory usage
 - [ ] **Bundle Size**: Verify reasonable bundle size in Network tab
 
 ### Cross-Browser Spot Check
+
 - [ ] **Chrome**: Core functionality works
 - [ ] **Firefox**: No major layout issues
 - [ ] **Safari**: Basic functionality intact
@@ -254,8 +279,9 @@ For each expense field, perform this test:
 ## 🎯 Pass/Fail Criteria
 
 ### ✅ PASS Requirements:
+
 - All buttons function as expected
-- All fields accept valid input and reject invalid input  
+- All fields accept valid input and reject invalid input
 - Data flows correctly between all steps
 - Calculations are mathematically correct
 - Regional differences work properly
@@ -264,6 +290,7 @@ For each expense field, perform this test:
 - Performance is acceptable
 
 ### ❌ FAIL Conditions:
+
 - Any button doesn't work
 - Any field accepts invalid data
 - Data doesn't flow between steps correctly
@@ -276,4 +303,4 @@ For each expense field, perform this test:
 
 **🚀 Ready for deployment when ALL checklist items pass!**
 
-*This comprehensive testing ensures every interactive element works correctly and all data flows maintain integrity throughout the entire application.*
+_This comprehensive testing ensures every interactive element works correctly and all data flows maintain integrity throughout the entire application._

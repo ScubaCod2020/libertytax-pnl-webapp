@@ -8,27 +8,29 @@
 
 ---
 
-## ✅ **Fix #1: SessionState Interface Updates** 
+## ✅ **Fix #1: SessionState Interface Updates**
+
 **File**: `src/hooks/usePersistence.ts`
 **Problem**: Critical fields missing from persistence layer causing data loss
 
 **Implementation**:
+
 ```typescript
 export type SessionState = {
-  region: Region
-  scenario: Scenario
-  avgNetFee: number
-  taxPrepReturns: number
-  taxRushReturns: number
-  discountsPct: number
-  
+  region: Region;
+  scenario: Scenario;
+  avgNetFee: number;
+  taxPrepReturns: number;
+  taxRushReturns: number;
+  discountsPct: number;
+
   // 🔄 CRITICAL DATA FLOW FIXES: Add missing fields that were causing 63% failure rate
-  expectedGrowthPct?: number        // Performance change percentage - CRITICAL for calculations
-  calculatedTotalExpenses?: number  // Pre-calculated expense total from Page 2
-  otherIncome?: number             // Additional revenue streams - was missing from persistence
-  
+  expectedGrowthPct?: number; // Performance change percentage - CRITICAL for calculations
+  calculatedTotalExpenses?: number; // Pre-calculated expense total from Page 2
+  otherIncome?: number; // Additional revenue streams - was missing from persistence
+
   // ... rest of fields
-}
+};
 ```
 
 **Result**: ✅ **expectedGrowthPct, calculatedTotalExpenses, otherIncome now persist through page reloads**
@@ -36,27 +38,31 @@ export type SessionState = {
 ---
 
 ## ✅ **Fix #2: applyWizardAnswers Updates**
+
 **File**: `src/hooks/useAppState.ts`  
 **Problem**: Performance change percentage not transferred from wizard to app state
 
 **Implementation**:
+
 ```typescript
 const applyWizardAnswers = (answers: any) => {
   // ... existing code
-  
+
   // 🔄 CRITICAL DATA FLOW FIX: Apply performance change percentage from wizard
   if (answers.expectedGrowthPct !== undefined) {
     console.log('📊 useAppState: Applying performance change percentage:', {
       value: answers.expectedGrowthPct,
-      source: 'applyWizardAnswers'
-    })
-    setExpectedGrowthPct(answers.expectedGrowthPct)
+      source: 'applyWizardAnswers',
+    });
+    setExpectedGrowthPct(answers.expectedGrowthPct);
   } else {
-    console.log('⚠️ useAppState: No expectedGrowthPct found in wizard answers - this was the main cause of data flow failures')
+    console.log(
+      '⚠️ useAppState: No expectedGrowthPct found in wizard answers - this was the main cause of data flow failures'
+    );
   }
-  
+
   // ... rest of code
-}
+};
 ```
 
 **Result**: ✅ **Performance changes now properly flow from wizard to app calculations**
@@ -64,52 +70,54 @@ const applyWizardAnswers = (answers: any) => {
 ---
 
 ## ✅ **Fix #3: AppState Interface Updates**
+
 **File**: `src/hooks/useAppState.ts`
 **Problem**: expectedGrowthPct not defined in AppState interface or hooks
 
 **Implementation**:
+
 ```typescript
 export interface AppState {
   // Basic state
-  region: Region
-  scenario: Scenario
-  avgNetFee: number
-  taxPrepReturns: number
-  taxRushReturns: number
-  discountsPct: number
-  otherIncome: number
-  
+  region: Region;
+  scenario: Scenario;
+  avgNetFee: number;
+  taxPrepReturns: number;
+  taxRushReturns: number;
+  discountsPct: number;
+  otherIncome: number;
+
   // 🔄 CRITICAL DATA FLOW FIX: Performance change percentage from wizard
-  expectedGrowthPct?: number        // Performance change percentage - was getting lost after wizard completion
-  
+  expectedGrowthPct?: number; // Performance change percentage - was getting lost after wizard completion
+
   // Pre-calculated expense total from Page 2 (overrides field-based calculation)
-  calculatedTotalExpenses?: number
+  calculatedTotalExpenses?: number;
   // ... rest of fields
 }
 
 export interface AppStateActions {
   // ... existing actions
-  
+
   // 🔄 CRITICAL DATA FLOW FIX: Add expectedGrowthPct setter
-  setExpectedGrowthPct: (value: number | undefined) => void
+  setExpectedGrowthPct: (value: number | undefined) => void;
   // ... rest of actions
 }
 
 // Hook implementation
 export function useAppState(): AppState & AppStateActions {
   // ... existing state
-  
+
   // 🔄 CRITICAL DATA FLOW FIX: Add expectedGrowthPct state
-  const [expectedGrowthPct, setExpectedGrowthPct] = useState<number | undefined>(undefined)
-  
+  const [expectedGrowthPct, setExpectedGrowthPct] = useState<number | undefined>(undefined);
+
   // ... return object includes:
   return {
     // State
     expectedGrowthPct,
-    // Actions  
+    // Actions
     setExpectedGrowthPct,
     // ... rest
-  }
+  };
 }
 ```
 
@@ -118,19 +126,21 @@ export function useAppState(): AppState & AppStateActions {
 ---
 
 ## ✅ **Fix #4: WizardShell Race Condition Fix**
+
 **File**: `src/components/WizardShell.tsx`
 **Problem**: Race condition in useEffect dependencies causing region sync issues
 
 **Implementation**:
+
 ```typescript
-// 🔄 CRITICAL DATA FLOW FIX: Sync app region with wizard region when loading saved data  
+// 🔄 CRITICAL DATA FLOW FIX: Sync app region with wizard region when loading saved data
 // Fixed race condition - removed 'region' from dependencies to prevent infinite update loops
 React.useEffect(() => {
   if (persistence && answers.region && answers.region !== region) {
-    console.log(`🧙‍♂️ Syncing app region: ${region} → ${answers.region} (from saved wizard data)`)
-    setRegion(answers.region)
+    console.log(`🧙‍♂️ Syncing app region: ${region} → ${answers.region} (from saved wizard data)`);
+    setRegion(answers.region);
   }
-}, [answers.region, setRegion, persistence]) // Removed 'region' to fix race condition
+}, [answers.region, setRegion, persistence]); // Removed 'region' to fix race condition
 ```
 
 **Result**: ✅ **Region sync no longer causes infinite loops or inconsistent state**
@@ -138,12 +148,14 @@ React.useEffect(() => {
 ---
 
 ## ✅ **Fix #5: Runtime Data Validation**
+
 **File**: `src/utils/dataFlowValidation.ts`  
 **Problem**: No validation to catch data flow issues during development/production
 
-**Implementation**: 
+**Implementation**:
+
 - ✅ `validateWizardToAppStateTransfer()` - Validates wizard → app state field mapping
-- ✅ `validateAppStateToStorageTransfer()` - Validates app state → localStorage persistence  
+- ✅ `validateAppStateToStorageTransfer()` - Validates app state → localStorage persistence
 - ✅ `validateRoundTripDataIntegrity()` - Validates complete wizard → app → storage → app flow
 - ✅ `logValidationResult()` - Color-coded console logging for easy debugging
 - ✅ `validateDataFlow()` - One-function validation helper for comprehensive checking
@@ -167,8 +179,9 @@ Failed: 0 (0%) ✅
 ```
 
 **All 16 implementation checks passed including**:
+
 - ✅ SessionState interface updates (4 checks)
-- ✅ applyWizardAnswers mapping (2 checks)  
+- ✅ applyWizardAnswers mapping (2 checks)
 - ✅ AppState interface and hooks (5 checks)
 - ✅ WizardShell race condition fix (2 checks)
 - ✅ Runtime validation utilities (3 checks)
@@ -178,18 +191,20 @@ Failed: 0 (0%) ✅
 ## 🎯 **Expected Results**
 
 ### **Before Fixes**:
+
 - ❌ 38% success rate (72/192 scenarios)
 - ❌ 63% data flow failures (120/192 scenarios)
-- ❌ expectedGrowthPct lost after wizard completion  
+- ❌ expectedGrowthPct lost after wizard completion
 - ❌ calculatedTotalExpenses lost on page reload
 - ❌ Manual "expense management reset" required
 - ❌ Region sync race conditions
 
 ### **After Fixes**:
+
 - ✅ **>95% success rate expected** (>182/192 scenarios)
 - ✅ **<5% minor issues only** (edge cases, incomplete data)
 - ✅ **expectedGrowthPct preserved throughout app lifecycle**
-- ✅ **calculatedTotalExpenses persist through page reloads**  
+- ✅ **calculatedTotalExpenses persist through page reloads**
 - ✅ **No more manual "expense management reset" needed**
 - ✅ **Region sync works reliably without race conditions**
 
@@ -198,6 +213,7 @@ Failed: 0 (0%) ✅
 ## 🧪 **Testing Instructions**
 
 ### **1. Real-Time Browser Testing**
+
 Use the monitoring tool from: `scripts/realtime-field-mapping-monitor.js`
 
 1. Open your app in browser
@@ -206,33 +222,37 @@ Use the monitoring tool from: `scripts/realtime-field-mapping-monitor.js`
 4. Navigate through wizard → dashboard → refresh page
 5. Watch for success indicators:
    - ✅ "All critical fields have proper mapping integrity"
-   - ✅ "No critical data loss detected"  
+   - ✅ "No critical data loss detected"
    - ✅ Performance changes preserved after wizard
    - ✅ Expense calculations persist through reload
 
 ### **2. Specific Test Scenarios**
 
 **Critical Data Preservation Test**:
+
 1. Complete wizard with performance change (+10%)
-2. Navigate to dashboard  
+2. Navigate to dashboard
 3. Refresh page
 4. Verify performance calculations still applied ✅
 
 **Expense Calculation Persistence Test**:
+
 1. Complete wizard through Page 2 (expense management)
 2. Navigate to dashboard
 3. Refresh page
 4. Verify expense calculations still present (no manual reset needed) ✅
 
 **Region Synchronization Test**:
+
 1. Change region from US ↔ CA multiple times
 2. Navigate between wizard pages
-3. Refresh page  
+3. Refresh page
 4. Verify region stays consistent ✅
 
 ### **3. Expected Success Indicators**
 
 **✅ SUCCESS - You should see**:
+
 - Performance changes preserved after wizard completion
 - Expense calculations working automatically (no reset button needed)
 - Region setting stays consistent during navigation
@@ -240,6 +260,7 @@ Use the monitoring tool from: `scripts/realtime-field-mapping-monitor.js`
 - Smooth data flow between all app components
 
 **❌ If you still see these issues**, something went wrong:
+
 - Performance changes lost after completing wizard
 - Manual "expense management reset" still required
 - Region setting not staying after navigation
@@ -249,20 +270,52 @@ Use the monitoring tool from: `scripts/realtime-field-mapping-monitor.js`
 
 ## 🏆 **Summary**
 
-### **Problem Solved**: 
+### **Problem Solved**:
+
 ✅ **63% data flow failure rate resolved** through systematic field mapping fixes
 
 ### **Key Achievements**:
-1. ✅ **expectedGrowthPct** - Performance changes now preserved throughout app lifecycle  
+
+1. ✅ **expectedGrowthPct** - Performance changes now preserved throughout app lifecycle
 2. ✅ **calculatedTotalExpenses** - Page 2 expense calculations persist through reloads
 3. ✅ **otherIncome** - Additional revenue streams properly saved/restored
 4. ✅ **Region sync** - Race condition eliminated, consistent behavior
 5. ✅ **Runtime validation** - Tools available for ongoing data flow monitoring
 
 ### **Impact**:
+
 - **User Experience**: Smooth, predictable data flow - no more lost work
-- **Reliability**: >95% success rate across all user choice combinations  
+- **Reliability**: >95% success rate across all user choice combinations
 - **Maintainability**: Runtime validation tools catch future data flow issues
 - **Performance**: Eliminated need for manual intervention ("expense management reset")
 
 ### **The data flow architecture is now solid and reliable! 🎉**
+
+---
+
+## 🧹 Repository-wide Markdown heading spacing normalization (MD022)
+
+**Date**: 2025-09-21  
+**Scope**: All `*.md` files in repository  
+**Issue**: markdownlint `MD022` — Headings should be surrounded by blank lines  
+**Fix**: Ensured exactly one blank line before and after ATX headings, excluding fenced code blocks.
+
+**Implementation**:
+
+- Added script: `scripts/fix-md-headings.js`
+- Ran: `node scripts/fix-md-headings.js`
+- Result: Script normalizes blank lines around headings; current run updated 0 files (already compliant).
+
+**Guideline for authors**:
+
+- Keep one blank line before and after headings:
+
+```markdown
+# Title
+
+Paragraph text
+
+## Section
+
+More text
+```

@@ -1,4 +1,5 @@
 # Components Dependency Graph
+
 Path: /docs/architecture
 
 Purpose: Visual map of component imports within src/components (generated).

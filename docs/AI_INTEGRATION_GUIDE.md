@@ -7,17 +7,20 @@ This guide helps you leverage AI assistants (ChatGPT/Codex) as part of your deve
 ## 🚀 Quick Start with @codex
 
 ### In Pull Requests
+
 ```markdown
 @codex Please review this PR for:
+
 - Code quality and best practices
-- Performance implications  
+- Performance implications
 - Testing recommendations
 - Security considerations
 ```
 
 ### In Issues
+
 ```markdown
-@codex I'm seeing calculation errors in the dual-entry system. 
+@codex I'm seeing calculation errors in the dual-entry system.
 The percentage to dollar conversion isn't syncing properly.
 Can you help analyze the logic?
 ```
@@ -25,6 +28,7 @@ Can you help analyze the logic?
 ## 🧮 **Calculation Review with AI**
 
 ### When to Tag @codex for Calculations
+
 - New financial formulas
 - Dual-entry system changes
 - KPI calculation modifications
@@ -32,7 +36,8 @@ Can you help analyze the logic?
 - Edge case handling
 
 ### Sample Calculation Review Request
-```markdown
+
+````markdown
 @codex I've updated the Net Margin calculation. Can you verify this logic?
 
 ```javascript
@@ -44,17 +49,21 @@ const netMargin = (netIncome / taxPrepIncome) * 100;
 // - Should we handle negative margins?
 // - Precision for very small numbers?
 ```
+````
 
 Expected response areas:
+
 - Mathematical accuracy
 - Edge case handling
 - Performance implications
 - Code clarity
-```
+
+````
 
 ## 📱 **Mobile Development with AI**
 
 ### Mobile Review Requests
+
 ```markdown
 @codex I've updated the mobile layout. Please check:
 - Touch target sizes (minimum 44px)
@@ -64,12 +73,13 @@ Expected response areas:
 
 The key mobile viewports are:
 - iPhone SE: 375x667
-- iPhone 12 Pro: 390x844  
+- iPhone 12 Pro: 390x844
 - iPad: 768x1024
-```
+````
 
 ### CSS/Styling Reviews
-```markdown
+
+````markdown
 @codex Can you review this CSS for mobile compatibility?
 
 ```css
@@ -86,15 +96,18 @@ The key mobile viewports are:
   }
 }
 ```
+````
 
 Are there any mobile usability issues I'm missing?
-```
+
+````
 
 ## 🧪 **Testing Strategy with AI**
 
 ### Test Coverage Analysis
+
 ```markdown
-@codex I've added new functionality to the wizard. 
+@codex I've added new functionality to the wizard.
 What test scenarios should I add?
 
 New feature: Custom growth percentage input
@@ -103,71 +116,78 @@ New feature: Custom growth percentage input
 - Syncs with dropdown selection
 
 Current tests cover basic scenarios. What edge cases am I missing?
-```
+````
 
 ### Test Code Review
-```markdown
+
+````markdown
 @codex Please review this test for completeness:
 
 ```javascript
 test('custom growth percentage validation', () => {
   // Test positive values
   expect(validateGrowth(25)).toBe(true);
-  
-  // Test negative values  
+
+  // Test negative values
   expect(validateGrowth(-10)).toBe(true);
-  
+
   // Test edge cases
   expect(validateGrowth(-99)).toBe(true);
   expect(validateGrowth(999)).toBe(true);
-  
+
   // Test invalid values
   expect(validateGrowth(-100)).toBe(false);
   expect(validateGrowth(1000)).toBe(false);
 });
 ```
+````
 
 Are there additional test cases I should include?
-```
+
+````
 
 ## 🔍 **Code Quality Reviews**
 
 ### React/TypeScript Best Practices
+
 ```markdown
-@codex I've refactored this component to use hooks. 
+@codex I've refactored this component to use hooks.
 Can you review for React best practices?
 
 ```tsx
-const DualEntryField: React.FC<DualEntryProps> = ({ 
-  percentage, 
+const DualEntryField: React.FC<DualEntryProps> = ({
+  percentage,
   onPercentageChange,
-  calculationBase 
+  calculationBase
 }) => {
   const [dollarValue, setDollarValue] = useState(0);
-  
+
   useEffect(() => {
     setDollarValue(Math.round(calculationBase * percentage / 100));
   }, [percentage, calculationBase]);
-  
+
   const handleDollarChange = (value: number) => {
     setDollarValue(value);
     onPercentageChange((value / calculationBase) * 100);
   };
-  
+
   return (
     // Component JSX
   );
 };
-```
+````
 
 Concerns:
+
 - Hook usage patterns
 - Performance optimization
 - Type safety
 - Accessibility
-```
+
+````
 
 ### Performance Reviews
+
 ```markdown
 @codex I'm concerned about performance with large datasets.
 Can you analyze this calculation logic?
@@ -175,7 +195,7 @@ Can you analyze this calculation logic?
 ```javascript
 const calculateAllExpenses = (inputs) => {
   const grossFees = inputs.revenue / (1 - inputs.discountsPct / 100);
-  
+
   // Calculate 17 different expense categories
   const expenses = EXPENSE_CATEGORIES.map(category => {
     if (category.type === 'percentage') {
@@ -186,17 +206,19 @@ const calculateAllExpenses = (inputs) => {
     }
     return category;
   });
-  
+
   return expenses;
 };
-```
+````
 
 This runs on every input change. Any optimization opportunities?
-```
+
+````
 
 ## 🐛 **Bug Investigation with AI**
 
 ### Bug Report Analysis
+
 ```markdown
 @codex I'm getting inconsistent calculation results. Can you help debug?
 
@@ -214,10 +236,11 @@ This runs on every input change. Any optimization opportunities?
 - Debug shows: 34.125%
 
 What could cause this discrepancy?
-```
+````
 
 ### Error Handling Reviews
-```markdown
+
+````markdown
 @codex Can you review my error handling for edge cases?
 
 ```javascript
@@ -225,23 +248,26 @@ const calculateCostPerReturn = (totalExpenses, returns) => {
   if (returns === 0) {
     return 'N/A'; // Division by zero
   }
-  
+
   if (totalExpenses < 0 || returns < 0) {
     throw new Error('Invalid input values');
   }
-  
+
   return totalExpenses / returns;
 };
 ```
+````
 
 Is this robust enough? Any other edge cases to consider?
-```
+
+````
 
 ## 📊 **Architecture & Design Reviews**
 
 ### Component Structure
+
 ```markdown
-@codex I'm refactoring the wizard architecture. 
+@codex I'm refactoring the wizard architecture.
 Can you review this approach?
 
 **Current structure:**
@@ -254,18 +280,19 @@ Can you review this approach?
 - Wizard (state management)
   - WizardStep (generic step wrapper)
     - WelcomePage
-    - InputsPage  
+    - InputsPage
     - ReviewPage
 
 Benefits: More reusable, cleaner separation
 Concerns: Added complexity, migration effort
 
 Thoughts on this approach?
-```
+````
 
 ### State Management Reviews
-```markdown
-@codex I'm using multiple React hooks for state. 
+
+````markdown
+@codex I'm using multiple React hooks for state.
 Is this the right pattern?
 
 ```javascript
@@ -274,27 +301,31 @@ const useAppState = () => {
   const [storeType, setStoreType] = useState('');
   const [inputs, setInputs] = useState(defaultInputs);
   const [calculations, setCalculations] = useState({});
-  
+
   // Complex interdependent state updates
   useEffect(() => {
     const newCalcs = calculateKPIs(inputs, region);
     setCalculations(newCalcs);
   }, [inputs, region]);
-  
+
   return { region, setRegion, inputs, setInputs, calculations };
 };
 ```
+````
 
 Should I consider a reducer pattern instead?
-```
+
+````
 
 ## 🎯 **AI Workflow Best Practices**
 
 ### 1. **Be Specific with Context**
+
 ❌ Bad: "@codex review this code"
 ✅ Good: "@codex review this dual-entry calculation logic for mathematical accuracy and edge case handling"
 
 ### 2. **Provide Relevant Background**
+
 Always include:
 - What the code does
 - Expected behavior
@@ -302,12 +333,14 @@ Always include:
 - Specific concerns
 
 ### 3. **Ask Targeted Questions**
+
 - "What edge cases am I missing?"
 - "Is this the most performant approach?"
 - "How can I make this more maintainable?"
 - "What security considerations apply?"
 
 ### 4. **Include Test Data**
+
 Provide sample inputs/outputs for calculation reviews:
 ```javascript
 // Sample data for testing
@@ -316,18 +349,21 @@ const testScenario = {
   taxPrepReturns: 1600,
   expectedRevenue: 200000
 };
-```
+````
 
 ### 5. **Follow Up on Suggestions**
+
 When @codex provides recommendations:
+
 - Implement the changes
-- Test thoroughly  
+- Test thoroughly
 - Report back on results
 - Ask follow-up questions if needed
 
 ## 🚀 **Advanced AI Integration**
 
 ### Automated AI Triggers
+
 Our GitHub workflows automatically provide context when you tag @codex:
 
 - **PR Comments:** Get project-specific context automatically
@@ -336,6 +372,7 @@ Our GitHub workflows automatically provide context when you tag @codex:
 - **Testing Context:** Comprehensive test scenarios
 
 ### AI Team Simulation
+
 Use different "AI roles" for comprehensive reviews:
 
 ```markdown
@@ -348,6 +385,7 @@ Use different "AI roles" for comprehensive reviews:
 ## 📚 **AI Knowledge Base**
 
 Your AI assistants have access to:
+
 - Complete project documentation
 - Testing procedures and checklists
 - Calculation formulas and business logic
@@ -361,6 +399,7 @@ This makes them highly effective at providing contextual, project-specific advic
 ## 🎉 **Making Your Team Feel Like a Legion**
 
 With this AI integration:
+
 - **Code Reviews** feel like senior developer feedback
 - **Testing** gets comprehensive QA engineer input
 - **Architecture** decisions have expert consultation

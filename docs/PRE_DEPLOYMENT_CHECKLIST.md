@@ -5,6 +5,7 @@
 Use this checklist before every deployment to ensure quality and functionality.
 
 ### ✅ Build & Technical Checks
+
 - [ ] `npm run build` completes successfully
 - [ ] Bundle size is reasonable (< 250kB)
 - [ ] No console errors in browser dev tools
@@ -14,6 +15,7 @@ Use this checklist before every deployment to ensure quality and functionality.
 ### ✅ Wizard Flow Testing (5 minutes)
 
 #### US Region Test
+
 - [ ] Select "US" region
 - [ ] Choose "Existing Store"
 - [ ] Enter test data:
@@ -34,7 +36,8 @@ Use this checklist before every deployment to ensure quality and functionality.
   - Change to $55,000 → Should update percentage
 - [ ] Complete wizard and verify dashboard loads
 
-#### Canada Region Test  
+#### Canada Region Test
+
 - [ ] Select "CA" region
 - [ ] Same test as US but verify:
   - TaxRush fields are visible
@@ -42,6 +45,7 @@ Use this checklist before every deployment to ensure quality and functionality.
   - Regional messaging appears
 
 ### ✅ Dashboard Verification (3 minutes)
+
 - [ ] KPI cards are visible and properly styled
 - [ ] Net Income calculation looks correct
 - [ ] Net Margin percentage is reasonable
@@ -50,6 +54,7 @@ Use this checklist before every deployment to ensure quality and functionality.
 - [ ] Expense breakdown shows all categories
 
 ### ✅ Debug Panel Testing (3 minutes)
+
 - [ ] Debug panel opens/closes properly
 - [ ] Thresholds tab has three collapsible sections
 - [ ] KPI threshold changes update dashboard colors
@@ -59,17 +64,20 @@ Use this checklist before every deployment to ensure quality and functionality.
 - [ ] Calculations tab shows intermediate values
 
 ### ✅ Regional Differences (2 minutes)
+
 - [ ] Switch between US/CA regions
 - [ ] TaxRush fields show/hide appropriately
 - [ ] Income calculations include/exclude TaxRush
 - [ ] Regional messaging updates correctly
 
 ### ✅ Data Persistence (1 minute)
+
 - [ ] Enter some data and refresh page
 - [ ] Verify data persists across refresh
 - [ ] Clear storage and verify clean state
 
 ### ✅ Error Handling (2 minutes)
+
 - [ ] Enter invalid values (negative, >100%)
 - [ ] Verify validation prevents submission
 - [ ] Try edge cases (0%, 100%, very large numbers)
@@ -80,6 +88,7 @@ Use this checklist before every deployment to ensure quality and functionality.
 Use these quick mental math checks:
 
 ### Example Store
+
 - ANF: $125, Returns: 1,600, Discounts: 3%
 - Expected calculations:
   - Tax Prep Income: $200,000 (125 × 1,600)
@@ -88,24 +97,28 @@ Use these quick mental math checks:
   - Cost/Return with $150k expenses: ~$94
 
 ### Red Flags
+
 - Net margin > 50% (too high)
 - Net margin < -20% (too low)
 - Cost per return > $200 (too expensive)
 - Salaries > 40% of gross fees (too high)
 
 ## 📱 Cross-Browser Quick Check
+
 - [ ] Chrome: Core functionality works
 - [ ] Firefox: Layout looks correct
 - [ ] Safari: No major issues
 - [ ] Mobile: Responsive design intact
 
 ## 🎯 Performance Spot Check
+
 - [ ] Initial load < 3 seconds
 - [ ] Wizard transitions smooth
 - [ ] Calculation updates instant
 - [ ] No memory leaks during use
 
 ## 🚨 Stop Deployment If:
+
 - Build fails
 - Console shows errors
 - Calculations are obviously wrong
@@ -114,6 +127,7 @@ Use these quick mental math checks:
 - Major UI elements missing
 
 ## ✅ Ready to Deploy When:
+
 - All checklist items pass
 - Calculations spot-checked and reasonable
 - No console errors
