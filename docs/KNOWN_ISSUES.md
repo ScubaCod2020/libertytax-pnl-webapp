@@ -72,6 +72,27 @@ Page 2 should maintain user's saved expense values after refresh, just like Dash
 
 ## ✅ Fixed Issues (Current Branch)
 
+### Husky hooks not running due to misconfigured core.hooksPath and deprecated shim (2025-09-21)
+
+**Bug ID**: `husky-hooks-not-running`  
+**Severity**: Medium  
+**Status**: Fixed
+
+**Description**:
+Git was configured with `core.hooksPath=.husky/_` causing Git to ignore real hooks in `.husky/` and run only helper stubs. The `pre-commit` hook used a deprecated `husky.sh` shim that prints a deprecation warning and will fail in v10.
+
+**Resolution**:
+
+- Set hooks path to `.husky` (`git config core.hooksPath .husky`).
+- Recreated `pre-commit` in Husky v9 format without sourcing `husky.sh`:
+  - `npx --no-install husky set .husky/pre-commit "npx --no-install lint-staged"`
+- Added `lint-staged` config to `package.json`.
+- Enforced LF endings for hooks via `.gitattributes`.
+
+**Verification**:
+
+- `git commit --allow-empty -m "test hooks"` triggers `lint-staged`.
+
 ### KPI Thresholds & Strategic Calculation ✅
 
 - Fixed Cost/Return to use strategic calculation (74.5-77.5% of revenue per return)

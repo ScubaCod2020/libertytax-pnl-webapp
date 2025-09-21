@@ -1,14 +1,17 @@
 # Master Index — Liberty Tax P&L Budget & Forecast
+
 Path: /
 
 Purpose: Canonical, human-friendly index of repository content for quick navigation and historical reference.
 
 ## Top-Level Docs
+
 - MASTER_INDEX.md (this file)
 - README.md (overview)
 - repo-blueprint.yml (source-of-truth)
 
 ## Docs/
+
 - docs/AI_INTEGRATION_GUIDE.md
 - docs/AUTOMATED_TESTING_STRATEGY.md
 - docs/ENV_SETUP.md
@@ -46,12 +49,14 @@ Purpose: Canonical, human-friendly index of repository content for quick navigat
 - docs/run-reports/overnight-run-20250919-0647.md
 
 ## Ops/
+
 - ops/README.md
-- ops/scripts/setup/*
+- ops/scripts/setup/\*
 - .github/workflows/ci.yml
 - .github/CODEOWNERS
 
 ## Scripts/
+
 - scripts/ai-test-generator.js
 - scripts/automated-accessibility-audit.js
 - scripts/automated-performance-monitor.js
@@ -88,10 +93,12 @@ Purpose: Canonical, human-friendly index of repository content for quick navigat
 - scripts/automated-debug-sync/QUICK-START.md
 
 ## Public assets
+
 - public/assets/brands/us/placeholder.md
 - public/assets/brands/ca/placeholder.md
 
 ## Src/ (selected)
+
 - src/docs/AI_INTEGRATION_STRATEGY.md
 - src/docs/SYSTEM_ARCHITECTURE.md
 - src/hooks/useAppState.ts
@@ -110,15 +117,19 @@ Purpose: Canonical, human-friendly index of repository content for quick navigat
 - src/components/ (see tree)
 
 ## Tests/
-- test/e2e/*
+
+- test/e2e/\*
 
 ## Angular/
+
 - angular/README.md (Angular workspace docs)
 
 ## Indexes
+
 - docs/INDEX.md (section index)
 - MASTER_INDEX.md (this file)
 
 ## Changelogs
+
 - CHANGELOG.md (root)
 - docs/CHANGELOG.md

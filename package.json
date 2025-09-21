@@ -42,6 +42,12 @@
     "prepare": "husky install",
     "api:lint": "spectral lint openapi/openapi.yaml"
   },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css,md}": [
+      "prettier --write",
+      "eslint --no-eslintrc --config .eslintrc.cjs --fix"
+    ]
+  },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

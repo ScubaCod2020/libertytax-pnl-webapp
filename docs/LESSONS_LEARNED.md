@@ -60,6 +60,11 @@ Purpose: Curated highlights from changelogs, fixes, and QA to guide future work 
 
 ### 2025-09-21 — PowerShell inline escaping caused stalled one-liner
 
+- 2025-09-21 — Husky v9 hooks path and deprecation fix
+  - Problem: `core.hooksPath` pointed to `.husky/_` (helper dir), so real hooks were skipped; `pre-commit` sourced deprecated `husky.sh`.
+  - Fix: `git config core.hooksPath .husky`; recreate hook with `npx husky set .husky/pre-commit "npx --no-install lint-staged"`; add lint-staged config; enforce LF for `.husky/*` via `.gitattributes`.
+  - Tip: Husky v9+ hooks are standalone scripts; do not source `husky.sh`.
+
 - Problem: A long inline `-Command` one-liner failed with "Missing variable name after foreach" when run from a quoted command string. `$` variables were being parsed by the outer layer, breaking `foreach ($m in $moves)`.
 - Fix: When using `pwsh -Command "..."`, escape PowerShell sigils as `` `$ `` inside the quoted string, or prefer a `.ps1` script. Also avoid massive one-liners in favor of small, readable loops.
 - Safe pattern for bulk moves (idempotent; creates folders; skips missing):
