@@ -6,8 +6,11 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
-    include: ['src/components/Wizard/**/__tests__/**/*.{test,spec}.{ts,tsx}', 'src/App.test.tsx'],
+    setupFiles: ['./apps/react/src/test/setup.ts'],
+    include: [
+      'apps/react/src/components/Wizard/**/__tests__/**/*.{test,spec}.{ts,tsx}',
+      'apps/react/src/App.test.tsx',
+    ],
     testTimeout: 20000,
     reporters: ['default'],
     outputFile: {

@@ -1,5 +1,5 @@
 // Lightweight components dependency graph generator (Mermaid)
-// Scans src/components for import relations and emits docs/architecture/components-graph.md
+// Scans apps/react/src/components for import relations and emits docs/architecture/components-graph.md
 
 // ESM-friendly imports for type: module
 import fs from 'node:fs';
@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..');
 
-const componentsDir = path.join(repoRoot, 'src', 'components');
+const componentsDir = path.join(repoRoot, 'apps', 'react', 'src', 'components');
 const docsDir = path.join(repoRoot, 'docs', 'architecture');
 const outputMd = path.join(docsDir, 'components-graph.md');
 const outputMmd = path.join(docsDir, 'components-graph.mmd');
@@ -127,8 +127,9 @@ function buildGraph() {
     mermaid += `  ${sanitizeNodeId(from)} --> ${sanitizeNodeId(to)}\n`;
   }
 
-  const header = '# Components Dependency Graph\\nPath: /docs/architecture\\n\\nPurpose: Visual map of component imports within src/components (generated).';
-  const md = header.replace(/\\n/g, '\n') + '\n\n```mermaid\n' + mermaid + '```\n'
+  const header =
+    '# Components Dependency Graph\\nPath: /docs/architecture\\n\\nPurpose: Visual map of component imports within apps/react/src/components (generated).';
+  const md = header.replace(/\\n/g, '\n') + '\n\n```mermaid\n' + mermaid + '```\n';
 
   fs.mkdirSync(docsDir, { recursive: true });
   fs.writeFileSync(outputMd, md, 'utf8');

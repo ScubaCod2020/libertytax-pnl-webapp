@@ -2,23 +2,26 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+  root: 'apps/react',
   plugins: [react()],
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
+    setupFiles: ['./apps/react/src/test/setup.ts'],
     exclude: [
       'tests/**', // backward-compat: old path
       'test/**', // exclude Playwright/E2E specs from vitest
       '**/node_modules/**', // exclude any nested node_modules (e.g., angular/node_modules)
       'angular/**', // exclude Angular workspace tests from root vitest
-      ...(process.env.CI ? ['src/components/Wizard/**/__tests__/**', 'src/App.test.tsx'] : []),
+      ...(process.env.CI
+        ? ['apps/react/src/components/Wizard/**/__tests__/**', 'apps/react/src/App.test.tsx']
+        : []),
     ],
     coverage: {
       reporter: ['text', 'json', 'html', 'lcov'],
       exclude: [
         'node_modules/',
-        'src/test/',
+        'apps/react/src/test/',
         '**/*.d.ts',
         '**/*.test.{ts,tsx}',
         '**/*.spec.{ts,tsx}',
@@ -26,6 +29,7 @@ export default defineConfig({
     },
   },
   build: {
+    outDir: '../../dist',
     rollupOptions: {
       output: {
         manualChunks: {

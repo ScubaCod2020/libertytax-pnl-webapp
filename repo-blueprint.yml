@@ -1,25 +1,25 @@
 meta:
-  name: "Liberty Tax — P&L Budget & Forecast Webapp"
-  owner: "ScubaCod2020"
-  purpose: "Source-of-truth for repository structure, docs, and quality gates"
+  name: 'Liberty Tax — P&L Budget & Forecast Webapp'
+  owner: 'ScubaCod2020'
+  purpose: 'Source-of-truth for repository structure, docs, and quality gates'
 
 conventions:
-  languages: ["TypeScript", "React", "Angular (planned)"]
-  packageManager: "npm"
-  nodeVersion: ">=18"
+  languages: ['TypeScript', 'React', 'Angular (planned)']
+  packageManager: 'npm'
+  nodeVersion: '>=18'
   formatting:
     prettier: true
     eslint: true
   ci:
-    provider: "GitHub Actions"
+    provider: 'GitHub Actions'
     environments:
       - name: staging
         requiresApproval: true
       - name: preview
         requiresApproval: false
   deployment:
-    provider: "Vercel"
-    secrets: ["VERCEL_TOKEN", "VERCEL_ORG_ID", "VERCEL_PROJECT_ID"]
+    provider: 'Vercel'
+    secrets: ['VERCEL_TOKEN', 'VERCEL_ORG_ID', 'VERCEL_PROJECT_ID']
 
 structure:
   root:
@@ -39,27 +39,27 @@ structure:
     - README.md
     - workflows: .github/workflows/ci.yml
   app:
-    - src/components/**
-    - src/hooks/**
-    - src/lib/**
-    - src/types/**
-    - src/utils/**
+    - apps/react/src/components/**
+    - apps/react/src/hooks/**
+    - apps/react/src/lib/**
+    - apps/react/src/types/**
+    - apps/react/src/utils/**
   tests:
-    - unit: "src/**/*.test.ts{,x}"
-    - e2e: "test/e2e/**/*.{ts,js}"
+    - unit: 'apps/react/src/**/*.test.ts{,x}'
+    - e2e: 'test/e2e/**/*.{ts,js}'
 
 devServers:
   react:
-    path: "/"
-    command: "npm run dev:react"
+    path: '/' # Vite root set to apps/react in vite.config.ts
+    command: 'npm run dev:react'
     port: 3000
   angular:
-    path: "/angular" # keep stable for automation
-    command: "npm run dev:angular"
+    path: '/angular' # keep stable for automation
+    command: 'npm run dev:angular'
     port: 4200
   dual:
-    command: "npm run dev:dual"
-    description: "Run React (Vite:3000) and Angular (ng:4200) concurrently"
+    command: 'npm run dev:dual'
+    description: 'Run React (Vite:3000) and Angular (ng:4200) concurrently'
 
 qualityGates:
   requiredChecks:
@@ -67,27 +67,27 @@ qualityGates:
     - type-check
     - test
   codeOwners:
-    - path: "src/**"
-      owners: ["@ScubaCod2020"]
+    - path: 'apps/react/src/**'
+      owners: ['@ScubaCod2020']
   reviewPolicy:
     requireCodeOwners: true
     minApprovals: 1
 
 workflows:
   ci:
-    detectsFramework: ["angular.json", "nx.json"]
+    detectsFramework: ['angular.json', 'nx.json']
     steps:
-      - install: "npm ci"
+      - install: 'npm ci'
       - lint:
-          angular: "npx ng lint || npm run lint --if-present"
-          react: "npm run lint"
-      - typecheck: "npm run type-check --if-present"
+          angular: 'npx ng lint || npm run lint --if-present'
+          react: 'npm run lint'
+      - typecheck: 'npm run type-check --if-present'
       - test:
-          angular: "npx ng test --watch=false --browsers=ChromeHeadless || npm run test --if-present"
-          react: "npm run test --if-present"
+          angular: 'npx ng test --watch=false --browsers=ChromeHeadless || npm run test --if-present'
+          react: 'npm run test --if-present'
       - build:
-          angular: "npx ng build --configuration=production || npx ng build"
-          react: "npm run build"
+          angular: 'npx ng build --configuration=production || npx ng build'
+          react: 'npm run build'
       - approval: { environment: staging }
       - deployPreview: { environment: preview }
 
@@ -98,10 +98,10 @@ notes:
 
 transition:
   coexistence:
-    description: "Interim period running React (reference) and Angular (target) side by side"
+    description: 'Interim period running React (reference) and Angular (target) side by side'
     react_port: 3000
     angular_port: 4200
     archive_plan:
-      - condition: "Angular feature parity achieved and tests passing"
-      - action: "Archive React app code, retain docs and artifacts"
-      - action: "Update CI to Angular-only"
+      - condition: 'Angular feature parity achieved and tests passing'
+      - action: 'Archive React app code, retain docs and artifacts'
+      - action: 'Update CI to Angular-only'
