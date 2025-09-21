@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-step3',
   imports: [],
   templateUrl: './step-3.html',
-  styleUrl: './step-3.scss'
+  styleUrl: './step-3.scss',
 })
-export class Step3 {
-
-}
+export class Step3 {}

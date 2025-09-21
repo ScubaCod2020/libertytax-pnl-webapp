@@ -1,30 +1,36 @@
 // WizardReview.tsx - Report generation and wizard data compilation
 // Print-friendly summary for Excel export and final wizard completion
 
-import React from 'react'
+import React from 'react';
 import {
   expenseCategories,
   getFieldsByCategory,
   getFieldsForRegion,
   type ExpenseCategory,
-} from '../types/expenses'
-import type { WizardAnswers } from './Wizard/types'
-import { calc, statusForMargin, type Thresholds } from '../lib/calcs'
+} from '../types/expenses';
+import type { WizardAnswers } from './Wizard/types';
+import { calc, statusForMargin, type Thresholds } from '../lib/calcs';
 
 // Brand assets
-import { US_ASSETS, CA_ASSETS } from '../assets/brands'
+import { US_ASSETS, CA_ASSETS } from '../assets/brands';
 
 interface WizardReviewProps {
-  answers: WizardAnswers
-  onNext: () => void
-  onBack: () => void
+  answers: WizardAnswers;
+  onNext: () => void;
+  onBack: () => void;
 }
 
 export default function WizardReview({ answers, onNext, onBack }: WizardReviewProps) {
-  if (!answers || !answers.region) return <div>Loading…</div>
+  // Always render with safe fallbacks instead of blocking on region
+  const regionSafe = (answers?.region as 'US' | 'CA') || 'US';
+
+  const safeNumber = (value: unknown, fallback = 0): number => {
+    const n = typeof value === 'number' ? value : Number(value);
+    return Number.isFinite(n) ? n : fallback;
+  };
   // ——— PRINT STYLES (CPA one-pager) ———
   React.useEffect(() => {
-    const printStyles = document.createElement('style')
+    const printStyles = document.createElement('style');
     printStyles.innerHTML = `
       @media print {
         /* Hide everything but the report */
@@ -104,10 +110,12 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
         .page-break-avoid { page-break-inside: avoid !important; }
         p { margin: 2pt 0 4pt 0 !important; font-size: 9pt !important; }
       }
-    `
-    document.head.appendChild(printStyles)
-    return () => { document.head.removeChild(printStyles) }
-  }, [])
+    `;
+    document.head.appendChild(printStyles);
+    return () => {
+      document.head.removeChild(printStyles);
+    };
+  }, []);
 
   // ——— KPI Thresholds used for coloring margin ———
   const defaultThresholds: Thresholds = {
@@ -116,45 +124,85 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
     nimGreen: 22.5,
     nimYellow: 19.5,
     netIncomeWarn: -5000,
-  }
+  };
 
   // ——— SINGLE SOURCE OF TRUTH: calc(answers) ———
-  const results = calc({
-    region: answers.region,
-    scenario: 'Custom',
-    avgNetFee: answers.avgNetFee ?? 0,
-    taxPrepReturns: answers.taxPrepReturns ?? 0,
-    taxRushReturns: answers.taxRushReturns ?? 0,
-    handlesTaxRush: answers.handlesTaxRush,
-    otherIncome: answers.otherIncome ?? 0,
-    discountsPct: answers.discountsPct ?? 3,
-    calculatedTotalExpenses: answers.calculatedTotalExpenses,
-    salariesPct: answers.salariesPct ?? 0,
-    empDeductionsPct: answers.empDeductionsPct ?? 0,
-    rentPct: answers.rentPct ?? 0,
-    telephoneAmt: answers.telephoneAmt ?? 0,
-    utilitiesAmt: answers.utilitiesAmt ?? 0,
-    localAdvAmt: answers.localAdvAmt ?? 0,
-    insuranceAmt: answers.insuranceAmt ?? 0,
-    postageAmt: answers.postageAmt ?? 0,
-    suppliesPct: answers.suppliesPct ?? 0,
-    duesAmt: answers.duesAmt ?? 0,
-    bankFeesAmt: answers.bankFeesAmt ?? 0,
-    maintenanceAmt: answers.maintenanceAmt ?? 0,
-    travelEntAmt: answers.travelEntAmt ?? 0,
-    royaltiesPct: answers.royaltiesPct ?? 0,
-    advRoyaltiesPct: answers.advRoyaltiesPct ?? 0,
-    taxRushRoyaltiesPct: answers.taxRushRoyaltiesPct ?? 0,
-    miscPct: answers.miscPct ?? 0,
-    thresholds: defaultThresholds,
-  })
+  const [calcError, setCalcError] = React.useState<string | null>(null);
+  const results = React.useMemo(() => {
+    try {
+      setCalcError(null);
+      return calc({
+        region: answers.region,
+        scenario: 'Custom',
+        avgNetFee: answers.avgNetFee ?? 0,
+        taxPrepReturns: answers.taxPrepReturns ?? 0,
+        taxRushReturns: answers.taxRushReturns ?? 0,
+        handlesTaxRush: answers.handlesTaxRush,
+        otherIncome: answers.otherIncome ?? 0,
+        discountsPct: answers.discountsPct ?? 3,
+        calculatedTotalExpenses: answers.calculatedTotalExpenses,
+        salariesPct: answers.salariesPct ?? 0,
+        empDeductionsPct: answers.empDeductionsPct ?? 0,
+        rentPct: answers.rentPct ?? 0,
+        telephoneAmt: answers.telephoneAmt ?? 0,
+        utilitiesAmt: answers.utilitiesAmt ?? 0,
+        localAdvAmt: answers.localAdvAmt ?? 0,
+        insuranceAmt: answers.insuranceAmt ?? 0,
+        postageAmt: answers.postageAmt ?? 0,
+        suppliesPct: answers.suppliesPct ?? 0,
+        duesAmt: answers.duesAmt ?? 0,
+        bankFeesAmt: answers.bankFeesAmt ?? 0,
+        maintenanceAmt: answers.maintenanceAmt ?? 0,
+        travelEntAmt: answers.travelEntAmt ?? 0,
+        royaltiesPct: answers.royaltiesPct ?? 0,
+        advRoyaltiesPct: answers.advRoyaltiesPct ?? 0,
+        taxRushRoyaltiesPct: answers.taxRushRoyaltiesPct ?? 0,
+        miscPct: answers.miscPct ?? 0,
+        thresholds: defaultThresholds,
+      });
+    } catch (e: any) {
+      console.error('WizardReview: calc() failed', e);
+      setCalcError(e?.message || 'Unknown error');
+      // Return a harmless zeroed structure-like object to allow render
+      return {
+        grossFees: 0,
+        discounts: 0,
+        taxPrepIncome: 0,
+        taxRushIncome: 0,
+        otherIncome: 0,
+        totalRevenue: 0,
+        totalExpenses: 0,
+        netIncome: 0,
+        netMarginPct: 0,
+        costPerReturn: 0,
+        totalReturns: 0,
+        salaries: 0,
+        empDeductions: 0,
+        rent: 0,
+        telephone: 0,
+        utilities: 0,
+        localAdv: 0,
+        insurance: 0,
+        postage: 0,
+        supplies: 0,
+        dues: 0,
+        bankFees: 0,
+        maintenance: 0,
+        travelEnt: 0,
+        royalties: 0,
+        advRoyalties: 0,
+        taxRushRoyalties: 0,
+        misc: 0,
+      } as any;
+    }
+  }, [answers]);
 
   // ——— Derived display helpers ———
-  const relevantFields = getFieldsForRegion(answers.region, answers.handlesTaxRush)
-  const projectedReturns = answers.projectedTaxPrepReturns ?? answers.taxPrepReturns ?? 0
-  const projectedAvgNetFee = answers.projectedAvgNetFee ?? answers.avgNetFee ?? 0
-  const profitPerReturn = results.totalReturns > 0 ? results.netIncome / results.totalReturns : 0
-  const netMarginStatus = statusForMargin(results.netMarginPct, defaultThresholds)
+  const relevantFields = getFieldsForRegion(regionSafe, answers?.handlesTaxRush);
+  const projectedReturns = safeNumber(answers?.projectedTaxPrepReturns ?? answers?.taxPrepReturns);
+  const projectedAvgNetFee = safeNumber(answers?.projectedAvgNetFee ?? answers?.avgNetFee);
+  const profitPerReturn = results.totalReturns > 0 ? results.netIncome / results.totalReturns : 0;
+  const netMarginStatus = statusForMargin(results.netMarginPct, defaultThresholds);
 
   // Map field.id → calc results key (keeps expense table consistent with calc)
   const resultKeyByFieldId: Record<string, keyof typeof results | undefined> = {
@@ -175,7 +223,7 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
     advRoyaltiesPct: 'advRoyalties',
     taxRushRoyaltiesPct: 'taxRushRoyalties',
     miscPct: 'misc',
-  }
+  };
 
   const renderPrintableReport = () => {
     return (
@@ -201,9 +249,18 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
         >
           <div style={{ marginBottom: '1rem' }}>
             <img
-              src={answers.region === 'CA' ? CA_ASSETS.logoWide : US_ASSETS.logoWide}
-              alt={answers.region === 'CA' ? 'Liberty Tax Canada' : 'Liberty Tax Service'}
+              src={
+                (regionSafe === 'CA'
+                  ? (CA_ASSETS as any)?.logoWide
+                  : (US_ASSETS as any)?.logoWide) || ''
+              }
+              alt={regionSafe === 'CA' ? 'Liberty Tax Canada' : 'Liberty Tax Service'}
               style={{ height: '60px', width: 'auto', maxWidth: '300px' }}
+              onError={(e) => {
+                try {
+                  (e.currentTarget as HTMLImageElement).style.display = 'none';
+                } catch {}
+              }}
             />
           </div>
 
@@ -325,8 +382,8 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                       netMarginStatus === 'green'
                         ? '#059669'
                         : netMarginStatus === 'yellow'
-                        ? '#f59e0b'
-                        : '#dc2626',
+                          ? '#f59e0b'
+                          : '#dc2626',
                   }}
                 >
                   {results.netMarginPct.toFixed(1)}%
@@ -344,7 +401,12 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                     border: '1px solid #ddd',
                     textAlign: 'right',
                     fontWeight: 700,
-                    color: results.costPerReturn <= 85 ? '#059669' : results.costPerReturn <= 100 ? '#f59e0b' : '#dc2626',
+                    color:
+                      results.costPerReturn <= 85
+                        ? '#059669'
+                        : results.costPerReturn <= 100
+                          ? '#f59e0b'
+                          : '#dc2626',
                   }}
                 >
                   ${Math.round(results.costPerReturn).toLocaleString()}
@@ -360,7 +422,10 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                     border: '1px solid #ddd',
                     textAlign: 'right',
                     fontWeight: 700,
-                    color: (results.netIncome / Math.max(results.totalReturns, 1)) >= 0 ? '#059669' : '#dc2626',
+                    color:
+                      results.netIncome / Math.max(results.totalReturns, 1) >= 0
+                        ? '#059669'
+                        : '#dc2626',
                   }}
                 >
                   ${Math.round(profitPerReturn).toLocaleString()}
@@ -410,7 +475,7 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                     textAlign: 'right',
                   }}
                 >
-                  ${Math.round(results.grossFees).toLocaleString()}
+                  ${Math.round(safeNumber(results.grossFees)).toLocaleString()}
                 </td>
               </tr>
               <tr style={{ backgroundColor: '#f8f9fa' }}>
@@ -425,7 +490,7 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                     color: '#dc2626',
                   }}
                 >
-                  -${Math.round(results.discounts).toLocaleString()}
+                  -${Math.round(safeNumber(results.discounts)).toLocaleString()}
                 </td>
               </tr>
               {answers.region === 'CA' && answers.handlesTaxRush && results.taxRushIncome > 0 && (
@@ -440,7 +505,7 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                       textAlign: 'right',
                     }}
                   >
-                    ${Math.round(results.taxRushIncome).toLocaleString()}
+                    ${Math.round(safeNumber(results.taxRushIncome)).toLocaleString()}
                   </td>
                 </tr>
               )}
@@ -454,14 +519,14 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                       textAlign: 'right',
                     }}
                   >
-                    ${Math.round(results.otherIncome).toLocaleString()}
+                    ${Math.round(safeNumber(results.otherIncome)).toLocaleString()}
                   </td>
                 </tr>
               )}
               <tr style={{ fontWeight: 'bold', backgroundColor: '#e6f7ff' }}>
                 <td style={{ padding: '8px', border: '2px solid #059669' }}>TOTAL REVENUE</td>
                 <td style={{ padding: '8px', border: '2px solid #059669', textAlign: 'right' }}>
-                  ${Math.round(results.totalRevenue).toLocaleString()}
+                  ${Math.round(safeNumber(results.totalRevenue)).toLocaleString()}
                 </td>
               </tr>
             </tbody>
@@ -486,135 +551,143 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
               </tr>
             </thead>
             <tbody>
-              {(['personnel', 'facility', 'operations', 'franchise', 'misc'] as ExpenseCategory[]).map(
-                (category) => {
-                  const categoryFields = getFieldsByCategory(category).filter((f) =>
-                    relevantFields.includes(f),
-                  )
-                  if (categoryFields.length === 0) return null
+              {(
+                ['personnel', 'facility', 'operations', 'franchise', 'misc'] as ExpenseCategory[]
+              ).map((category) => {
+                const categoryFields = getFieldsByCategory(category).filter((f) =>
+                  relevantFields.includes(f)
+                );
+                if (categoryFields.length === 0) return null;
 
-                  return (
-                    <React.Fragment key={category}>
-                      <tr style={{ backgroundColor: '#f8f9fa' }}>
-                        <td
-                          colSpan={4}
-                          style={{
-                            padding: '8px',
-                            border: '1px solid #ddd',
-                            fontWeight: 'bold',
-                            fontSize: '0.9rem',
-                            color: '#374151',
-                          }}
-                        >
-                          {getCategoryIcon(category)} {expenseCategories[category].label.toUpperCase()}
-                        </td>
-                      </tr>
+                return (
+                  <React.Fragment key={category}>
+                    <tr style={{ backgroundColor: '#f8f9fa' }}>
+                      <td
+                        colSpan={4}
+                        style={{
+                          padding: '8px',
+                          border: '1px solid #ddd',
+                          fontWeight: 'bold',
+                          fontSize: '0.9rem',
+                          color: '#374151',
+                        }}
+                      >
+                        {getCategoryIcon(category)}{' '}
+                        {expenseCategories[category].label.toUpperCase()}
+                      </td>
+                    </tr>
 
-                      {categoryFields.map((field) => {
-                        const rate = (answers as any)[field.id] ?? field.defaultValue
-                        const isFixed = field.calculationBase === 'fixed_amount'
-                        const resultsKey = resultKeyByFieldId[field.id]
-                        const amountFromCalc =
-                          resultsKey && typeof results[resultsKey] === 'number'
-                            ? (results[resultsKey] as number)
-                            : undefined
+                    {categoryFields.map((field) => {
+                      const rate = (answers as any)[field.id] ?? field.defaultValue;
+                      const isFixed = field.calculationBase === 'fixed_amount';
+                      const resultsKey = resultKeyByFieldId[field.id];
+                      const amountFromCalc =
+                        resultsKey && typeof results[resultsKey] === 'number'
+                          ? (results[resultsKey] as number)
+                          : undefined;
 
-                        // Fallback calculation if we can't map to results (should be rare)
-                        let notes = ''
-                        if (isFixed) {
-                          notes = 'Fixed Amount'
-                        } else {
-                          // Describe base used (aligned to calc engine)
-                          switch (field.id) {
-                            case 'royaltiesPct':
-                            case 'advRoyaltiesPct':
-                            case 'taxRushRoyaltiesPct':
-                              notes = `${rate}% of Tax Prep Income`
-                              break
-                            case 'suppliesPct':
-                            case 'miscPct':
-                            case 'rentPct':
-                              notes = `${rate}% of Gross Tax Prep Fees`
-                              break
-                            default:
-                              // If original metadata has a different base naming, keep it simple:
-                              notes = `${rate}%`
-                              break
-                          }
+                      // Fallback calculation if we can't map to results (should be rare)
+                      let notes = '';
+                      if (isFixed) {
+                        notes = 'Fixed Amount';
+                      } else {
+                        // Describe base used (aligned to calc engine)
+                        switch (field.id) {
+                          case 'royaltiesPct':
+                          case 'advRoyaltiesPct':
+                          case 'taxRushRoyaltiesPct':
+                            notes = `${rate}% of Tax Prep Income`;
+                            break;
+                          case 'suppliesPct':
+                          case 'miscPct':
+                          case 'rentPct':
+                            notes = `${rate}% of Gross Tax Prep Fees`;
+                            break;
+                          default:
+                            // If original metadata has a different base naming, keep it simple:
+                            notes = `${rate}%`;
+                            break;
                         }
+                      }
 
-                        return (
-                          <tr key={field.id}>
-                            <td
-                              style={{
-                                padding: '6px 8px 6px 20px',
-                                border: '1px solid #ddd',
-                                fontSize: '0.85rem',
-                              }}
-                            >
-                              {field.label}
-                              {(answers as any)[field.id] !== undefined && (
-                                <span
-                                  style={{
-                                    fontSize: '0.7rem',
-                                    backgroundColor: '#dbeafe',
-                                    color: '#1e40af',
-                                    padding: '1px 4px',
-                                    borderRadius: '3px',
-                                    marginLeft: '0.5rem',
-                                  }}
-                                >
-                                  customized
-                                </span>
-                              )}
-                            </td>
-                            <td
-                              style={{
-                                padding: '6px 8px',
-                                border: '1px solid #ddd',
-                                textAlign: 'center',
-                                fontSize: '0.85rem',
-                              }}
-                            >
-                              {isFixed ? 'Fixed' : `${rate}%`}
-                            </td>
-                            <td
-                              style={{
-                                padding: '6px 8px',
-                                border: '1px solid #ddd',
-                                textAlign: 'right',
-                                fontSize: '0.85rem',
-                                fontWeight: 500,
-                              }}
-                            >
-                              ${Math.round(amountFromCalc ?? 0).toLocaleString()}
-                            </td>
-                            <td
-                              style={{
-                                padding: '6px 8px',
-                                border: '1px solid #ddd',
-                                fontSize: '0.75rem',
-                                color: '#6b7280',
-                              }}
-                            >
-                              {notes}
-                            </td>
-                          </tr>
-                        )
-                      })}
-                    </React.Fragment>
-                  )
-                },
-              )}
+                      return (
+                        <tr key={field.id}>
+                          <td
+                            style={{
+                              padding: '6px 8px 6px 20px',
+                              border: '1px solid #ddd',
+                              fontSize: '0.85rem',
+                            }}
+                          >
+                            {field.label}
+                            {(answers as any)[field.id] !== undefined && (
+                              <span
+                                style={{
+                                  fontSize: '0.7rem',
+                                  backgroundColor: '#dbeafe',
+                                  color: '#1e40af',
+                                  padding: '1px 4px',
+                                  borderRadius: '3px',
+                                  marginLeft: '0.5rem',
+                                }}
+                              >
+                                customized
+                              </span>
+                            )}
+                          </td>
+                          <td
+                            style={{
+                              padding: '6px 8px',
+                              border: '1px solid #ddd',
+                              textAlign: 'center',
+                              fontSize: '0.85rem',
+                            }}
+                          >
+                            {isFixed ? 'Fixed' : `${rate}%`}
+                          </td>
+                          <td
+                            style={{
+                              padding: '6px 8px',
+                              border: '1px solid #ddd',
+                              textAlign: 'right',
+                              fontSize: '0.85rem',
+                              fontWeight: 500,
+                            }}
+                          >
+                            ${Math.round(amountFromCalc ?? 0).toLocaleString()}
+                          </td>
+                          <td
+                            style={{
+                              padding: '6px 8px',
+                              border: '1px solid #ddd',
+                              fontSize: '0.75rem',
+                              color: '#6b7280',
+                            }}
+                          >
+                            {notes}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </React.Fragment>
+                );
+              })}
 
               {/* Expense Total */}
               <tr style={{ fontWeight: 'bold', backgroundColor: '#fee2e2' }}>
-                <td style={{ padding: '10px 8px', border: '2px solid #dc2626', fontSize: '0.9rem' }}>
+                <td
+                  style={{ padding: '10px 8px', border: '2px solid #dc2626', fontSize: '0.9rem' }}
+                >
                   TOTAL EXPENSES
                 </td>
-                <td style={{ padding: '10px 8px', border: '2px solid #dc2626', textAlign: 'center' }}>
-                  {results.totalRevenue > 0
-                    ? ((results.totalExpenses / results.totalRevenue) * 100).toFixed(1)
+                <td
+                  style={{ padding: '10px 8px', border: '2px solid #dc2626', textAlign: 'center' }}
+                >
+                  {safeNumber(results.totalRevenue) > 0
+                    ? (
+                        (safeNumber(results.totalExpenses) / safeNumber(results.totalRevenue)) *
+                        100
+                      ).toFixed(1)
                     : '0.0'}
                   %
                 </td>
@@ -626,7 +699,7 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                     fontSize: '0.9rem',
                   }}
                 >
-                  ${Math.round(results.totalExpenses).toLocaleString()}
+                  ${Math.round(safeNumber(results.totalExpenses)).toLocaleString()}
                 </td>
                 <td
                   style={{
@@ -660,13 +733,19 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
               color: results.netIncome >= 0 ? '#059669' : '#dc2626',
             }}
           >
-            NET INCOME: ${Math.round(results.netIncome).toLocaleString()} (
-            {results.totalRevenue > 0 ? results.netMarginPct.toFixed(1) : '0.0'}% margin)
+            NET INCOME: ${Math.round(safeNumber(results.netIncome)).toLocaleString()} (
+            {safeNumber(results.totalRevenue) > 0
+              ? safeNumber(results.netMarginPct).toFixed(1)
+              : '0.0'}
+            % margin)
           </div>
         </div>
 
         {/* Management Checklist */}
-        <div className="management-checklist" style={{ marginTop: '2rem', pageBreakBefore: 'auto' }}>
+        <div
+          className="management-checklist"
+          style={{ marginTop: '2rem', pageBreakBefore: 'auto' }}
+        >
           <h3
             style={{
               fontSize: '14px',
@@ -681,7 +760,13 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
             MANAGEMENT REVIEW CHECKLIST
           </h3>
 
-          <div style={{ fontSize: '11px', lineHeight: 1.6, fontFamily: '"Proxima Nova", Arial, sans-serif' }}>
+          <div
+            style={{
+              fontSize: '11px',
+              lineHeight: 1.6,
+              fontFamily: '"Proxima Nova", Arial, sans-serif',
+            }}
+          >
             <div style={{ marginBottom: '1rem' }}>
               <span style={{ fontWeight: 600 }}>□ REVENUE OPTIMIZATION:</span>
               <ul style={{ marginTop: '0.25rem', marginBottom: '0.5rem', paddingLeft: '1.5rem' }}>
@@ -710,7 +795,9 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
               <span style={{ fontWeight: 600 }}>□ PERFORMANCE TARGETS:</span>
               <ul style={{ marginTop: '0.25rem', marginBottom: '0.5rem', paddingLeft: '1.5rem' }}>
                 <li>Net margin target: {results.netMarginPct.toFixed(1)}% (benchmark: 20–25%)</li>
-                <li>Total returns (incl. TaxRush if CA): {results.totalReturns.toLocaleString()}</li>
+                <li>
+                  Total returns (incl. TaxRush if CA): {results.totalReturns.toLocaleString()}
+                </li>
               </ul>
             </div>
 
@@ -726,15 +813,15 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
           </div>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div data-wizard-step="review">
       <div className="card-title">📋 P&L Report Summary</div>
       <p className="small" style={{ marginBottom: '1.5rem' }}>
-        <strong>Final report ready for review and printing.</strong> This summary compiles all your wizard
-        inputs into a professional P&L forecast. Print this page or proceed to the dashboard.
+        <strong>Final report ready for review and printing.</strong> This summary compiles all your
+        wizard inputs into a professional P&L forecast. Print this page or proceed to the dashboard.
       </p>
 
       {/* Export Buttons */}
@@ -779,9 +866,9 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                 answers: answers,
                 results, // include calc results for Excel
                 timestamp: new Date().toISOString(),
-              }
-              console.log('📊 Excel Export - Wizard Data:', data)
-              alert('Excel export will use current wizard data & calc results')
+              };
+              console.log('📊 Excel Export - Wizard Data:', data);
+              alert('Excel export will use current wizard data & calc results');
             }}
             style={{
               background: 'linear-gradient(45deg, #059669, #10b981)',
@@ -799,7 +886,9 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
             📊 Export Excel
           </button>
         </div>
-        <div style={{ color: '#0369a1', fontSize: '0.85rem', display: 'flex', alignItems: 'center' }}>
+        <div
+          style={{ color: '#0369a1', fontSize: '0.85rem', display: 'flex', alignItems: 'center' }}
+        >
           <div>
             <strong>PDF:</strong> Management review one-pager
             <br />
@@ -860,23 +949,23 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
         </button>
       </div>
     </div>
-  )
+  );
 }
 
 // Helper: category → icon
 function getCategoryIcon(category: ExpenseCategory): string {
   switch (category) {
     case 'personnel':
-      return '👥'
+      return '👥';
     case 'facility':
-      return '🏢'
+      return '🏢';
     case 'operations':
-      return '⚙️'
+      return '⚙️';
     case 'franchise':
-      return '🏪'
+      return '🏪';
     case 'misc':
-      return '📝'
+      return '📝';
     default:
-      return '📊'
+      return '📊';
   }
 }

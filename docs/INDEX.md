@@ -1,4 +1,5 @@
 # Docs — Index
+
 Path: /docs
 
 Purpose: Quick links to key documentation.
@@ -18,3 +19,10 @@ Purpose: Quick links to key documentation.
 - Pre-deploy checklist: ./PRE_DEPLOYMENT_CHECKLIST.md
 - Development notes: ./DEV_NOTES_V5.md
 
+## Intake
+
+- Enhancement Inbox: ./inbox.enhancements.md
+
+## Parity
+
+- React → Angular Parity Checklist: ./parity-checklist.md
