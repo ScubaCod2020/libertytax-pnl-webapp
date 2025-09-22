@@ -16,6 +16,11 @@
   - Noted WizardFlowMatrix failures (expected pre-wiring); added QA analysis triage.
 - Added domain unit tests and Vitest config; ran n-3 domain test passes, all green. Logs: `.logs/domain-tests-pass{1..3}.log`.
 
+Merge/Next Steps:
+
+- NOTE: Merge `feat/context-first-hunt-port` into `dev_09202025` before proceeding next session.
+- Next session TODOs: add more domain edge-case tests; begin Angular UI wiring to `CalculationService` on wizard pages.
+
 # Development Progress Log
 
 - - 2025-09-21T19:15:29.641Z - Exported progress log to clipboard
