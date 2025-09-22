@@ -1,5 +1,27 @@
-.page-header { padding: 0 0 8px; }
+.page-header { padding: 0 24px 8px; }
 .page-header--wide { max-width: 1200px; margin: 0 auto; padding: 0 24px 8px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* React parity styles */
+.qs-intro { text-align: center; margin-bottom: 2rem; padding: 1.5rem 0; }
+.qs-title { font-size: 1.75rem; font-weight: 600; color: #1e40af; margin-bottom: 1rem; }
+.qs-subtitle { font-size: 1.1rem; color: #6b7280; line-height: 1.6; }
+
+.qs-row { margin-bottom: 1rem; display: block; }
+.qs-label { font-weight: 500; display: block; overflow-wrap: break-word; margin-bottom: 0.25rem; }
+.qs-field { display: block; }
+.qs-note { opacity: 0.7; display: block; margin-top: 0.25rem; }
+.req { color: #dc2626; margin-left: 0.25rem; }
+.qs-select { padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; background-color: #fff; }
+.qs-input { padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; background-color: #fff; width: 150px; }
+
+.qs-box { margin-bottom: 1rem; padding: 0.75rem; background-color: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0; }
+.qs-box-title { margin-bottom: 0.5rem; font-weight: 600; }
+.qs-box-title--primary { color: #1e40af; }
+.qs-box-title--muted { color: #6b7280; }
+.qs-box-desc { margin-bottom: 0.5rem; font-size: 0.9rem; color: #475569; }
+.qs-box-options { display: flex; gap: 1rem; }
+.qs-radio { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
 .page-header__title { color: var(--liberty-navy); }
 .page-header__controls { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
 hr { border: 0; border-top: 1px solid #e5e7eb; margin-top: 8px; }

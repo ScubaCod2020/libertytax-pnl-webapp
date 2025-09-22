@@ -25,6 +25,9 @@ body.debug-open .container {
     border-bottom: 1px solid #e5e7eb;
 }
 
+/* Full-width footer bar; inner content constrained by .footer */
+.site-footer { width: 100%; }
+
 .card {
     background: #fff;
     border: 1px solid #e5e7eb;

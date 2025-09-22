@@ -43,24 +43,16 @@ structure:
       src/app/:
         - app.component.{ts,html,scss}
         - app.routes.ts
-        - components/  # shared-only
-          - app-header/**
-          - app-footer/**
-          - form-toolbar/**
-          - kpi-card/**
-        - core/
-          - services/**
-          - contracts/**
-        - pages/
-          - dashboard/
-            - dashboard.component.{ts,html,scss}
-          - wizard/
-            - income-drivers/
-              - income-drivers.component.{ts,html,scss}
-            - expenses/
-              - expenses.component.{ts,html,scss}
-            - pnl/
-              - pnl.component.{ts,html,scss}
+        - domain/calculations/**
+        - domain/types/**
+        - components/** # shared-only (app-header, app-footer, form-toolbar, kpi-card)
+        - core/contracts/**
+        - core/services/**
+        - core/tokens/**
+        - pages/dashboard/dashboard.component.{ts,html,scss}
+        - pages/wizard/income-drivers/income-drivers.component.{ts,html,scss}
+        - pages/wizard/expenses/expenses.component.{ts,html,scss}
+        - pages/wizard/pnl/pnl.component.{ts,html,scss}
       src/styles.scss: imports styles/_tokens.scss, _base.scss, _layout.scss, _kpi.scss
       src/styles/: [_tokens.scss, _base.scss, _layout.scss, _kpi.scss]
   tests:
