@@ -1,3 +1,19 @@
+## Development Progress Log — Context-First Hunt & Port
+
+2025-09-22
+
+- Created feature branch `feat/context-first-hunt-port`.
+- Authored docs: `context-digest.md`, `calc-inventory.md`, `calc-migration-status.md`, `BLUEPRINT_DELTA.md`.
+- Updated `repo-blueprint.yml` to include `domain/*` and `core/tokens/*` paths.
+- Added Angular scaffolding:
+  - `core/tokens/region-configs.token.ts` with `DEFAULT_REGION_CONFIGS`.
+  - Service stubs: `WizardStateService`, `ConfigService`, `CalculationService`.
+  - Domain: `domain/types/calculation.types.ts`, `domain/calculations/{calc,kpi,wizard-helpers,adapters}.ts`.
+- Restored `pages/wizard/pnl/*` stub to satisfy routing.
+- Relaxed Angular style budgets minimally (anyComponentStyle: warn 3kb, error 6kb).
+- Verified Angular build succeeds.
+- Ran wizard tests (n-3) in React reference; saved logs to `.logs/wizard-tests-pass{1..3}.log`.
+
 # Development Progress Log
 
 - - 2025-09-21T19:15:29.641Z - Exported progress log to clipboard

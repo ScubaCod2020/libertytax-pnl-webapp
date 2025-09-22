@@ -1,13 +1,13 @@
 ## Calc Migration Status
 
 - Core P&L Math (src/lib/calcs.ts)
-  - [ ] Port `calc` → `angular/src/app/domain/calculations/calc.ts`
-  - [ ] Port KPI helpers → `angular/src/app/domain/calculations/kpi.ts`
-  - [ ] Types `Inputs/Results/Thresholds/Region` → `angular/src/app/domain/types/calculation.types.ts`
-  - [ ] Adapters (if needed) → `angular/src/app/domain/calculations/adapters.ts`
+  - [x] Port `calc` → `angular/src/app/domain/calculations/calc.ts`
+  - [x] Port KPI helpers → `angular/src/app/domain/calculations/kpi.ts`
+  - [x] Types `Inputs/Results/Thresholds/Region` → `angular/src/app/domain/types/calculation.types.ts`
+  - [x] Adapters (React-like) → `angular/src/app/domain/calculations/adapters.ts`
 
 - Wizard Helpers (src/components/Wizard/calculations.ts)
-  - [ ] Growth + projections → `angular/src/app/domain/calculations/wizard-helpers.ts`
+  - [x] Growth + projections → `angular/src/app/domain/calculations/wizard-helpers.ts`
   - [ ] Currency/percent formatting → keep UI-layer; domain exposes numbers only
 
 - Expenses Dictionary (src/types/expenses.ts)
