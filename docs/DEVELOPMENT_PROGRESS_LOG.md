@@ -14,6 +14,7 @@
 - Verified Angular build succeeds.
 - Ran wizard tests (n-3) in React reference; saved logs to `.logs/wizard-tests-pass{1..3}.log`.
   - Noted WizardFlowMatrix failures (expected pre-wiring); added QA analysis triage.
+- Added domain unit tests and Vitest config; ran n-3 domain test passes, all green. Logs: `.logs/domain-tests-pass{1..3}.log`.
 
 # Development Progress Log
 

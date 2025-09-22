@@ -11,6 +11,7 @@
     "test:unit": "vitest run --coverage",
     "test:unit:watch": "vitest",
     "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:domain": "vitest run --config vitest.domain.config.ts",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:mobile": "playwright test --config=playwright.mobile.config.js",
