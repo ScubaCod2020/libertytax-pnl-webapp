@@ -1,3 +1,26 @@
+## QA Analysis Report — Wizard Flow Matrix Triage
+
+Date: 2025-09-22
+
+Summary:
+
+- Ran React wizard tests (n-3). `WizardFlowMatrix.test.tsx` shows failures across ~20 scenarios.
+- Angular is not wired yet; failures are expected in React tests only for exploratory baselines.
+
+Observed pattern:
+
+- Test computes expected totals using: 3% discounts, growth applied to returns+fee, expenses ~ 76% of total revenue, profit per return derived from projected returns.
+- Assertions fail on page rendering/selection timing (jsdom), not on math engine (domain port mirrors React `lib/calcs.ts`).
+
+Next steps:
+
+- Leave React tests as-is; use as reference while wiring Angular UI later.
+- Focus Angular unit tests around domain functions under `domain/calculations/*` (to be added later).
+
+Artifacts:
+
+- Logs: `.logs/wizard-tests-pass{1..3}.log`
+
 # Liberty Tax P&L Webapp - QA Analysis Report
 
 ## Executive Summary

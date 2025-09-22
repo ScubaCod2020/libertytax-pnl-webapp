@@ -13,6 +13,7 @@
 - Relaxed Angular style budgets minimally (anyComponentStyle: warn 3kb, error 6kb).
 - Verified Angular build succeeds.
 - Ran wizard tests (n-3) in React reference; saved logs to `.logs/wizard-tests-pass{1..3}.log`.
+  - Noted WizardFlowMatrix failures (expected pre-wiring); added QA analysis triage.
 
 # Development Progress Log
 
