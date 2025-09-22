@@ -14,6 +14,8 @@
 .req { color: #dc2626; margin-left: 0.25rem; }
 .qs-select { padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; background-color: #fff; }
 .qs-input { padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; background-color: #fff; width: 150px; }
+.currency { display: inline-flex; align-items: center; gap: 6px; }
+.prefix { color: #6b7280; font-weight: 500; }
 
 .qs-box { margin-bottom: 1rem; padding: 0.75rem; background-color: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0; }
 .qs-box-title { margin-bottom: 0.5rem; font-weight: 600; }

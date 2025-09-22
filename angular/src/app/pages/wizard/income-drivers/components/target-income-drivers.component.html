@@ -1,6 +1,108 @@
-<section class="card">
-  <div class="card-title">Target Performance</div>
-  <div class="small" style="color:#6b7280">Placeholder — fields to be imported</div>
-</section>
+<div class="expense-section target-section">
+  <div class="section-title"><div class="title-left"><span>🎯</span>Target Performance Goals</div></div>
+
+  <!-- 1. Tax Prep Returns -->
+  <div class="row">
+    <label>Tax Prep Returns <span class="req">*</span></label>
+    <div class="field">
+      <input type="number" class="input" placeholder="e.g., 1,680" />
+    </div>
+    <div class="note">Your target number of tax returns</div>
+  </div>
+
+  <!-- 2. Average Net Fee -->
+  <div class="row">
+    <label>Average Net Fee <span class="req">*</span></label>
+    <div class="field">
+      <div class="currency">
+        <span class="prefix">$</span>
+        <input type="number" class="input" placeholder="e.g., 130" />
+      </div>
+    </div>
+    <div class="note">Your target average net fee per return</div>
+  </div>
+
+  <!-- 3. Gross Tax Prep Fees (auto; computed locally later) -->
+  <div class="row">
+    <label>Gross Tax Prep Fees</label>
+    <div class="field">
+      <div class="currency">
+        <span class="prefix">$</span>
+        <input type="number" class="input readonly" placeholder="Auto-calculated" disabled />
+      </div>
+    </div>
+    <div class="note">Auto: Returns × Avg Net Fee</div>
+  </div>
+
+  <!-- 4. TaxRush (conditional for CA) -->
+  @if ((appCfg.config$ | async)?.showTaxRush) {
+  <div class="box info">
+    <div class="box-title">TaxRush Returns</div>
+    <div class="box-desc">Your target TaxRush returns (≈15% of total) and avg fee</div>
+    <div class="row compact">
+      <label>TaxRush Returns</label>
+      <div class="field">
+        <input type="number" class="input" placeholder="240" />
+      </div>
+    </div>
+    <div class="row compact">
+      <label>TaxRush Avg Net Fee</label>
+      <div class="field">
+        <div class="currency"><span class="prefix">$</span><input type="number" class="input" placeholder="125" /></div>
+      </div>
+    </div>
+    <div class="row compact">
+      <label>TaxRush Gross Fees</label>
+      <div class="field">
+        <div class="currency"><span class="prefix">$</span><input type="number" class="input" placeholder="Auto-calculated" /></div>
+      </div>
+      <div class="note">Auto: Returns × Avg Net Fee (override allowed)</div>
+    </div>
+  </div>
+  }
+
+  <!-- 5. Customer Discounts (Amt + %) -->
+  <div class="row">
+    <label>Customer Discounts</label>
+    <div class="field dual">
+      <div class="currency">
+        <span class="prefix">$</span>
+        <input type="number" class="input small" placeholder="6,000" />
+      </div>
+      <span class="eq">=</span>
+      <div class="percent">
+        <input type="number" class="input small" step="0.1" placeholder="3.0" />
+        <span class="suffix">%</span>
+      </div>
+    </div>
+    <div class="note italic">Default: 3% • Enter either dollar amount or percentage — the other will auto-calc</div>
+  </div>
+
+  <!-- 6. Total Tax Prep Income (overrideable) -->
+  <div class="row">
+    <label>Total Tax Prep Income</label>
+    <div class="field">
+      <div class="currency"><span class="prefix">$</span><input type="number" class="input" placeholder="Auto-calculated" /></div>
+    </div>
+    <div class="note">Gross Tax Prep Fees minus Customer Discounts (you can override)</div>
+  </div>
+
+  <!-- 7. Other Income (optional) -->
+  @if (settings.settings.otherIncome) {
+  <div class="row">
+    <label>Other Income</label>
+    <div class="field"><div class="currency"><span class="prefix">$</span><input type="number" class="input" placeholder="5,000" /></div></div>
+    <div class="note">Additional revenue streams (bookkeeping, notary, etc.)</div>
+  </div>
+  }
+
+  <!-- 8. Total Expenses (overrideable) -->
+  <div class="row">
+    <label>Total Expenses</label>
+    <div class="field"><div class="currency"><span class="prefix">$</span><input type="number" class="input" placeholder="Auto-calculated" /></div></div>
+    <div class="note">Auto: (Total Tax Prep Income + Other Income) × 76% (you can override)</div>
+  </div>
+  <div class="net-banner green">Target Net Income: $200,000 <span class="muted">(0% margin)</span></div>
+</div>
 
 

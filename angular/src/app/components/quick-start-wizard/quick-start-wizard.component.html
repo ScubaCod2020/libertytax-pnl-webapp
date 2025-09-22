@@ -1,11 +1,13 @@
 <div class="page-header page-header--wide">
     <div class="qs-intro">
       <div class="qs-title">{{ title }}</div>
-      <div *ngIf="subtitle" class="qs-subtitle">{{ subtitle }}</div>
+      @if (subtitle) {
+        <div class="qs-subtitle">{{ subtitle }}</div>
+      }
     </div>
 
     <div class="page-header__controls">
-      <ng-container *ngIf="editable; else readonly">
+      @if (editable) {
         <!-- Region row -->
         <div class="qs-row">
           <label class="qs-label">Region<span class="req">*</span></label>
@@ -41,8 +43,24 @@
           </div>
         </div>
 
+        <!-- Local Average Rent for Rent Guard -->
+        <div class="qs-row">
+          <label class="qs-label">Local Average Rent</label>
+          <div class="qs-field">
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+              <div class="currency"><span class="prefix">$</span><input type="number" class="qs-input" [ngModel]="settings.localAvgRent" (ngModelChange)="settingsSvc.update({ localAvgRent: $event })" placeholder="e.g., 1,500" /></div>
+              <select class="qs-select" [ngModel]="settings.rentPeriod" (ngModelChange)="settingsSvc.update({ rentPeriod: $event })">
+                <option value="monthly">per month</option>
+                <option value="yearly">per year</option>
+              </select>
+            </div>
+          </div>
+          <div class="qs-note small">Used by Rent Guard to validate expenses vs local market.</div>
+        </div>
+
         <!-- TaxRush -->
-        <div class="qs-box" *ngIf="(appCfg.config$ | async)?.showTaxRush">
+        @if ((appCfg.config$ | async)?.showTaxRush) {
+        <div class="qs-box">
           <div class="qs-box-title qs-box-title--primary">TaxRush Returns</div>
           <div class="qs-box-desc">Does your office handle TaxRush returns? (Canada only)</div>
           <div class="qs-box-options">
@@ -50,6 +68,7 @@
             <label class="qs-radio"><input type="radio" name="taxrush" [checked]="!settings.taxRush" (change)="onTaxRushChange(false)" /><span>No, we don't handle TaxRush</span></label>
           </div>
         </div>
+        }
 
         <!-- Other Income -->
         <div class="qs-box">
@@ -60,11 +79,9 @@
             <label class="qs-radio"><input type="radio" name="otherincome" [checked]="!settings.otherIncome" (change)="onOtherIncomeChange(false)" /><span>No, only tax prep</span></label>
           </div>
         </div>
-      </ng-container>
-
-      <ng-template #readonly>
+      } @else {
         <span class="text-sm" style="color:#6b7280">Region: {{ settings.region === 'CA' ? 'Canada' : 'United States' }} • Store: {{ settings.storeType === 'existing' ? 'Existing' : 'New' }} • TaxRush: {{ settings.taxRush ? 'Yes' : 'No' }} • Other income: {{ settings.otherIncome ? 'Yes' : 'No' }}</span>
-      </ng-template>
+      }
     </div>
     <hr />
   </div>

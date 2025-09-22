@@ -1,3 +1,91 @@
+<div class="expense-section proj-section">
+  <div class="section-title">
+    <div class="title-left"><span>📈</span>Projected Performance</div>
+  </div>
+
+  <!-- Performance Change -->
+  <div class="grid-row">
+    <label>Performance Change</label>
+    <div class="grid-field">
+      <div class="inline-gap wrap">
+        <!-- Scenario selector (preserved feature) -->
+        <div class="scenario">
+          <label for="scenario-select" class="sr-only">Scenario</label>
+          <select id="scenario-select" class="select" [ngModel]="projSvc.scenario" (ngModelChange)="projSvc.setScenario($event); projSvc.applyScenarioPreset()">
+            <option *ngFor="let s of scenarios" [value]="s">{{ s }}</option>
+          </select>
+        </div>
+        <input type="number" class="input xs" step="1" min="-50" max="100" [ngModel]="projSvc.growthPct" (ngModelChange)="projSvc.setGrowthPct($event)" />
+        <span>%</span>
+        <select class="select">
+          <option value="custom">Custom</option>
+          <option value="-10">Decline: -10%</option>
+          <option value="-5">Decline: -5%</option>
+          <option value="0">No Change: 0%</option>
+          <option value="5">Growth: +5%</option>
+          <option value="10">Growth: +10%</option>
+          <option value="15">Growth: +15%</option>
+          <option value="20">Growth: +20%</option>
+        </select>
+      </div>
+      <input type="range" class="range" min="-50" max="100" step="1" [ngModel]="projSvc.growthPct" (ngModelChange)="projSvc.setGrowthPct($event)" />
+
+      <!-- Targets selection (preserved feature) -->
+      <div class="targets">
+        <label class="target"><input type="checkbox" [checked]="projSvc.targets.all" (change)="projSvc.toggleTarget('all', $event.target.checked)" /> Apply to All</label>
+        <label class="target"><input type="checkbox" [checked]="projSvc.targets.returns" (change)="projSvc.toggleTarget('returns', $event.target.checked)" /> Returns</label>
+        <label class="target"><input type="checkbox" [checked]="projSvc.targets.avgNetFee" (change)="projSvc.toggleTarget('avgNetFee', $event.target.checked)" /> Avg Net Fee</label>
+        <label class="target"><input type="checkbox" [checked]="projSvc.targets.otherIncome" (change)="projSvc.toggleTarget('otherIncome', $event.target.checked)" /> Other Income</label>
+        <label class="target" *ngIf="(appCfg.config$ | async)?.showTaxRush"><input type="checkbox" [checked]="projSvc.targets.taxRush" (change)="projSvc.toggleTarget('taxRush', $event.target.checked)" /> TaxRush</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Returns & ANF -->
+  <div class="grid-row"><label>Tax Prep Returns</label><div class="grid-field"><div class="inline"><span class="prefix">#</span><input type="number" class="input sm" placeholder="e.g., 1,680" value="1600" /></div></div></div>
+  <div class="grid-row"><label>Average Net Fee</label><div class="grid-field"><div class="inline"><span class="prefix">$</span><input type="text" class="input sm" placeholder="e.g., 130" value="125" /></div></div></div>
+
+  <!-- Gross (derived unless override) -->
+  <div class="grid-row"><label>Gross Tax Prep Fees</label><div class="grid-field"><div class="inline"><span class="prefix">$</span><input type="text" class="input sm readonly" placeholder="Auto-calculated" value="200,000" /></div></div></div>
+
+  <!-- Discounts -->
+  <div class="grid-row">
+    <label>Customer Discounts</label>
+    <div class="grid-field">
+      <div class="inline-gap">
+        <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" min="0" step="1" placeholder="6000" /></div>
+        <span class="eq">=</span>
+        <div class="inline"><input type="number" class="input xs" step="0.1" min="0" max="20" placeholder="3.0" value="3" /><span class="suffix">%</span></div>
+      </div>
+      <div class="help italic">Default: 3% • Enter either dollar amount or percentage — the other will auto-calc</div>
+    </div>
+    <div class="small note">Dollar amount or % of gross fees given as discounts. Enter either field; the other auto-calculates.</div>
+  </div>
+
+  <!-- Total Tax Prep Income (projected) -->
+  <div class="grid-row"><label>Total Tax Prep Income</label><div class="grid-field"><div class="inline"><span class="prefix">$</span><input type="text" class="input sm readonly" placeholder="Auto-calculated" value="200,000" /></div></div><div class="small note">Gross − Discounts (clear to re-auto)</div></div>
+
+  <!-- Other Income (projected) -->
+  @if (settings.settings.otherIncome) {
+  <div class="grid-row"><label>Other Income</label><div class="grid-field"><div class="inline"><span class="prefix">$</span><input type="number" class="input sm" /></div></div></div>
+  }
+
+  <!-- Total Expenses (projected) -->
+  <div class="grid-row"><label>Total Expenses</label><div class="grid-field"><div class="inline"><span class="prefix">$</span><input type="text" class="input sm readonly" placeholder="Auto-calculated" value="152,000" /></div></div><div class="small note">Auto: (Tax Prep Income + Other Income) × 76%</div></div>
+
+  <!-- TaxRush (projected) - optional block preserved -->
+  @if ((appCfg.config$ | async)?.showTaxRush) {
+  <div class="box info">
+    <div class="box-title">TaxRush (Projected)</div>
+    <div class="row compact"><label>TaxRush Returns</label><div class="field"><input type="number" class="input" placeholder="240" /></div></div>
+    <div class="row compact"><label>TaxRush Avg Net Fee</label><div class="field"><div class="currency"><span class="prefix">$</span><input type="number" class="input" placeholder="125" /></div></div></div>
+    <div class="row compact"><label>TaxRush Gross Fees</label><div class="field"><div class="currency"><span class="prefix">$</span><input type="number" class="input" placeholder="Auto-calculated" /></div></div></div>
+  </div>
+  }
+
+  <!-- Summary banner -->
+  <div class="net-banner green">Projected Net Income: $200,000 <span class="muted">(0% margin)</span></div>
+</div>
 <section class="card">
   <div class="card-title">Projected Performance</div>
   <div class="small" style="color:#6b7280">Placeholder — fields to be imported</div>

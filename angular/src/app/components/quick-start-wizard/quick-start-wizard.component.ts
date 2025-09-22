@@ -18,13 +18,30 @@ export class QuickStartWizardComponent {
 
   settings: AppSettings = this.settingsSvc.settings;
 
-  constructor(private settingsSvc: SettingsService, public appCfg: AppConfigService) {}
+  constructor(
+    public settingsSvc: SettingsService,
+    public appCfg: AppConfigService
+  ) {}
 
-  onRegionChange(v: string) { this.settingsSvc.update({ region: v === 'US' ? 'US' : 'CA' }); this.settings = this.settingsSvc.settings; }
-  onStoreTypeChange(v: string) { this.settingsSvc.update({ storeType: v === 'new' ? 'new' : 'existing' }); this.settings = this.settingsSvc.settings; }
-  onTaxYearChange(v: string) { const n = Number(v) || new Date().getFullYear(); this.settingsSvc.update({ taxYear: n }); this.settings = this.settingsSvc.settings; }
-  onTaxRushChange(v: boolean) { this.settingsSvc.update({ taxRush: !!v }); this.settings = this.settingsSvc.settings; }
-  onOtherIncomeChange(v: boolean) { this.settingsSvc.update({ otherIncome: !!v }); this.settings = this.settingsSvc.settings; }
+  onRegionChange(v: string) {
+    this.settingsSvc.update({ region: v === 'US' ? 'US' : 'CA' });
+    this.settings = this.settingsSvc.settings;
+  }
+  onStoreTypeChange(v: string) {
+    this.settingsSvc.update({ storeType: v === 'new' ? 'new' : 'existing' });
+    this.settings = this.settingsSvc.settings;
+  }
+  onTaxYearChange(v: string) {
+    const n = Number(v) || new Date().getFullYear();
+    this.settingsSvc.update({ taxYear: n });
+    this.settings = this.settingsSvc.settings;
+  }
+  onTaxRushChange(v: boolean) {
+    this.settingsSvc.update({ taxRush: !!v });
+    this.settings = this.settingsSvc.settings;
+  }
+  onOtherIncomeChange(v: boolean) {
+    this.settingsSvc.update({ otherIncome: !!v });
+    this.settings = this.settingsSvc.settings;
+  }
 }
-
-
