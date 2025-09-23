@@ -423,3 +423,22 @@ acceptance_checklist:
   - "Snapshots: 'Create Dashboard' freezes baseline; dashboard prefers snapshot"
   - 'KPI bands: expenses 74.5–77.5 green; net% complements; CPR displayed and consistent'
   - 'No auto prod deploy; manual merge to main only'
+
+blueprint_delta_2025_09_23:
+  summary:
+    - 'Angular upgraded/confirmed at v20; standalone components pattern enforced'
+    - 'BrandingService enhanced: sets favicon/title; richer typography vars applied'
+    - 'REGION_CONFIGS token present with DEFAULT_REGION_CONFIGS and thresholds; injected via services'
+    - 'Dashboard page split: results panel composed of kpi-stoplights, income-summary-card, expense-breakdown-card, pro-tips-card'
+    - 'Roadmap scaffolds added: monthly-forecast-card, multi-store-summary-card (visible placeholders)'
+    - 'Debug tools: Baseline Manager (formerly Suggestion Manager) integrated under debug panel; baseline engine/types added as pure TS'
+    - 'Expenses taxonomy aligned to 6 categories (personnel, facility, marketing, utilities, franchise, misc); Salaries→Payroll label; Dues moved to misc; franchise listed last'
+  files:
+    - 'angular/src/app/services/branding.service.ts'
+    - 'angular/src/app/core/tokens/region-configs.token.ts'
+    - 'angular/src/app/pages/dashboard/components/*'
+    - 'angular/src/app/components/debug-system/baseline-manager/*'
+    - 'angular/src/app/devtools/baselines/*'
+  notes:
+    - 'No business logic changes to calculations; domain functions remain pure TS in domain/calculations'
+    - 'If roadmap cards remain unfinished prior to main merge, gate visibility behind a debug flag or query parameter'

@@ -1,11 +1,8 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
 
-# Run lint-staged first
+# Husky v9+ simple pre-commit hook
+# 1) Run lint-staged
 npx --yes lint-staged || exit 1
 
-# Validate progress log presence when milestones changed
+# 2) Validate progress log presence when milestones changed
 node scripts/validate-progress-log.js || exit 1
-
-#!/usr/bin/env sh
-npx --no-install lint-staged
