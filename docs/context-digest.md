@@ -65,3 +65,12 @@
 ### Remaining clarification
 
 - Expense taxonomy: React reference defines 5 top-level categories (`personnel`, `facility`, `operations`, `franchise`, `misc`) with 17 fields. Blueprint lists 6. Confirm whether Angular should split `operations` into separate `marketing` and `utilities` categories (keeping the same 17 fields), or keep the 5-category model from React.
+
+### Debug & tooling
+- Debug Panel includes Baseline Manager (system-level example inputs) under a new Baselines section; used to preview calculation flow from baseline profiles.
+- Global `DebugErrorHandler` opens the panel on uncaught errors; future: append error details to the log stream.
+
+### Dashboard composition (current)
+- Right column contains the Dashboard results panel composed of:
+  - `kpi-stoplights`, `income-summary-card`, `expense-breakdown-card`, `pro-tips-card`.
+- Roadmap cards (visible placeholders): `monthly-forecast-card` and `multi-store-summary-card` for upcoming features.

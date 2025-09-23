@@ -42,6 +42,22 @@ Example precedence:
 
 - If an app blueprint sets `dev_port: 3001` but repo blueprint defines Angular on 4200, local default remains 4200. Provide an alternate `npm run dev:angular:3001` for migration flows.
 
+## Current status (2025-09-23)
+
+- Angular 20 confirmed; standalone components.
+- Branding service applies region vars and favicon/title.
+- REGION_CONFIGS token present; thresholds wired to services.
+- Dashboard composed of page-local components; roadmap cards (monthly forecast, multi-store) scaffolded.
+- Debug panel includes a Baseline Manager (system-level example inputs) and global error handler.
+
+See also:
+
+- `docs/context-digest.md`
+- `docs/react-vs-angular-diff.csv`
+- `docs/calc-inventory.md`
+- `docs/render-audit.md`
+- `docs/wire-up-plan.md`
+
 This repository contains the **code and docs** to _generate_ the v0.5 Excel workbook for the Liberty Tax P&L Budget & Forecast Tool.
 
 ## What's in this package

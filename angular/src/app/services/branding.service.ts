@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
+import { BrandAssets } from '../lib/brands';
 
 type BrandVars = Record<string, string>;
 
@@ -39,6 +40,14 @@ const CA_VARS: BrandVars = {
   '--brand-text-muted': '#BBBBBB',
 };
 
+/**
+ * BrandingService
+ * React source parity: react-app-reference/src/hooks/useBranding.ts and styles/branding.ts
+ * Responsibility:
+ *  - Apply region-specific CSS custom properties (colors, text) to document root
+ *  - Update document title and favicon based on region
+ *  - Ensure base typography variables are present for components and print
+ */
 @Injectable({ providedIn: 'root' })
 export class BrandingService {
   constructor(private settings: SettingsService) {
@@ -50,9 +59,25 @@ export class BrandingService {
     const vars = region === 'US' ? US_VARS : CA_VARS;
     const root = document.documentElement;
     for (const [k, v] of Object.entries(vars)) root.style.setProperty(k, v);
-    // Ensure typography variable is applied
+    // Typography variables (align with branding.ts model)
     root.style.setProperty('--font-base', 'var(--font-proxima)');
+    root.style.setProperty('--fw-regular', '400');
+    root.style.setProperty('--fw-medium', '500');
+    root.style.setProperty('--fw-semibold', '600');
+    root.style.setProperty('--fw-extrabold', '800');
+    root.style.setProperty('--headline-spacing', '2px');
+
+    // Document title and favicon per region
+    const titleName = region === 'US' ? 'Liberty Tax' : 'Liberty Tax Canada';
+    document.title = `${titleName} • P&L Budget & Forecast`;
+
+    let favicon = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
+    if (!favicon) {
+      favicon = document.createElement('link');
+      favicon.rel = 'icon';
+      document.head.appendChild(favicon);
+    }
+    const assetPath = region === 'US' ? BrandAssets.us.torch : BrandAssets.ca.leaf;
+    favicon!.href = assetPath;
   }
 }
-
-

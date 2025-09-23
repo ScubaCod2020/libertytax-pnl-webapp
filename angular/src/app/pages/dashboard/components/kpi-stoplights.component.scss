@@ -1,0 +1,6 @@
+.kpi .value { font-weight: 700; }
+.kpi.green { border-left: 4px solid var(--ok-green, #16a34a); padding-left: 8px; }
+.kpi.yellow { border-left: 4px solid var(--warn-yellow, #f59e0b); padding-left: 8px; }
+.kpi.red { border-left: 4px solid var(--err-red, #dc2626); padding-left: 8px; }
+.small { font-size: 0.85rem; color: #6b7280; }
+
