@@ -17,12 +17,19 @@ export interface ExpenseField {
   regionSpecific?: 'US' | 'CA' | 'both';
 }
 
-export type ExpenseCategory = 'personnel' | 'facility' | 'operations' | 'franchise' | 'misc';
+export type ExpenseCategory =
+  | 'personnel'
+  | 'facility'
+  | 'marketing'
+  | 'utilities'
+  | 'franchise'
+  | 'misc';
 
 export const expenseCategories = {
   personnel: { label: 'Personnel', description: 'Staff-related expenses' },
   facility: { label: 'Facility', description: 'Office and location costs' },
-  operations: { label: 'Operations', description: 'Day-to-day operational expenses' },
+  marketing: { label: 'Marketing', description: 'Local marketing and advertising' },
+  utilities: { label: 'Utilities', description: 'Phone, internet, and utilities' },
   franchise: { label: 'Franchise', description: 'Franchise fees and royalties' },
   misc: { label: 'Miscellaneous', description: 'Other and miscellaneous expenses' },
 } as const;
@@ -30,14 +37,14 @@ export const expenseCategories = {
 export const expenseFields: ExpenseField[] = [
   {
     id: 'salariesPct',
-    label: 'Salaries',
+    label: 'Payroll',
     category: 'personnel',
     calculationBase: 'percentage_gross',
     defaultValue: 25,
     min: 0,
     max: 60,
     step: 0.1,
-    description: 'Staff salaries as % of gross fees',
+    description: 'Payroll as % of gross fees',
   },
   {
     id: 'empDeductionsPct',
@@ -65,7 +72,7 @@ export const expenseFields: ExpenseField[] = [
   {
     id: 'telephonePct',
     label: 'Telephone',
-    category: 'facility',
+    category: 'utilities',
     calculationBase: 'percentage_gross',
     defaultValue: 0.5,
     min: 0,
@@ -76,7 +83,7 @@ export const expenseFields: ExpenseField[] = [
   {
     id: 'utilitiesPct',
     label: 'Utilities',
-    category: 'facility',
+    category: 'utilities',
     calculationBase: 'percentage_gross',
     defaultValue: 1.2,
     min: 0,
@@ -88,7 +95,7 @@ export const expenseFields: ExpenseField[] = [
   {
     id: 'localAdvPct',
     label: 'Local Advertising',
-    category: 'operations',
+    category: 'marketing',
     calculationBase: 'percentage_gross',
     defaultValue: 2,
     min: 0,
@@ -132,7 +139,7 @@ export const expenseFields: ExpenseField[] = [
   {
     id: 'duesPct',
     label: 'Dues',
-    category: 'operations',
+    category: 'misc',
     calculationBase: 'percentage_gross',
     defaultValue: 0.8,
     min: 0,
@@ -154,7 +161,7 @@ export const expenseFields: ExpenseField[] = [
   {
     id: 'maintenancePct',
     label: 'Maintenance',
-    category: 'operations',
+    category: 'facility',
     calculationBase: 'percentage_gross',
     defaultValue: 0.6,
     min: 0,
@@ -197,6 +204,18 @@ export const expenseFields: ExpenseField[] = [
     description: 'Advertising fees on tax prep income',
   },
   {
+    id: 'taxRushShortagesPct',
+    label: 'Shortages',
+    category: 'misc',
+    calculationBase: 'percentage_gross',
+    defaultValue: 2.5,
+    min: 0,
+    max: 10,
+    step: 0.1,
+    description: 'Return processing shortages',
+    regionSpecific: 'CA',
+  },
+  {
     id: 'taxRushRoyaltiesPct',
     label: 'TaxRush Royalties',
     category: 'franchise',
@@ -206,18 +225,6 @@ export const expenseFields: ExpenseField[] = [
     max: 15,
     step: 0.1,
     description: 'CA-only surrogate % of gross',
-    regionSpecific: 'CA',
-  },
-  {
-    id: 'taxRushShortagesPct',
-    label: 'Shortages',
-    category: 'operations',
-    calculationBase: 'percentage_gross',
-    defaultValue: 2.5,
-    min: 0,
-    max: 10,
-    step: 0.1,
-    description: 'Return processing shortages',
     regionSpecific: 'CA',
   },
 

@@ -42,7 +42,7 @@
 - Regions: US, CA; TaxRush only relevant when `region==='CA' && handlesTaxRush`
 - KPI bands: expensesPct green 0.745–0.775; netPct mirrors; CPR displays actual and inherits color from expenses%
 - Expenses grid: dual-entry ($↔%); rent guard may anchor to local average per blueprint
-- Expense categories (top-level): personnel, facility, marketing, utilities, royalties (franchise), misc — 17 individual line items roll up into these 6 groups. React reference currently groups marketing+utilities under "operations"; Angular will use the 6-category model.
+- Expense categories (top-level): personnel, facility, marketing, utilities, royalties (franchise, listed last), misc — 17 individual line items roll up into these 6 groups. React reference previously grouped marketing+utilities under "operations"; Angular uses the 6-category model. Label changes: Salaries → Payroll; Dues moved from operations → misc.
 
 ### Dev servers
 
