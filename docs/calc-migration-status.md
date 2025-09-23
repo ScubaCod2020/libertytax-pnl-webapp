@@ -18,10 +18,10 @@
   - [ ] Move data under config token or keep as seed in `core/tokens`
 
 - Angular Scaffolding
-  - [ ] REGION_CONFIGS token → `angular/src/app/core/tokens/region-configs.token.ts`
-  - [ ] WizardStateService → `angular/src/app/core/services/wizard-state.service.ts`
-  - [ ] ConfigService → `angular/src/app/core/services/config.service.ts`
-  - [ ] CalculationService → `angular/src/app/core/services/calculation.service.ts`
+  - [x] REGION_CONFIGS token → `angular/src/app/core/tokens/region-configs.token.ts`
+  - [x] WizardStateService → `angular/src/app/core/services/wizard-state.service.ts`
+  - [x] ConfigService → `angular/src/app/core/services/config.service.ts`
+  - [x] CalculationService → `angular/src/app/core/services/calculation.service.ts`
 
 Notes:
 
