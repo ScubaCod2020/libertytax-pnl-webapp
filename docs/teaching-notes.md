@@ -97,3 +97,13 @@ ToggleQuestion.tsx → Angular placement and rationale
 - Inputs: `title`, `description`, `fieldName`, `fieldValue`, `positiveLabel`, `negativeLabel`, `fieldsToClearOnDisable`, `titleColor`, `showOnlyWhen`
 - Outputs: `valueChange: EventEmitter<{ [key: string]: any }>`
 - Missing: None - component already exists with identical functionality, minor typo fix applied (fieldsToeClearOnDisable → fieldsToClearOnDisable).
+
+types.ts → Angular placement and rationale
+
+- What it is: Central type definitions for the entire wizard system, extracted for better modularity. Defines comprehensive data contracts including WizardAnswers with all 85+ fields, component props, strategic analysis types, and wizard step management.
+- Where it belongs in Angular:
+  - Types: `angular/src/app/domain/types/wizard.types.ts` (central wizard types)
+  - Dependencies: Region and ExpenseValues types from other domain files
+- Why that location: Domain types for framework-agnostic data contracts; central location for all wizard-related interfaces; supports type safety across components.
+- Exports: `WizardStep`, `WizardAnswers`, `GrowthOption`, `WizardShellProps`, `WizardSectionProps`, `PerformanceAnalysis`, `AdjustmentStatus`
+- Missing: Minor additions made - added WizardShellProps interface and updateAnswers method to WizardSectionProps, added expenses field placeholder to WizardAnswers for complete compatibility.

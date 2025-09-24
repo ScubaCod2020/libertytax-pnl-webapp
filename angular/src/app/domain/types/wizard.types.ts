@@ -80,13 +80,25 @@ export interface WizardAnswers {
   taxRushShortagesPct?: number;
   miscPct?: number;
 
+  // Derived expense values for export (TODO: define ExpenseValues interface if needed)
+  expenses?: any; // Placeholder for ExpenseValues when implemented
+
   // Pre-calculated expense total from Page 2
   calculatedTotalExpenses?: number;
+}
+
+// Props for wizard shell component
+export interface WizardShellProps {
+  region: Region;
+  setRegion: (region: Region) => void;
+  onComplete: (answers: WizardAnswers) => void;
+  onCancel: () => void;
 }
 
 // Props for wizard sections
 export interface WizardSectionProps {
   answers: WizardAnswers;
+  updateAnswers: (updates: Partial<WizardAnswers>) => void;
   region: Region;
 }
 
