@@ -172,6 +172,25 @@ export class SuggestionEngineService {
   }
 
   /**
+   * Get appropriate suggestion profile based on context
+   */
+  getSuggestionProfile(
+    region: string,
+    storeType: string,
+    handlesTaxRush: boolean = false
+  ): SuggestionProfile {
+    if (region === 'CA') {
+      if (handlesTaxRush) {
+        return this.profiles['CA-new-taxrush'] || this.profiles['CA-new-standard'];
+      }
+      return this.profiles['CA-new-standard'];
+    }
+    
+    // Default to US profiles
+    return this.profiles['US-new-standard'];
+  }
+
+  /**
    * Calculate total expenses from individual expense components
    */
   private calculateTotalExpenses(

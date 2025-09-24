@@ -128,9 +128,25 @@ const testAnswers: WizardAnswers = {
 - **Placeholder Integration**: Suggested values automatically populate placeholders
 - **Suggestion Engine**: Profile-based calculations with regional differentiation
 
+### ✅ **SuggestedInputDemoComponent**
+- **Status**: Staged (not yet integrated)
+- **Visibility**: Hidden (component exists but not imported/used in pages)
+- **Template**: Complete Angular template with educational flow demonstration
+- **Styling**: Color-coded calculated values and educational summary sections
+- **Dependencies**: All SuggestedFormField components and extended SuggestionEngineService
+
+#### **Educational Flow Features**
+- **Status**: Implemented ✅
+- **Input → Calculation Flow**: Visual demonstration of how inputs flow to calculated results
+- **Regional Logic**: TaxRush fields conditional for Canada, other income conditional display
+- **Color-coded Results**: Different colors for gross fees, discounts, income, and total revenue
+- **Educational Summary**: Explains suggestion badges and calculation flow
+
 ## Next Session Actions
 1. **Integration**: Import and wire NewStoreSectionComponent + StrategicAnalysisComponent + SuggestedFormField components in wizard pages
-2. **Testing**: Verify all auto-calculations, conditional rendering, and suggestion display with test data
-3. **Suggestion Engine**: Test profile selection and calculation accuracy across different scenarios
-4. **Polish**: Adjust styling if needed after integration
-5. **Documentation**: Update progress log with integration status
+2. **Demo Integration**: Add SuggestedInputDemoComponent for development/testing purposes
+3. **Testing**: Verify all auto-calculations, conditional rendering, and suggestion display with test data
+4. **Suggestion Engine**: Test profile selection and calculation accuracy across different scenarios
+5. **Educational Testing**: Use demo component to validate suggestion flow and visual indicators
+6. **Polish**: Adjust styling if needed after integration
+7. **Documentation**: Update progress log with integration status

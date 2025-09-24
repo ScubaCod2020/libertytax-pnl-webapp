@@ -74,3 +74,15 @@ SuggestedFormField.tsx → Angular placement and rationale
 - Inputs: `label`, `helpText`, `required`, `fieldId`, `suggestions`, `isCalculated`
 - Outputs: None (wrapper component, specialized inputs emit valueChange)
 - Missing: None - complete staging with suggestion engine service and all specialized input components.
+
+SuggestedInputDemo.tsx → Angular placement and rationale
+
+- What it is: Demo/educational component showing complete integration of the suggestion system with flow from input suggestions to calculated results, visual indicators, regional conditional logic, and educational explanations.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/components/demos/suggested-input-demo.component.ts` (demo component)
+  - Business Logic: `angular/src/app/domain/services/suggestion-engine.service.ts` (extended with getSuggestionProfile)
+  - Dependencies: All SuggestedFormField components from previous session
+- Why that location: Educational/demo component for showcasing suggestion system; service extension for profile selection logic; reuses all existing suggested components.
+- Inputs: `answers: WizardAnswers`, `region: Region`
+- Outputs: `answersChange: EventEmitter<Partial<WizardAnswers>>`
+- Missing: None - complete staging with getSuggestionProfile function added and all visual styling preserved.

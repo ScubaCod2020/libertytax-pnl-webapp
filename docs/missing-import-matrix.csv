@@ -17,4 +17,6 @@ UI,react-app-reference/react-app-reference/src/components/Wizard/SuggestedFormFi
 UI,react-app-reference/react-app-reference/src/components/Wizard/SuggestedFormField.tsx,angular/src/app/components/wizard-ui/suggested-percentage-input.component.ts,exists,Types→UI,Percentage input with suggestion integration and % suffix
 Service,react-app-reference/react-app-reference/src/utils/suggestionEngine.ts,angular/src/app/domain/services/suggestion-engine.service.ts,exists,Types→Service,Suggestion calculation engine with profile management and expense calculations
 Types,react-app-reference/react-app-reference/src/utils/suggestionEngine.ts,angular/src/app/domain/types/suggestion.types.ts,exists,None,SuggestionProfile and CalculatedSuggestions interfaces with expense field definitions
+UI,react-app-reference/react-app-reference/src/components/Wizard/SuggestedInputDemo.tsx,angular/src/app/components/demos/suggested-input-demo.component.ts,exists,Service+Components→Demo,Educational demo showing complete suggestion system integration with flow visualization
+Service,react-app-reference/react-app-reference/src/utils/suggestionEngine.ts,angular/src/app/domain/services/suggestion-engine.service.ts,complete,Types→Service,Extended with getSuggestionProfile function for context-based profile selection
 
