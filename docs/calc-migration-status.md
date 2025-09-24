@@ -63,6 +63,7 @@ PerformanceCard (UI/Types) migration status
 - **InputsPanel**: Dashboard inputs panel with enhanced sliders and bidirectional wizard data flow (comprehensive expense management with dual percentage/dollar inputs)
 - **KPIStoplight**: Visual KPI status indicator with stoplight metaphor and accessibility support (reusable visual component complementing existing KPI system)
 - **ProjectedPerformancePanel**: Prior year vs projected performance comparison with status indicators and metrics display (specialized dashboard component complementing existing performance system)
+- **ScenarioSelector**: Scenario selection dropdown with debug logging and flexible layout options (reusable UI component complementing existing scenario state management)
 - **Wizard UI Components**: ToggleQuestion (typo fix applied), CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
 - **SuggestionEngineService**: Profile-based suggestion calculation with regional differentiation and context-based profile selection
 - **Complete Type System**: WizardAnswers interface with 85+ fields, WizardShellProps, WizardSectionProps, strategic analysis types

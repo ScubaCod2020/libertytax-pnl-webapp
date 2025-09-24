@@ -206,3 +206,14 @@ ProjectedPerformancePanel.tsx → Angular placement and rationale
 - Inputs: `ProjectedPerformanceData` (structured data object with projected metrics and prior year data)
 - Outputs: None (pure display component)
 - Missing: None - new component created with structured data interface, performance status calculation, conditional rendering, and architectural complement to existing performance system.
+
+ScenarioSelector.tsx → Angular placement and rationale
+
+- What it is: Simple scenario selection dropdown component for choosing between business performance scenarios (Custom, Good, Better, Best). Features debug logging for scenario changes and controlled input with proper event handling for scenario state management.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/components/scenario-selector/scenario-selector.component.ts` (reusable scenario selection component)
+  - Note: Complements existing ProjectedService system as reusable UI component
+- Why that location: Reusable UI component for scenario selection; complements existing scenario state management with flexible UI component.
+- Inputs: `scenario` (current Scenario), `scenarios` (ScenarioOption array), layout options, debug logging
+- Outputs: `scenarioChange` (EventEmitter for scenario selection)
+- Missing: None - new component created with enhanced flexibility, multiple layout options, description support, accessibility features, and architectural complement to existing scenario system.
