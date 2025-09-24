@@ -1,0 +1,4 @@
+Category,Source Path (React),Angular Target,Status,Dep chain,Notes
+UI,react-app-reference/react-app-reference/src/components/Shared/AnalysisBlock.tsx,angular/src/app/components/analysis-block/analysis-block.component.ts,exists,Types→UI,Standalone component shell present; gated via FEATURE_FLAGS
+Types,react-app-reference/react-app-reference/src/components/Shared/AnalysisBlock.tsx,angular/src/app/domain/types/analysis.types.ts,exists,None,Types ported
+

@@ -1,3 +1,14 @@
+AnalysisBlock (UI/Types) migration status
+
+- Staged:
+  - Types: `angular/src/app/domain/types/analysis.types.ts`
+  - UI: `angular/src/app/components/analysis-block/analysis-block.component.ts`
+- Remaining:
+  - Service to compute insights/comparisons from wizard/projected state (domain/service)
+  - Feature-flag provider and gating for dev-only visibility
+  - Placement in Wizard Step 1 and Dashboard (render shells only)
+  - Documentation updates and trace hooks
+
 ## Calc Migration Status
 
 - Core P&L Math (src/lib/calcs.ts)

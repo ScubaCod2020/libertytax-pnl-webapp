@@ -1,5 +1,15 @@
 ## Development Progress Log — Context-First Hunt & Port
 
+2025-09-24
+
+- Tooling maintenance: Migrated repo to Husky v9 and removed deprecated shims
+  - Set `git config core.hooksPath .husky`
+  - Deleted `.husky/_` helper dir to eliminate `husky.sh` deprecation banner
+  - Switched from `simple-git-hooks` → Husky (`prepare` script now runs `husky`)
+  - Verified `.husky/pre-commit` runs `lint-staged` and `scripts/validate-progress-log.js`
+- Angular verification: `angular/` workspace confirmed on Angular 20.3.x (CLI 20.3.2)
+- Node verified: v24.8.0 (meets Angular 20 requirements)
+
 2025-09-22
 
 - Created feature branch `feat/context-first-hunt-port`.

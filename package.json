@@ -45,7 +45,7 @@
     "api:lint": "spectral lint openapi/openapi.yaml",
     "mdlint": "markdownlint \"**/*.md\" --ignore node_modules",
     "mdlint:fix": "markdownlint \"**/*.md\" --fix --ignore node_modules",
-    "prepare": "simple-git-hooks"
+    "prepare": "husky"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -75,7 +75,7 @@
     "markdownlint-cli": "^0.41.0",
     "openapi-typescript": "^6.7.6",
     "prettier": "^3.1.0",
-    "simple-git-hooks": "^2.13.1",
+    "husky": "^9.0.0",
     "typescript": "^5.9.2",
     "vite": "^7.1.6",
     "vitest": "^3.2.4",
@@ -85,8 +85,5 @@
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
   }
 }

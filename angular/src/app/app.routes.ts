@@ -32,4 +32,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/debug-panel/debug-panel.component').then((m) => m.DebugPanelComponent),
   },
+  {
+    path: 'dev/analysis-demo',
+    loadComponent: () =>
+      import('./components/analysis-block/analysis-block-demo.component').then(
+        (m) => m.AnalysisBlockDemoComponent
+      ),
+  },
 ];

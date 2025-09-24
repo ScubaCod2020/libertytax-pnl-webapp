@@ -1,3 +1,9 @@
+AnalysisBlock demo route render status
+
+- Route: `/dev/analysis-demo`
+- Status: Visible (dev-only flag default hides content; demo shows stub when flag enabled)
+- Quick fix path (if hidden): provide `FEATURE_FLAGS` with `{ showAnalysisBlock: true }` in the demo route host or via temporary app-wide provider during dev.
+
 # Render Audit (Angular)
 
 ## Bootstrap & Shell

@@ -137,10 +137,10 @@ components:
           }
       - placeholders_until_first_input: true
       - presets:
-          good: { delta: +0.02 }
-          better: { delta: +0.05 }
-          best: { delta: +0.10 }
-          custom_slider: [-10.0, +20.0] # tenths
+          good: { delta: 0.02 }
+          better: { delta: 0.05 }
+          best: { delta: 0.10 }
+          custom_slider: [-10.0, 20.0] # tenths
           scope_toggles: ['returns', 'avgNetFee']
       - bi_directional:
           rule: 'amount <-> percent; lastEdited wins; consistent rounding'
@@ -253,9 +253,9 @@ gating_matrix:
     visible: ['PriorYear', 'IncomeDrivers (existing)', 'TaxRush (if handlesTaxRush)']
 
 presets:
-  good: { delta: +0.02, scopes: ['returns', 'avgNetFee'] }
-  better: { delta: +0.05, scopes: ['returns', 'avgNetFee'] }
-  best: { delta: +0.10, scopes: ['returns', 'avgNetFee'] }
+  good: { delta: 0.02, scopes: ['returns', 'avgNetFee'] }
+  better: { delta: 0.05, scopes: ['returns', 'avgNetFee'] }
+  best: { delta: 0.10, scopes: ['returns', 'avgNetFee'] }
   custom:
     slider: { min: -10.0, max: 20.0, step: 0.1 }
     scopes: ['returns', 'avgNetFee']
@@ -442,3 +442,16 @@ blueprint_delta_2025_09_23:
   notes:
     - 'No business logic changes to calculations; domain functions remain pure TS in domain/calculations'
     - 'If roadmap cards remain unfinished prior to main merge, gate visibility behind a debug flag or query parameter'
+blueprint_delta_2025_09_24:
+  summary:
+    - 'Ported React AnalysisBlock model into Angular: types + standalone component shell'
+    - 'Added FEATURE_FLAGS token with showAnalysisBlock; demo route at /dev/analysis-demo'
+    - 'No business logic wired; planned AnalysisData assembler service for later'
+  files:
+    - 'angular/src/app/domain/types/analysis.types.ts'
+    - 'angular/src/app/components/analysis-block/analysis-block.component.ts'
+    - 'angular/src/app/components/analysis-block/analysis-block-demo.component.ts'
+    - 'angular/src/app/core/tokens/feature-flags.token.ts'
+    - 'angular/src/app/app.routes.ts'
+  notes:
+    - 'Component is presentational; feature gated for dev until complete'

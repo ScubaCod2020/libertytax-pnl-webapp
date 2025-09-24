@@ -41,6 +41,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **🇨🇦 Regional Messaging**: TaxRush fields only show for Canada with contextual help
 
 ### Fixed
+- Tooling: Migrated to Husky v9, removed deprecated `.husky/_/husky.sh` shim, and set `core.hooksPath` to `.husky`. Pre-commit now runs `lint-staged` and progress log validation without warnings.
+
+### Technical Details
+
+- package.json: `prepare` now `husky`; added devDependency `husky@^9`; removed `simple-git-hooks` and its config
+- Git config: `core.hooksPath=.husky`
+- Deleted directory: `.husky/_`
+- Verified Angular workspace is on v20.3.x with Node v24.8.0
 
 - **🐛 Custom Growth Dropdown**: Fixed reversion issue when selecting "Custom percentage..."
 - **📊 Dashboard KPI Cards**: Restored proper visibility with enhanced styling and spacing
