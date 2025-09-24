@@ -1,11 +1,7 @@
 import { Component, Input, computed, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CalculationService } from '../../../core/services/calculation.service';
-import type {
-  CalculationInputs,
-  CalculationResults,
-  Thresholds,
-} from '../../../domain/types/calculation.types';
+import type { CalculationInputs, CalculationResults, Thresholds } from '../../../domain/types/calculation.types';
 import { SettingsService, type Region } from '../../../services/settings.service';
 import { DEFAULT_REGION_CONFIGS } from '../../../core/tokens/region-configs.token';
 
