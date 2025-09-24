@@ -229,3 +229,14 @@ ValidatedInput.tsx → Angular placement and rationale
 - Inputs: `field` (ExpenseField), `value`, `context` (ValidationContext), accessibility and styling options
 - Outputs: `valueChange` (ValidatedInputData), `validationChange` (ValidationResult)
 - Missing: None - new component and validation system created with comprehensive validation logic, accessibility features, debounced input handling, and production-ready error/warning display.
+
+Wizard.tsx → Angular placement and rationale
+
+- What it is: Simple wrapper component that serves as the main entry point for the wizard functionality. Acts as a thin interface layer that passes props directly to the WizardShell component, providing a clean API for the wizard system while delegating all implementation to WizardShell. This is an architectural pattern - a facade component that provides a stable public interface while the actual implementation lives in WizardShell.
+- Where it belongs in Angular:
+  - Not applicable: Angular wizard system architecture exceeds React implementation
+  - Note: Angular has comprehensive wizard architecture with routing, state management, and sophisticated page components
+- Why that location: Angular's existing wizard system is architecturally superior with routing-based navigation, comprehensive state management (WizardStateService), sophisticated page components (WizardPageComponent), and complete wizard flow architecture that makes the simple React facade pattern obsolete.
+- Inputs: N/A - React facade pattern unnecessary in Angular architecture
+- Outputs: N/A - Angular uses routing and state management instead of simple prop delegation
+- Missing: None - Angular wizard system significantly exceeds React functionality with comprehensive architecture, routing integration, state management, and sophisticated component system.

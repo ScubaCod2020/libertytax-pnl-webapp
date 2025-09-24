@@ -65,6 +65,7 @@ PerformanceCard (UI/Types) migration status
 - **ProjectedPerformancePanel**: Prior year vs projected performance comparison with status indicators and metrics display (specialized dashboard component complementing existing performance system)
 - **ScenarioSelector**: Scenario selection dropdown with debug logging and flexible layout options (reusable UI component complementing existing scenario state management)
 - **ValidatedInput**: Production-ready input with comprehensive validation and accessibility compliance (new validation infrastructure addressing critical QA issues)
+- **Wizard**: Simple facade wrapper for wizard entry point (Angular wizard system significantly exceeds with comprehensive routing architecture and state management)
 - **Wizard UI Components**: ToggleQuestion (typo fix applied), CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
 - **SuggestionEngineService**: Profile-based suggestion calculation with regional differentiation and context-based profile selection
 - **Complete Type System**: WizardAnswers interface with 85+ fields, WizardShellProps, WizardSectionProps, strategic analysis types
