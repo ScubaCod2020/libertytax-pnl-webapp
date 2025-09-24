@@ -171,3 +171,29 @@ export function getAdjustmentStatus(answers: WizardAnswersLike): AdjustmentStatu
     adjustments: adjustments.length ? adjustments : undefined,
   };
 }
+
+/**
+ * Calculate blended growth rate based on actual field values vs original targets.
+ * Used for strategic analysis to show combined effect of individual field adjustments.
+ */
+export function calculateBlendedGrowth(answers: WizardAnswersLike): number {
+  if (!answers.avgNetFee || !answers.taxPrepReturns) return answers.expectedGrowthPct ?? 0;
+
+  // Calculate actual projected values
+  const actualAvgNetFee =
+    answers.projectedAvgNetFee !== undefined
+      ? answers.projectedAvgNetFee
+      : answers.avgNetFee * (1 + (answers.expectedGrowthPct ?? 0) / 100);
+  const actualTaxPrepReturns =
+    answers.projectedTaxPrepReturns !== undefined
+      ? answers.projectedTaxPrepReturns
+      : answers.taxPrepReturns * (1 + (answers.expectedGrowthPct ?? 0) / 100);
+
+  // Calculate blended growth based on revenue impact
+  const originalRevenue = answers.avgNetFee * answers.taxPrepReturns;
+  const actualRevenue = actualAvgNetFee * actualTaxPrepReturns;
+  
+  if (originalRevenue === 0) return 0;
+  
+  return Math.round(((actualRevenue - originalRevenue) / originalRevenue) * 100);
+}

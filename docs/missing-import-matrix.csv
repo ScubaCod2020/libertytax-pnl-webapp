@@ -9,4 +9,6 @@ UI,react-app-reference/react-app-reference/src/components/Wizard/ToggleQuestion.
 UI,react-app-reference/react-app-reference/src/components/Wizard/FormField.tsx,angular/src/app/components/wizard-ui/currency-input.component.ts,exists,None,CurrencyInput with ControlValueAccessor support
 UI,react-app-reference/react-app-reference/src/components/Wizard/FormField.tsx,angular/src/app/components/wizard-ui/number-input.component.ts,exists,None,NumberInput with prefix/suffix support
 Types,react-app-reference/react-app-reference/src/components/Wizard/types.ts,angular/src/app/domain/types/wizard.types.ts,exists,None,Complete WizardAnswers interface with all 17 expense fields
+UI,react-app-reference/react-app-reference/src/components/Wizard/StrategicAnalysis.tsx,angular/src/app/pages/wizard/income-drivers/components/strategic-analysis.component.ts,exists,Types+Helpers→UI,Educational strategic vs tactical analysis with performance comparisons
+Calc,react-app-reference/react-app-reference/src/components/Wizard/calculations.ts,angular/src/app/domain/calculations/wizard-helpers.ts,complete,None,Added calculateBlendedGrowth function for strategic analysis
 

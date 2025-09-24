@@ -49,3 +49,15 @@ NewStoreSection.tsx → Angular placement and rationale
 - Inputs: `answers: WizardAnswers`, `region: Region`
 - Outputs: `answersChange: EventEmitter<Partial<WizardAnswers>>`
 - Missing: None - complete staging with all dependencies present.
+
+StrategicAnalysis.tsx → Angular placement and rationale
+
+- What it is: Educational strategic vs tactical analysis component showing variance between strategic goals and actual field-level adjustments with performance comparisons and business lessons.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/pages/wizard/income-drivers/components/strategic-analysis.component.ts`
+  - Business Logic: `angular/src/app/domain/calculations/wizard-helpers.ts` (extended with calculateBlendedGrowth)
+  - Types: `angular/src/app/domain/types/wizard.types.ts` (existing interfaces)
+- Why that location: Educational component for income drivers page; calculation logic in domain for reusability; conditional rendering based on adjustments.
+- Inputs: `answers: WizardAnswers`
+- Outputs: None (presentational component)
+- Missing: None - complete staging with calculateBlendedGrowth function added to wizard helpers.

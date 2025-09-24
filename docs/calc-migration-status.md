@@ -51,8 +51,10 @@ PerformanceCard (UI/Types) migration status
 - Wizard helpers: performance vs target, adjustment status functions
 - MetricsAssemblerService + AnalysisDataAssemblerService (demo data)
 - **NewStoreSection**: Complete target performance goals form with auto-calculations
+- **StrategicAnalysis**: Educational strategic vs tactical analysis with performance comparisons
 - **Wizard UI Components**: ToggleQuestion, CurrencyInput, NumberInput (ControlValueAccessor support)
 - **Complete WizardAnswers**: Full interface with all 17 expense fields
+- **Extended Wizard Helpers**: Added calculateBlendedGrowth function for strategic analysis
 
 ## What Remains
 
@@ -60,7 +62,7 @@ PerformanceCard (UI/Types) migration status
 - Connect wizard pages to CalculationService for live updates  
 - Complete expense dual-entry system (bidirectional $ ↔ % sync)
 - Add remaining React wizard components (existing store sections, expense pages)
-- **Integration**: Wire NewStoreSection into income drivers page with state management
+- **Integration**: Wire NewStoreSection + StrategicAnalysis into income drivers page with state management
 
 Notes:
 
