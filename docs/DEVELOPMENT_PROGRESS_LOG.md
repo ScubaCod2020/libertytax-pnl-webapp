@@ -10,6 +10,12 @@
 - Angular verification: `angular/` workspace confirmed on Angular 20.3.x (CLI 20.3.2)
 - Node verified: v24.8.0 (meets Angular 20 requirements)
 
+- Manual Navigator: Ported and staged AnalysisBlock (UI + types) with dev gating
+  - Added `analysis.types.ts`, `analysis-block.component.ts`, and demo route `/dev/analysis-demo`
+  - Placed shells on Wizard Step 1 (Projected section) and Dashboard middle column
+  - Implemented `AnalysisDataAssemblerService` (Custom vs Preset variance) and feature-flag toggle in Debug Panel
+  - Updated docs: teaching notes, wire-up plan, trace plan, render audit, migration status, blueprint delta
+
 2025-09-22
 
 - Created feature branch `feat/context-first-hunt-port`.
