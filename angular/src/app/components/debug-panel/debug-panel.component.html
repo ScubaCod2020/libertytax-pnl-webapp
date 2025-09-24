@@ -33,6 +33,14 @@
         <input type="checkbox" [checked]="flags.showAnalysisBlock" (change)="setShowAnalysisBlock($event.target.checked)" />
         Analysis Block (Wizard + Dashboard)
       </label>
+      <label style="display:flex; align-items:center; gap:8px">
+        <input type="checkbox" [checked]="flags.showMonthlyForecastCard" (change)="setShowMonthlyForecastCard($event.target.checked)" />
+        Monthly Forecast Card (Roadmap)
+      </label>
+      <label style="display:flex; align-items:center; gap:8px">
+        <input type="checkbox" [checked]="flags.showMultiStoreSummaryCard" (change)="setShowMultiStoreSummaryCard($event.target.checked)" />
+        Multi-Store Summary Card (Roadmap)
+      </label>
       <!-- Future: add toggles for other enhancement flags here -->
     </div>
   </section>

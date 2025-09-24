@@ -4,6 +4,9 @@
     <app-kpi-card></app-kpi-card>
   </div>
   <div class="col col-b"><!-- inputs summary placeholder --></div>
+  <div class="col col-b" *ngIf="flags.showMonthlyForecastCard">
+    <app-monthly-forecast-card></app-monthly-forecast-card>
+  </div>
   <div class="col col-b" *ngIf="showAnalysis">
     <section class="card">
       <div class="card-title">Projected vs Preset (Preview)</div>

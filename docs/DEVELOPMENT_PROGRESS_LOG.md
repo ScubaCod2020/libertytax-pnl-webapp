@@ -15,6 +15,7 @@
   - Placed shells on Wizard Step 1 (Projected section) and Dashboard middle column
   - Implemented `AnalysisDataAssemblerService` (Custom vs Preset variance) and feature-flag toggle in Debug Panel
   - Updated docs: teaching notes, wire-up plan, trace plan, render audit, migration status, blueprint delta
+  - Added feature flags for Monthly Forecast and Multi-Store Summary; wired Monthly Forecast card to Dashboard under flag and added toggles in Debug Panel
 
 2025-09-22
 
