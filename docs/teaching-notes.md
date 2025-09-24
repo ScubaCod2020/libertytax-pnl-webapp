@@ -217,3 +217,15 @@ ScenarioSelector.tsx → Angular placement and rationale
 - Inputs: `scenario` (current Scenario), `scenarios` (ScenarioOption array), layout options, debug logging
 - Outputs: `scenarioChange` (EventEmitter for scenario selection)
 - Missing: None - new component created with enhanced flexibility, multiple layout options, description support, accessibility features, and architectural complement to existing scenario system.
+
+ValidatedInput.tsx → Angular placement and rationale
+
+- What it is: Production-ready input component with comprehensive validation for financial data entry. Features real-time validation, error/warning display, accessibility compliance, and contextual validation based on expense field types. Addresses critical QA issues including input validation, error handling, and accessibility violations.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/components/validated-input/validated-input.component.ts` (reusable validated input component)
+  - Utils: `angular/src/app/domain/utils/validation.utils.ts` (validation system and utilities)
+  - Note: Creates comprehensive validation infrastructure missing from Angular application
+- Why that location: Reusable form component with validation; provides production-ready validation system for financial data entry.
+- Inputs: `field` (ExpenseField), `value`, `context` (ValidationContext), accessibility and styling options
+- Outputs: `valueChange` (ValidatedInputData), `validationChange` (ValidationResult)
+- Missing: None - new component and validation system created with comprehensive validation logic, accessibility features, debounced input handling, and production-ready error/warning display.
