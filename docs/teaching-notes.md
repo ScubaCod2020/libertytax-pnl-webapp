@@ -184,3 +184,14 @@ InputsPanel.tsx → Angular placement and rationale
 - Inputs: Complex props including region, scenario, all income/expense fields, and bidirectional persistence
 - Outputs: EventEmitters for field changes and wizard persistence
 - Missing: None - new component created with comprehensive dashboard input management, dual percentage/dollar inputs, regional filtering, TaxRush handling, scenario selection, enhanced sliders, and bidirectional wizard persistence.
+
+KPIStoplight.tsx → Angular placement and rationale
+
+- What it is: Visual KPI status indicator component using stoplight metaphor (red, yellow, green) to display performance status. Features three colored lenses with only the active status illuminated, using CSS custom properties for consistent theming and accessibility support with ARIA labels.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/components/kpi-stoplight/kpi-stoplight.component.ts` (reusable visual indicator component)
+  - Note: Distinct from existing KPIStoplightsComponent which is a compound dashboard component
+- Why that location: Reusable visual component for status indication; complements existing KPI system with simple visual indicator.
+- Inputs: `active` (Light status: 'red' | 'yellow' | 'green')
+- Outputs: None (pure visual indicator component)
+- Missing: None - new component created with enhanced accessibility, smooth transitions, CSS custom properties for theming, and trackBy optimization for performance.
