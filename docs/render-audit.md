@@ -109,8 +109,28 @@ const testAnswers: WizardAnswers = {
 - **Visual Indicators**: Color-coded status (green for exceeding, red for missing)
 - **Currency Formatting**: Proper locale-based number formatting
 
+### ✅ **SuggestedFormField Components**
+- **Status**: Staged (not yet integrated)
+- **Visibility**: Hidden (components exist but not imported/used in pages)
+- **Template**: Complete Angular templates with suggestion display and smart formatting
+- **Styling**: Inline styles for suggestion badges, flow indicators, enhanced layouts
+- **Dependencies**: SuggestionEngineService available with sample profiles
+
+#### **Suggestion Display Logic**
+- **Status**: Implemented ✅
+- **Smart Formatting**: Currency ($), percentage (%), count fields with proper symbols
+- **Visual Indicators**: Different badges for calculated (📊) vs suggested (💡) values
+- **Enhanced Help Text**: Automatic suggestion integration into field help text
+
+#### **Specialized Input Components**
+- **Status**: Complete ✅
+- **ControlValueAccessor**: Proper form integration for all suggested inputs
+- **Placeholder Integration**: Suggested values automatically populate placeholders
+- **Suggestion Engine**: Profile-based calculations with regional differentiation
+
 ## Next Session Actions
-1. **Integration**: Import and wire NewStoreSectionComponent + StrategicAnalysisComponent in income drivers page
-2. **Testing**: Verify all auto-calculations and conditional rendering with test data
-3. **Polish**: Adjust styling if needed after integration
-4. **Documentation**: Update progress log with integration status
+1. **Integration**: Import and wire NewStoreSectionComponent + StrategicAnalysisComponent + SuggestedFormField components in wizard pages
+2. **Testing**: Verify all auto-calculations, conditional rendering, and suggestion display with test data
+3. **Suggestion Engine**: Test profile selection and calculation accuracy across different scenarios
+4. **Polish**: Adjust styling if needed after integration
+5. **Documentation**: Update progress log with integration status

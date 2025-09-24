@@ -61,3 +61,16 @@ StrategicAnalysis.tsx → Angular placement and rationale
 - Inputs: `answers: WizardAnswers`
 - Outputs: None (presentational component)
 - Missing: None - complete staging with calculateBlendedGrowth function added to wizard helpers.
+
+SuggestedFormField.tsx → Angular placement and rationale
+
+- What it is: Enhanced form field components with contextual suggestion display showing calculation flow, smart formatting based on field type (currency, percentage, count), and visual indicators for calculated vs suggested fields.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/components/wizard-ui/suggested-form-field.component.ts` (main wrapper)
+  - Specialized Inputs: `angular/src/app/components/wizard-ui/suggested-*-input.component.ts` (currency, number, percentage)
+  - Business Logic: `angular/src/app/domain/services/suggestion-engine.service.ts` (calculation logic)
+  - Types: `angular/src/app/domain/types/suggestion.types.ts` (SuggestionProfile, CalculatedSuggestions)
+- Why that location: Reusable wizard components for enhanced UX; suggestion engine in domain for business logic; types in domain for service access.
+- Inputs: `label`, `helpText`, `required`, `fieldId`, `suggestions`, `isCalculated`
+- Outputs: None (wrapper component, specialized inputs emit valueChange)
+- Missing: None - complete staging with suggestion engine service and all specialized input components.

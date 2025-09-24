@@ -52,9 +52,12 @@ PerformanceCard (UI/Types) migration status
 - MetricsAssemblerService + AnalysisDataAssemblerService (demo data)
 - **NewStoreSection**: Complete target performance goals form with auto-calculations
 - **StrategicAnalysis**: Educational strategic vs tactical analysis with performance comparisons
-- **Wizard UI Components**: ToggleQuestion, CurrencyInput, NumberInput (ControlValueAccessor support)
+- **SuggestedFormField**: Enhanced form fields with contextual suggestion display and smart formatting
+- **Wizard UI Components**: ToggleQuestion, CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
+- **SuggestionEngineService**: Profile-based suggestion calculation with regional differentiation
 - **Complete WizardAnswers**: Full interface with all 17 expense fields
 - **Extended Wizard Helpers**: Added calculateBlendedGrowth function for strategic analysis
+- **Suggestion Types**: SuggestionProfile and CalculatedSuggestions interfaces
 
 ## What Remains
 
@@ -62,7 +65,7 @@ PerformanceCard (UI/Types) migration status
 - Connect wizard pages to CalculationService for live updates  
 - Complete expense dual-entry system (bidirectional $ ↔ % sync)
 - Add remaining React wizard components (existing store sections, expense pages)
-- **Integration**: Wire NewStoreSection + StrategicAnalysis into income drivers page with state management
+- **Integration**: Wire NewStoreSection + StrategicAnalysis + SuggestedFormField into wizard pages with state management and suggestion engine
 
 Notes:
 
