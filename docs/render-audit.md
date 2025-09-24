@@ -351,6 +351,7 @@ const testAnswers: WizardAnswers = {
 27. **App Files**: Angular application system exceeds React monolithic app component with router-integrated architecture and service-based organization
 28. **Main Entry**: Angular bootstrap system exceeds React basic DOM rendering with framework-integrated bootstrap and enterprise features
 29. **Styles & Environment**: Angular styling and environment system exceeds React monolithic CSS with modular SCSS architecture and dynamic theming
+30. **HTML & TypeScript Config**: Angular configuration system exceeds React basic configuration with enterprise-level configuration and framework integration
 6. **Testing**: Verify all auto-calculations, conditional rendering, suggestion display, and toggle functionality with test data
 7. **Suggestion Engine**: Test profile selection and calculation accuracy across different scenarios
 8. **Educational Testing**: Use demo component to validate suggestion flow and visual indicators
