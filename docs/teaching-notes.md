@@ -12,6 +12,15 @@ PerformanceCard.tsx → Angular placement and rationale
 - Outputs: `metricClick` (optional).
 - Missing: Actual YTD vs Projected binding; service to compute metrics arrays.
 
+MetricsAssemblerService → Purpose and placement
+
+- What it is: Pure service that builds `PerformanceMetric[]` for dashboard from app state.
+- Where it belongs: `angular/src/app/domain/services/metrics-assembler.service.ts`
+- Why: Keeps UI simple and reusable; central place to evolve logic from demo → real YTD vs Projected.
+- Inputs: `SettingsService`, `ProjectedService`, `CalculationService`
+- Outputs: `{ revenue: PerformanceMetric[], returns: PerformanceMetric[] }`
+- Next: Replace demo inputs with real Projected vs YTD when available.
+
 - What it is: Reusable analysis card showing status color, primary metric, optional comparison and insights.
 - Where it belongs in Angular:
   - UI: `angular/src/app/components/analysis-block/analysis-block.component.ts`

@@ -9,6 +9,7 @@ import { FEATURE_FLAGS } from '../../core/tokens/feature-flags.token';
 import { inject } from '@angular/core';
 import { AnalysisDataAssemblerService } from '../../domain/services/analysis-data-assembler.service';
 import { PerformanceCardComponent } from '../../components/performance-card/performance-card.component';
+import { MetricsAssemblerService } from '../../domain/services/metrics-assembler.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,6 +29,7 @@ import { PerformanceCardComponent } from '../../components/performance-card/perf
 export class DashboardComponent {
   readonly flags = inject(FEATURE_FLAGS);
   private readonly assembler = inject(AnalysisDataAssemblerService);
+  private readonly metrics = inject(MetricsAssemblerService);
 
   get showAnalysis(): boolean {
     return this.flags.showAnalysisBlock === true;
@@ -35,5 +37,15 @@ export class DashboardComponent {
 
   get analysisData() {
     return this.assembler.buildProjectedVsPresets();
+  }
+
+  get revenueMetrics() {
+    return this.metrics.buildDashboardPreviewMetrics().revenue;
+  }
+  get returnMetrics() {
+    return this.metrics.buildDashboardPreviewMetrics().returns;
+  }
+  get cprMetrics() {
+    return this.metrics.buildDashboardPreviewMetrics().cpr;
   }
 }

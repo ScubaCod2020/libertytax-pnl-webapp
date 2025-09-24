@@ -16,6 +16,12 @@ Rationale
 - Keep UI presentational; compute AnalysisData in pure TS service for reuse.
 - Gate UI via feature flag until fully configured.
 
+Performance Cards wiring (planned)
+
+- Inputs: SettingsService (region/flags), CalculationService (compute), future YTD service
+- Assembler: `MetricsAssemblerService` → returns `PerformanceMetric[]` groups
+- UI: `PerformanceCardComponent` consumes arrays
+
 # Wire-Up Plan (Inputs → Services → Domain)
 
 ## Dashboard

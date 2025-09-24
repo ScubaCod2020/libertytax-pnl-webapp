@@ -18,20 +18,9 @@
     <section class="card">
       <div class="card-title">Performance (Preview)</div>
       <div style="display:grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
-        <lt-performance-card
-          title="Revenue Pace"
-          [metrics]="[
-            { id: 'rev', label: 'Total Revenue', value: 194000, unit: 'currency', trend: { direction: 'up', percentage: 6.2, period: 'vs PY' }, target: { value: 210000, status: 'on-track' }, context: { period: 'YTD' } }
-          ]"
-          variant="dashboard"
-        ></lt-performance-card>
-        <lt-performance-card
-          title="Returns Pace"
-          [metrics]="[
-            { id: 'ret', label: 'Returns', value: 980, unit: 'count', trend: { direction: 'flat', percentage: 0.0, period: 'vs PY' }, target: { value: 1600, status: 'below' }, context: { period: 'YTD' } }
-          ]"
-          variant="dashboard"
-        ></lt-performance-card>
+        <lt-performance-card title="Revenue Pace" [metrics]="revenueMetrics" variant="dashboard"></lt-performance-card>
+        <lt-performance-card title="Returns Pace" [metrics]="returnMetrics" variant="dashboard"></lt-performance-card>
+        <lt-performance-card title="CPR" [metrics]="cprMetrics" variant="dashboard"></lt-performance-card>
       </div>
       <div class="small" style="color:#6b7280">Template preview; final cards will bind to YTD vs Projected</div>
     </section>
