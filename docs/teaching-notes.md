@@ -140,3 +140,14 @@ BrandWatermark.tsx → Angular placement and rationale
 - Inputs: `region`
 - Outputs: None (display component)
 - Missing: None - component already exists with excellent implementation, enhanced with React parity features (improved asset selection logic, dynamic brand name resolution, enhanced error logging for debugging).
+
+DebugPanel.tsx → Angular placement and rationale
+
+- What it is: Development debug panel with fixed positioning (top-right corner), application state display (storage key, origin, version, ready/hydrating status), and debugging actions (save, dump, copy JSON, clear storage, show wizard). Designed for development-only use with conditional visibility.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/components/dev/app-state-debug.component.ts` (development debugging component)
+  - Note: Different from existing DebugPanelComponent which handles milestones/feature flags
+- Why that location: Development-only component for app state debugging; separate from existing debug panel which serves different purpose (milestones vs app state).
+- Inputs: `show`, `storageKey`, `origin`, `appVersion`, `isReady`, `isHydrating`, `savedAt`
+- Outputs: `saveNow`, `dumpStorage`, `copyJSON`, `clearStorage`, `showWizard` EventEmitters
+- Missing: None - new component created as AppStateDebugComponent to avoid naming conflict with existing DebugPanelComponent (which serves different debugging purpose).
