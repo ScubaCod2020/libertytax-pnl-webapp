@@ -361,3 +361,14 @@ test/setup.ts → Angular placement and rationale
 - Inputs: Test environment configuration and mock setup for comprehensive testing
 - Outputs: Enhanced Angular testing environment with React test setup features
 - Missing: Angular testing configuration enhanced with React test setup features while maintaining architectural superiority with comprehensive testing framework, enhanced mocking system, Angular-specific utilities, and enterprise-level testing capabilities.
+
+types folder → Angular placement and rationale
+
+- What it is: React types folder containing 5 files with central type definitions, expense field definitions, OpenAPI-generated API types, API namespace shim, and image import declarations (549 lines total).
+- Where it belongs in Angular:
+  - Exceeds: Angular type system significantly exceeds React types folder with superior domain-first organization
+  - Note: Angular has comprehensive type system across multiple domain-organized locations with enhanced functionality
+- Why that location: Angular's type system significantly exceeds React's single-folder approach with domain-first type organization (types organized by business domain in domain/types/* vs React single types folder), enhanced expense system (comprehensive expense definitions with calculation bases, regional support, helper functions vs React basic expense types), complete wizard types (88+ line comprehensive WizardAnswers interface vs React basic wizard re-exports), calculation system types (full P&L calculation type definitions with thresholds, inputs, results vs React basic calculation imports), suggestion engine types (advanced suggestion system with profiles, calculated suggestions, registry vs React basic suggestion interfaces), API type parity (identical OpenAPI-generated types + namespace shim in angular/src/app/types/* vs React api types), component integration (types integrated with Angular services, dependency injection, component lifecycle vs React standalone types), regional support (enhanced regional branding, calculation types, theme integration vs React basic regional types), and enterprise architecture (framework-integrated types, service-based organization, domain separation vs React basic file organization).
+- Inputs: Central type definitions for application-wide type safety and development experience
+- Outputs: Comprehensive type system with domain organization and framework integration
+- Missing: Angular type system significantly exceeds React types folder with superior domain-first architecture, enhanced type definitions, framework integration, and enterprise-level type organization representing comprehensive TypeScript excellence.

@@ -346,7 +346,7 @@ const testAnswers: WizardAnswers = {
 22. **Calculation Engine**: Angular calculation system enhanced with React features while maintaining superior domain architecture
 23. **Regional Branding System**: Angular branding system enhanced with React comprehensive branding and superior theme service architecture
 24. **Test Setup**: Angular testing configuration enhanced with React test setup features
-25. **Type System**: Leverage comprehensive wizard types for type-safe integration
+25. **Types Folder**: Angular type system exceeds React single-folder approach with domain-first organization and enhanced functionality
 6. **Testing**: Verify all auto-calculations, conditional rendering, suggestion display, and toggle functionality with test data
 7. **Suggestion Engine**: Test profile selection and calculation accuracy across different scenarios
 8. **Educational Testing**: Use demo component to validate suggestion flow and visual indicators
