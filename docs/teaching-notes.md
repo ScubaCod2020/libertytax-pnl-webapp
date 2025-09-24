@@ -173,3 +173,14 @@ Header.tsx → Angular placement and rationale
 - Inputs: Settings service integration (more advanced than React props)
 - Outputs: Router-based navigation and service integration (more advanced than React callbacks)
 - Missing: None - existing Angular component exceeds React functionality with BrandLogoComponent integration, settings service integration, flexible actions system, and comprehensive router-based navigation.
+
+InputsPanel.tsx → Angular placement and rationale
+
+- What it is: Dashboard inputs panel mirroring wizard Page 2 structure with enhanced sliders and bidirectional wizard data flow. Features comprehensive expense management with dual percentage/dollar inputs, regional filtering, TaxRush field handling, scenario selection, and automatic persistence back to wizard state.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/pages/dashboard/components/inputs-panel.component.ts` (dashboard-specific input management component)
+  - Dependencies: Expense field definitions, regional filtering, bidirectional data flow
+- Why that location: Dashboard-specific component for input management; provides enhanced user experience with sliders and real-time persistence.
+- Inputs: Complex props including region, scenario, all income/expense fields, and bidirectional persistence
+- Outputs: EventEmitters for field changes and wizard persistence
+- Missing: None - new component created with comprehensive dashboard input management, dual percentage/dollar inputs, regional filtering, TaxRush handling, scenario selection, enhanced sliders, and bidirectional wizard persistence.

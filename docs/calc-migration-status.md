@@ -60,6 +60,7 @@ PerformanceCard (UI/Types) migration status
 - **AppStateDebug**: Development debug panel with app state display and debugging actions (new component for development use)
 - **AppFooter**: Professional navigation footer with multi-column layout (existing Angular component exceeds React functionality)
 - **AppHeader**: Three-column header with regional branding and actions (existing Angular component exceeds React functionality)
+- **InputsPanel**: Dashboard inputs panel with enhanced sliders and bidirectional wizard data flow (comprehensive expense management with dual percentage/dollar inputs)
 - **Wizard UI Components**: ToggleQuestion (typo fix applied), CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
 - **SuggestionEngineService**: Profile-based suggestion calculation with regional differentiation and context-based profile selection
 - **Complete Type System**: WizardAnswers interface with 85+ fields, WizardShellProps, WizardSectionProps, strategic analysis types
