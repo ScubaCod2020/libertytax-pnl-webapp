@@ -195,3 +195,14 @@ KPIStoplight.tsx → Angular placement and rationale
 - Inputs: `active` (Light status: 'red' | 'yellow' | 'green')
 - Outputs: None (pure visual indicator component)
 - Missing: None - new component created with enhanced accessibility, smooth transitions, CSS custom properties for theming, and trackBy optimization for performance.
+
+ProjectedPerformancePanel.tsx → Angular placement and rationale
+
+- What it is: Prior Year vs Projected performance comparison panel that shows last year performance metrics vs projected goals. Features performance status indicators with color-coded metrics, prior year calculations (net margin, cost per return), and future enhancement placeholders for tracking mode transitions.
+- Where it belongs in Angular:
+  - Dashboard: `angular/src/app/pages/dashboard/components/projected-performance-panel.component.ts` (dashboard-specific performance comparison component)
+  - Note: Complements existing PerformanceCardComponent system as specialized prior year comparison
+- Why that location: Dashboard-specific component for performance comparison; provides specialized prior year analysis that complements the existing flexible performance system.
+- Inputs: `ProjectedPerformanceData` (structured data object with projected metrics and prior year data)
+- Outputs: None (pure display component)
+- Missing: None - new component created with structured data interface, performance status calculation, conditional rendering, and architectural complement to existing performance system.

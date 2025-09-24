@@ -62,6 +62,7 @@ PerformanceCard (UI/Types) migration status
 - **AppHeader**: Three-column header with regional branding and actions (existing Angular component exceeds React functionality)
 - **InputsPanel**: Dashboard inputs panel with enhanced sliders and bidirectional wizard data flow (comprehensive expense management with dual percentage/dollar inputs)
 - **KPIStoplight**: Visual KPI status indicator with stoplight metaphor and accessibility support (reusable visual component complementing existing KPI system)
+- **ProjectedPerformancePanel**: Prior year vs projected performance comparison with status indicators and metrics display (specialized dashboard component complementing existing performance system)
 - **Wizard UI Components**: ToggleQuestion (typo fix applied), CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
 - **SuggestionEngineService**: Profile-based suggestion calculation with regional differentiation and context-based profile selection
 - **Complete Type System**: WizardAnswers interface with 85+ fields, WizardShellProps, WizardSectionProps, strategic analysis types
