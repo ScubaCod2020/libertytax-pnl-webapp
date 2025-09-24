@@ -4,4 +4,9 @@ Types,react-app-reference/react-app-reference/src/components/Shared/AnalysisBloc
 UI,react-app-reference/react-app-reference/src/components/Shared/PerformanceCard.tsx,angular/src/app/components/performance-card/performance-card.component.ts,exists,Types→UI,Standalone component staged under flag
 Types,react-app-reference/react-app-reference/src/components/Shared/PerformanceCard.tsx,angular/src/app/domain/types/performance.types.ts,exists,None,Types ported
 Calc,react-app-reference/react-app-reference/src/components/Wizard/calculations.ts,angular/src/app/domain/calculations/wizard-helpers.ts,partial,Helpers→calc,Added performance vs target + adjustment status
+UI,react-app-reference/react-app-reference/src/components/Wizard/NewStoreSection.tsx,angular/src/app/pages/wizard/income-drivers/components/new-store-section.component.ts,exists,Types+Helpers+UI→Main,Complete component with auto-calculations and bidirectional discounts
+UI,react-app-reference/react-app-reference/src/components/Wizard/ToggleQuestion.tsx,angular/src/app/components/wizard-ui/toggle-question.component.ts,exists,Types→UI,Reusable toggle for TaxRush/OtherIncome with field clearing
+UI,react-app-reference/react-app-reference/src/components/Wizard/FormField.tsx,angular/src/app/components/wizard-ui/currency-input.component.ts,exists,None,CurrencyInput with ControlValueAccessor support
+UI,react-app-reference/react-app-reference/src/components/Wizard/FormField.tsx,angular/src/app/components/wizard-ui/number-input.component.ts,exists,None,NumberInput with prefix/suffix support
+Types,react-app-reference/react-app-reference/src/components/Wizard/types.ts,angular/src/app/domain/types/wizard.types.ts,exists,None,Complete WizardAnswers interface with all 17 expense fields
 

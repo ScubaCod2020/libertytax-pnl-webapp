@@ -44,6 +44,24 @@ PerformanceCard (UI/Types) migration status
   - [x] ConfigService → `angular/src/app/core/services/config.service.ts`
   - [x] CalculationService → `angular/src/app/core/services/calculation.service.ts`
 
+## Staged Components & Calculations (2025-09-24)
+
+- AnalysisBlock UI shell + types (dev-gated, not wired)
+- PerformanceCard UI shell + types (dev-gated, not wired)  
+- Wizard helpers: performance vs target, adjustment status functions
+- MetricsAssemblerService + AnalysisDataAssemblerService (demo data)
+- **NewStoreSection**: Complete target performance goals form with auto-calculations
+- **Wizard UI Components**: ToggleQuestion, CurrencyInput, NumberInput (ControlValueAccessor support)
+- **Complete WizardAnswers**: Full interface with all 17 expense fields
+
+## What Remains
+
+- Wire AnalysisBlock + PerformanceCard business logic (replace demo data)
+- Connect wizard pages to CalculationService for live updates  
+- Complete expense dual-entry system (bidirectional $ ↔ % sync)
+- Add remaining React wizard components (existing store sections, expense pages)
+- **Integration**: Wire NewStoreSection into income drivers page with state management
+
 Notes:
 
 - Do not wire to UI yet. Ensure app still builds.

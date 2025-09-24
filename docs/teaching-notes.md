@@ -37,3 +37,15 @@ Wizard calculations (React) → Angular mapping
 - Inputs: `AnalysisData`, `size`, `showComparison`, `showInsights`, optional `onClick`.
 - Outputs: None (presentational). Emits click via handler if provided.
 - Missing: No business logic; future service may compute insights and comparison; feature-flag gating for visibility staged separately.
+
+NewStoreSection.tsx → Angular placement and rationale
+
+- What it is: Target performance goals input form for new stores with auto-calculations, bidirectional discount entry ($/%), TaxRush integration for Canada, and real-time net income preview.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/pages/wizard/income-drivers/components/new-store-section.component.ts`
+  - Supporting components: `angular/src/app/components/wizard-ui/` (ToggleQuestion, CurrencyInput, NumberInput)
+  - Types: `angular/src/app/domain/types/wizard.types.ts` (complete WizardAnswers interface)
+- Why that location: Feature-specific UI for income drivers page; shared wizard components in reusable location; types in domain for service access.
+- Inputs: `answers: WizardAnswers`, `region: Region`
+- Outputs: `answersChange: EventEmitter<Partial<WizardAnswers>>`
+- Missing: None - complete staging with all dependencies present.
