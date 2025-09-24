@@ -1,7 +1,11 @@
 import { Component, Input, computed, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CalculationService } from '../../../core/services/calculation.service';
-import type { CalculationInputs, CalculationResults, Thresholds } from '../../../domain/types/calculation.types';
+import type {
+  CalculationInputs,
+  CalculationResults,
+  Thresholds,
+} from '../../../domain/types/calculation.types';
 import { SettingsService, type Region } from '../../../services/settings.service';
 import { DEFAULT_REGION_CONFIGS } from '../../../core/tokens/region-configs.token';
 
@@ -22,23 +26,32 @@ import { ProTipsCardComponent } from './pro-tips-card.component';
 @Component({
   selector: 'app-dashboard-results-panel',
   standalone: true,
-  imports: [CommonModule, KPIStoplightsComponent, IncomeSummaryCardComponent, ExpenseBreakdownCardComponent, ProTipsCardComponent],
+  imports: [
+    CommonModule,
+    KPIStoplightsComponent,
+    IncomeSummaryCardComponent,
+    ExpenseBreakdownCardComponent,
+    ProTipsCardComponent,
+  ],
   templateUrl: './dashboard-results-panel.component.html',
-  styleUrls: ['./dashboard-results-panel.component.scss']
+  styleUrls: ['./dashboard-results-panel.component.scss'],
 })
 export class DashboardResultsPanelComponent {
   @Input() results: CalculationResults | null = null;
   @Input() hasOtherIncome: boolean = false;
 
   private readonly region = signal<Region>(this.settings.settings.region);
-  private readonly thresholds = computed<Thresholds>(() => {
+  readonly thresholds = computed<Thresholds>(() => {
     const cfg = DEFAULT_REGION_CONFIGS[this.region()];
     return cfg.thresholds;
   });
 
   readonly viewResults = signal<CalculationResults | null>(null);
 
-  constructor(private readonly calc: CalculationService, private readonly settings: SettingsService) {
+  constructor(
+    private readonly calc: CalculationService,
+    private readonly settings: SettingsService
+  ) {
     effect(() => {
       // When explicit results provided, use them; otherwise compute a minimal demo
       if (this.results) {
@@ -74,14 +87,14 @@ export class DashboardResultsPanelComponent {
         advRoyaltiesPct: 5,
         taxRushRoyaltiesPct: r === 'CA' ? 6 : 0,
         miscPct: 1.0,
-        thresholds: t
+        thresholds: t,
       };
       const computedResults = this.calc.calculate(demo);
       this.viewResults.set(computedResults);
     });
 
     // React to runtime region changes
-    this.settings.settings$.subscribe(s => this.region.set(s.region));
+    this.settings.settings$.subscribe((s) => this.region.set(s.region));
   }
 
   // Formatting helpers (match React helpers)
@@ -95,5 +108,3 @@ export class DashboardResultsPanelComponent {
     return n.toLocaleString(undefined, { maximumFractionDigits: 1 }) + '%';
   }
 }
-
-

@@ -3,21 +3,54 @@
     <div style="justify-self:start">
       <app-brand-logo [region]="region" variant="wide" size="medium"></app-brand-logo>
     </div>
-    <div style="display:flex;flex-direction:column;align-items:center;justify-self:center">
-      <div class="h2 brand" style="color:#1e40af;line-height:1.2;text-align:center">Liberty Tax • P&L Budget & Forecast</div>
-      <span class="small text-xs" style="background:#f3f4f6;padding:0.25rem 0.5rem;border-radius:4px;margin-top:0.25rem">v{{ appVersion }} preview</span>
-      <span class="small text-xs" style="margin-top:0.25rem">Debug</span>
+  <div style="display:flex;flex-direction:column;align-items:center;justify-self:center">
+    <!-- Breadcrumb (optional) -->
+    <div *ngIf="hasBreadcrumb" style="font-size:0.875rem;color:#6b7280;margin-bottom:0.25rem;display:flex;gap:0.5rem;align-items:center;">
+      <ng-container *ngFor="let item of breadcrumb!; let last = last">
+        <button *ngIf="item.onClick; else crumbText" (click)="item.onClick()" style="background:none;border:none;color:#3b82f6;cursor:pointer;text-decoration:underline;padding:0;font-size:inherit">{{ item.label }}</button>
+        <ng-template #crumbText><span>{{ item.label }}</span></ng-template>
+        <span *ngIf="!last" style="color:#d1d5db">→</span>
+      </ng-container>
     </div>
-    <div style="display:flex;flex-direction:column;align-items:end;gap:0.5rem;justify-self:end;min-width:180px">
+
+    <div class="h2 brand" style="color:#1e40af;line-height:1.2;text-align:center">Liberty Tax • P&L Budget & Forecast</div>
+    <span class="small text-xs" style="background:#f3f4f6;padding:0.25rem 0.5rem;border-radius:4px;margin-top:0.25rem">v{{ appVersion }} preview</span>
+    <div class="small text-xs" style="margin-top:0.25rem;display:flex;gap:0.5rem;align-items:center;color:#374151">
+      <!-- Read-only selections recap from SettingsService -->
+      <span><strong>Region:</strong> {{ settings.region }}</span>
+      <span>•</span>
+      <span><strong>Store Type:</strong> {{ settings.storeType }}</span>
+      <span>•</span>
+      <span><strong>Tax Year:</strong> {{ settings.taxYear }}</span>
+      <span *ngIf="settings.region==='CA'">• <strong>TaxRush:</strong> {{ settings.taxRush ? 'Yes' : 'No' }}</span>
+      <span *ngIf="settings.otherIncome">• <strong>Other Income:</strong> On</span>
+    </div>
+  </div>
+    <div style="display:flex;flex-direction:column;align-items:end;gap:0.5rem;justify-self:end;min-width:220px">
       <div style="display:flex;align-items:center;gap:0.5rem">
         <button (click)="goIncome()" class="btn {{ currentPage==='income' ? 'btn--active' : 'btn--nav' }}" title="Income Drivers">Income</button>
         <button (click)="goExpenses()" class="btn {{ currentPage==='expenses' ? 'btn--active' : 'btn--nav' }}" title="Expenses">Expenses</button>
         <button (click)="goReports()" class="btn {{ currentPage==='reports' ? 'btn--active' : 'btn--nav' }}" title="P&L Reports">Reports</button>
       </div>
-      <div>
+      <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
+        <!-- Optional store pill -->
+        <span *ngIf="storeInfo" [ngStyle]="{
+            backgroundColor: storeInfo.type === 'multi' ? '#dbeafe' : '#f0fdf4',
+            color: storeInfo.type === 'multi' ? '#1e40af' : '#15803d',
+            padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 500
+          }">
+          {{ storeInfo.type === 'multi' ? ('🏢 ' + (storeInfo.count || 1) + ' Stores') : ('🏪 ' + (storeInfo.name || 'Single Store')) }}
+        </span>
         <button (click)="goDashboard()" class="btn {{ currentPage==='dashboard' ? 'btn--active' : 'btn--nav' }}" title="Dashboard">Dashboard</button>
         <button (click)="resetWizard()" class="btn btn--reset" title="Reset Wizard will clear Income, Expenses, and P&L pages.">Reset Wizard</button>
         <button (click)="toggleDebug()" class="btn {{ (debugOpen$|async) ? 'btn--active' : 'btn--nav' }}" title="Toggle Debug Panel">Debug</button>
+        <!-- Optional actions -->
+        <ng-container *ngIf="actions?.length">
+          <button *ngFor="let a of actions" (click)="a.onClick()" [ngStyle]="actionStyle(a.variant)" style="padding:0.5rem 1rem;border-radius:6px;font-size:0.875rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:0.5rem;transition:all 0.2s ease">
+            <span *ngIf="a.icon">{{ a.icon }}</span>
+            {{ a.label }}
+          </button>
+        </ng-container>
       </div>
     </div>
   </div>
