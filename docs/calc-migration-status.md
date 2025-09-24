@@ -58,6 +58,8 @@ PerformanceCard (UI/Types) migration status
 - **BrandLogo**: Regional brand display with variants and error handling (enhanced with React parity)
 - **BrandWatermark**: Fixed-position watermark with regional branding and error handling (enhanced with React parity)
 - **AppStateDebug**: Development debug panel with app state display and debugging actions (new component for development use)
+- **AppFooter**: Professional navigation footer with multi-column layout (existing Angular component exceeds React functionality)
+- **AppHeader**: Three-column header with regional branding and actions (existing Angular component exceeds React functionality)
 - **Wizard UI Components**: ToggleQuestion (typo fix applied), CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
 - **SuggestionEngineService**: Profile-based suggestion calculation with regional differentiation and context-based profile selection
 - **Complete Type System**: WizardAnswers interface with 85+ fields, WizardShellProps, WizardSectionProps, strategic analysis types

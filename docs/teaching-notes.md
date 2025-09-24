@@ -151,3 +151,25 @@ DebugPanel.tsx → Angular placement and rationale
 - Inputs: `show`, `storageKey`, `origin`, `appVersion`, `isReady`, `isHydrating`, `savedAt`
 - Outputs: `saveNow`, `dumpStorage`, `copyJSON`, `clearStorage`, `showWizard` EventEmitters
 - Missing: None - new component created as AppStateDebugComponent to avoid naming conflict with existing DebugPanelComponent (which serves different debugging purpose).
+
+Footer.tsx → Angular placement and rationale
+
+- What it is: Professional navigation footer with multi-column layout, app navigation (wizard, dashboard, reports), quick links (pro-tips, practice, export), external resources (settings, training, support), and about/version information with progress milestones. Features conditional navigation based on wizard completion status.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/components/app-footer/app-footer.component.ts` (existing core layout component)
+  - Note: Angular implementation significantly more advanced than React version
+- Why that location: Core application layout component; existing Angular version has superior functionality.
+- Inputs: Router-based navigation (more advanced than React props)
+- Outputs: Angular Router navigation (more advanced than React callbacks)
+- Missing: None - existing Angular component exceeds React functionality with Router integration, dynamic milestones, debug integration, and advanced state management.
+
+Header.tsx → Angular placement and rationale
+
+- What it is: App header with three-column layout: regional logo display, centered title with version, and action buttons (region selector, setup wizard, dashboard, reports, reset). Features conditional button display based on wizard completion and current page, plus configuration display showing region and store type.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/components/app-header/app-header.component.ts` (existing core layout component)
+  - Note: Angular implementation significantly more advanced than React version
+- Why that location: Core application layout component; existing Angular version has superior functionality.
+- Inputs: Settings service integration (more advanced than React props)
+- Outputs: Router-based navigation and service integration (more advanced than React callbacks)
+- Missing: None - existing Angular component exceeds React functionality with BrandLogoComponent integration, settings service integration, flexible actions system, and comprehensive router-based navigation.
