@@ -9,6 +9,16 @@ AnalysisBlock (UI/Types) migration status
   - Placement in Wizard Step 1 and Dashboard (render shells only)
   - Documentation updates and trace hooks
 
+PerformanceCard (UI/Types) migration status
+
+- Staged:
+  - Types: `angular/src/app/domain/types/performance.types.ts`
+  - UI: `angular/src/app/components/performance-card/performance-card.component.ts`
+  - Preview placement: Dashboard middle column under `showPerformanceCards`
+- Remaining:
+  - MetricsAssembler service to compute YTD vs Projected metrics
+  - Multi-store/monthly variants
+
 ## Calc Migration Status
 
 - Core P&L Math (src/lib/calcs.ts)

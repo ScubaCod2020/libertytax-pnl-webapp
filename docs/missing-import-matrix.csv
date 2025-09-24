@@ -1,4 +1,6 @@
 Category,Source Path (React),Angular Target,Status,Dep chain,Notes
 UI,react-app-reference/react-app-reference/src/components/Shared/AnalysisBlock.tsx,angular/src/app/components/analysis-block/analysis-block.component.ts,exists,Types→UI,Standalone component shell present; gated via FEATURE_FLAGS
 Types,react-app-reference/react-app-reference/src/components/Shared/AnalysisBlock.tsx,angular/src/app/domain/types/analysis.types.ts,exists,None,Types ported
+UI,react-app-reference/react-app-reference/src/components/Shared/PerformanceCard.tsx,angular/src/app/components/performance-card/performance-card.component.ts,exists,Types→UI,Standalone component staged under flag
+Types,react-app-reference/react-app-reference/src/components/Shared/PerformanceCard.tsx,angular/src/app/domain/types/performance.types.ts,exists,None,Types ported
 

@@ -21,3 +21,17 @@ Smoke tests TODOs (names only)
 - should show comparison section when provided
 - should color variance based on sign
 - should render insights list in order
+
+Performance Cards
+
+Checkpoints
+
+- Input: YTD and Projected results
+- Assembler (future): MetricsAssembler builds PerformanceMetric[]
+- Output: PerformanceCardComponent renders values, trends, targets
+- UI: Dashboard middle column grid (under flag)
+
+Smoke tests (names)
+
+- should format currency/count/percent correctly
+- should color trend/target based on status

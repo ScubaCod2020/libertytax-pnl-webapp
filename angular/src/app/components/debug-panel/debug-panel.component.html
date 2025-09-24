@@ -41,6 +41,10 @@
         <input type="checkbox" [checked]="flags.showMultiStoreSummaryCard" (change)="setShowMultiStoreSummaryCard($event.target.checked)" />
         Multi-Store Summary Card (Roadmap)
       </label>
+      <label style="display:flex; align-items:center; gap:8px">
+        <input type="checkbox" [checked]="flags.showPerformanceCards" (change)="setShowPerformanceCards($event.target.checked)" />
+        Performance Cards (Dashboard)
+      </label>
       <!-- Future: add toggles for other enhancement flags here -->
     </div>
   </section>

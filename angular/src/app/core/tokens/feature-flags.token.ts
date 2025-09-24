@@ -4,6 +4,7 @@ export interface FeatureFlags {
   showAnalysisBlock: boolean;
   showMonthlyForecastCard: boolean;
   showMultiStoreSummaryCard: boolean;
+  showPerformanceCards: boolean;
 }
 
 export const DEFAULT_FEATURE_FLAGS: FeatureFlags = {
@@ -11,6 +12,7 @@ export const DEFAULT_FEATURE_FLAGS: FeatureFlags = {
   showAnalysisBlock: true,
   showMonthlyForecastCard: true,
   showMultiStoreSummaryCard: true,
+  showPerformanceCards: true,
 };
 
 export const FEATURE_FLAGS = new InjectionToken<FeatureFlags>('FEATURE_FLAGS', {

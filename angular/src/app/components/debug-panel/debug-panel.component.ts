@@ -66,6 +66,9 @@ export class DebugPanelComponent implements OnInit, OnDestroy {
   setShowMultiStoreSummaryCard(v: boolean): void {
     this.flags.showMultiStoreSummaryCard = !!v;
   }
+  setShowPerformanceCards(v: boolean): void {
+    this.flags.showPerformanceCards = !!v;
+  }
 
   copyMarkdown(): void {
     const md = this.toMarkdown();

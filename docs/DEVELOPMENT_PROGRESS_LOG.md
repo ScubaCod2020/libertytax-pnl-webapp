@@ -16,6 +16,7 @@
   - Implemented `AnalysisDataAssemblerService` (Custom vs Preset variance) and feature-flag toggle in Debug Panel
   - Updated docs: teaching notes, wire-up plan, trace plan, render audit, migration status, blueprint delta
   - Added feature flags for Monthly Forecast and Multi-Store Summary; wired Monthly Forecast card to Dashboard under flag and added toggles in Debug Panel
+  - PerformanceCards: staged reusable component + types; added Dashboard preview under flag with Debug Panel toggle
 
 2025-09-22
 

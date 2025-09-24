@@ -8,6 +8,7 @@ import { MonthlyForecastCardComponent } from './components/monthly-forecast-card
 import { FEATURE_FLAGS } from '../../core/tokens/feature-flags.token';
 import { inject } from '@angular/core';
 import { AnalysisDataAssemblerService } from '../../domain/services/analysis-data-assembler.service';
+import { PerformanceCardComponent } from '../../components/performance-card/performance-card.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,6 +19,7 @@ import { AnalysisDataAssemblerService } from '../../domain/services/analysis-dat
     KpiCardComponent,
     DashboardResultsPanelComponent,
     AnalysisBlockComponent,
+    PerformanceCardComponent,
     MonthlyForecastCardComponent,
   ],
   templateUrl: './dashboard.component.html',
