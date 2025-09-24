@@ -317,3 +317,14 @@ lib/api-client/ folder → Angular placement and rationale
 - Inputs: N/A - Angular API client system matches React implementation with service wrapper
 - Outputs: N/A - Angular uses injectable services with same typed responses as React
 - Missing: None - Angular API client system matches React implementation with identical core functions, same type definitions, and superior service architecture providing better testability and dependency management.
+
+lib/apiClient.ts → Angular placement and rationale
+
+- What it is: Simple delegation/re-export layer that maintains single source of truth for API types and functions by re-exporting Health and Summary types from API namespace and getHealth/getSummary functions from ./api-client/client, serving as a clean abstraction over the generated OpenAPI client with facade/delegation pattern providing simplified import path for consumers while hiding internal structure.
+- Where it belongs in Angular:
+  - Not applicable: Angular API client service exceeds React delegation layer with superior service architecture
+  - Note: Angular has ApiClientService providing injectable service wrapper with identical delegation pattern
+- Why that location: Angular's existing ApiClientService demonstrates architectural superiority over the React delegation layer with injectable service architecture (ApiClientService provides dependency injection vs React file-level re-exports for better testability and service lifecycle management), identical delegation pattern (same type re-exports for Health and Summary types and function delegation for getHealth and getSummary methods), superior integration (injectable service pattern provides better testability and dependency management vs React static imports), enhanced architecture (Angular service lifecycle management vs React static file-level exports for better maintainability and testing), dependency injection benefits (constructor injection with type safety vs React direct imports for better service composition), service mocking capabilities (injectable services enable better testing through dependency injection vs React static function imports).
+- Inputs: N/A - Angular ApiClientService exceeds React delegation layer with service wrapper
+- Outputs: N/A - Angular uses injectable services with same delegated functionality as React
+- Missing: None - Angular API client service exceeds React delegation layer with identical functionality, superior service architecture, and enhanced integration through dependency injection providing better testability and dependency management.
