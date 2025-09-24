@@ -353,6 +353,7 @@ const testAnswers: WizardAnswers = {
 29. **Styles & Environment**: Angular styling and environment system exceeds React monolithic CSS with modular SCSS architecture and dynamic theming
 30. **HTML & TypeScript Config**: Angular configuration system exceeds React basic configuration with enterprise-level configuration and framework integration
 31. **Testing Infrastructure**: Angular testing infrastructure exceeds React external testing scripts with framework-integrated testing and enterprise capabilities
+32. **P&L Tool Builder**: Angular P&L system exceeds Python Excel builder with real-time calculations and enterprise features
 6. **Testing**: Verify all auto-calculations, conditional rendering, suggestion display, and toggle functionality with test data
 7. **Suggestion Engine**: Test profile selection and calculation accuracy across different scenarios
 8. **Educational Testing**: Use demo component to validate suggestion flow and visual indicators

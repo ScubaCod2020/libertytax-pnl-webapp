@@ -83,6 +83,7 @@ PerformanceCard (UI/Types) migration status
 - **Styles & Environment**: Styling system and environment types (Angular styling and environment system significantly exceeds with modular SCSS architecture and dynamic theming)
 - **HTML & TypeScript Config**: HTML entry point and TypeScript configuration (Angular configuration system significantly exceeds with enterprise-level configuration and framework integration)
 - **Testing Infrastructure**: Testing infrastructure and automation scripts (Angular testing infrastructure significantly exceeds with framework-integrated testing and enterprise capabilities)
+- **P&L Tool Builder**: Excel P&L tool generation with Python scripting (Angular P&L system significantly exceeds with real-time calculations and enterprise features)
 - **Wizard UI Components**: ToggleQuestion (typo fix applied), CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
 - **SuggestionEngineService**: Profile-based suggestion calculation with regional differentiation and context-based profile selection
 - **Complete Type System**: WizardAnswers interface with 85+ fields, WizardShellProps, WizardSectionProps, strategic analysis types

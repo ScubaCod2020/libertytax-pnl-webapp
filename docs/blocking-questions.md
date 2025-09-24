@@ -1,4 +1,4 @@
-Blocking Questions — AnalysisBlock
+Blocking Questions — Integration Strategy
 
 Storage: docs/blocking-questions.md
 
@@ -32,4 +32,25 @@ Legend
 [Unanswered] Q4: Tracing
 
 - Any global debug logger to use, or are inline console statements acceptable for dev-only?
+- Action pending
+
+[Unanswered] Q5: Primary Sources of Truth for Integration
+
+- What are the primary sources of truth for business logic and requirements (before using React as QA reference)?
+- Should we prioritize: Business requirements docs, existing Angular patterns, domain expertise, or other sources?
+- React app should be used for QA validation, not as primary implementation guide
+- Action pending
+
+[Unanswered] Q6: Integration Priority Order
+
+- What should be the priority order for integration tasks?
+- Should we start with core calculation services, UI components, or routing infrastructure?
+- Which components are most critical for initial functionality?
+- Action pending
+
+[Unanswered] Q7: Testing Strategy Clarification
+
+- What level of React parity is required vs. Angular improvements?
+- Should we test for exact React behavior match or focus on business requirement fulfillment?
+- How should we handle cases where Angular approach is superior to React implementation?
 - Action pending

@@ -438,3 +438,14 @@ scripts + test + test-results → Angular placement and rationale
 - Inputs: Testing infrastructure with automation scripts, E2E tests, and comprehensive test results
 - Outputs: Comprehensive testing system with framework integration and enterprise-level testing capabilities
 - Missing: Angular testing infrastructure significantly exceeds React testing scripts with superior framework-integrated testing, business logic testing, enterprise test configuration, component testing architecture, and comprehensive testing system representing comprehensive Angular testing excellence.
+
+tools/excel_v5/ → Angular placement and rationale
+
+- What it is: Python Excel builder tool containing build_pnl_tool_v5.py (377 lines) with Excel P&L tool generation using openpyxl, brand colors, worksheets (Welcome, Inputs, Dashboard, Practice, ProTips, Report), and requirements.txt (2 lines) with openpyxl dependency.
+- Where it belongs in Angular:
+  - Exceeds: Angular P&L system significantly exceeds Python Excel builder with superior real-time P&L calculations
+  - Note: Angular has comprehensive P&L system with real-time calculations, strategic analysis, regional support, and interactive features
+- Why that location: Angular's P&L system significantly exceeds Python's static approach with real-time P&L calculations (instant calculation updates with dynamic UI and validation vs Excel static formulas and manual input), interactive user experience (dynamic UI with validation, suggestion engine, and real-time feedback vs Excel manual input and basic formulas), strategic analysis capabilities (performance tracking, variance analysis, and business insights vs Excel basic calculations without strategic features), regional support integration (built-in US/Canada differences with TaxRush handling and regional branding vs Excel manual configuration), enterprise P&L features (KPI monitoring, suggestion engine, branded reports, and comprehensive analysis vs Excel basic worksheets with limited functionality), web-based accessibility (cross-platform access with modern web technologies vs Excel desktop dependency), framework integration (Angular services, components, and reactive calculations vs Python script-based static generation), and architectural superiority (real-time enterprise P&L system with strategic analysis vs static Excel file generation).
+- Inputs: Excel P&L tool generation with Python scripting and openpyxl library
+- Outputs: Comprehensive P&L system with real-time calculations and enterprise features
+- Missing: Angular P&L system significantly exceeds Python Excel builder with superior real-time P&L calculations, interactive user experience, strategic analysis capabilities, regional support, enterprise features, and web-based accessibility representing comprehensive Angular P&L excellence.
