@@ -118,3 +118,14 @@ WizardPage.tsx → Angular placement and rationale
 - Inputs: `title`, `subtitle`, `step`, `canProceed`, `nextLabel`, `backLabel`
 - Outputs: `nextClick`, `backClick`, `cancelClick` EventEmitters
 - Missing: None - complete staging with Angular EventEmitter patterns for navigation, conditional button display based on observer pattern, consistent styling matching React implementation.
+
+BrandLogo.tsx → Angular placement and rationale
+
+- What it is: Regional brand logo component with multiple variants (main, wide, watermark), size options (small, medium, large), error handling with text fallback, and responsive design. Supports both US and Canadian branding with appropriate asset loading.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/components/brand-logo/brand-logo.component.ts` (shared branding component)
+  - Dependencies: BrandAssets configuration from lib/brands, Region type
+- Why that location: Shared branding component used across multiple pages/features; centralized location for consistent brand display.
+- Inputs: `region`, `variant`, `size`, `customClass`, `customStyle`
+- Outputs: None (display component)
+- Missing: None - component already exists with excellent implementation, enhanced with React parity features (customClass/customStyle inputs, improved variant logic, enhanced error logging).
