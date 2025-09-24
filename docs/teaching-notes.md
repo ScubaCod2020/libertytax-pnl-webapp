@@ -405,3 +405,14 @@ main.tsx → Angular placement and rationale
 - Inputs: Application entry point with DOM rendering, styling, and health checks
 - Outputs: Comprehensive bootstrap system with framework integration and enterprise features
 - Missing: Angular bootstrap system significantly exceeds React main.tsx with superior framework-integrated bootstrap, service-based architecture, dynamic theme management, enterprise HTML structure, and comprehensive bootstrap organization representing comprehensive Angular platform excellence.
+
+styles.css + vite-env.d.ts → Angular placement and rationale
+
+- What it is: React styling and environment files containing styles.css (297 lines) with monolithic CSS styling, CSS custom properties, and layout, plus vite-env.d.ts (33 lines) with basic Vite environment types and image module declarations (330 lines total).
+- Where it belongs in Angular:
+  - Exceeds: Angular styling and environment system significantly exceeds React files with superior modular SCSS architecture
+  - Note: Angular has comprehensive styling system with modular SCSS, dynamic theme management, design tokens, and enterprise environment configuration
+- Why that location: Angular's styling and environment system significantly exceeds React's basic approach with modular SCSS architecture (design tokens, modular imports, organized styling vs React monolithic CSS file), dynamic theme management (ThemeService with regional branding and CSS custom properties vs React static CSS custom properties), comprehensive type system (domain-organized TypeScript types across multiple files vs React basic Vite types), enterprise styling features (component-scoped styles, design tokens, responsive design, KPI-specific styling vs React basic CSS classes), framework integration (service-based theming with dependency injection and Angular lifecycle vs React static imports), enhanced environment setup (Angular-specific configuration with testing utilities and framework integration vs React basic Vite configuration), modular organization (separated concerns with _tokens, _base, _layout, _kpi vs React single CSS file), and architectural superiority (service-integrated theming, modular SCSS organization, enterprise-level features vs React basic styling approach).
+- Inputs: Styling system with CSS custom properties and environment type definitions
+- Outputs: Comprehensive styling and environment system with modular architecture and dynamic theming
+- Missing: Angular styling and environment system significantly exceeds React files with superior modular SCSS architecture, dynamic theme management, comprehensive type system, enterprise styling features, and service-integrated theming representing comprehensive Angular styling excellence.
