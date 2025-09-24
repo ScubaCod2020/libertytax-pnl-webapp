@@ -18,6 +18,21 @@
   - Added feature flags for Monthly Forecast and Multi-Store Summary; wired Monthly Forecast card to Dashboard under flag and added toggles in Debug Panel
   - PerformanceCards: staged reusable component + types; added Dashboard preview under flag with Debug Panel toggle
 
+- Stopping point (Manual Navigator):
+  - React→Angular port in progress for AnalysisBlock and PerformanceCard complete (staged, dev-gated).
+  - Wizard helpers extended (performance vs target, adjustment status).
+  - Income Drivers (PY/Projected) templates aligned to React sections; presentational only (no business logic wiring yet).
+  - New shared wizard UI components scaffolded: wizard-form-section (with Reset), wizard-form-field, net-income-summary.
+  - Playwright E2E “wizard-flow-matrix” approximation added; full run deferred.
+  - Feature flags toggles added in Debug Panel for AnalysisBlock, PerformanceCards, MonthlyForecast, Multi-Store.
+
+Next session TODOs:
+
+- Replace repeated markup in Income Drivers with new wizard UI components; add section-level reset handlers.
+- Implement MetricsAssembler real YTD vs Projected once YTD inputs exist.
+- Wire discounts $↔% bi-directional behavior to state; connect auto/override logic using wizard-helpers.
+- Run/stabilize E2E suite; expand scenarios to mirror React WizardFlowMatrix.
+
 2025-09-22
 
 - Created feature branch `feat/context-first-hunt-port`.
