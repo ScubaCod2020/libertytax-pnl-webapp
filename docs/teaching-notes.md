@@ -328,3 +328,25 @@ lib/apiClient.ts → Angular placement and rationale
 - Inputs: N/A - Angular ApiClientService exceeds React delegation layer with service wrapper
 - Outputs: N/A - Angular uses injectable services with same delegated functionality as React
 - Missing: None - Angular API client service exceeds React delegation layer with identical functionality, superior service architecture, and enhanced integration through dependency injection providing better testability and dependency management.
+
+lib/calcs.ts + lib/calcs.test.ts → Angular placement and rationale
+
+- What it is: Comprehensive P&L calculation engine with comprehensive business logic providing regional support (US vs CA regional differences with TaxRush handling), status evaluation (KPI status functions for performance monitoring), error handling (robust error handling with fallback values), and extensive test coverage for calculation accuracy including basic calculations, regional differences, status functions, edge cases, and scenario validation with 17 expense fields and strategic calculations.
+- Where it belongs in Angular:
+  - Enhanced: Angular calculation system exceeds React engine with superior domain architecture
+  - Note: Angular has comprehensive calculation system with modular design and extensive test coverage
+- Why that location: Angular's existing calculation system demonstrates architectural superiority over the React calculation engine with domain-driven architecture (separate calculation files calc.ts, kpi.ts vs React monolithic approach for better separation of concerns), comprehensive test coverage (calc.spec.ts, kpi.spec.ts, wizard-helpers.spec.ts vs React single test file for enhanced quality assurance), type system integration (uses CalculationInputs, CalculationResults, Thresholds vs React custom types for better framework integration), modular design (separate KPI functions, calculation helpers, and adapters vs React combined approach for better maintainability), framework-agnostic domain logic (clean separation vs React mixed concerns for better architecture), enhanced error handling (comprehensive try-catch with fallback values vs React basic error handling), strategic calculation logic (dynamic thresholds based on revenue per return vs React static approach), debug logging capabilities (enhanced calculation logging vs React basic debugging), and validation systems (NaN/Infinity validation vs React limited validation).
+- Inputs: CalculationInputs interface with region, scenario, financial data, and 17 expense fields
+- Outputs: CalculationResults with comprehensive P&L breakdown and KPI calculations
+- Missing: Enhanced Angular calculation system with React features - debug logging, error handling, strategic calculations, and handlesTaxRush support integrated into existing modular architecture.
+
+styles/branding.ts → Angular placement and rationale
+
+- What it is: Centralized regional branding configuration for US and Canada regions providing comprehensive design system with colors, typography, and assets, CSS integration (CSS custom properties helper for theme integration), and regional support (US vs CA regional brand differences with official colors).
+- Where it belongs in Angular:
+  - Enhanced: Angular branding system enhanced with React comprehensive branding configuration and theme service
+  - Note: Angular has comprehensive branding system with theme service and component integration
+- Why that location: Angular's branding system enhanced with React's comprehensive branding configuration demonstrates superior theme architecture with comprehensive branding system (RegionalBrand interfaces with BrandColors, BrandTypography, RegionalBrandAssets vs React scattered branding), theme service integration (ThemeService with injectable service architecture, regional switching, CSS variables generation, and component integration vs React manual CSS variable handling), CSS custom properties generation (generateBrandCSSVars helper with automatic CSS variable application and legacy compatibility vs React basic CSS generation), regional brand management (US_BRAND and CA_BRAND configurations with official colors, typography hierarchy, and asset management vs React basic regional differences), enhanced component integration (existing BrandLogoComponent and BrandWatermarkComponent enhanced with theme service integration vs React component-level branding), service architecture benefits (injectable ThemeService with observables for reactive theme switching vs React manual state management), and comprehensive asset management (RegionalBrandAssets with logo, watermark, favicon URLs and fallback handling vs React basic asset paths).
+- Inputs: Region ('US' | 'CA') for theme switching and branding configuration
+- Outputs: Complete regional branding with colors, typography, assets, and CSS variables
+- Missing: Angular branding system enhanced with React comprehensive branding configuration while adding superior service architecture with theme service providing regional switching, CSS variables generation, asset management, and component integration representing enterprise-level branding system excellence.

@@ -1,6 +1,8 @@
 import { Component, HostBinding, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrandAssets } from '../../lib/brands';
+import { ThemeService } from '../../core/services/theme.service';
+import { getAssetUrl } from '../../lib/regional-branding';
 
 export type Region = 'US' | 'CA';
 export type BrandLogoVariant = 'main' | 'wide' | 'watermark';
@@ -20,6 +22,8 @@ export class BrandLogoComponent {
   @Input() customClass?: string;
   @Input() customStyle?: { [key: string]: string };
 
+  constructor(private themeService: ThemeService) {}
+
   @HostBinding('class') 
   get hostClass(): string {
     return this.customClass || '';
@@ -33,19 +37,20 @@ export class BrandLogoComponent {
   imgError = false;
 
   get logoUrl(): string | undefined {
-    const assets = this.region === 'US' ? (BrandAssets.us as any) : (BrandAssets.ca as any);
-    if (!assets) return undefined;
+    // Use comprehensive branding system with fallbacks
+    const brand = this.themeService.currentRegion === this.region 
+      ? this.themeService.currentBrand 
+      : this.themeService.currentBrand; // For now, use current brand
     
-    // Enhanced variant logic for React parity
+    // Enhanced variant logic for React parity with comprehensive branding
     if (this.variant === 'wide') {
-      return assets.wide ?? assets.logo ?? assets.stack;
+      return brand.assets.logoWide ?? brand.assets.logoUrl;
     }
     if (this.variant === 'watermark') {
-      // For watermark, prefer wider/logo versions for better watermark effect
-      return assets.wide ?? assets.logo ?? assets.stack;
+      return brand.assets.watermarkUrl ?? brand.assets.logoWide ?? brand.assets.logoUrl;
     }
-    // Default 'main' variant - prefer stack/logo for main display
-    return assets.stack ?? assets.logo ?? assets.wide;
+    // Default 'main' variant
+    return brand.assets.logoUrl;
   }
 
   get altText(): string {

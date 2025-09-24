@@ -17,8 +17,9 @@ export interface CalculationInputs {
   avgNetFee: number;
   taxPrepReturns: number;
   taxRushReturns: number;
+  handlesTaxRush?: boolean; // Optional - defaults to true for backward compatibility
+  otherIncome?: number; // Other revenue streams (bookkeeping, notary, etc.)
   discountsPct: number;
-  otherIncome?: number;
 
   // Optional pre-calculated total (from Expenses page)
   calculatedTotalExpenses?: number;
