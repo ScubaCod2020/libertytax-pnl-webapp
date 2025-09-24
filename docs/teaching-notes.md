@@ -372,3 +372,14 @@ types folder → Angular placement and rationale
 - Inputs: Central type definitions for application-wide type safety and development experience
 - Outputs: Comprehensive type system with domain organization and framework integration
 - Missing: Angular type system significantly exceeds React types folder with superior domain-first architecture, enhanced type definitions, framework integration, and enterprise-level type organization representing comprehensive TypeScript excellence.
+
+utils folder → Angular placement and rationale
+
+- What it is: React utils folder containing 3 files with data flow validation utilities, centralized suggestion engine, and input validation utilities (611 lines total).
+- Where it belongs in Angular:
+  - Exceeds: Angular utility system significantly exceeds React utils folder with superior service-integrated architecture
+  - Note: Angular has comprehensive utility system with injectable services, component integration, and framework-specific optimizations
+- Why that location: Angular's utility system significantly exceeds React's standalone approach with service-integrated architecture (injectable services with dependency injection vs React standalone utility functions), enhanced validation system (production-ready validation with business logic, accessibility, debouncing, component integration vs React basic input validation), advanced suggestion engine (SuggestionEngineService with dependency injection, profiles, component integration vs React standalone suggestion calculations), framework integration (services integrated with Angular lifecycle, reactive forms, ControlValueAccessor vs React basic utility functions), component integration (ValidatedInputComponent with debounced validation, accessibility compliance, error/warning states vs React basic validation functions), type safety (full TypeScript integration with Angular services and components vs React basic type definitions), enterprise features (dependency injection, service lifecycle management, component lifecycle integration vs React standalone functions), and architectural superiority (service-based organization, framework-specific optimizations, scalable architecture vs React basic utility organization).
+- Inputs: Utility functions for validation, suggestions, and data flow integrity
+- Outputs: Comprehensive utility system with service integration and framework optimization
+- Missing: Angular utility system significantly exceeds React utils folder with superior service-integrated architecture, enhanced validation system, advanced suggestion engine, framework integration, and enterprise-level utility organization representing comprehensive Angular service excellence.

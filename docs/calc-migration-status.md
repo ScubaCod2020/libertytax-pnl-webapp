@@ -77,6 +77,7 @@ PerformanceCard (UI/Types) migration status
 - **Regional Branding System**: Centralized regional branding configuration with comprehensive design system (Angular branding system enhanced with React comprehensive branding and superior theme service architecture)
 - **Test Setup**: Test environment configuration and mocking (Angular testing configuration enhanced with React test setup features)
 - **Types Folder**: Central type definitions and API types (Angular type system significantly exceeds with domain-first organization and enhanced functionality)
+- **Utils Folder**: Utility functions for validation and suggestions (Angular utility system significantly exceeds with service-integrated architecture and framework optimization)
 - **Wizard UI Components**: ToggleQuestion (typo fix applied), CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
 - **SuggestionEngineService**: Profile-based suggestion calculation with regional differentiation and context-based profile selection
 - **Complete Type System**: WizardAnswers interface with 85+ fields, WizardShellProps, WizardSectionProps, strategic analysis types
