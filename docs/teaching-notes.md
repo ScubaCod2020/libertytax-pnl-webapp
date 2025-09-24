@@ -350,3 +350,14 @@ styles/branding.ts → Angular placement and rationale
 - Inputs: Region ('US' | 'CA') for theme switching and branding configuration
 - Outputs: Complete regional branding with colors, typography, assets, and CSS variables
 - Missing: Angular branding system enhanced with React comprehensive branding configuration while adding superior service architecture with theme service providing regional switching, CSS variables generation, asset management, and component integration representing enterprise-level branding system excellence.
+
+test/setup.ts → Angular placement and rationale
+
+- What it is: Test environment configuration and mocking (localStorage, window.location, console methods) for Vitest integration with @testing-library/jest-dom (62 lines total).
+- Where it belongs in Angular:
+  - Enhanced: Angular testing configuration enhanced with React test setup features while maintaining testing system superiority
+  - Note: Angular has comprehensive testing system with TestBed, Jasmine/Karma, and component testing framework
+- Why that location: Angular's testing system enhanced with React's test setup features demonstrates superior testing architecture with comprehensive testing framework (Angular TestBed with component testing, service testing, dependency injection, fixture management, type safety, build integration vs React basic test framework setup), enhanced mocking system (complete localStorage implementation, window.location mock, console mocking with development mode support vs React basic mocking), Angular-specific test utilities (TestUtils with resetMocks, getLocalStorageMock, getOriginalConsole, setMockLocation methods vs React basic utilities), global test setup (beforeEach hooks with automatic mock reset vs React manual setup), build integration (angular.json and tsconfig.spec.json configuration vs React basic configuration), and enterprise features (dependency injection for service testing, component fixture management, type safety with TypeScript, build system integration with Angular CLI vs React limited testing capabilities).
+- Inputs: Test environment configuration and mock setup for comprehensive testing
+- Outputs: Enhanced Angular testing environment with React test setup features
+- Missing: Angular testing configuration enhanced with React test setup features while maintaining architectural superiority with comprehensive testing framework, enhanced mocking system, Angular-specific utilities, and enterprise-level testing capabilities.
