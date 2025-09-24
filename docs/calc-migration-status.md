@@ -54,7 +54,7 @@ PerformanceCard (UI/Types) migration status
 - **StrategicAnalysis**: Educational strategic vs tactical analysis with performance comparisons
 - **SuggestedFormField**: Enhanced form fields with contextual suggestion display and smart formatting
 - **SuggestedInputDemo**: Educational demo component showing complete suggestion system integration
-- **Wizard UI Components**: ToggleQuestion, CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
+- **Wizard UI Components**: ToggleQuestion (typo fix applied), CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
 - **SuggestionEngineService**: Profile-based suggestion calculation with regional differentiation and context-based profile selection
 - **Complete WizardAnswers**: Full interface with all 17 expense fields
 - **Extended Wizard Helpers**: Added calculateBlendedGrowth function for strategic analysis

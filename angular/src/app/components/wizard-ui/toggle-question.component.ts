@@ -50,7 +50,7 @@ export class ToggleQuestionComponent {
   @Input() fieldValue?: boolean;
   @Input() positiveLabel = '';
   @Input() negativeLabel = '';
-  @Input() fieldsToeClearOnDisable: string[] = [];
+  @Input() fieldsToClearOnDisable: string[] = [];
   @Input() titleColor = '#6b7280';
   @Input() showOnlyWhen = true;
   
@@ -63,7 +63,7 @@ export class ToggleQuestionComponent {
   onNegativeChange(): void {
     // Clear related fields when disabling
     const clearUpdates: { [key: string]: any } = {};
-    this.fieldsToeClearOnDisable.forEach(field => {
+    this.fieldsToClearOnDisable.forEach(field => {
       clearUpdates[field] = undefined;
     });
 

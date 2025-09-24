@@ -86,3 +86,14 @@ SuggestedInputDemo.tsx → Angular placement and rationale
 - Inputs: `answers: WizardAnswers`, `region: Region`
 - Outputs: `answersChange: EventEmitter<Partial<WizardAnswers>>`
 - Missing: None - complete staging with getSuggestionProfile function added and all visual styling preserved.
+
+ToggleQuestion.tsx → Angular placement and rationale
+
+- What it is: Reusable toggle question component for wizard sections that eliminates duplication between NewStoreSection and ExistingStoreSection, providing yes/no radio button interface with field clearing logic, conditional rendering, and customizable styling.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/components/wizard-ui/toggle-question.component.ts` (reusable toggle component)
+  - Dependencies: WizardAnswers type from domain types
+- Why that location: Shared wizard UI component for consistent yes/no questions across wizard sections; eliminates duplication between store sections.
+- Inputs: `title`, `description`, `fieldName`, `fieldValue`, `positiveLabel`, `negativeLabel`, `fieldsToClearOnDisable`, `titleColor`, `showOnlyWhen`
+- Outputs: `valueChange: EventEmitter<{ [key: string]: any }>`
+- Missing: None - component already exists with identical functionality, minor typo fix applied (fieldsToeClearOnDisable → fieldsToClearOnDisable).

@@ -19,4 +19,5 @@ Service,react-app-reference/react-app-reference/src/utils/suggestionEngine.ts,an
 Types,react-app-reference/react-app-reference/src/utils/suggestionEngine.ts,angular/src/app/domain/types/suggestion.types.ts,exists,None,SuggestionProfile and CalculatedSuggestions interfaces with expense field definitions
 UI,react-app-reference/react-app-reference/src/components/Wizard/SuggestedInputDemo.tsx,angular/src/app/components/demos/suggested-input-demo.component.ts,exists,Service+Components→Demo,Educational demo showing complete suggestion system integration with flow visualization
 Service,react-app-reference/react-app-reference/src/utils/suggestionEngine.ts,angular/src/app/domain/services/suggestion-engine.service.ts,complete,Types→Service,Extended with getSuggestionProfile function for context-based profile selection
+UI,react-app-reference/react-app-reference/src/components/Wizard/ToggleQuestion.tsx,angular/src/app/components/wizard-ui/toggle-question.component.ts,exists,None,Reusable toggle question component with field clearing logic and conditional rendering (minor typo fix applied)
 
