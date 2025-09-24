@@ -24,93 +24,91 @@ meta:
       reuse_existing_pr: true
       prefer_single_active_feature_branch: true
 
-  app:
-  pages:
-    - id: wizard_step_1
-      path: '/wizard/step-1'
-      title: 'Interview + Performance'
-      blocks:
-        - interview:
-            {
-              region: ['US', 'CA'],
-              storeType: ['new', 'existing'],
-              flags: ['handlesTaxRush', 'hasOtherIncome'],
-              localAvgRent?: number,
-              sqft?: number,
-            }
-        - prior_year: { visible_when: "storeType == 'existing'", prefix: 'py_' }
-        - performance_projected:
-            component: 'IncomeDrivers'
-            context_alias:
-              new: 'Target Performance'
-              existing: 'Projected Performance'
-              generic: 'Income Drivers'
-            presets: ['good', 'better', 'best', 'custom']
-            scopes: ['returns', 'avgNetFee']
-            slider_range: [-10.0, 20.0] # tenths
-            taxrush_gating: "region==='CA' && handlesTaxRush"
+pages:
+  - id: wizard_step_1
+    path: '/wizard/step-1'
+    title: 'Interview + Performance'
+    blocks:
+      - interview:
+          {
+            region: ['US', 'CA'],
+            storeType: ['new', 'existing'],
+            flags: ['handlesTaxRush', 'hasOtherIncome'],
+            localAvgRent?: number,
+            sqft?: number,
+          }
+      - prior_year: { visible_when: "storeType == 'existing'", prefix: 'py_' }
+      - performance_projected:
+          component: 'IncomeDrivers'
+          context_alias:
+            new: 'Target Performance'
+            existing: 'Projected Performance'
+            generic: 'Income Drivers'
+          presets: ['good', 'better', 'best', 'custom']
+          scopes: ['returns', 'avgNetFee']
+          slider_range: [-10.0, 20.0] # tenths
+          taxrush_gating: "region==='CA' && handlesTaxRush"
 
-    - id: wizard_step_2
-      path: '/wizard/step-2'
-      title: 'Expense Management'
-      header_recap: 'read-only banner of interview + PY + projected'
-      grid:
-        target_total_pct: 0.76
-        line_items:
-          - key: personnel # example baseline; see expenses.rules below
-          - key: facility
-          - key: marketing
-          - key: utilities
-          - key: royalties
-          - key: misc
-        dual_entry: '$↔%'
-        rent_guard:
-          enabled: true
-          strategy: 'raiseToLocalIfBelow'
-          anchored_reset_preserves_rent_choice: true
+  - id: wizard_step_2
+    path: '/wizard/step-2'
+    title: 'Expense Management'
+    header_recap: 'read-only banner of interview + PY + projected'
+    grid:
+      target_total_pct: 0.76
+      line_items:
+        - key: personnel # example baseline; see expenses.rules below
+        - key: facility
+        - key: marketing
+        - key: utilities
+        - key: royalties
+        - key: misc
+      dual_entry: '$↔%'
+      rent_guard:
+        enabled: true
+        strategy: 'raiseToLocalIfBelow'
+        anchored_reset_preserves_rent_choice: true
 
-    - id: wizard_step_3
-      path: '/wizard/step-3'
-      alias: '/reports' # canonical
-      title: 'Reports & Snapshot'
-      sections:
-        - header_meta: ['Region', 'Store Type', 'Scenario', 'Timestamp']
-        - prior_year_mini:
-            ['PY returns', 'PY ANF', 'PY revenue', 'PY expenses', 'PY net', 'PY net%']
-        - projected_pnl:
-            [
-              'Returns',
-              'ANF',
-              'Gross',
-              'Discounts',
-              'Net Tax-Prep Fees',
-              'Other Income',
-              'Total Revenue',
-              'Total Expenses',
-              'Net',
-              'Net%',
-              'CPR',
-            ]
-        - expense_mix_table: ['category', '$', '% of total revenue']
-        - kpi_stoplights: ['Net%', 'CPR', 'Expenses%']
-      actions:
-        - label: 'Print / Save as PDF'
-          note: 'window.print + print.css'
-        - label: 'Export CSV'
-          note: 'client-side'
-        - label: 'Export Excel'
-          note: 'map to openpyxl template'
-        - label: 'Create Dashboard'
-          note: 'snapshot baseline'
+  - id: wizard_step_3
+    path: '/wizard/step-3'
+    alias: '/reports' # canonical
+    title: 'Reports & Snapshot'
+    sections:
+      - header_meta: ['Region', 'Store Type', 'Scenario', 'Timestamp']
+      - prior_year_mini: ['PY returns', 'PY ANF', 'PY revenue', 'PY expenses', 'PY net', 'PY net%']
+      - projected_pnl:
+          [
+            'Returns',
+            'ANF',
+            'Gross',
+            'Discounts',
+            'Net Tax-Prep Fees',
+            'Other Income',
+            'Total Revenue',
+            'Total Expenses',
+            'Net',
+            'Net%',
+            'CPR',
+          ]
+      - expense_mix_table: ['category', '$', '% of total revenue']
+      - kpi_stoplights: ['Net%', 'CPR', 'Expenses%']
+    actions:
+      - label: 'Print / Save as PDF'
+        note: 'window.print + print.css'
+      - label: 'Export CSV'
+        note: 'client-side'
+      - label: 'Export Excel'
+        note: 'map to openpyxl template'
+      - label: 'Create Dashboard'
+        note: 'snapshot baseline'
 
-    - id: dashboard
-      path: '/dashboard'
-      title: 'Dashboard'
-      layout: 'Tri-column'
-      columns:
-        left: 'Projected snapshot (read-only) + deep links to wizard'
-        center: 'YTD inputs (returns, ANF, discounts, other income) + pacing'
-        right: 'Differentials vs projected + KPI stoplights + PY mini'
+  - id: dashboard
+    path: '/dashboard'
+    title: 'Dashboard'
+    layout: 'Tri-column'
+    columns:
+      left: 'Projected snapshot (read-only) + deep links to wizard'
+      center: 'YTD inputs (returns, ANF, discounts, other income) + pacing'
+      right: 'Differentials vs projected + KPI stoplights + PY mini'
 
 components:
   IncomeDrivers:
@@ -339,57 +337,58 @@ naming_and_structure_guardrails:
   - 'Blue (auto) vs White (manual) field backgrounds'
   - "Search 'archive/' before suggesting new files; reuse where reasonable"
 
-  folder_structure:
+folder_structure:
   src/app/:
-    app.component.{ts,html,scss}
-    app.routes.ts
-    components/: '*shared reusable components only (header, footer, toolbar, kpi-card)*'
-    core/:
-      contracts/:
-      services/:
-    pages/:
-      dashboard/:
-        dashboard.component.{ts,html,scss}
-      wizard/:
-        income-drivers/:
-          income-drivers.component.{ts,html,scss}
-        expenses/:
-          expenses.component.{ts,html,scss}
-        pnl/:
-          pnl.component.{ts,html,scss}
-  progress:
-    last_updated: '2025-09-21'
-    milestones:
-      - id: app_boot
-        label: Angular app boots and routes load
-        state: done
-      - id: global_styles
-        label: Global styles consolidated + partials
-        state: done
-      - id: header_footer
-        label: Header + Footer (nav, version, layout)
-        state: done
-      - id: debug_panel
-        label: Debug panel placeholder (push-layout, desktop/mobile)
-        state: done
-      - id: brands_assets
-        label: Brand assets wired (logo/watermark)
-        state: done
-      - id: wizard_income
-        label: Wizard: Income Drivers page scaffolded
-        state: in_progress
-      - id: wizard_expenses
-        label: Wizard: Expenses page scaffolded
-        state: in_progress
-      - id: wizard_pnl
-        label: Wizard: P&L page scaffolded
-        state: in_progress
-      - id: calc_port
-        label: Port calculations from React reference
-        state: planned
-      - id: reports_export
-        label: Reports + Export flows
-        state: planned
+    - 'app.component.{ts,html,scss}'
+    - 'app.routes.ts'
+    - 'components/: *shared reusable components only (header, footer, toolbar, kpi-card)*'
+    - 'core/:'
+    - '  contracts/:'
+    - '  services/:'
+    - 'pages/:'
+    - '  dashboard/:'
+    - '    dashboard.component.{ts,html,scss}'
+    - '  wizard/:'
+    - '    income-drivers/:'
+    - '      income-drivers.component.{ts,html,scss}'
+    - '    expenses/:'
+    - '      expenses.component.{ts,html,scss}'
+    - '    pnl/:'
+    - '      pnl.component.{ts,html,scss}'
+
+progress:
+  last_updated: '2025-09-21'
+  milestones:
+    - id: app_boot
+      label: Angular app boots and routes load
+      state: done
+    - id: global_styles
+      label: Global styles consolidated + partials
+      state: done
+    - id: header_footer
+      label: Header + Footer (nav, version, layout)
+      state: done
+    - id: debug_panel
+      label: Debug panel placeholder (push-layout, desktop/mobile)
+      state: done
+    - id: brands_assets
+      label: Brand assets wired (logo/watermark)
+      state: done
+    - id: wizard_income
+      label: 'Wizard: Income Drivers page scaffolded'
+      state: in_progress
+    - id: wizard_expenses
+      label: 'Wizard: Expenses page scaffolded'
+      state: in_progress
+    - id: wizard_pnl
+      label: 'Wizard: P&L page scaffolded'
+      state: in_progress
+    - id: calc_port
+      label: Port calculations from React reference
+      state: planned
+    - id: reports_export
+      label: Reports + Export flows
+      state: planned
 
 testing_focus:
   invariants:
@@ -442,6 +441,7 @@ blueprint_delta_2025_09_23:
   notes:
     - 'No business logic changes to calculations; domain functions remain pure TS in domain/calculations'
     - 'If roadmap cards remain unfinished prior to main merge, gate visibility behind a debug flag or query parameter'
+
 blueprint_delta_2025_09_24:
   summary:
     - 'Ported React AnalysisBlock model into Angular: types + standalone component shell'
