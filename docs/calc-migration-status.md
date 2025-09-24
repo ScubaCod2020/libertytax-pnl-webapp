@@ -79,6 +79,7 @@ PerformanceCard (UI/Types) migration status
 - **Types Folder**: Central type definitions and API types (Angular type system significantly exceeds with domain-first organization and enhanced functionality)
 - **Utils Folder**: Utility functions for validation and suggestions (Angular utility system significantly exceeds with service-integrated architecture and framework optimization)
 - **App Files**: Main application component with state management and testing (Angular application system significantly exceeds with router-integrated architecture and service-based organization)
+- **Main Entry**: Application entry point with DOM rendering and styling (Angular bootstrap system significantly exceeds with framework-integrated bootstrap and enterprise features)
 - **Wizard UI Components**: ToggleQuestion (typo fix applied), CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
 - **SuggestionEngineService**: Profile-based suggestion calculation with regional differentiation and context-based profile selection
 - **Complete Type System**: WizardAnswers interface with 85+ fields, WizardShellProps, WizardSectionProps, strategic analysis types

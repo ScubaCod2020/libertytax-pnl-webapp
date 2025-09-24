@@ -394,3 +394,14 @@ App files → Angular placement and rationale
 - Inputs: Main application component with state management, navigation, and testing
 - Outputs: Comprehensive application system with router integration and service architecture
 - Missing: Angular application system significantly exceeds React app files with superior router-integrated architecture, service-based state management, component lifecycle integration, modular architecture, and enterprise-level application organization representing comprehensive Angular application excellence.
+
+main.tsx → Angular placement and rationale
+
+- What it is: React main entry point file containing main.tsx (17 lines) with basic React DOM rendering, App component mounting, CSS import, and non-blocking health check.
+- Where it belongs in Angular:
+  - Exceeds: Angular bootstrap system significantly exceeds React main.tsx with superior framework-integrated bootstrap
+  - Note: Angular has comprehensive bootstrap system with dependency injection, service providers, dynamic theming, and enterprise HTML structure
+- Why that location: Angular's bootstrap system significantly exceeds React's basic approach with framework-integrated bootstrap (bootstrapApplication with dependency injection and service providers vs React createRoot with manual imports), service-based architecture (injectable services with providers and framework-level DI vs React manual imports and basic health check), dynamic theme management (ThemeService with CSS custom properties and regional branding vs React static CSS import), enterprise HTML structure (enhanced HTML with typography, branding setup, and comprehensive meta tags vs React basic HTML), modular SCSS architecture (design tokens, modular styles, and comprehensive theming vs React single CSS file), framework integration (complete Angular platform bootstrap with routing, services, and lifecycle vs React manual DOM rendering), enterprise features (dependency injection, service providers, dynamic theming, regional branding vs React basic rendering), and architectural superiority (framework-integrated bootstrap, service-based organization, enterprise-level features vs React basic DOM rendering).
+- Inputs: Application entry point with DOM rendering, styling, and health checks
+- Outputs: Comprehensive bootstrap system with framework integration and enterprise features
+- Missing: Angular bootstrap system significantly exceeds React main.tsx with superior framework-integrated bootstrap, service-based architecture, dynamic theme management, enterprise HTML structure, and comprehensive bootstrap organization representing comprehensive Angular platform excellence.
