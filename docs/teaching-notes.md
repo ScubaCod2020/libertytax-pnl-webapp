@@ -383,3 +383,14 @@ utils folder → Angular placement and rationale
 - Inputs: Utility functions for validation, suggestions, and data flow integrity
 - Outputs: Comprehensive utility system with service integration and framework optimization
 - Missing: Angular utility system significantly exceeds React utils folder with superior service-integrated architecture, enhanced validation system, advanced suggestion engine, framework integration, and enterprise-level utility organization representing comprehensive Angular service excellence.
+
+App files → Angular placement and rationale
+
+- What it is: React main application files containing App.tsx (389 lines) and App.test.tsx (301 lines) with hooks architecture, monolithic app component, manual state management, and comprehensive test suite (690 lines total).
+- Where it belongs in Angular:
+  - Exceeds: Angular application system significantly exceeds React app files with superior router-integrated architecture
+  - Note: Angular has comprehensive application system with router integration, service-based architecture, and modular component organization
+- Why that location: Angular's application system significantly exceeds React's monolithic approach with router-integrated architecture (Angular Router with lazy loading, route guards, navigation management vs React manual hash-based navigation), service-based state management (injectable services with dependency injection vs React hooks and manual state management), component lifecycle integration (Angular lifecycle hooks with proper cleanup vs React useEffect patterns), modular architecture (separated components with proper abstraction vs React monolithic App component), enhanced testing infrastructure (Angular TestBed with dependency injection, component testing utilities vs React Testing Library with manual mocking), framework integration (complete Angular ecosystem integration with services, routing, lifecycle vs React manual management), enterprise features (dependency injection, lazy loading, route guards, service lifecycle management vs React manual implementation), and architectural superiority (router-based organization, framework-specific optimizations, scalable architecture vs React monolithic component organization).
+- Inputs: Main application component with state management, navigation, and testing
+- Outputs: Comprehensive application system with router integration and service architecture
+- Missing: Angular application system significantly exceeds React app files with superior router-integrated architecture, service-based state management, component lifecycle integration, modular architecture, and enterprise-level application organization representing comprehensive Angular application excellence.
