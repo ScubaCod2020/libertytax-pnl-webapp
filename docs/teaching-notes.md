@@ -240,3 +240,14 @@ Wizard.tsx → Angular placement and rationale
 - Inputs: N/A - React facade pattern unnecessary in Angular architecture
 - Outputs: N/A - Angular uses routing and state management instead of simple prop delegation
 - Missing: None - Angular wizard system significantly exceeds React functionality with comprehensive architecture, routing integration, state management, and sophisticated component system.
+
+WizardInputs.tsx → Angular placement and rationale
+
+- What it is: Comprehensive data-driven expense input component (1,939 lines) that serves as the main input collection page for the wizard - essentially Step 2 of the wizard. Handles income drivers configuration (locked display from Step 1), expense management with dual percentage/dollar inputs, regional handling (Canada-specific TaxRush fields), strategic calculations with performance-based targets, validation with error tracking, real-time calculations with live revenue/expense breakdowns, and bidirectional data flow with auto-save of calculated totals back to wizard state.
+- Where it belongs in Angular:
+  - Not applicable: Angular expense input system architecture significantly exceeds React implementation
+  - Note: Angular has complete expense page implementation with superior modular architecture
+- Why that location: Angular's existing expense input system demonstrates exceptional architectural superiority over the monolithic React approach with complete HTML implementation (expenses.component.html), superior input components (ValidatedInputComponent with production-ready validation system, CurrencyInputComponent with ControlValueAccessor support, NumberInputComponent with enhanced form integration), advanced dashboard component (InputsPanelComponent with enhanced sliders, dual percentage/dollar inputs, regional filtering, real-time calculations, bidirectional data flow), and sophisticated architecture (modular component system vs monolithic React component, expense field system with ExpenseField interface, regional filtering with getFieldsForRegion, category organization with icons and descriptions).
+- Inputs: N/A - Angular modular system exceeds monolithic React approach
+- Outputs: N/A - Angular uses sophisticated component composition and services
+- Missing: None - Angular expense input system significantly exceeds React implementation with complete functionality, superior architecture, enhanced user experience, production-ready validation, dashboard integration, and better code organization vs monolithic React approach.
