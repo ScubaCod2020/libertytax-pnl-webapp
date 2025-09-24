@@ -107,3 +107,14 @@ types.ts → Angular placement and rationale
 - Why that location: Domain types for framework-agnostic data contracts; central location for all wizard-related interfaces; supports type safety across components.
 - Exports: `WizardStep`, `WizardAnswers`, `GrowthOption`, `WizardShellProps`, `WizardSectionProps`, `PerformanceAnalysis`, `AdjustmentStatus`
 - Missing: Minor additions made - added WizardShellProps interface and updateAnswers method to WizardSectionProps, added expenses field placeholder to WizardAnswers for complete compatibility.
+
+WizardPage.tsx → Angular placement and rationale
+
+- What it is: Standardized page wrapper for all wizard pages providing consistent spacing, headers, and navigation across all wizard steps. Handles step management, navigation buttons (Next/Back/Cancel), and conditional button states.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/components/wizard-ui/wizard-page.component.ts` (page wrapper component)
+  - Dependencies: WizardStep type from domain types
+- Why that location: Reusable page-level wrapper for consistent wizard layout and navigation; shared across all wizard steps for standardized UX.
+- Inputs: `title`, `subtitle`, `step`, `canProceed`, `nextLabel`, `backLabel`
+- Outputs: `nextClick`, `backClick`, `cancelClick` EventEmitters
+- Missing: None - complete staging with Angular EventEmitter patterns for navigation, conditional button display based on observer pattern, consistent styling matching React implementation.

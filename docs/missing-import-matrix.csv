@@ -21,4 +21,5 @@ UI,react-app-reference/react-app-reference/src/components/Wizard/SuggestedInputD
 Service,react-app-reference/react-app-reference/src/utils/suggestionEngine.ts,angular/src/app/domain/services/suggestion-engine.service.ts,complete,Types→Service,Extended with getSuggestionProfile function for context-based profile selection
 UI,react-app-reference/react-app-reference/src/components/Wizard/ToggleQuestion.tsx,angular/src/app/components/wizard-ui/toggle-question.component.ts,exists,None,Reusable toggle question component with field clearing logic and conditional rendering (minor typo fix applied)
 Types,react-app-reference/react-app-reference/src/components/Wizard/types.ts,angular/src/app/domain/types/wizard.types.ts,complete,None,Central wizard type definitions with WizardAnswers (85+ fields) and component props (added WizardShellProps and updateAnswers method)
+UI,react-app-reference/react-app-reference/src/components/Wizard/WizardPage.tsx,angular/src/app/components/wizard-ui/wizard-page.component.ts,exists,Types→UI,Standardized page wrapper with consistent navigation and step management (Angular EventEmitter patterns)
 
