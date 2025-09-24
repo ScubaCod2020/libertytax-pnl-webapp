@@ -3,4 +3,5 @@ UI,react-app-reference/react-app-reference/src/components/Shared/AnalysisBlock.t
 Types,react-app-reference/react-app-reference/src/components/Shared/AnalysisBlock.tsx,angular/src/app/domain/types/analysis.types.ts,exists,None,Types ported
 UI,react-app-reference/react-app-reference/src/components/Shared/PerformanceCard.tsx,angular/src/app/components/performance-card/performance-card.component.ts,exists,Types→UI,Standalone component staged under flag
 Types,react-app-reference/react-app-reference/src/components/Shared/PerformanceCard.tsx,angular/src/app/domain/types/performance.types.ts,exists,None,Types ported
+Calc,react-app-reference/react-app-reference/src/components/Wizard/calculations.ts,angular/src/app/domain/calculations/wizard-helpers.ts,partial,Helpers→calc,Added performance vs target + adjustment status
 

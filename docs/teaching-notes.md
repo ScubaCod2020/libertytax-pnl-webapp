@@ -21,6 +21,13 @@ MetricsAssemblerService → Purpose and placement
 - Outputs: `{ revenue: PerformanceMetric[], returns: PerformanceMetric[] }`
 - Next: Replace demo inputs with real Projected vs YTD when available.
 
+Wizard calculations (React) → Angular mapping
+
+- What it is: Utility functions used across wizard pages for growth, revenue, and analysis.
+- Where in Angular: `angular/src/app/domain/calculations/wizard-helpers.ts`
+- Added now: `calculatePerformanceVsTarget`, `getAdjustmentStatus` to mirror React features.
+- Why: Enables AnalysisBlock/PerformanceCard to reference consistent domain helpers; keeps templates free of math.
+
 - What it is: Reusable analysis card showing status color, primary metric, optional comparison and insights.
 - Where it belongs in Angular:
   - UI: `angular/src/app/components/analysis-block/analysis-block.component.ts`
