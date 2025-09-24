@@ -4,6 +4,13 @@
     <app-kpi-card></app-kpi-card>
   </div>
   <div class="col col-b"><!-- inputs summary placeholder --></div>
+  <div class="col col-b" *ngIf="showAnalysis">
+    <section class="card">
+      <div class="card-title">Projected vs Preset (Preview)</div>
+      <lt-analysis-block [data]="analysisData"></lt-analysis-block>
+      <div class="small" style="color:#6b7280">Dev-only preview; will compare YTD vs Projected later</div>
+    </section>
+  </div>
   <div class="col col-c">
     <app-dashboard-results-panel></app-dashboard-results-panel>
   </div>

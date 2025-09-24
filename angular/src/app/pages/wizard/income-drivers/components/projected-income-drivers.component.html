@@ -91,4 +91,11 @@
   <div class="small" style="color:#6b7280">Placeholder — fields to be imported</div>
 </section>
 
+<!-- Analysis Block (dev-visible; feature gated) -->
+<section class="card" *ngIf="showAnalysis">
+  <div class="card-title">Analysis</div>
+  <lt-analysis-block [data]="analysisData" size="medium"></lt-analysis-block>
+  <div class="small" style="color:#6b7280">Dev-only: compares Custom vs selected preset</div>
+</section>
+
 

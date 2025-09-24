@@ -1,17 +1,21 @@
 Wire-Up Plan — AnalysisBlock
 
 Targets
-- Wizard Step 1 (Income Drivers): show projected growth analysis vs presets
-- Dashboard: show projected vs baseline snapshot analysis
 
-Connections (planned, no wiring yet)
-- Inputs: WizardStateService + ProjectedService
-- Assembler (new): `AnalysisDataAssembler` (domain/service) → returns `AnalysisData`
+- Wizard Step 1 (Income Drivers): show projected growth analysis vs presets (now placed under Projected section)
+- Dashboard: show projected vs baseline snapshot analysis (middle column preview)
+
+Connections
+
+- Inputs: ProjectedService (growthPct, scenario)
+- Assembler: `AnalysisDataAssemblerService` (domain/service) → returns `AnalysisData`
 - UI: `AnalysisBlockComponent` consumes `AnalysisData`
 
 Rationale
+
 - Keep UI presentational; compute AnalysisData in pure TS service for reuse.
 - Gate UI via feature flag until fully configured.
+
 # Wire-Up Plan (Inputs → Services → Domain)
 
 ## Dashboard
