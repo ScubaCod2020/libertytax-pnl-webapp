@@ -23,4 +23,5 @@ UI,react-app-reference/react-app-reference/src/components/Wizard/ToggleQuestion.
 Types,react-app-reference/react-app-reference/src/components/Wizard/types.ts,angular/src/app/domain/types/wizard.types.ts,complete,None,Central wizard type definitions with WizardAnswers (85+ fields) and component props (added WizardShellProps and updateAnswers method)
 UI,react-app-reference/react-app-reference/src/components/Wizard/WizardPage.tsx,angular/src/app/components/wizard-ui/wizard-page.component.ts,exists,Types→UI,Standardized page wrapper with consistent navigation and step management (Angular EventEmitter patterns)
 UI,react-app-reference/react-app-reference/src/components/BrandLogo.tsx,angular/src/app/components/brand-logo/brand-logo.component.ts,exists,BrandAssets→UI,Regional brand logo with variants and error handling (enhanced with React parity features)
+UI,react-app-reference/react-app-reference/src/components/BrandWatermark.tsx,angular/src/app/components/brand-watermark/brand-watermark.component.ts,exists,BrandAssets→UI,Fixed-position watermark with regional branding and error handling (enhanced with React parity features)
 

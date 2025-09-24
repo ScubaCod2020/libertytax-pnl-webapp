@@ -129,3 +129,14 @@ BrandLogo.tsx → Angular placement and rationale
 - Inputs: `region`, `variant`, `size`, `customClass`, `customStyle`
 - Outputs: None (display component)
 - Missing: None - component already exists with excellent implementation, enhanced with React parity features (customClass/customStyle inputs, improved variant logic, enhanced error logging).
+
+BrandWatermark.tsx → Angular placement and rationale
+
+- What it is: Fixed-position watermark component with regional branding support, responsive sizing, error handling with text fallback, and subtle visual styling (low opacity, grayscale filter, no pointer events). Designed for document/page background branding with centered positioning and rotation effects.
+- Where it belongs in Angular:
+  - UI: `angular/src/app/components/brand-watermark/brand-watermark.component.ts` (specialized watermark component)
+  - Dependencies: BrandAssets configuration from lib/brands, Region type
+- Why that location: Specialized branding component for watermark use cases; separate from BrandLogo for focused functionality.
+- Inputs: `region`
+- Outputs: None (display component)
+- Missing: None - component already exists with excellent implementation, enhanced with React parity features (improved asset selection logic, dynamic brand name resolution, enhanced error logging for debugging).

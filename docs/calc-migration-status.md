@@ -56,6 +56,7 @@ PerformanceCard (UI/Types) migration status
 - **SuggestedInputDemo**: Educational demo component showing complete suggestion system integration
 - **WizardPage**: Standardized page wrapper with consistent navigation and step management
 - **BrandLogo**: Regional brand display with variants and error handling (enhanced with React parity)
+- **BrandWatermark**: Fixed-position watermark with regional branding and error handling (enhanced with React parity)
 - **Wizard UI Components**: ToggleQuestion (typo fix applied), CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
 - **SuggestionEngineService**: Profile-based suggestion calculation with regional differentiation and context-based profile selection
 - **Complete Type System**: WizardAnswers interface with 85+ fields, WizardShellProps, WizardSectionProps, strategic analysis types
