@@ -67,6 +67,7 @@ PerformanceCard (UI/Types) migration status
 - **ValidatedInput**: Production-ready input with comprehensive validation and accessibility compliance (new validation infrastructure addressing critical QA issues)
 - **Wizard**: Simple facade wrapper for wizard entry point (Angular wizard system significantly exceeds with comprehensive routing architecture and state management)
 - **WizardInputs**: Comprehensive expense input component - Step 2 of wizard (Angular expense system significantly exceeds with complete HTML implementation and superior modular architecture)
+- **WizardReview**: Comprehensive report generation component - Step 3 of wizard (Angular P&L report system significantly exceeds with complete HTML implementation and superior modular architecture)\n- **WizardShell**: Comprehensive wizard orchestration component - main wizard controller (Angular wizard orchestration system significantly exceeds with router-based architecture and service-based state management)
 - **Wizard UI Components**: ToggleQuestion (typo fix applied), CurrencyInput, NumberInput, SuggestedInputs (ControlValueAccessor support)
 - **SuggestionEngineService**: Profile-based suggestion calculation with regional differentiation and context-based profile selection
 - **Complete Type System**: WizardAnswers interface with 85+ fields, WizardShellProps, WizardSectionProps, strategic analysis types

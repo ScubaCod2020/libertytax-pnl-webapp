@@ -337,7 +337,8 @@ const testAnswers: WizardAnswers = {
 13. **Validation Infrastructure**: ValidatedInputComponent provides production-ready validation system addressing critical QA issues
 14. **Wizard Architecture**: Angular wizard system exceeds React facade with comprehensive routing and state management
 15. **Expense Input System**: Angular expense system exceeds React monolithic approach with complete HTML implementation and superior modular architecture
-16. **Type System**: Leverage comprehensive wizard types for type-safe integration
+16. **P&L Report System**: Angular P&L report system exceeds React monolithic approach with complete HTML implementation and superior modular architecture
+17. **Wizard Orchestration System**: Angular wizard orchestration system exceeds React monolithic approach with router-based architecture and service-based state management\n18. **Type System**: Leverage comprehensive wizard types for type-safe integration
 6. **Testing**: Verify all auto-calculations, conditional rendering, suggestion display, and toggle functionality with test data
 7. **Suggestion Engine**: Test profile selection and calculation accuracy across different scenarios
 8. **Educational Testing**: Use demo component to validate suggestion flow and visual indicators
