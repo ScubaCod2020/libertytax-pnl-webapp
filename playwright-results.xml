@@ -1,21 +1,29 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="24.892279">
-<testsuite name="debug-ui-capture.spec.js" timestamp="2025-09-25T13:35:27.956Z" hostname="chromium" tests="1" failures="0" skipped="0" time="5.574" errors="0">
-<testcase name="Debug UI Capture › Capture full UI state for debugging" classname="debug-ui-capture.spec.js" time="5.574">
+<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="0" time="21.736891">
+<testsuite name="compare-react-angular.spec.js" timestamp="2025-09-25T13:49:14.599Z" hostname="chromium" tests="2" failures="0" skipped="0" time="18.824" errors="0">
+<testcase name="React vs Angular Layout Comparison › Capture React app screenshots for comparison" classname="compare-react-angular.spec.js" time="8.15">
 <system-out>
-<![CDATA[🔍 Starting UI debug capture...
-📄 Page title: Liberty Tax P&L Tool (v0.4 Preview)
-🎯 app-root visible: [33mtrue[39m
-🌐 Current URL: http://localhost:4200/wizard/income-drivers
-🚀 Quick Start Wizard visible: [33mtrue[39m
-📊 Number of h1 headings: [33m1[39m
-📝 First heading text: Income Drivers
-📄 Page contains text (first 200 chars): 
-  Liberty Tax • P&L Budget & Forecastv0.6.0 previewRegion: CA•Store Type: existing•Tax Year: 2025• TaxRush: YesIncomeExpensesReportsDashboardReset WizardDebug🚀 Quick Start SetupConfigure your basic 
-💰 Expenses link visible: [33mtrue[39m
-🔄 Navigating to expenses page...
-💰 Expenses page URL: http://localhost:4200/wizard/income-drivers
-📊 P&L page URL: http://localhost:4200/wizard/pnl
-✅ Debug capture complete! Check the screenshots.
+<![CDATA[📱 Capturing React app screenshots...
+🏠 React homepage captured
+📄 React page title: Liberty Tax • P&L Budget & Forecast — Wizard
+🚀 React Quick Start elements found: [33m0[39m
+📊 React headings found: [33m4[39m
+🔗 React navigation elements found: [33m18[39m
+📊 React reports page captured
+]]>
+</system-out>
+</testcase>
+<testcase name="React vs Angular Layout Comparison › Capture Angular app screenshots for comparison" classname="compare-react-angular.spec.js" time="10.674">
+<system-out>
+<![CDATA[⚡ Capturing Angular app screenshots...
+🏠 Angular homepage captured
+📄 Angular page title: Liberty Tax P&L Tool (v0.4 Preview)
+🚀 Angular Quick Start components found: [33m1[39m
+📊 Angular headings found: [33m5[39m
+📝 Angular first heading: Income Drivers
+💰 Angular expenses page captured
+💰 Angular expenses URL: http://localhost:4200/wizard/income-drivers
+📊 Angular P&L page captured
+📈 Angular dashboard captured
 ]]>
 </system-out>
 </testcase>

@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 1
+      "actualWorkers": 2
     },
     "preserveOutput": "always",
     "reporter": [
@@ -43,7 +43,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "chromium",
         "name": "chromium",
@@ -59,7 +59,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "firefox",
         "name": "firefox",
@@ -75,7 +75,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "webkit",
         "name": "webkit",
@@ -91,7 +91,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "Mobile Chrome",
         "name": "Mobile Chrome",
@@ -107,7 +107,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "Mobile Safari",
         "name": "Mobile Safari",
@@ -123,7 +123,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "Microsoft Edge",
         "name": "Microsoft Edge",
@@ -139,7 +139,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "Google Chrome",
         "name": "Google Chrome",
@@ -165,20 +165,20 @@
   },
   "suites": [
     {
-      "title": "debug-ui-capture.spec.js",
-      "file": "debug-ui-capture.spec.js",
+      "title": "compare-react-angular.spec.js",
+      "file": "compare-react-angular.spec.js",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Debug UI Capture",
-          "file": "debug-ui-capture.spec.js",
+          "title": "React vs Angular Layout Comparison",
+          "file": "compare-react-angular.spec.js",
           "line": 4,
           "column": 6,
           "specs": [
             {
-              "title": "Capture full UI state for debugging",
+              "title": "Capture React app screenshots for comparison",
               "ok": true,
               "tags": [],
               "tests": [
@@ -193,52 +193,34 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5574,
+                      "duration": 8150,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "🔍 Starting UI debug capture...\n"
+                          "text": "📱 Capturing React app screenshots...\n"
                         },
                         {
-                          "text": "📄 Page title: Liberty Tax P&L Tool (v0.4 Preview)\n"
+                          "text": "🏠 React homepage captured\n"
                         },
                         {
-                          "text": "🎯 app-root visible: \u001b[33mtrue\u001b[39m\n"
+                          "text": "📄 React page title: Liberty Tax • P&L Budget & Forecast — Wizard\n"
                         },
                         {
-                          "text": "🌐 Current URL: http://localhost:4200/wizard/income-drivers\n"
+                          "text": "🚀 React Quick Start elements found: \u001b[33m0\u001b[39m\n"
                         },
                         {
-                          "text": "🚀 Quick Start Wizard visible: \u001b[33mtrue\u001b[39m\n"
+                          "text": "📊 React headings found: \u001b[33m4\u001b[39m\n"
                         },
                         {
-                          "text": "📊 Number of h1 headings: \u001b[33m1\u001b[39m\n"
+                          "text": "🔗 React navigation elements found: \u001b[33m18\u001b[39m\n"
                         },
                         {
-                          "text": "📝 First heading text: Income Drivers\n"
-                        },
-                        {
-                          "text": "📄 Page contains text (first 200 chars): \n  Liberty Tax • P&L Budget & Forecastv0.6.0 previewRegion: CA•Store Type: existing•Tax Year: 2025• TaxRush: YesIncomeExpensesReportsDashboardReset WizardDebug🚀 Quick Start SetupConfigure your basic \n"
-                        },
-                        {
-                          "text": "💰 Expenses link visible: \u001b[33mtrue\u001b[39m\n"
-                        },
-                        {
-                          "text": "🔄 Navigating to expenses page...\n"
-                        },
-                        {
-                          "text": "💰 Expenses page URL: http://localhost:4200/wizard/income-drivers\n"
-                        },
-                        {
-                          "text": "📊 P&L page URL: http://localhost:4200/wizard/pnl\n"
-                        },
-                        {
-                          "text": "✅ Debug capture complete! Check the screenshots.\n"
+                          "text": "📊 React reports page captured\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-09-25T13:35:31.745Z",
+                      "startTime": "2025-09-25T13:49:16.988Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -246,9 +228,74 @@
                   "status": "expected"
                 }
               ],
-              "id": "08876a01ab733b59f2ea-cb23e85b742d12c116e2",
-              "file": "debug-ui-capture.spec.js",
+              "id": "f07dfd75bb3fcd4cd8b7-8fbaa69a330866322d9e",
+              "file": "compare-react-angular.spec.js",
               "line": 5,
+              "column": 3
+            },
+            {
+              "title": "Capture Angular app screenshots for comparison",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 10674,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "⚡ Capturing Angular app screenshots...\n"
+                        },
+                        {
+                          "text": "🏠 Angular homepage captured\n"
+                        },
+                        {
+                          "text": "📄 Angular page title: Liberty Tax P&L Tool (v0.4 Preview)\n"
+                        },
+                        {
+                          "text": "🚀 Angular Quick Start components found: \u001b[33m1\u001b[39m\n"
+                        },
+                        {
+                          "text": "📊 Angular headings found: \u001b[33m5\u001b[39m\n"
+                        },
+                        {
+                          "text": "📝 Angular first heading: Income Drivers\n"
+                        },
+                        {
+                          "text": "💰 Angular expenses page captured\n"
+                        },
+                        {
+                          "text": "💰 Angular expenses URL: http://localhost:4200/wizard/income-drivers\n"
+                        },
+                        {
+                          "text": "📊 Angular P&L page captured\n"
+                        },
+                        {
+                          "text": "📈 Angular dashboard captured\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-25T13:49:16.836Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f07dfd75bb3fcd4cd8b7-a70269e2ee883f20a581",
+              "file": "compare-react-angular.spec.js",
+              "line": 61,
               "column": 3
             }
           ]
@@ -258,9 +305,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-09-25T13:35:24.007Z",
-    "duration": 24892.279,
-    "expected": 1,
+    "startTime": "2025-09-25T13:49:12.301Z",
+    "duration": 21736.891,
+    "expected": 2,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

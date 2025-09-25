@@ -1,89 +1,129 @@
-<div class="page-header page-header--wide">
-    <div class="qs-intro">
-      <div class="qs-title">{{ title }}</div>
-      @if (subtitle) {
-        <div class="qs-subtitle">{{ subtitle }}</div>
-      }
-    </div>
+<div class="interview-wizard" [class.interview-wizard--completed]="!editable">
+  <!-- Watermark Background -->
+  <div class="interview-watermark">Liberty Tax</div>
+  
+  <!-- Interview Content -->
+  <div class="interview-content">
+    @if (editable) {
+      <!-- Interview Header -->
+      <div class="interview-header">
+        <div class="interview-title">{{ title || '🚀 Quick Setup' }}</div>
+        @if (subtitle) {
+          <div class="interview-subtitle">{{ subtitle }}</div>
+        }
+      </div>
 
-    <div class="page-header__controls">
-      @if (editable) {
-        <!-- Region row -->
-        <div class="qs-row">
-          <label class="qs-label">Region<span class="req">*</span></label>
-          <div class="qs-field">
-            <label for="region-select" class="sr-only">Region</label>
-            <select id="region-select" title="Select region" aria-label="Region" class="qs-select region" [ngModel]="settings.region" (ngModelChange)="onRegionChange($event)">
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-            </select>
-          </div>
-          <div class="qs-note small">Affects tax calculations and available features</div>
-        </div>
-
-        <!-- Store type row -->
-        <div class="qs-row">
-          <label class="qs-label">Store Type<span class="req">*</span></label>
-          <div class="qs-field">
-            <label for="store-type-select" class="sr-only">Store Type</label>
-            <select id="store-type-select" title="Select your store type" class="qs-select store" [ngModel]="settings.storeType" (ngModelChange)="onStoreTypeChange($event)">
-              <option value="">Select store type...</option>
-              <option value="new">New Store (First year)</option>
-              <option value="existing">Existing Store</option>
-            </select>
-          </div>
-          <div class="qs-note small">New stores use regional stats, existing stores use your historical data</div>
-        </div>
-
-        <!-- Tax year (simple inline row) -->
-        <div class="qs-row">
-          <label class="qs-label">Tax Year</label>
-          <div class="qs-field">
-            <input type="number" class="qs-input" [ngModel]="settings.taxYear" (ngModelChange)="onTaxYearChange($event)" />
+      <!-- Step 1: Region -->
+      <div class="interview-step" [class.interview-step--completed]="settings.region">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3 class="step-question">What region is your store in?</h3>
+          <div class="step-options">
+            <label class="option-card" [class.option-card--selected]="settings.region === 'US'">
+              <input type="radio" name="region" value="US" [ngModel]="settings.region" (ngModelChange)="onRegionChange($event)" />
+              <div class="option-title">🇺🇸 United States</div>
+              <div class="option-desc">US tax calculations and features</div>
+            </label>
+            <label class="option-card" [class.option-card--selected]="settings.region === 'CA'">
+              <input type="radio" name="region" value="CA" [ngModel]="settings.region" (ngModelChange)="onRegionChange($event)" />
+              <div class="option-title">🇨🇦 Canada</div>
+              <div class="option-desc">Canadian tax calculations and TaxRush</div>
+            </label>
           </div>
         </div>
+      </div>
 
-        <!-- Local Average Rent for Rent Guard -->
-        <div class="qs-row">
-          <label class="qs-label">Local Average Rent</label>
-          <div class="qs-field">
-            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
-              <div class="currency"><span class="prefix">$</span><input type="number" class="qs-input" [ngModel]="settings.localAvgRent" (ngModelChange)="settingsSvc.update({ localAvgRent: $event })" placeholder="e.g., 1,500" /></div>
-              <select class="qs-select" [ngModel]="settings.rentPeriod" (ngModelChange)="settingsSvc.update({ rentPeriod: $event })">
-                <option value="monthly">per month</option>
-                <option value="yearly">per year</option>
-              </select>
+      <!-- Step 2: Store Type (only show if region selected) -->
+      @if (settings.region) {
+        <div class="interview-step" [class.interview-step--completed]="settings.storeType">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3 class="step-question">Is this a new store or existing store?</h3>
+            <div class="step-options">
+              <label class="option-card" [class.option-card--selected]="settings.storeType === 'new'">
+                <input type="radio" name="storeType" value="new" [ngModel]="settings.storeType" (ngModelChange)="onStoreTypeChange($event)" />
+                <div class="option-title">🏪 New Store</div>
+                <div class="option-desc">First year - use regional benchmarks</div>
+              </label>
+              <label class="option-card" [class.option-card--selected]="settings.storeType === 'existing'">
+                <input type="radio" name="storeType" value="existing" [ngModel]="settings.storeType" (ngModelChange)="onStoreTypeChange($event)" />
+                <div class="option-title">🏢 Existing Store</div>
+                <div class="option-desc">Use your historical data</div>
+              </label>
             </div>
           </div>
-          <div class="qs-note small">Used by Rent Guard to validate expenses vs local market.</div>
         </div>
-
-        <!-- TaxRush -->
-        @if ((appCfg.config$ | async)?.showTaxRush) {
-        <div class="qs-box">
-          <div class="qs-box-title qs-box-title--primary">TaxRush Returns</div>
-          <div class="qs-box-desc">Does your office handle TaxRush returns? (Canada only)</div>
-          <div class="qs-box-options">
-            <label class="qs-radio"><input type="radio" name="taxrush" [checked]="settings.taxRush" (change)="onTaxRushChange(true)" /><span>Yes, we handle TaxRush returns</span></label>
-            <label class="qs-radio"><input type="radio" name="taxrush" [checked]="!settings.taxRush" (change)="onTaxRushChange(false)" /><span>No, we don't handle TaxRush</span></label>
-          </div>
-        </div>
-        }
-
-        <!-- Other Income -->
-        <div class="qs-box">
-          <div class="qs-box-title qs-box-title--muted">Additional Revenue Streams</div>
-          <div class="qs-box-desc">Does your office have other income (bookkeeping, notary, etc.)?</div>
-          <div class="qs-box-options">
-            <label class="qs-radio"><input type="radio" name="otherincome" [checked]="settings.otherIncome" (change)="onOtherIncomeChange(true)" /><span>Yes, we have other income</span></label>
-            <label class="qs-radio"><input type="radio" name="otherincome" [checked]="!settings.otherIncome" (change)="onOtherIncomeChange(false)" /><span>No, only tax prep</span></label>
-          </div>
-        </div>
-      } @else {
-        <span class="text-sm" style="color:#6b7280">Region: {{ settings.region === 'CA' ? 'Canada' : 'United States' }} • Store: {{ settings.storeType === 'existing' ? 'Existing' : 'New' }} • TaxRush: {{ settings.taxRush ? 'Yes' : 'No' }} • Other income: {{ settings.otherIncome ? 'Yes' : 'No' }}</span>
       }
-    </div>
-    <hr />
+
+      <!-- Step 3: TaxRush (only show if Canada and store type selected) -->
+      @if (settings.region === 'CA' && settings.storeType) {
+        <div class="interview-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3 class="step-question">Do you handle TaxRush returns?</h3>
+            <div class="step-help">TaxRush is Liberty Tax's same-day refund service</div>
+            <div class="step-options">
+              <label class="option-card" [class.option-card--selected]="settings.taxRush === true">
+                <input type="radio" name="taxRush" [value]="true" [ngModel]="settings.taxRush" (ngModelChange)="onTaxRushChange($event)" />
+                <div class="option-title">✅ Yes, we handle TaxRush</div>
+                <div class="option-desc">Include TaxRush in calculations</div>
+              </label>
+              <label class="option-card" [class.option-card--selected]="settings.taxRush === false">
+                <input type="radio" name="taxRush" [value]="false" [ngModel]="settings.taxRush" (ngModelChange)="onTaxRushChange($event)" />
+                <div class="option-title">❌ No TaxRush</div>
+                <div class="option-desc">Tax prep only</div>
+              </label>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Step 4: Other Income (show after main questions) -->
+      @if (settings.storeType && (settings.region !== 'CA' || settings.taxRush !== null)) {
+        <div class="interview-step">
+          <div class="step-number">{{ settings.region === 'CA' ? '4' : '3' }}</div>
+          <div class="step-content">
+            <h3 class="step-question">Do you have other revenue streams?</h3>
+            <div class="step-help">Bookkeeping, notary, business consulting, etc.</div>
+            <div class="step-options">
+              <label class="option-card" [class.option-card--selected]="settings.otherIncome === true">
+                <input type="radio" name="otherIncome" [value]="true" [ngModel]="settings.otherIncome" (ngModelChange)="onOtherIncomeChange($event)" />
+                <div class="option-title">💼 Yes, other income</div>
+                <div class="option-desc">Include additional revenue streams</div>
+              </label>
+              <label class="option-card" [class.option-card--selected]="settings.otherIncome === false">
+                <input type="radio" name="otherIncome" [value]="false" [ngModel]="settings.otherIncome" (ngModelChange)="onOtherIncomeChange($event)" />
+                <div class="option-title">📋 Tax prep only</div>
+                <div class="option-desc">Focus on tax preparation revenue</div>
+              </label>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Completion Message -->
+      @if (isComplete()) {
+        <div class="interview-complete">
+          <div class="complete-icon">✅</div>
+          <div class="complete-message">Setup complete! Your Income Drivers section is now configured.</div>
+        </div>
+      }
+
+    } @else {
+      <!-- Compact Summary View -->
+      <div class="interview-summary">
+        <div class="summary-title">Current Configuration</div>
+        <div class="summary-items">
+          <span class="summary-item">{{ settings.region === 'CA' ? '🇨🇦 Canada' : '🇺🇸 United States' }}</span>
+          <span class="summary-item">{{ settings.storeType === 'existing' ? '🏢 Existing Store' : '🏪 New Store' }}</span>
+          @if (settings.region === 'CA') {
+            <span class="summary-item">{{ settings.taxRush ? '✅ TaxRush' : '❌ No TaxRush' }}</span>
+          }
+          <span class="summary-item">{{ settings.otherIncome ? '💼 Other Income' : '📋 Tax Prep Only' }}</span>
+        </div>
+      </div>
+    }
   </div>
+</div>
 
 

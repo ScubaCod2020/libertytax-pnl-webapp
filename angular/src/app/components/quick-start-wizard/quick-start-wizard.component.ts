@@ -64,4 +64,23 @@ export class QuickStartWizardComponent {
     // Also update wizard state
     this.wizardState.updateAnswers({ hasOtherIncome: !!v });
   }
+
+  isComplete(): boolean {
+    // Basic requirements: region and store type
+    if (!this.settings.region || !this.settings.storeType) {
+      return false;
+    }
+
+    // If Canada, need TaxRush decision
+    if (this.settings.region === 'CA' && this.settings.taxRush === null) {
+      return false;
+    }
+
+    // Need other income decision
+    if (this.settings.otherIncome === null) {
+      return false;
+    }
+
+    return true;
+  }
 }
