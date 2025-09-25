@@ -5,7 +5,10 @@
   <div class="row">
     <label>Tax Prep Returns <span class="req">*</span></label>
     <div class="field">
-      <input type="number" class="input" placeholder="e.g., 1,680" />
+      <input type="number" class="input" 
+             [ngModel]="taxPrepReturns$ | async" 
+             (ngModelChange)="updateTaxPrepReturns($event)"
+             placeholder="e.g., 1,680" />
     </div>
     <div class="note">Your target number of tax returns</div>
   </div>
@@ -16,7 +19,10 @@
     <div class="field">
       <div class="currency">
         <span class="prefix">$</span>
-        <input type="number" class="input" placeholder="e.g., 130" />
+        <input type="number" class="input" 
+               [ngModel]="avgNetFee$ | async" 
+               (ngModelChange)="updateAvgNetFee($event)"
+               placeholder="e.g., 130" />
       </div>
     </div>
     <div class="note">Your target average net fee per return</div>
@@ -28,7 +34,10 @@
     <div class="field">
       <div class="currency">
         <span class="prefix">$</span>
-        <input type="number" class="input readonly" placeholder="Auto-calculated" disabled />
+        <input type="number" class="input" 
+               [ngModel]="grossFees$ | async" 
+               (ngModelChange)="overrideGrossFees($event)"
+               placeholder="Auto-calculated" />
       </div>
     </div>
     <div class="note">Auto: Returns × Avg Net Fee</div>
@@ -42,19 +51,33 @@
     <div class="row compact">
       <label>TaxRush Returns</label>
       <div class="field">
-        <input type="number" class="input" placeholder="240" />
+        <input type="number" class="input" 
+               [ngModel]="taxRushReturns$ | async" 
+               (ngModelChange)="updateTaxRushReturns($event)"
+               placeholder="240" />
       </div>
     </div>
     <div class="row compact">
       <label>TaxRush Avg Net Fee</label>
       <div class="field">
-        <div class="currency"><span class="prefix">$</span><input type="number" class="input" placeholder="125" /></div>
+        <div class="currency">
+          <span class="prefix">$</span>
+          <input type="number" class="input" 
+                 [ngModel]="taxRushAvgNetFee$ | async" 
+                 (ngModelChange)="updateTaxRushAvgNetFee($event)"
+                 placeholder="125" />
+        </div>
       </div>
     </div>
     <div class="row compact">
       <label>TaxRush Gross Fees</label>
       <div class="field">
-        <div class="currency"><span class="prefix">$</span><input type="number" class="input" placeholder="Auto-calculated" /></div>
+        <div class="currency">
+          <span class="prefix">$</span>
+          <input type="number" class="input" 
+                 [ngModel]="((taxRushReturns$ | async) || 0) * ((taxRushAvgNetFee$ | async) || 0)" 
+                 placeholder="Auto-calculated" readonly />
+        </div>
       </div>
       <div class="note">Auto: Returns × Avg Net Fee (override allowed)</div>
     </div>
@@ -67,11 +90,17 @@
     <div class="field dual">
       <div class="currency">
         <span class="prefix">$</span>
-        <input type="number" class="input small" placeholder="6,000" />
+        <input type="number" class="input small" 
+               [ngModel]="discountsAmt$ | async" 
+               (ngModelChange)="updateDiscountsAmt($event)"
+               placeholder="6,000" />
       </div>
       <span class="eq">=</span>
       <div class="percent">
-        <input type="number" class="input small" step="0.1" placeholder="3.0" />
+        <input type="number" class="input small" step="0.1" 
+               [ngModel]="discountsPct$ | async" 
+               (ngModelChange)="updateDiscountsPct($event)"
+               placeholder="3.0" />
         <span class="suffix">%</span>
       </div>
     </div>
@@ -82,7 +111,13 @@
   <div class="row">
     <label>Total Tax Prep Income</label>
     <div class="field">
-      <div class="currency"><span class="prefix">$</span><input type="number" class="input" placeholder="Auto-calculated" /></div>
+      <div class="currency">
+        <span class="prefix">$</span>
+        <input type="number" class="input" 
+               [ngModel]="taxPrepIncome$ | async" 
+               (ngModelChange)="overrideTaxPrepIncome($event)"
+               placeholder="Auto-calculated" />
+      </div>
     </div>
     <div class="note">Gross Tax Prep Fees minus Customer Discounts (you can override)</div>
   </div>
@@ -91,7 +126,15 @@
   @if (settings.settings.otherIncome) {
   <div class="row">
     <label>Other Income</label>
-    <div class="field"><div class="currency"><span class="prefix">$</span><input type="number" class="input" placeholder="5,000" /></div></div>
+    <div class="field">
+      <div class="currency">
+        <span class="prefix">$</span>
+        <input type="number" class="input" 
+               [ngModel]="otherIncome$ | async" 
+               (ngModelChange)="updateOtherIncome($event)"
+               placeholder="5,000" />
+      </div>
+    </div>
     <div class="note">Additional revenue streams (bookkeeping, notary, etc.)</div>
   </div>
   }
@@ -99,10 +142,23 @@
   <!-- 8. Total Expenses (overrideable) -->
   <div class="row">
     <label>Total Expenses</label>
-    <div class="field"><div class="currency"><span class="prefix">$</span><input type="number" class="input" placeholder="Auto-calculated" /></div></div>
+    <div class="field">
+      <div class="currency">
+        <span class="prefix">$</span>
+        <input type="number" class="input" 
+               [ngModel]="totalExpenses$ | async" 
+               (ngModelChange)="overrideTotalExpenses($event)"
+               placeholder="Auto-calculated" />
+      </div>
+    </div>
     <div class="note">Auto: (Total Tax Prep Income + Other Income) × 76% (you can override)</div>
   </div>
-  <div class="net-banner green">Target Net Income: $200,000 <span class="muted">(0% margin)</span></div>
+  
+  <!-- Summary banner -->
+  <div class="net-banner green">
+    Target Net Income: ${{ (netIncome$ | async) | number:'1.0-0' }} 
+    <span class="muted">({{ (netMargin$ | async) | number:'1.1-1' }}% margin)</span>
+  </div>
 </div>
 
 

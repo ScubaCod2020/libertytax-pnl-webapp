@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SettingsService, AppSettings } from '../../services/settings.service';
 import { AppConfigService } from '../../services/app-config.service';
+import { WizardStateService } from '../../core/services/wizard-state.service';
 
 @Component({
   selector: 'app-quick-start-wizard',
@@ -20,28 +21,47 @@ export class QuickStartWizardComponent {
 
   constructor(
     public settingsSvc: SettingsService,
-    public appCfg: AppConfigService
+    public appCfg: AppConfigService,
+    private wizardState: WizardStateService
   ) {}
 
   onRegionChange(v: string) {
-    this.settingsSvc.update({ region: v === 'US' ? 'US' : 'CA' });
+    const region = v === 'US' ? 'US' : 'CA';
+    this.settingsSvc.update({ region });
     this.settings = this.settingsSvc.settings;
+
+    // Also update wizard state
+    this.wizardState.updateAnswers({ region });
   }
+
   onStoreTypeChange(v: string) {
-    this.settingsSvc.update({ storeType: v === 'new' ? 'new' : 'existing' });
+    const storeType = v === 'new' ? 'new' : 'existing';
+    this.settingsSvc.update({ storeType });
     this.settings = this.settingsSvc.settings;
+
+    // Also update wizard state
+    this.wizardState.updateAnswers({ storeType });
   }
+
   onTaxYearChange(v: string) {
     const n = Number(v) || new Date().getFullYear();
     this.settingsSvc.update({ taxYear: n });
     this.settings = this.settingsSvc.settings;
   }
+
   onTaxRushChange(v: boolean) {
     this.settingsSvc.update({ taxRush: !!v });
     this.settings = this.settingsSvc.settings;
+
+    // Also update wizard state
+    this.wizardState.updateAnswers({ handlesTaxRush: !!v });
   }
+
   onOtherIncomeChange(v: boolean) {
     this.settingsSvc.update({ otherIncome: !!v });
     this.settings = this.settingsSvc.settings;
+
+    // Also update wizard state
+    this.wizardState.updateAnswers({ hasOtherIncome: !!v });
   }
 }
