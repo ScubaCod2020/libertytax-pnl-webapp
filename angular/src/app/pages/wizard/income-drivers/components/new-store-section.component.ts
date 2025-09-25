@@ -28,12 +28,10 @@ import { WizardAnswers, Region } from '../../../../domain/types/wizard.types';
   template: `
     <!-- Information Banner -->
     <div class="info-banner">
-      <div class="banner-title">
-        🏪 New Store Setup - Forecasting
-      </div>
+      <div class="banner-title">🏪 New Store Setup - Forecasting</div>
       <div class="banner-text">
-        Set your target performance goals below. These will be used for business planning and can
-        be adjusted as you learn more about your market.
+        Set your target performance goals below. These will be used for business planning and can be
+        adjusted as you learn more about your market.
       </div>
     </div>
 
@@ -45,7 +43,12 @@ import { WizardAnswers, Region } from '../../../../domain/types/wizard.types';
       [fieldValue]="answers.handlesTaxRush"
       positiveLabel="Yes, we will handle TaxRush returns"
       negativeLabel="No, we won't handle TaxRush"
-      [fieldsToeClearOnDisable]="['taxRushReturns', 'taxRushReturnsPct', 'taxRushAvgNetFee', 'taxRushGrossFees']"
+      [fieldsToClearOnDisable]="[
+        'taxRushReturns',
+        'taxRushReturnsPct',
+        'taxRushAvgNetFee',
+        'taxRushGrossFees',
+      ]"
       titleColor="#1e40af"
       [showOnlyWhen]="region === 'CA'"
       (valueChange)="onAnswersChange($event)"
@@ -58,7 +61,7 @@ import { WizardAnswers, Region } from '../../../../domain/types/wizard.types';
       [fieldValue]="answers.hasOtherIncome"
       positiveLabel="Yes, we have other income sources"
       negativeLabel="No, only tax preparation"
-      [fieldsToeClearOnDisable]="['otherIncome']"
+      [fieldsToClearOnDisable]="['otherIncome']"
       titleColor="#6b7280"
       (valueChange)="onAnswersChange($event)"
     />
@@ -71,7 +74,11 @@ import { WizardAnswers, Region } from '../../../../domain/types/wizard.types';
       border="1px solid #059669"
     >
       <!-- 1. Tax Prep Returns -->
-      <lt-wizard-form-field label="Tax Prep Returns" helpText="Your target number of tax returns" [required]="true">
+      <lt-wizard-form-field
+        label="Tax Prep Returns"
+        helpText="Your target number of tax returns"
+        [required]="true"
+      >
         <lt-number-input
           [value]="answers.taxPrepReturns"
           placeholder="e.g., 1,680"
@@ -104,10 +111,7 @@ import { WizardAnswers, Region } from '../../../../domain/types/wizard.types';
       </lt-wizard-form-field>
 
       <!-- 4. TaxRush (conditional) -->
-      <div
-        *ngIf="region === 'CA' && answers.handlesTaxRush"
-        class="taxrush-section"
-      >
+      <div *ngIf="region === 'CA' && answers.handlesTaxRush" class="taxrush-section">
         <lt-wizard-form-field
           label="TaxRush Returns"
           helpText="Your target TaxRush returns (≈15% of total)"
@@ -120,7 +124,10 @@ import { WizardAnswers, Region } from '../../../../domain/types/wizard.types';
           />
         </lt-wizard-form-field>
 
-        <lt-wizard-form-field label="TaxRush Avg Net Fee" helpText="Target avg net fee per TaxRush return">
+        <lt-wizard-form-field
+          label="TaxRush Avg Net Fee"
+          helpText="Target avg net fee per TaxRush return"
+        >
           <lt-currency-input
             [value]="answers.taxRushAvgNetFee ?? answers.avgNetFee"
             [placeholder]="(answers.avgNetFee || 125).toString()"
@@ -235,76 +242,78 @@ import { WizardAnswers, Region } from '../../../../domain/types/wizard.types';
       border="2px solid #0ea5e9"
     />
   `,
-  styles: [`
-    .info-banner {
-      padding: 1rem;
-      background-color: #f0f9ff;
-      border: 1px solid #0ea5e9;
-      border-radius: 6px;
-      margin-bottom: 1rem;
-    }
+  styles: [
+    `
+      .info-banner {
+        padding: 1rem;
+        background-color: #f0f9ff;
+        border: 1px solid #0ea5e9;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+      }
 
-    .banner-title {
-      font-weight: bold;
-      color: #0369a1;
-      margin-bottom: 0.5rem;
-    }
+      .banner-title {
+        font-weight: bold;
+        color: #0369a1;
+        margin-bottom: 0.5rem;
+      }
 
-    .banner-text {
-      font-size: 0.9rem;
-      color: #0369a1;
-    }
+      .banner-text {
+        font-size: 0.9rem;
+        color: #0369a1;
+      }
 
-    .taxrush-section {
-      padding: 0.75rem;
-      border: 2px solid #0ea5e9;
-      border-radius: 8px;
-      background-color: #f0f9ff;
-      margin: 0.5rem 0;
-    }
+      .taxrush-section {
+        padding: 0.75rem;
+        border: 2px solid #0ea5e9;
+        border-radius: 8px;
+        background-color: #f0f9ff;
+        margin: 0.5rem 0;
+      }
 
-    .discount-inputs {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
+      .discount-inputs {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
 
-    .discount-input-group {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
+      .discount-input-group {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
 
-    .currency-symbol,
-    .percent-symbol {
-      font-weight: 500;
-      color: #6b7280;
-    }
+      .currency-symbol,
+      .percent-symbol {
+        font-weight: 500;
+        color: #6b7280;
+      }
 
-    .equals {
-      color: #6b7280;
-    }
+      .equals {
+        color: #6b7280;
+      }
 
-    .discount-input {
-      width: 80px;
-      text-align: right;
-      border: 1px solid #d1d5db;
-      border-radius: 4px;
-      padding: 0.5rem;
-    }
+      .discount-input {
+        width: 80px;
+        text-align: right;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        padding: 0.5rem;
+      }
 
-    .discount-help {
-      margin-top: 0.25rem;
-      font-size: 0.75rem;
-      color: #6b7280;
-      font-style: italic;
-    }
-  `]
+      .discount-help {
+        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        color: #6b7280;
+        font-style: italic;
+      }
+    `,
+  ],
 })
 export class NewStoreSectionComponent {
   @Input() answers: WizardAnswers = { region: 'US' };
   @Input() region: Region = 'US';
-  
+
   @Output() answersChange = new EventEmitter<Partial<WizardAnswers>>();
 
   // ---- Effective (live) values ----
@@ -319,8 +328,12 @@ export class NewStoreSectionComponent {
   }
 
   get effectiveTaxPrepIncome(): number | undefined {
-    return this.answers.projectedTaxPrepIncome ??
-      (this.effectiveGrossFees !== undefined ? this.effectiveGrossFees - this.effectiveDiscountsAmt : undefined);
+    return (
+      this.answers.projectedTaxPrepIncome ??
+      (this.effectiveGrossFees !== undefined
+        ? this.effectiveGrossFees - this.effectiveDiscountsAmt
+        : undefined)
+    );
   }
 
   get effectiveOtherIncome(): number {
@@ -328,16 +341,20 @@ export class NewStoreSectionComponent {
   }
 
   get effectiveTotalExpenses(): number | undefined {
-    return this.answers.projectedExpenses ??
+    return (
+      this.answers.projectedExpenses ??
       (this.effectiveTaxPrepIncome !== undefined
         ? Math.round((this.effectiveTaxPrepIncome + this.effectiveOtherIncome) * 0.76)
-        : undefined);
+        : undefined)
+    );
   }
 
   // TaxRush computed values
   get taxRushReturnsValue(): number | undefined {
-    return this.answers.taxRushReturns ??
-      (this.answers.taxPrepReturns ? Math.round(this.answers.taxPrepReturns * 0.15) : undefined);
+    return (
+      this.answers.taxRushReturns ??
+      (this.answers.taxPrepReturns ? Math.round(this.answers.taxPrepReturns * 0.15) : undefined)
+    );
   }
 
   get taxRushReturnsPlaceholder(): string {
@@ -357,19 +374,25 @@ export class NewStoreSectionComponent {
 
   // Discount computed values
   get discountAmtPlaceholder(): string {
-    return this.effectiveGrossFees ? Math.round(this.effectiveGrossFees * 0.03).toString() : '6,000';
+    return this.effectiveGrossFees
+      ? Math.round(this.effectiveGrossFees * 0.03).toString()
+      : '6,000';
   }
 
   get discountAmtValue(): number | string {
-    return this.answers.discountsAmt ??
-      (this.effectiveGrossFees ? Math.round(this.effectiveGrossFees * 0.03) : '');
+    return (
+      this.answers.discountsAmt ??
+      (this.effectiveGrossFees ? Math.round(this.effectiveGrossFees * 0.03) : '')
+    );
   }
 
   get discountPctValue(): number | string {
-    return this.answers.discountsPct ??
+    return (
+      this.answers.discountsPct ??
       (this.effectiveGrossFees && this.answers.discountsAmt
         ? Math.round((this.answers.discountsAmt / this.effectiveGrossFees) * 100 * 10) / 10
-        : '');
+        : '')
+    );
   }
 
   onAnswersChange(updates: Partial<WizardAnswers>): void {
@@ -380,7 +403,7 @@ export class NewStoreSectionComponent {
     const target = event.target as HTMLInputElement;
     const newAmt = parseFloat(target.value) || undefined;
     this.onAnswersChange({ discountsAmt: newAmt });
-    
+
     if (newAmt && this.effectiveGrossFees) {
       const pct = (newAmt / this.effectiveGrossFees) * 100;
       this.onAnswersChange({ discountsPct: Math.round(pct * 10) / 10 }); // 1 decimal place
@@ -391,7 +414,7 @@ export class NewStoreSectionComponent {
     const target = event.target as HTMLInputElement;
     const newPct = parseFloat(target.value) || undefined;
     this.onAnswersChange({ discountsPct: newPct });
-    
+
     if (newPct && this.effectiveGrossFees) {
       this.onAnswersChange({
         discountsAmt: Math.round(this.effectiveGrossFees * (newPct / 100)),
