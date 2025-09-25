@@ -16,12 +16,12 @@
   <!-- Income Drivers (read-only where configured in Step 1) -->
   <div class="expense-section income">
     <div class="section-title">💰 Income Drivers</div>
-    <div class="grid-row"><label>Average Net Fee</label><div class="grid-field inline"><span class="prefix">$</span><input type="number" class="input sm readonly" [value]="125" disabled title="Configured in Step 1" /></div><div class="small note">Configured in Step 1</div></div>
-    <div class="grid-row"><label>Tax Prep Returns</label><div class="grid-field inline"><span class="prefix">#</span><input type="number" class="input sm readonly" [value]="1600" disabled title="Configured in Step 1" /></div><div class="small note">Configured in Step 1</div></div>
+    <div class="grid-row"><label>Average Net Fee</label><div class="grid-field inline"><span class="prefix">$</span><input type="number" class="input sm readonly" [ngModel]="avgNetFee$ | async" disabled title="Configured in Step 1" /></div><div class="small note">Configured in Step 1</div></div>
+    <div class="grid-row"><label>Tax Prep Returns</label><div class="grid-field inline"><span class="prefix">#</span><input type="number" class="input sm readonly" [ngModel]="taxPrepReturns$ | async" disabled title="Configured in Step 1" /></div><div class="small note">Configured in Step 1</div></div>
     <div class="blue-box">
       <div class="grid-row"><label>TaxRush Returns</label><div class="grid-field inline"><span class="prefix">#</span><input type="number" class="input sm" placeholder="0" /></div><div class="small note">Expected TaxRush returns (Canada only)</div></div>
     </div>
-    <div class="grid-row"><label>Customer Discounts</label><div class="grid-field inline"><input type="number" class="input sm readonly" [value]="3" disabled title="Configured in Step 1" /><span class="suffix">%</span></div><div class="small note">Configured in Step 1</div></div>
+    <div class="grid-row"><label>Customer Discounts</label><div class="grid-field inline"><input type="number" class="input sm readonly" [ngModel]="discountsPct$ | async" disabled title="Configured in Step 1" /><span class="suffix">%</span></div><div class="small note">Configured in Step 1</div></div>
     <div class="yellow-panel">
       <div class="panel-title">💰 Projected Gross Revenue Breakdown <span class="status">🟡 On track with strategic plan</span></div>
       <div class="panel-grid">
@@ -40,7 +40,7 @@
 
   <!-- Expense Management -->
   <div class="expense-section">
-    <div class="section-title with-action">💰 Expense Management <button type="button" class="btn-reset" title="Reset ONLY expense fields back to strategic defaults (keeps your target performance goals intact)">💸 Reset Expenses to Strategic Defaults</button></div>
+    <div class="section-title with-action">💰 Expense Management <button type="button" class="btn-reset" (click)="resetExpensesToDefaults()" title="Reset ONLY expense fields back to strategic defaults (keeps your target performance goals intact)">💸 Reset Expenses to Strategic Defaults</button></div>
     <div class="blue-outline">
       <div class="blue-title">📊 Performance-Based Targets</div>
       <div class="blue-line">Strategic Total Expenses: <strong>$147,440</strong><span class="delta">(76.0% of gross revenue)</span></div>
@@ -57,12 +57,27 @@
       <div class="grid-row multi">
         <label title="Staff salaries as % of gross fees (25% recommended for optimal operations)">Salaries</label>
         <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="25" [value]="25" /><span class="suffix">%</span></div>
+          <div class="inline">
+            <input type="number" class="input xs" 
+                   [ngModel]="salariesPct$ | async" 
+                   (ngModelChange)="updateSalariesPct($event)"
+                   placeholder="25" />
+            <span class="suffix">%</span>
+          </div>
           <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" placeholder="0" [value]="50000" /></div>
+          <div class="inline">
+            <span class="prefix">$</span>
+            <input type="number" class="input xs" 
+                   [ngModel]="((grossRevenue$ | async) || 0) * ((salariesPct$ | async) || 0) / 100" 
+                   placeholder="0" readonly />
+          </div>
         </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="25" /></div>
-        <div class="small note">Staff salaries as % of gross fees (25% recommended for optimal operations) <span class="green"> • Base: $200,000 (gross fees)</span></div>
+        <div class="slider">
+          <input type="range" min="0" max="50" step="1" 
+                 [ngModel]="salariesPct$ | async" 
+                 (ngModelChange)="updateSalariesPct($event)" />
+        </div>
+        <div class="small note">Staff salaries as % of gross fees (25% recommended for optimal operations) <span class="green"> • Base: ${{ (grossRevenue$ | async) | number:'1.0-0' }} (gross revenue)</span></div>
       </div>
       <div class="grid-row multi">
         <label title="Payroll taxes, benefits as % of salaries (10% recommended for optimal operations)">Employee Deductions</label>
