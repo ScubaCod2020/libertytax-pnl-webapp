@@ -12,16 +12,18 @@ export class ProjectedService {
     return this._scenario$.getValue();
   }
   setScenario(next: any): void {
+    console.log('🚀 [ProjectedService] Scenario changed to:', next);
     this._scenario$.next((next as Scenario) || 'Custom');
   }
 
   // Growth percent (applies to selected targets). Presets from scenario.
-  private readonly _growthPct$ = new BehaviorSubject<number>(0);
+  private readonly _growthPct$ = new BehaviorSubject<number>(2);
   readonly growthPct$ = this._growthPct$.asObservable();
   get growthPct(): number {
     return this._growthPct$.getValue();
   }
   setGrowthPct(pct: number): void {
+    console.log('🚀 [ProjectedService] Growth percentage changed to:', `${pct}%`);
     this._growthPct$.next(pct);
   }
 
@@ -41,6 +43,7 @@ export class ProjectedService {
     key: 'all' | 'returns' | 'avgNetFee' | 'otherIncome' | 'taxRush',
     value: boolean
   ): void {
+    console.log('🚀 [ProjectedService] Target toggled:', key, '→', value);
     if (key === 'all') {
       const next = {
         returns: value,
@@ -49,12 +52,14 @@ export class ProjectedService {
         taxRush: value,
         all: value,
       };
+      console.log('🚀 [ProjectedService] All targets set to:', value);
       this._targets$.next(next);
       return;
     }
     const curr = this.targets;
     const next = { ...curr, [key]: value } as typeof curr;
     next.all = next.returns && next.avgNetFee && next.otherIncome && next.taxRush;
+    console.log('🚀 [ProjectedService] Updated targets:', next);
     this._targets$.next(next);
   }
 
@@ -62,6 +67,7 @@ export class ProjectedService {
   applyScenarioPreset(): void {
     const s = this.scenario;
     const preset = s === 'Good' ? 2 : s === 'Better' ? 5 : s === 'Best' ? 10 : 0;
+    console.log('🚀 [ProjectedService] Applying scenario preset:', s, '→', `${preset}%`);
     this.setGrowthPct(preset);
   }
 }

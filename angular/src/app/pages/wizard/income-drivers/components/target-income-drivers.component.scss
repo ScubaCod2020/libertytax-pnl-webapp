@@ -2,7 +2,39 @@
 .card-title { margin-bottom: 8px; }
 
 .target-section { margin-bottom: 1.5rem; border: 1px solid #059669; border-radius: 8px; padding: 1.5rem; background: #f8fafc; }
-.section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; font-weight: 600; color: #374151; font-size: 1.1rem; border-bottom: 2px solid #6b7280; padding-bottom: 0.25rem; }
+.section-title { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  margin-bottom: 0.75rem; 
+  font-weight: 600; 
+  color: #374151; 
+  font-size: 1.1rem; 
+  border-bottom: 2px solid #6b7280; 
+  padding-bottom: 0.25rem; 
+}
+
+.reset-section-btn {
+  background: #f97316;
+  color: white;
+  border: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #ea580c;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(249, 115, 22, 0.3);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
 .title-left { display: flex; align-items: center; gap: 8px; }
 .row { margin-bottom: 12px; }
 .row.compact { margin-bottom: 8px; }

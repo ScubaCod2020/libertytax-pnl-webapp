@@ -1,11 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { BrandLogoComponent } from '../brand-logo/brand-logo.component';
 import { APP_VERSION } from '../../version';
 import { DebugPanelService } from '../debug-panel/debug-panel.service';
-import { SettingsService, type AppSettings } from '../../services/settings.service';
+import { WizardStateService } from '../../core/services/wizard-state.service';
 
 export interface HeaderAction {
   label: string;
@@ -28,9 +28,15 @@ export interface StoreInfo {
   styleUrls: ['./app-header.component.scss'],
 })
 export class AppHeaderComponent implements OnInit, OnDestroy {
-  @Input() region: 'US' | 'CA' = 'US';
   @Input() wizardCompleted = false;
-  @Input() currentPage: 'income' | 'expenses' | 'reports' | 'dashboard' = 'dashboard';
+  @Input() set currentPage(value: 'income' | 'expenses' | 'reports' | 'dashboard') {
+    console.log('📊 Header received currentPage:', value);
+    this._currentPage = value;
+  }
+  get currentPage(): 'income' | 'expenses' | 'reports' | 'dashboard' {
+    return this._currentPage;
+  }
+  private _currentPage: 'income' | 'expenses' | 'reports' | 'dashboard' = 'dashboard';
   // Optional presentational inputs to mirror React AppHeader features (no business logic here)
   @Input() breadcrumb?: Array<{ label: string; onClick?: () => void }>;
   @Input() actions?: HeaderAction[];
@@ -39,16 +45,17 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   private navSub?: any;
   readonly appVersion = APP_VERSION;
   readonly debugOpen$ = this.debugSvc.open$;
-  settings!: AppSettings;
+
+  // Get region from WizardStateService for reactive updates
+  readonly region$ = this.wizardState.answers$.pipe(map((answers) => answers.region || 'US'));
 
   constructor(
     private router: Router,
     private debugSvc: DebugPanelService,
-    private settingsSvc: SettingsService
+    private wizardState: WizardStateService
   ) {}
 
   ngOnInit(): void {
-    this.settings = this.settingsSvc.settings;
     const derive = (url: string): 'income' | 'expenses' | 'reports' | 'dashboard' => {
       if (url.includes('/wizard/income-drivers')) return 'income';
       if (url.includes('/wizard/expenses')) return 'expenses';
@@ -71,23 +78,30 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   }
 
   goIncome(): void {
+    console.log('🎯 [HEADER] Navigating to income drivers...');
     this.router.navigateByUrl('/wizard/income-drivers');
   }
 
   goDashboard(): void {
+    console.log('🎯 [HEADER] Navigating to dashboard...');
     this.router.navigateByUrl('/dashboard');
   }
 
   goReports(): void {
+    console.log('🎯 [HEADER] Navigating to reports...');
     this.router.navigateByUrl('/wizard/pnl');
   }
 
   goExpenses(): void {
+    console.log('🎯 [HEADER] Navigating to expenses...');
     this.router.navigateByUrl('/wizard/expenses');
   }
 
   resetWizard(): void {
     try {
+      // Clear all wizard-related localStorage
+      localStorage.removeItem('wizard_state_v1');
+      localStorage.removeItem('pnl_settings_v1');
       localStorage.clear();
     } catch {}
     location.reload();

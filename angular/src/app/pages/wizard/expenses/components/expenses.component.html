@@ -1,40 +1,23 @@
 <div data-wizard-step="inputs" class="inputs-wrap">
-  <!-- Your selections recap -->
-  <div class="recap">
-    <div class="recap-title">🏷️ Your Selections <span class="muted">(From Step 1 - Read Only)</span></div>
-    <div class="recap-grid">
-      <div class="pill-row"><span class="label">Region:</span><span class="pill yellow">{{ settings.region === 'CA' ? 'Canada 🇨🇦' : 'United States 🇺🇸' }}</span></div>
-      <div class="pill-row"><span class="label">Store Type:</span><span class="pill green">{{ settings.storeType === 'new' ? '🏢 New Store' : 'Existing Store' }}</span></div>
-      <div class="pill-row"><span class="label">TaxRush:</span><span class="pill gray">{{ settings.taxRush ? 'Yes, we handle TaxRush' : "No, we don't handle TaxRush" }}</span></div>
-      <div class="pill-row"><span class="label">Other Income:</span><span class="pill gray">{{ settings.otherIncome ? 'Yes, we have other income' : 'No, only tax preparation' }}</span></div>
-    </div>
-  </div>
-
   <div class="card-title">Income &amp; Expense Inputs</div>
   <p class="small intro">Enter your expected income and expense values. All fields have reasonable defaults, but customizing them will give you more accurate P&amp;L projections.</p>
 
-  <!-- Income Drivers (read-only where configured in Step 1) -->
+  <!-- Revenue Summary (Dynamic based on store type) -->
   <div class="expense-section income">
-    <div class="section-title">💰 Income Drivers</div>
-    <div class="grid-row"><label>Average Net Fee</label><div class="grid-field inline"><span class="prefix">$</span><input type="number" class="input sm readonly" [ngModel]="avgNetFee$ | async" disabled title="Configured in Step 1" /></div><div class="small note">Configured in Step 1</div></div>
-    <div class="grid-row"><label>Tax Prep Returns</label><div class="grid-field inline"><span class="prefix">#</span><input type="number" class="input sm readonly" [ngModel]="taxPrepReturns$ | async" disabled title="Configured in Step 1" /></div><div class="small note">Configured in Step 1</div></div>
-    <div class="blue-box">
-      <div class="grid-row"><label>TaxRush Returns</label><div class="grid-field inline"><span class="prefix">#</span><input type="number" class="input sm" placeholder="0" /></div><div class="small note">Expected TaxRush returns (Canada only)</div></div>
-    </div>
-    <div class="grid-row"><label>Customer Discounts</label><div class="grid-field inline"><input type="number" class="input sm readonly" [ngModel]="discountsPct$ | async" disabled title="Configured in Step 1" /><span class="suffix">%</span></div><div class="small note">Configured in Step 1</div></div>
-    <div class="yellow-panel">
-      <div class="panel-title">💰 Projected Gross Revenue Breakdown <span class="status">🟡 On track with strategic plan</span></div>
+    <div class="yellow-panel" *ngIf="revenueBreakdown$ | async as revenue">
+      <div class="panel-title">💰 {{ revenue.title }} <span class="status">🟡 On track with strategic plan</span></div>
       <div class="panel-grid">
         <div>
           <div class="panel-sub">Tax Prep Revenue:</div>
-          <div class="detail">Gross Tax Prep Fees: <strong>$200,000</strong></div>
-          <div class="detail">Returns: 1,600 @ $125</div>
-          <div class="detail red">Less Discounts (3%): <strong>-$6,000</strong></div>
-          <div class="detail green strong">Net Tax Prep Income: <strong>$194,000</strong></div>
+          <div class="detail">Gross Tax Prep Fees: <strong>{{ revenue.grossFees | currency }}</strong></div>
+          <div class="detail">Returns: {{ revenue.returns | number }} @ {{ revenue.avgNetFee | currency }}</div>
+          <div class="detail red">Less Discounts ({{ revenue.discountPct }}%): <strong>-{{ revenue.discountAmt | currency }}</strong></div>
+          <div class="detail green strong">Net Tax Prep Income: <strong>{{ revenue.netIncome | currency }}</strong></div>
+          <div class="detail" *ngIf="revenue.otherIncome > 0">Other Income: <strong>{{ revenue.otherIncome | currency }}</strong></div>
         </div>
       </div>
-      <div class="panel-total">Total Gross Revenue: <strong>$194,000</strong><span class="delta">(0% vs target)</span></div>
-      <div class="panel-note">This is your projected gross revenue before expenses. Your net income (profit) will be this amount minus all expenses below.</div>
+      <div class="panel-total">Total Gross Revenue: <strong>{{ revenue.totalRevenue | currency }}</strong><span class="delta">({{ revenue.vsTarget }}% vs target)</span></div>
+      <div class="panel-note">{{ revenue.description }}</div>
     </div>
   </div>
 
@@ -75,18 +58,19 @@
         <div class="slider">
           <input type="range" min="0" max="50" step="1" 
                  [ngModel]="salariesPct$ | async" 
-                 (ngModelChange)="updateSalariesPct($event)" />
+                 (ngModelChange)="updateSalariesPct($event)"
+                 aria-label="Salaries percentage slider" />
         </div>
         <div class="small note">Staff salaries as % of gross fees (25% recommended for optimal operations) <span class="green"> • Base: ${{ (grossRevenue$ | async) | number:'1.0-0' }} (gross revenue)</span></div>
       </div>
       <div class="grid-row multi">
         <label title="Payroll taxes, benefits as % of salaries (10% recommended for optimal operations)">Employee Deductions</label>
         <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="10" [value]="10" /><span class="suffix">%</span></div>
+          <div class="inline"><input type="number" class="input xs" placeholder="10" [value]="10" aria-label="Employee deductions percentage" /><span class="suffix">%</span></div>
           <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" placeholder="0" [value]="5000" /></div>
+          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput placeholder="0" [value]="5000" aria-label="Employee deductions dollar amount" /></div>
         </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="10" /></div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="10" aria-label="Employee deductions percentage slider" /></div>
         <div class="small note">Payroll taxes, benefits as % of salaries (10% recommended for optimal operations) <span class="green"> • Base: $50,000 (salary amount)</span></div>
       </div>
     </div>
@@ -98,31 +82,31 @@
       <div class="grid-row multi">
         <label title="Office rent as % of gross fees (18% recommended for optimal operations)">Rent</label>
         <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="18" [value]="18" /><span class="suffix">%</span></div>
+          <div class="inline"><input type="number" class="input xs" placeholder="18" [value]="18" aria-label="Rent percentage" /><span class="suffix">%</span></div>
           <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" placeholder="0" [value]="36000" /></div>
+          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput placeholder="0" [value]="36000" aria-label="Rent dollar amount" /></div>
         </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="18" /></div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="18" aria-label="Rent percentage slider" /></div>
         <div class="small note">Office rent as % of gross fees (18% recommended) <span class="green"> • Base: $200,000 (gross fees)</span></div>
       </div>
       <div class="grid-row multi">
         <label>Telephone</label>
         <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="0.5" [value]="0.5" /><span class="suffix">%</span></div>
+          <div class="inline"><input type="number" class="input xs" placeholder="0.5" [value]="0.5" aria-label="Telephone percentage" /><span class="suffix">%</span></div>
           <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" placeholder="0" [value]="1000" /></div>
+          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput placeholder="0" [value]="1000" aria-label="Telephone dollar amount" /></div>
         </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.5" /></div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.5" aria-label="Telephone percentage slider" /></div>
         <div class="small note">Phone/internet costs as % of gross fees <span class="green"> • Base: $200,000</span></div>
       </div>
       <div class="grid-row multi">
         <label>Utilities</label>
         <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="1.2" [value]="1.2" /><span class="suffix">%</span></div>
+          <div class="inline"><input type="number" class="input xs" placeholder="1.2" [value]="1.2" aria-label="Utilities percentage" /><span class="suffix">%</span></div>
           <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" placeholder="0" [value]="2400" /></div>
+          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput placeholder="0" [value]="2400" aria-label="Utilities dollar amount" /></div>
         </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="1.2" /></div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="1.2" aria-label="Utilities percentage slider" /></div>
         <div class="small note">Utilities as % of gross fees <span class="green"> • Base: $200,000</span></div>
       </div>
     </div>
@@ -134,31 +118,31 @@
       <div class="grid-row multi">
         <label>Local Advertising</label>
         <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="2" [value]="2" /><span class="suffix">%</span></div>
+          <div class="inline"><input type="number" class="input xs" placeholder="2" [value]="2" aria-label="Local advertising percentage" /><span class="suffix">%</span></div>
           <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" placeholder="0" [value]="4000" /></div>
+          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput placeholder="0" [value]="4000" aria-label="Local advertising dollar amount" /></div>
         </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="2" /></div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="2" aria-label="Local advertising percentage slider" /></div>
         <div class="small note">Local marketing as % of gross fees <span class="green"> • Base: $200,000</span></div>
       </div>
       <div class="grid-row multi">
         <label>Insurance</label>
         <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="0.6" [value]="0.6" /><span class="suffix">%</span></div>
+          <div class="inline"><input type="number" class="input xs" placeholder="0.6" [value]="0.6" aria-label="Insurance percentage" /><span class="suffix">%</span></div>
           <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" placeholder="0" [value]="1200" /></div>
+          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput placeholder="0" [value]="1200" aria-label="Insurance dollar amount" /></div>
         </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.6" /></div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.6" aria-label="Insurance percentage slider" /></div>
         <div class="small note">Business insurance as % of gross fees <span class="green"> • Base: $200,000</span></div>
       </div>
       <div class="grid-row multi">
         <label>Postage</label>
         <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="0.4" [value]="0.4" /><span class="suffix">%</span></div>
+          <div class="inline"><input type="number" class="input xs" placeholder="0.4" [value]="0.4" aria-label="Postage percentage" /><span class="suffix">%</span></div>
           <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" placeholder="0" [value]="800" /></div>
+          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput placeholder="0" [value]="800" aria-label="Postage dollar amount" /></div>
         </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.4" /></div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.4" aria-label="Postage percentage slider" /></div>
         <div class="small note">Mailing/shipping as % of gross fees <span class="green"> • Base: $200,000</span></div>
       </div>
     </div>
@@ -169,12 +153,12 @@
       <div class="small italic">Franchise fees and royalties</div>
       <div class="grid-row multi">
         <label>Tax Prep Royalties</label>
-        <div class="grid-field chain"><div class="inline"><input type="number" class="input xs" [value]="14" disabled readonly /><span class="suffix">%</span></div><span class="eq">=</span><div class="inline"><span class="prefix">$</span><input type="number" class="input xs" [value]="27160" disabled readonly /></div></div>
+        <div class="grid-field chain"><div class="inline"><input type="number" class="input xs" [value]="14" disabled readonly aria-label="Tax prep royalties percentage" /><span class="suffix">%</span></div><span class="eq">=</span><div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput [value]="27160" disabled readonly aria-label="Tax prep royalties dollar amount" /></div></div>
         <div class="small note">🔒 Locked per franchise agreement <span class="green"> • Base: $194,000</span></div>
       </div>
       <div class="grid-row multi">
         <label>Advertising Royalties</label>
-        <div class="grid-field chain"><div class="inline"><input type="number" class="input xs" [value]="5" disabled readonly /><span class="suffix">%</span></div><span class="eq">=</span><div class="inline"><span class="prefix">$</span><input type="number" class="input xs" [value]="9700" disabled readonly /></div></div>
+        <div class="grid-field chain"><div class="inline"><input type="number" class="input xs" [value]="5" disabled readonly aria-label="Advertising royalties percentage" /><span class="suffix">%</span></div><span class="eq">=</span><div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput [value]="9700" disabled readonly aria-label="Advertising royalties dollar amount" /></div></div>
         <div class="small note">🔒 Locked per franchise agreement <span class="green"> • Base: $194,000</span></div>
       </div>
     </div>
@@ -185,8 +169,8 @@
       <div class="small italic">Other and miscellaneous expenses</div>
       <div class="grid-row multi">
         <label>Miscellaneous</label>
-        <div class="grid-field chain"><div class="inline"><input type="number" class="input xs" [value]="2.5" /><span class="suffix">%</span></div><span class="eq">=</span><div class="inline"><span class="prefix">$</span><input type="number" class="input xs" [value]="5000" /></div></div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="2.5" /></div>
+        <div class="grid-field chain"><div class="inline"><input type="number" class="input xs" [value]="2.5" aria-label="Miscellaneous expenses percentage" /><span class="suffix">%</span></div><span class="eq">=</span><div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput [value]="5000" aria-label="Miscellaneous expenses dollar amount" /></div></div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="2.5" aria-label="Miscellaneous expenses percentage slider" /></div>
         <div class="small note">Other misc expenses (0-1% recommended) <span class="green"> • Base: $200,000</span></div>
       </div>
     </div>

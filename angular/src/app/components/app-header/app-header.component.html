@@ -1,7 +1,7 @@
 <header class="header">
   <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2rem;width:100%">
     <div style="justify-self:start">
-      <app-brand-logo [region]="region" variant="wide" size="medium"></app-brand-logo>
+      <app-brand-logo [region]="(region$ | async) || 'US'" variant="wide" size="large"></app-brand-logo>
     </div>
   <div style="display:flex;flex-direction:column;align-items:center;justify-self:center">
     <!-- Breadcrumb (optional) -->
@@ -15,16 +15,6 @@
 
     <div class="h2 brand" style="color:#1e40af;line-height:1.2;text-align:center">Liberty Tax • P&L Budget & Forecast</div>
     <span class="small text-xs" style="background:#f3f4f6;padding:0.25rem 0.5rem;border-radius:4px;margin-top:0.25rem">v{{ appVersion }} preview</span>
-    <div class="small text-xs" style="margin-top:0.25rem;display:flex;gap:0.5rem;align-items:center;color:#374151">
-      <!-- Read-only selections recap from SettingsService -->
-      <span><strong>Region:</strong> {{ settings.region }}</span>
-      <span>•</span>
-      <span><strong>Store Type:</strong> {{ settings.storeType }}</span>
-      <span>•</span>
-      <span><strong>Tax Year:</strong> {{ settings.taxYear }}</span>
-      <span *ngIf="settings.region==='CA'">• <strong>TaxRush:</strong> {{ settings.taxRush ? 'Yes' : 'No' }}</span>
-      <span *ngIf="settings.otherIncome">• <strong>Other Income:</strong> On</span>
-    </div>
   </div>
     <div style="display:flex;flex-direction:column;align-items:end;gap:0.5rem;justify-self:end;min-width:220px">
       <div style="display:flex;align-items:center;gap:0.5rem">

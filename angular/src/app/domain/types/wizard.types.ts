@@ -13,6 +13,9 @@ export interface GrowthOption {
 
 // Complete wizard answers interface
 export interface WizardAnswers {
+  // Internal flags
+  _isExampleData?: boolean; // Flag to indicate if data is example/placeholder data
+
   // Basic info
   region: Region;
 
@@ -33,8 +36,36 @@ export interface WizardAnswers {
   lastYearTaxRushAvgNetFee?: number;
   lastYearExpenses?: number;
 
+  // Prior Year (PY) performance for existing stores
+  pyTaxPrepReturns?: number;
+  pyAvgNetFee?: number;
+  pyGrossFees?: number;
+  pyTaxPrepIncome?: number;
+  pyDiscountsPct?: number;
+  pyDiscountsAmt?: number;
+  pyTaxRushReturns?: number;
+  pyTaxRushReturnsPct?: number; // PY Percentage of tax prep returns (default 15% for CA)
+  pyTaxRushGrossFees?: number;
+  pyTaxRushAvgNetFee?: number;
+  pyOtherIncome?: number;
+  manualPyTaxRushReturns?: number; // Flag for manually set PY TaxRush returns
+
   // Projected Performance
   expectedGrowthPct?: number;
+  projectedTaxPrepIncome?: number;
+  projectedDiscountsAmt?: number;
+  projectedDiscountsPct?: number;
+  projectedOtherIncome?: number;
+  projectedTaxRushReturns?: number;
+  projectedTaxRushAvgNetFee?: number;
+  projectedTaxRushGrossFees?: number;
+  projectedTaxRushReturnsPct?: number;
+
+  // Manual override flags for projected
+  manualProjectedDiscountsAmt?: boolean;
+  manualProjectedDiscountsPct?: boolean;
+  manualProjectedTaxRushReturns?: number;
+  manualProjectedTaxRushReturnsPct?: number;
   expectedRevenue?: number;
   projectedExpenses?: number;
 
@@ -53,7 +84,6 @@ export interface WizardAnswers {
   projectedAvgNetFee?: number;
   projectedTaxPrepReturns?: number;
   projectedGrossFees?: number;
-  projectedTaxPrepIncome?: number;
 
   // Manual override fields for auto-calculated values
   manualAvgNetFee?: number;

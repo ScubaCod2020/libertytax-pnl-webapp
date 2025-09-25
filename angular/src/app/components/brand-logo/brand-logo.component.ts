@@ -24,7 +24,7 @@ export class BrandLogoComponent {
 
   constructor(private themeService: ThemeService) {}
 
-  @HostBinding('class') 
+  @HostBinding('class')
   get hostClass(): string {
     return this.customClass || '';
   }
@@ -37,20 +37,28 @@ export class BrandLogoComponent {
   imgError = false;
 
   get logoUrl(): string | undefined {
-    // Use comprehensive branding system with fallbacks
-    const brand = this.themeService.currentRegion === this.region 
-      ? this.themeService.currentBrand 
-      : this.themeService.currentBrand; // For now, use current brand
-    
-    // Enhanced variant logic for React parity with comprehensive branding
-    if (this.variant === 'wide') {
-      return brand.assets.logoWide ?? brand.assets.logoUrl;
+    // Use BrandAssets directly based on region
+    if (this.region === 'CA') {
+      const assets = BrandAssets.ca;
+      if (this.variant === 'wide') {
+        return assets.wide;
+      }
+      if (this.variant === 'watermark') {
+        return assets.leaf;
+      }
+      // Default 'main' variant for CA
+      return assets.logo;
+    } else {
+      const assets = BrandAssets.us;
+      if (this.variant === 'wide') {
+        return assets.wide;
+      }
+      if (this.variant === 'watermark') {
+        return assets.torch;
+      }
+      // Default 'main' variant for US
+      return assets.stack;
     }
-    if (this.variant === 'watermark') {
-      return brand.assets.watermarkUrl ?? brand.assets.logoWide ?? brand.assets.logoUrl;
-    }
-    // Default 'main' variant
-    return brand.assets.logoUrl;
   }
 
   get altText(): string {
@@ -58,6 +66,10 @@ export class BrandLogoComponent {
   }
 
   get heightPx(): number {
+    // Balance between performance and visual appeal - reasonable sizes that don't dominate the UI
+    if (this.variant === 'wide') {
+      return this.size === 'small' ? 60 : this.size === 'large' ? 80 : 70; // More reasonable sizes for header
+    }
     return this.size === 'small' ? 32 : this.size === 'large' ? 64 : 48;
   }
 

@@ -1,5 +1,10 @@
 <div class="expense-section target-section">
-  <div class="section-title"><div class="title-left"><span>🎯</span>Target Performance Goals</div></div>
+  <div class="section-title">
+    <div class="title-left"><span>🎯</span>Target Performance Goals</div>
+    <button class="reset-section-btn" (click)="resetTargetGoals()" title="Reset Target Performance Goals">
+      🔄 Reset Goals
+    </button>
+  </div>
 
   <!-- 1. Tax Prep Returns -->
   <div class="row">
@@ -20,6 +25,7 @@
       <div class="currency">
         <span class="prefix">$</span>
         <input type="number" class="input" 
+               appCurrencyInput
                [ngModel]="avgNetFee$ | async" 
                (ngModelChange)="updateAvgNetFee($event)"
                placeholder="e.g., 130" />
@@ -35,6 +41,7 @@
       <div class="currency">
         <span class="prefix">$</span>
         <input type="number" class="input" 
+               appCurrencyInput
                [ngModel]="grossFees$ | async" 
                (ngModelChange)="overrideGrossFees($event)"
                placeholder="Auto-calculated" />
@@ -43,26 +50,39 @@
     <div class="note">Auto: Returns × Avg Net Fee</div>
   </div>
 
-  <!-- 4. TaxRush (conditional for CA) -->
-  @if ((appCfg.config$ | async)?.showTaxRush) {
+  <!-- 4. TaxRush (conditional for CA AND TaxRush enabled) -->
+  @if (showTaxRush$ | async) {
   <div class="box info">
     <div class="box-title">TaxRush Returns</div>
     <div class="box-desc">Your target TaxRush returns (≈15% of total) and avg fee</div>
-    <div class="row compact">
-      <label>TaxRush Returns</label>
-      <div class="field">
-        <input type="number" class="input" 
-               [ngModel]="taxRushReturns$ | async" 
-               (ngModelChange)="updateTaxRushReturns($event)"
-               placeholder="240" />
-      </div>
-    </div>
+          <div class="row compact">
+            <label>TaxRush Returns</label>
+            <div class="field">
+              <div class="inline-gap">
+                <input type="number" class="input xs" 
+                       [ngModel]="taxRushReturns$ | async" 
+                       (ngModelChange)="updateTaxRushReturns($event)"
+                       placeholder="180" />
+                <span class="eq">=</span>
+                <div class="inline">
+                  <input type="number" class="input xs" 
+                         step="0.1" min="0" max="50" 
+                         [ngModel]="taxRushReturnsPct$ | async" 
+                         (ngModelChange)="updateTaxRushReturnsPct($event)"
+                         placeholder="15.0" />
+                  <span class="suffix">%</span>
+                </div>
+              </div>
+              <div class="help italic">Auto: {{ (taxPrepReturns$ | async) || 0 }} × {{ (taxRushReturnsPct$ | async) || 15 }}% = {{ (taxRushReturns$ | async) || 0 }} • Enter either returns or percentage</div>
+            </div>
+          </div>
     <div class="row compact">
       <label>TaxRush Avg Net Fee</label>
       <div class="field">
         <div class="currency">
           <span class="prefix">$</span>
           <input type="number" class="input" 
+                 appCurrencyInput
                  [ngModel]="taxRushAvgNetFee$ | async" 
                  (ngModelChange)="updateTaxRushAvgNetFee($event)"
                  placeholder="125" />
@@ -75,7 +95,8 @@
         <div class="currency">
           <span class="prefix">$</span>
           <input type="number" class="input" 
-                 [ngModel]="((taxRushReturns$ | async) || 0) * ((taxRushAvgNetFee$ | async) || 0)" 
+                 appCurrencyInput
+                 [ngModel]="taxRushGrossFees$ | async" 
                  placeholder="Auto-calculated" readonly />
         </div>
       </div>
@@ -91,20 +112,21 @@
       <div class="currency">
         <span class="prefix">$</span>
         <input type="number" class="input small" 
+               appCurrencyInput
                [ngModel]="discountsAmt$ | async" 
                (ngModelChange)="updateDiscountsAmt($event)"
-               placeholder="6,000" />
+               placeholder="Auto-calculated" />
       </div>
       <span class="eq">=</span>
       <div class="percent">
-        <input type="number" class="input small" step="0.1" 
-               [ngModel]="discountsPct$ | async" 
+        <input type="number" class="input small" step="0.1" min="0" max="100"
+               [ngModel]="discountsPctFormatted$ | async" 
                (ngModelChange)="updateDiscountsPct($event)"
-               placeholder="3.0" />
+               [placeholder]="(regionalDiscountDefault$ | async) + '%'" />
         <span class="suffix">%</span>
       </div>
     </div>
-    <div class="note italic">Default: 3% • Enter either dollar amount or percentage — the other will auto-calc</div>
+    <div class="note italic">Default: {{ (regionalDiscountDefault$ | async) }}% • Enter either dollar amount or percentage — the other will auto-calc</div>
   </div>
 
   <!-- 6. Total Tax Prep Income (overrideable) -->
@@ -114,6 +136,7 @@
       <div class="currency">
         <span class="prefix">$</span>
         <input type="number" class="input" 
+               appCurrencyInput
                [ngModel]="taxPrepIncome$ | async" 
                (ngModelChange)="overrideTaxPrepIncome($event)"
                placeholder="Auto-calculated" />
@@ -122,14 +145,15 @@
     <div class="note">Gross Tax Prep Fees minus Customer Discounts (you can override)</div>
   </div>
 
-  <!-- 7. Other Income (optional) -->
-  @if (settings.settings.otherIncome) {
+  <!-- 7. Other Income (conditional based on Quick Start Wizard) -->
+  @if (showOtherIncome$ | async) {
   <div class="row">
     <label>Other Income</label>
     <div class="field">
       <div class="currency">
         <span class="prefix">$</span>
         <input type="number" class="input" 
+               appCurrencyInput
                [ngModel]="otherIncome$ | async" 
                (ngModelChange)="updateOtherIncome($event)"
                placeholder="5,000" />
@@ -139,25 +163,10 @@
   </div>
   }
 
-  <!-- 8. Total Expenses (overrideable) -->
-  <div class="row">
-    <label>Total Expenses</label>
-    <div class="field">
-      <div class="currency">
-        <span class="prefix">$</span>
-        <input type="number" class="input" 
-               [ngModel]="totalExpenses$ | async" 
-               (ngModelChange)="overrideTotalExpenses($event)"
-               placeholder="Auto-calculated" />
-      </div>
-    </div>
-    <div class="note">Auto: (Total Tax Prep Income + Other Income) × 76% (you can override)</div>
-  </div>
-  
   <!-- Summary banner -->
   <div class="net-banner green">
-    Target Net Income: ${{ (netIncome$ | async) | number:'1.0-0' }} 
-    <span class="muted">({{ (netMargin$ | async) | number:'1.1-1' }}% margin)</span>
+    Gross Net Income: ${{ (grossNetIncome$ | async) | number:'1.0-0' }} 
+    <span class="muted">• Gross Net per Return: ${{ (grossNetPerReturn$ | async) | number:'1.0-0' }}</span>
   </div>
 </div>
 

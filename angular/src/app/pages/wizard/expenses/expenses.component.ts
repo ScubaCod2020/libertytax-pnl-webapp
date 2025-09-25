@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ExpensesComponent as ExpensesBlock } from './components/expenses.component';
+import { ExpensesFormComponent as ExpensesBlock } from './components/expenses.component';
 
 @Component({
   selector: 'app-expenses',

@@ -14,7 +14,10 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./app-footer.component.scss'],
 })
 export class AppFooterComponent implements OnInit, OnDestroy {
-  constructor(public debugSvc: DebugPanelService, private router: Router) {}
+  constructor(
+    public debugSvc: DebugPanelService,
+    private router: Router
+  ) {}
 
   currentPage: 'income' | 'expenses' | 'reports' | 'dashboard' = 'dashboard';
   private navSub?: any;
@@ -31,23 +34,41 @@ export class AppFooterComponent implements OnInit, OnDestroy {
     this.currentPage = derive(this.router.url);
     this.navSub = this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
-      .subscribe((e) => { this.currentPage = derive(e.urlAfterRedirects || e.url); });
+      .subscribe((e) => {
+        this.currentPage = derive(e.urlAfterRedirects || e.url);
+      });
 
     const href = location.href.toLowerCase();
-    const hasDebug = href.includes('debug=') || href.includes('?debug') || href.includes('#debug') || this.router.url.toLowerCase().includes('debug');
+    const hasDebug =
+      href.includes('debug=') ||
+      href.includes('?debug') ||
+      href.includes('#debug') ||
+      this.router.url.toLowerCase().includes('debug');
     this.showMilestones = isDevMode() || hasDebug;
   }
 
-  ngOnDestroy(): void { this.navSub?.unsubscribe?.(); }
+  ngOnDestroy(): void {
+    this.navSub?.unsubscribe?.();
+  }
 
-  goIncome(): void { this.router.navigateByUrl('/wizard/income-drivers'); }
-  goExpenses(): void { this.router.navigateByUrl('/wizard/expenses'); }
-  goReports(): void { this.router.navigateByUrl('/wizard/pnl'); }
-  goDashboard(): void { this.router.navigateByUrl('/dashboard'); }
-   
-  
+  goIncome(): void {
+    console.log('🦶 [FOOTER] Navigating to income drivers...');
+    this.router.navigateByUrl('/wizard/income-drivers');
+  }
+  goExpenses(): void {
+    console.log('🦶 [FOOTER] Navigating to expenses...');
+    this.router.navigateByUrl('/wizard/expenses');
+  }
+  goReports(): void {
+    console.log('🦶 [FOOTER] Navigating to reports...');
+    this.router.navigateByUrl('/wizard/pnl');
+  }
+  goDashboard(): void {
+    console.log('🦶 [FOOTER] Navigating to dashboard...');
+    this.router.navigateByUrl('/dashboard');
+  }
+
   toggleDebug(): void {
     this.debugSvc.toggle();
   }
 }
-

@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -58,7 +66,7 @@ export interface InputsPanelData {
       <div class="scenario-selector">
         <label>
           <strong>Scenario:</strong>&nbsp;
-          <select 
+          <select
             [(ngModel)]="data.scenario"
             (ngModelChange)="onScenarioChange($event)"
             aria-label="Scenario"
@@ -74,9 +82,7 @@ export interface InputsPanelData {
 
       <!-- Income Drivers Section -->
       <div class="income-drivers-section">
-        <div class="section-header income-header">
-          💰 Income Drivers
-        </div>
+        <div class="section-header income-header">💰 Income Drivers</div>
 
         <!-- Average Net Fee with Slider -->
         <div class="field-with-slider">
@@ -85,6 +91,7 @@ export interface InputsPanelData {
             <div class="input-group">
               <span class="input-prefix">$</span>
               <input
+                appCurrencyInput
                 type="number"
                 min="50"
                 max="500"
@@ -138,7 +145,9 @@ export interface InputsPanelData {
             step="1"
             [(ngModel)]="data.taxPrepReturns"
             (ngModelChange)="onFieldChange('taxPrepReturns', $event)"
-            [title]="'Tax-Prep Returns: ' + data.taxPrepReturns.toLocaleString() + ' (Range: 100 - 5,000)'"
+            [title]="
+              'Tax-Prep Returns: ' + data.taxPrepReturns.toLocaleString() + ' (Range: 100 - 5,000)'
+            "
             aria-label="Returns range"
             class="range-slider"
           />
@@ -161,7 +170,11 @@ export interface InputsPanelData {
                 aria-label="TaxRush Returns"
                 placeholder="0"
                 [disabled]="data.region !== 'CA'"
-                [class]="data.region === 'CA' ? 'number-input taxrush-enabled' : 'number-input taxrush-disabled'"
+                [class]="
+                  data.region === 'CA'
+                    ? 'number-input taxrush-enabled'
+                    : 'number-input taxrush-disabled'
+                "
               />
             </div>
           </div>
@@ -172,7 +185,9 @@ export interface InputsPanelData {
             step="1"
             [(ngModel)]="data.taxRushReturns"
             (ngModelChange)="onFieldChange('taxRushReturns', $event)"
-            [title]="'TaxRush Returns: ' + data.taxRushReturns.toLocaleString() + ' (Range: 0 - 1,000)'"
+            [title]="
+              'TaxRush Returns: ' + data.taxRushReturns.toLocaleString() + ' (Range: 0 - 1,000)'
+            "
             aria-label="TaxRush range"
             [disabled]="data.region !== 'CA'"
             class="range-slider"
@@ -204,10 +219,11 @@ export interface InputsPanelData {
               <div class="input-group">
                 <span class="input-prefix">$</span>
                 <input
+                  appCurrencyInput
                   type="number"
                   min="0"
                   step="1"
-                  [ngModel]="discountDollarAmount | number:'1.0-0'"
+                  [ngModel]="discountDollarAmount | number: '1.0-0'"
                   (ngModelChange)="onDiscountDollarChange($event)"
                   title="Customer Discounts Dollar Amount"
                   aria-label="Customer Discounts Dollar Amount"
@@ -224,7 +240,13 @@ export interface InputsPanelData {
             step="1"
             [(ngModel)]="data.discountsPct"
             (ngModelChange)="onDiscountPctChange($event)"
-            [title]="'Customer Discounts: ' + data.discountsPct + '% ($' + (discountDollarAmount | number:'1.0-0') + ') - Range: 0% - 25%'"
+            [title]="
+              'Customer Discounts: ' +
+              data.discountsPct +
+              '% ($' +
+              (discountDollarAmount | number: '1.0-0') +
+              ') - Range: 0% - 25%'
+            "
             aria-label="Customer Discounts slider"
             class="range-slider"
           />
@@ -244,6 +266,7 @@ export interface InputsPanelData {
               </button>
               <span class="input-prefix">$</span>
               <input
+                appCurrencyInput
                 type="number"
                 min="0"
                 max="50000"
@@ -262,12 +285,13 @@ export interface InputsPanelData {
 
       <!-- Expense Management Section -->
       <div class="expense-management-section">
-        <div class="section-header expense-header">
-          📊 Expense Management
-        </div>
+        <div class="section-header expense-header">📊 Expense Management</div>
 
         <div class="expense-fields">
-          <div *ngFor="let field of filteredExpenseFields; trackBy: trackByFieldId" class="expense-field">
+          <div
+            *ngFor="let field of filteredExpenseFields; trackBy: trackByFieldId"
+            class="expense-field"
+          >
             <ng-container [ngSwitch]="field.id">
               <!-- Render expense field with slider for enhanced dashboard experience -->
               <div [class]="getFieldClass(field)">
@@ -291,6 +315,7 @@ export interface InputsPanelData {
                     <div class="input-group">
                       <span *ngIf="isFixed(field)" class="input-prefix">$</span>
                       <input
+                        appCurrencyInput
                         type="number"
                         [min]="0"
                         [max]="isFixed(field) ? null : 100"
@@ -299,7 +324,9 @@ export interface InputsPanelData {
                         (ngModelChange)="onExpenseFieldChange(field, $event)"
                         [disabled]="isFieldDisabled(field) || isFranchiseRoyalty(field)"
                         [title]="field.label + ' ' + (isFixed(field) ? 'amount' : 'percentage')"
-                        [aria-label]="field.label + ' ' + (isFixed(field) ? 'amount' : 'percentage')"
+                        [aria-label]="
+                          field.label + ' ' + (isFixed(field) ? 'amount' : 'percentage')
+                        "
                         [class]="getFieldInputClass(field)"
                       />
                       <span *ngIf="!isFixed(field)" class="input-suffix">%</span>
@@ -311,6 +338,7 @@ export interface InputsPanelData {
                       <div class="input-group">
                         <span class="input-prefix">$</span>
                         <input
+                          appCurrencyInput
                           type="number"
                           min="0"
                           step="1"
@@ -337,7 +365,16 @@ export interface InputsPanelData {
                   [ngModel]="getFieldValue(field)"
                   (ngModelChange)="onExpenseFieldChange(field, $event)"
                   [disabled]="isFieldDisabled(field)"
-                  [title]="field.label + ': ' + getFieldValue(field) + '% ($' + (calculateDollarValue(field) | number:'1.0-0') + ') - Range: 0% - ' + Math.min(field.max, 50) + '%'"
+                  [title]="
+                    field.label +
+                    ': ' +
+                    getFieldValue(field) +
+                    '% ($' +
+                    (calculateDollarValue(field) | number: '1.0-0') +
+                    ') - Range: 0% - ' +
+                    Math.min(field.max, 50) +
+                    '%'
+                  "
                   [aria-label]="field.label + ' slider'"
                   class="range-slider expense-slider"
                 />
@@ -348,198 +385,200 @@ export interface InputsPanelData {
       </div>
     </div>
   `,
-  styles: [`
-    .inputs-panel-card {
-      min-width: 420px;
-      max-width: 500px;
-      padding: 1rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      background: white;
-    }
+  styles: [
+    `
+      .inputs-panel-card {
+        min-width: 420px;
+        max-width: 500px;
+        padding: 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: white;
+      }
 
-    .sr-only {
-      position: absolute;
-      left: -9999px;
-      top: auto;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-    }
+      .sr-only {
+        position: absolute;
+        left: -9999px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
 
-    .card-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #1f2937;
-      margin-bottom: 1rem;
-    }
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 1rem;
+      }
 
-    .scenario-selector {
-      margin-bottom: 1.5rem;
-    }
+      .scenario-selector {
+        margin-bottom: 1.5rem;
+      }
 
-    .scenario-select {
-      padding: 0.25rem;
-      border-radius: 4px;
-      border: 1px solid #d1d5db;
-    }
+      .scenario-select {
+        padding: 0.25rem;
+        border-radius: 4px;
+        border: 1px solid #d1d5db;
+      }
 
-    .income-drivers-section,
-    .expense-management-section {
-      margin-bottom: 1.5rem;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      padding: 1rem;
-      background-color: #fafafa;
-    }
+      .income-drivers-section,
+      .expense-management-section {
+        margin-bottom: 1.5rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 1rem;
+        background-color: #fafafa;
+      }
 
-    .section-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1rem;
-      font-weight: 600;
-      font-size: 1.1rem;
-      border-bottom: 2px solid;
-      padding-bottom: 0.25rem;
-    }
+      .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        border-bottom: 2px solid;
+        padding-bottom: 0.25rem;
+      }
 
-    .income-header {
-      color: #059669;
-      border-color: #059669;
-    }
+      .income-header {
+        color: #059669;
+        border-color: #059669;
+      }
 
-    .expense-header {
-      color: #6b7280;
-      border-color: #6b7280;
-    }
+      .expense-header {
+        color: #6b7280;
+        border-color: #6b7280;
+      }
 
-    .field-with-slider {
-      margin-bottom: 0.75rem;
-    }
+      .field-with-slider {
+        margin-bottom: 0.75rem;
+      }
 
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 0.5rem;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
+      .field-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
 
-    .field-label {
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
+      .field-label {
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
 
-    .input-group {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
+      .input-group {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
 
-    .dual-input-group {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+      .dual-input-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
 
-    .input-prefix,
-    .input-suffix {
-      font-size: 0.8rem;
-      color: #6b7280;
-    }
+      .input-prefix,
+      .input-suffix {
+        font-size: 0.8rem;
+        color: #6b7280;
+      }
 
-    .equals {
-      color: #6b7280;
-      font-size: 0.8rem;
-    }
+      .equals {
+        color: #6b7280;
+        font-size: 0.8rem;
+      }
 
-    .number-input {
-      width: 60px;
-      padding: 0.25rem;
-      border: 1px solid #d1d5db;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      text-align: right;
-    }
+      .number-input {
+        width: 60px;
+        padding: 0.25rem;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        text-align: right;
+      }
 
-    .number-input.small {
-      width: 60px;
-    }
+      .number-input.small {
+        width: 60px;
+      }
 
-    .dollar-input {
-      width: 80px;
-      background-color: #f9fafb;
-    }
+      .dollar-input {
+        width: 80px;
+        background-color: #f9fafb;
+      }
 
-    .range-slider {
-      width: 100%;
-    }
+      .range-slider {
+        width: 100%;
+      }
 
-    .taxrush-field {
-      border: 2px solid #3b82f6;
-      border-radius: 8px;
-      padding: 0.75rem;
-      background-color: #f8fafc;
-      margin-bottom: 0.75rem;
-    }
+      .taxrush-field {
+        border: 2px solid #3b82f6;
+        border-radius: 8px;
+        padding: 0.75rem;
+        background-color: #f8fafc;
+        margin-bottom: 0.75rem;
+      }
 
-    .taxrush-enabled {
-      background-color: #f0f9ff;
-    }
+      .taxrush-enabled {
+        background-color: #f0f9ff;
+      }
 
-    .taxrush-disabled {
-      background-color: #f3f4f6;
-    }
+      .taxrush-disabled {
+        background-color: #f3f4f6;
+      }
 
-    .info-button {
-      background: none;
-      border: none;
-      color: #6b7280;
-      cursor: help;
-      font-size: 0.8rem;
-      padding: 0;
-      line-height: 1;
-    }
+      .info-button {
+        background: none;
+        border: none;
+        color: #6b7280;
+        cursor: help;
+        font-size: 0.8rem;
+        padding: 0;
+        line-height: 1;
+      }
 
-    .expense-fields {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
+      .expense-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
 
-    .expense-field {
-      margin-bottom: 0.75rem;
-    }
+      .expense-field {
+        margin-bottom: 0.75rem;
+      }
 
-    .expense-field-taxrush {
-      border: 2px solid #3b82f6;
-      border-radius: 6px;
-      padding: 0.75rem;
-      background-color: #f8fafc;
-    }
+      .expense-field-taxrush {
+        border: 2px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.75rem;
+        background-color: #f8fafc;
+      }
 
-    .field-label-locked {
-      color: #6b7280;
-    }
+      .field-label-locked {
+        color: #6b7280;
+      }
 
-    .expense-input-group {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+      .expense-input-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
 
-    .field-input-taxrush {
-      background-color: #f0f9ff;
-    }
+      .field-input-taxrush {
+        background-color: #f0f9ff;
+      }
 
-    .field-input-disabled {
-      background-color: #f3f4f6;
-    }
+      .field-input-disabled {
+        background-color: #f3f4f6;
+      }
 
-    .expense-slider {
-      margin-bottom: 0.5rem;
-    }
-  `]
+      .expense-slider {
+        margin-bottom: 0.5rem;
+      }
+    `,
+  ],
 })
 export class InputsPanelComponent implements OnInit, OnDestroy {
   @Input() data!: InputsPanelData;
@@ -548,7 +587,7 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
 
   // Expose Math for template
   Math = Math;
-  
+
   private destroy$ = new Subject<void>();
   private saveToWizardSubject = new Subject<void>();
 
@@ -562,15 +601,17 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
   }
 
   get filteredExpenseFields(): ExpenseField[] {
-    return expenseFields.filter(field => {
+    return expenseFields.filter((field) => {
       // First filter by region
-      const regionMatch = !field.regionSpecific || 
-                         field.regionSpecific === this.data.region || 
-                         field.regionSpecific === 'both';
+      const regionMatch =
+        !field.regionSpecific ||
+        field.regionSpecific === this.data.region ||
+        field.regionSpecific === 'both';
       if (!regionMatch) return false;
 
       // Then filter out TaxRush-related fields if handlesTaxRush is false
-      const isTaxRushField = field.id === 'taxRushRoyaltiesPct' || field.id === 'taxRushShortagesPct';
+      const isTaxRushField =
+        field.id === 'taxRushRoyaltiesPct' || field.id === 'taxRushShortagesPct';
       if (isTaxRushField && this.data.handlesTaxRush === false) return false;
 
       return true;
@@ -579,14 +620,9 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Set up bidirectional persistence with debouncing
-    this.saveToWizardSubject
-      .pipe(
-        debounceTime(500),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        this.emitSaveToWizard();
-      });
+    this.saveToWizardSubject.pipe(debounceTime(500), takeUntil(this.destroy$)).subscribe(() => {
+      this.emitSaveToWizard();
+    });
   }
 
   ngOnDestroy(): void {
@@ -675,7 +711,7 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
 
   calculateDollarValue(field: ExpenseField): number {
     const value = this.getFieldValue(field);
-    
+
     if (this.isFixed(field)) {
       return value;
     }
@@ -705,7 +741,7 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
 
   getFieldInputClass(field: ExpenseField): string {
     let classes = 'number-input';
-    
+
     if (this.isFieldDisabled(field)) {
       classes += ' field-input-disabled';
     } else if (this.isTaxRushField(field)) {
@@ -747,7 +783,10 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
       miscPct: this.data.miscPct,
     };
 
-    console.log('🔄 Dashboard → Wizard: Saving changes to wizard persistence (preserving Page 2 calculatedTotalExpenses)', wizardUpdates);
+    console.log(
+      '🔄 Dashboard → Wizard: Saving changes to wizard persistence (preserving Page 2 calculatedTotalExpenses)',
+      wizardUpdates
+    );
     this.saveToWizard.emit(wizardUpdates);
   }
 }
