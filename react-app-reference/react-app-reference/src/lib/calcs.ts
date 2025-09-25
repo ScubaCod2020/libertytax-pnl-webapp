@@ -96,8 +96,8 @@ export function calc(inputs: Inputs): Results {
     const otherIncome = inputs.otherIncome || 0;
     const totalRevenue = taxPrepIncome + taxRushIncome + otherIncome;
 
-    // 🔧 CURSOR TERMINAL DEBUG - This will show in Cursor's terminal
-    if (import.meta.env.DEV) {
+    // 🔧 CURSOR TERMINAL DEBUG - This will show in Cursor's terminal (guarded for Node parity)
+    if (typeof import.meta !== 'undefined' && (import.meta as any).env?.DEV) {
       console.log('🧮 CALC DEBUG (Server):', {
         region: inputs.region,
         avgNetFee: inputs.avgNetFee,
@@ -162,22 +162,22 @@ export function calc(inputs: Inputs): Results {
     const totalExpenses =
       inputs.calculatedTotalExpenses ||
       salaries +
-        empDeductions +
-        rent +
-        telephone +
-        utilities +
-        localAdv +
-        insurance +
-        postage +
-        supplies +
-        dues +
-        bankFees +
-        maintenance +
-        travelEnt +
-        royalties +
-        advRoyalties +
-        taxRushRoyalties +
-        misc;
+      empDeductions +
+      rent +
+      telephone +
+      utilities +
+      localAdv +
+      insurance +
+      postage +
+      supplies +
+      dues +
+      bankFees +
+      maintenance +
+      travelEnt +
+      royalties +
+      advRoyalties +
+      taxRushRoyalties +
+      misc;
 
     // 🔄 EXPENSE SYNC DEBUG: Log when using pre-calculated vs calculated expenses
     const fieldBasedTotal =

@@ -4,6 +4,10 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['angular/src/app/domain/**/*.spec.ts'],
-    reporters: 'default',
+    reporters: [
+      'default',
+      ['junit', { outputFile: 'run-reports/unit/junit-domain.xml' }],
+      ['html', { outputFolder: 'run-reports/unit/html-domain' }],
+    ],
   },
 });

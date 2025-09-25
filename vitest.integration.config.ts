@@ -19,5 +19,10 @@ export default defineConfig({
       ]
     },
     testTimeout: 10000, // Longer timeout for integration tests
+    reporters: [
+      'default',
+      ['junit', { outputFile: 'run-reports/integration/junit-integration.xml' }],
+      ['html', { outputFolder: 'run-reports/integration/html' }],
+    ],
   },
 })

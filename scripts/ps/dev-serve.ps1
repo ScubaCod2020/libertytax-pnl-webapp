@@ -1,5 +1,9 @@
 Param([int]$TimeoutMinutes = 60)
 $ErrorActionPreference = 'Stop'
+
+# Import watchdog helper
+. "$PSScriptRoot/_watchdog.ps1" | Out-Null
+
 $timestamp = Get-Date -Format 'yyyyMMdd-HHmm'
 $logDir = Join-Path 'run-reports' 'dev'
 $log = Join-Path $logDir "dev-$timestamp.log"

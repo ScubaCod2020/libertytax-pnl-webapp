@@ -47,6 +47,7 @@ Purpose: Canonical, human-friendly index of repository content for quick navigat
 - docs/QA_ANALYSIS_REPORT.md
 - docs/QA_SUMMARY_REPORT.md
 - docs/run-reports/overnight-run-20250919-0647.md
+- docs/DOCS_CONSOLIDATION_PLAN.md
 
 ## Ops/
 

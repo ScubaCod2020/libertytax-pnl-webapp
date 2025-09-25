@@ -15,9 +15,9 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ['html'],
-    ['json', { outputFile: 'playwright-results.json' }],
-    ['junit', { outputFile: 'playwright-results.xml' }]
+    ['html', { outputFolder: 'run-reports/e2e/html', open: 'never' }],
+    ['json', { outputFile: 'run-reports/e2e/playwright-results.json' }],
+    ['junit', { outputFile: 'run-reports/e2e/playwright-results.xml' }]
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
@@ -30,6 +30,9 @@ export default defineConfig({
     /* Record video on retry */
     video: 'retain-on-failure',
   },
+
+  /* Where to put traces/videos/screenshots */
+  outputDir: 'run-reports/e2e/artifacts',
 
   /* Configure projects for major browsers */
   projects: [

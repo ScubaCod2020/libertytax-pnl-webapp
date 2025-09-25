@@ -1,31 +1,34 @@
-# Context Digest (Autopilot Wiring Pass)
+# Context Digest (Autopilot Wiring + QA)
 
-- Blueprint highlights (libertytax-pnl-blueprint.yml)
-  - Angular v20 standalone; REGION_CONFIGS token with DEFAULT_REGION_CONFIGS.
-  - Wizard pages: income-drivers, expenses, pnl; Dashboard route.
-  - Presets: good/better/best/custom; KPI bands for expenses%, net%, CPR.
+- Blueprint highlights (repo-blueprint.yml, libertytax-pnl-blueprint*.yml)
+  - Angular app (standalone) alongside React reference. Core wiring path: Inputs → `WizardStateService` → `ConfigService` (`REGION_CONFIGS`) → `CalculationService` → domain `calc` and helpers.
+  - REGION_CONFIGS provided via token with `DEFAULT_REGION_CONFIGS` for US/CA thresholds and feature flags (TaxRush).
+  - Wizard steps: Income Drivers → Expenses → P&L/Reports; Dashboard presents summaries and cards.
 
-- Current staged features
-  - AnalysisBlock (UI + types) with dev flag; placed on Wizard Step 1 + Dashboard.
-  - PerformanceCard (UI + types) with dev flag; Dashboard preview incl. CPR via MetricsAssembler.
-  - Wizard helpers extended: calculatePerformanceVsTarget, getAdjustmentStatus, growth options.
-  - Income Drivers templates (PY/Projected) aligned to React; no data wiring yet.
-  - Debug Panel toggles: AnalysisBlock, PerformanceCards, MonthlyForecast, Multi-Store.
+- Staged domain/UI (per docs)
+  - UI shells present for AnalysisBlock, PerformanceCard, Suggested* inputs, WizardPage, KPI Stoplight, ScenarioSelector, Debug panel, etc. Many are dev-gated and not yet integrated into routes.
+  - Domain calc ports exist: `domain/calculations/calc.ts`, `kpi.ts`, wizard helpers for growth/performance/adjustments. Types exist for `wizard.types.ts`, `calculation.types.ts`; expenses types are referenced and file exists.
+  - Services scaffolding in place: `wizard-state.service.ts`, `config.service.ts`, `calculation.service.ts` (thin adapter over pure calc).
 
-- Testing status
-  - docs/TESTING.md maps React wizard tests to Angular layers.
-  - Playwright wizard-flow-matrix approx E2E added; runs deferred.
+- Wiring intent (docs/wire-up-plan.md)
+  - Dashboard and Wizard steps should strictly flow through services to domain. REGION_CONFIGS merges per selection. DEV_TRACE breadcrumbs called out in trace-plan.
 
-- Shared UI scaffolds
-  - lt-wizard-form-section (with Reset event)
-  - lt-wizard-form-field
-  - lt-net-income-summary
+- Render status (docs/render-audit.md)
+  - Multiple components are staged but hidden; NewStoreSection/StrategicAnalysis/Suggested inputs ready for integration on Wizard Step 1. Dashboard inputs panel exists; performance cards preview available under flag.
 
-- Updated matrices/docs
-  - missing-import-matrix.csv, calc-migration-status.md, wire-up-plan.md, trace-plan.md, DEVELOPMENT_PROGRESS_LOG.md
+- Migration/calc status (docs/calc-migration-status.md)
+  - Core P&L math and KPI helpers ported. Wizard helpers ported; expenses dictionary/types referenced. Remaining: wire AnalysisBlock/PerformanceCard to real assemblers; complete bidirectional expense inputs; ensure presets live under config.
 
-- Backlog highlights to wire next
-  - Replace wizard markup with shared components; add section-level Reset handlers.
-  - Wire wizard inputs → WizardStateService → ConfigService(REGION_CONFIGS) → CalculationService → domain calc.
-  - Implement real YTD vs Projected in MetricsAssembler when YTD inputs exist.
-  - Build unit/component/E2E layers; parity runner React↔Angular for domain calc.
+- Testing stack (COMPREHENSIVE_TESTING_CHECKLIST.md, TESTING*.md)
+  - Unit: vitest configs present (domain/integration/wizard). Need reporters output to run-reports/*.
+  - E2E: Playwright config present; reporters enabled. Output directories adjusted to `run-reports/e2e` in this pass.
+  - Parity: PS stub exists; golden dataset comparison to be implemented.
+
+- Ops scripts (scripts/ps/*.ps1)
+  - Watchdog implemented in `build.ps1` and reused by unit/int/e2e wrappers. `dev-serve.ps1` updated to import watchdog; all write timestamped logs under run-reports/* and append SESSION_LOG on stall/kill.
+
+- Immediate backlog (authoritative: docs/TODO_BACKLOG.md)
+  - Wire wizard inputs → services → domain; replace templates with standardized wizard components + Reset.
+  - MetricsAssembler real YTD vs Projected.
+  - Unit/Integration/E2E reporters to run-reports; stabilize Playwright wizard flow matrix.
+  - Parity runner React↔Angular domain with golden dataset; write CSV to run-reports/parity.

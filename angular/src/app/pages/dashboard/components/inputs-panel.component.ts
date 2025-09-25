@@ -23,16 +23,16 @@ export interface InputsPanelData {
   salariesPct: number;
   empDeductionsPct: number;
   rentPct: number;
-  telephonePct: number;
-  utilitiesPct: number;
-  localAdvPct: number;
-  insurancePct: number;
-  postagePct: number;
+  telephoneAmt: number;
+  utilitiesAmt: number;
+  localAdvAmt: number;
+  insuranceAmt: number;
+  postageAmt: number;
   suppliesPct: number;
-  duesPct: number;
-  bankFeesPct: number;
-  maintenancePct: number;
-  travelEntPct: number;
+  duesAmt: number;
+  bankFeesAmt: number;
+  maintenanceAmt: number;
+  travelEntAmt: number;
   royaltiesPct: number;
   advRoyaltiesPct: number;
   taxRushRoyaltiesPct: number;
@@ -548,7 +548,7 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
 
   // Expose Math for template
   Math = Math;
-  
+
   private destroy$ = new Subject<void>();
   private saveToWizardSubject = new Subject<void>();
 
@@ -564,9 +564,9 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
   get filteredExpenseFields(): ExpenseField[] {
     return expenseFields.filter(field => {
       // First filter by region
-      const regionMatch = !field.regionSpecific || 
-                         field.regionSpecific === this.data.region || 
-                         field.regionSpecific === 'both';
+      const regionMatch = !field.regionSpecific ||
+        field.regionSpecific === this.data.region ||
+        field.regionSpecific === 'both';
       if (!regionMatch) return false;
 
       // Then filter out TaxRush-related fields if handlesTaxRush is false
@@ -627,8 +627,13 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
   }
 
   onExpenseFieldChange(field: ExpenseField, value: number): void {
-    const validValue = Math.max(0, Math.min(100, value));
-    this.dataChange.emit({ [field.id]: validValue });
+    if (this.isFixed(field)) {
+      const validAmt = Math.max(0, value);
+      this.dataChange.emit({ [field.id]: validAmt } as any);
+    } else {
+      const validPct = Math.max(0, Math.min(100, value));
+      this.dataChange.emit({ [field.id]: validPct } as any);
+    }
     this.triggerSaveToWizard();
   }
 
@@ -675,7 +680,7 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
 
   calculateDollarValue(field: ExpenseField): number {
     const value = this.getFieldValue(field);
-    
+
     if (this.isFixed(field)) {
       return value;
     }
@@ -705,7 +710,7 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
 
   getFieldInputClass(field: ExpenseField): string {
     let classes = 'number-input';
-    
+
     if (this.isFieldDisabled(field)) {
       classes += ' field-input-disabled';
     } else if (this.isTaxRushField(field)) {
@@ -731,16 +736,16 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
       salariesPct: this.data.salariesPct,
       empDeductionsPct: this.data.empDeductionsPct,
       rentPct: this.data.rentPct,
-      telephonePct: this.data.telephonePct,
-      utilitiesPct: this.data.utilitiesPct,
-      localAdvPct: this.data.localAdvPct,
-      insurancePct: this.data.insurancePct,
-      postagePct: this.data.postagePct,
+      telephoneAmt: this.data.telephoneAmt,
+      utilitiesAmt: this.data.utilitiesAmt,
+      localAdvAmt: this.data.localAdvAmt,
+      insuranceAmt: this.data.insuranceAmt,
+      postageAmt: this.data.postageAmt,
       suppliesPct: this.data.suppliesPct,
-      duesPct: this.data.duesPct,
-      bankFeesPct: this.data.bankFeesPct,
-      maintenancePct: this.data.maintenancePct,
-      travelEntPct: this.data.travelEntPct,
+      duesAmt: this.data.duesAmt,
+      bankFeesAmt: this.data.bankFeesAmt,
+      maintenanceAmt: this.data.maintenanceAmt,
+      travelEntAmt: this.data.travelEntAmt,
       royaltiesPct: this.data.royaltiesPct,
       advRoyaltiesPct: this.data.advRoyaltiesPct,
       taxRushRoyaltiesPct: this.data.taxRushRoyaltiesPct,

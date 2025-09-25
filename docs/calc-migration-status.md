@@ -32,7 +32,8 @@ PerformanceCard (UI/Types) migration status
   - [ ] Currency/percent formatting → keep UI-layer; domain exposes numbers only
 
 - Expenses Dictionary (src/types/expenses.ts)
-  - [ ] Port shapes + defaults → `angular/src/app/domain/types/expenses.types.ts`
+  - [x] Port shapes + defaults → `angular/src/app/domain/types/expenses.types.ts`
+  - [x] Align operational/utility fields to fixed-dollar (`*Amt`)
   - [ ] Region filtering helpers → domain utils
 
 - Presets (src/data/presets.ts)

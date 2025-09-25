@@ -1,3 +1,19 @@
+## QA Summary Report — 2025-09-25
+
+Status
+- Build: PASS (vite build)
+- Unit/Integration/E2E: Configured reporters. Execution pending stabilization of PS wrappers on this environment; can run directly via npm as fallback.
+- Parity: RUN (bundled runner); CSV written to scripts/run-reports/parity/.
+
+Artifacts
+- Build logs: run-reports/build/build-*.log
+- Parity: scripts/run-reports/parity/parity-diff-*.csv
+- E2E (once run): run-reports/e2e/*
+- Unit/Integration (once run): run-reports/unit/*, run-reports/integration/*
+
+Notes
+- PowerShell test wrappers exit with a deprecation warning exit code here; tests can be invoked via npm scripts and still output to configured run-reports.
+
 # 📋 QA Summary Report - Liberty Tax P&L Webapp
 
 ## 🎯 **EXECUTIVE SUMMARY**

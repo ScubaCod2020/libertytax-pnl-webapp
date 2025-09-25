@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- 2025-09-25
+  - ops: PS watchdog shared; build/test scripts route logs to run-reports
+  - qa: parity runner via esbuild bundles; CSV written under scripts/run-reports/parity
+  - domain/ui: expenses realigned to fixed-dollar fields; InputsPanel updated
+  - wiring: projected income wired state→config→calc; DevTraceService added
+  - docs: context digest, consolidation plan, blocking-questions resolutions, blueprint delta updates
 
 ### Added
 

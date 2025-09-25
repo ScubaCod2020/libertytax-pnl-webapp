@@ -30,17 +30,32 @@ Performance Cards wiring (planned)
 - Services: `WizardStateService` (read/write), `ConfigService` (thresholds, bands), `CalculationService` (compute)
 - Domain: `calc`, KPI helpers in `kpi.ts`
 
+Connections (exact):
+- `angular/src/app/core/services/wizard-state.service.ts` → `getSelections()`/`updateSelections()`
+- `angular/src/app/core/services/config.service.ts` → `getEffectiveConfig()` which merges `REGION_CONFIGS` with selections
+- `angular/src/app/core/services/calculation.service.ts` → `calculate(inputs: CalculationInputs)` delegates to `domain/calculations/calc.ts`
+- UI consumers (examples): `dashboard-results-panel.component.ts`, `inputs-panel.component.ts`
+
 ## Wizard Step 1 (Income Drivers)
 
 - Inputs: region, storeType, flags (handlesTaxRush, hasOtherIncome), presets
 - Services: `WizardStateService` (persist), `ConfigService` (REGION_CONFIGS merge)
 - Domain: wizard helpers (`wizard-helpers.ts`) and core calc inputs assembly
 
+Connections (exact):
+- `WizardStateService.updateSelections({ region, storeType, handlesTaxRush, hasOtherIncome })`
+- `ConfigService.getEffectiveConfig()` to gate TaxRush and thresholds
+- Assemble `CalculationInputs` via `wizard-helpers.ts` and pass to `CalculationService.calculate`
+
 ## Wizard Step 2 (Expenses)
 
 - Inputs: 17 expense fields grouped under 6 categories (personnel, facility, marketing, utilities, franchise/royalties, misc)
 - Services: `WizardStateService` (persist), `CalculationService` (dual-entry conversions via `bidir.service`)
 - Domain: expense dictionary types; conversions in domain utils if needed
+
+Connections (exact):
+- Use `angular/src/app/domain/types/expenses.types.ts` dictionary for categories/fields
+- Maintain synchronized percent↔amount via domain utils (TBD per blueprint)
 
 ## Wizard Step 3 (P&L / Reports)
 
@@ -58,3 +73,7 @@ Performance Cards wiring (planned)
 - Provide token at bootstrap with `DEFAULT_REGION_CONFIGS`
 - `ConfigService` injects token and exposes effective thresholds/bands per selected region
 - Consumers: `CalculationService`, `ReportAssemblerService`, UI gating for TaxRush fields
+
+DEV_TRACE hooks (per `docs/trace-plan.md`):
+- Log selections changes (wizard) and effective config snapshots during dev builds
+- Log inputs passed to `CalculationService.calculate` and summarized results
