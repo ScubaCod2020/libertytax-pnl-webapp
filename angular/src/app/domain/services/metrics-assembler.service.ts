@@ -5,6 +5,7 @@ import type { CalculationInputs, CalculationResults } from '../types/calculation
 import type { PerformanceMetric } from '../types/performance.types';
 import { DEFAULT_REGION_CONFIGS } from '../../core/tokens/region-configs.token';
 import { ProjectedService } from '../../services/projected.service';
+import { WizardStateService } from '../../core/services/wizard-state.service';
 
 /**
  * MetricsAssemblerService
@@ -20,7 +21,8 @@ export class MetricsAssemblerService {
   constructor(
     private readonly calc: CalculationService,
     private readonly settings: SettingsService,
-    private readonly projected: ProjectedService
+    private readonly projected: ProjectedService,
+    private readonly wizardState: WizardStateService
   ) {}
 
   /**
@@ -33,40 +35,40 @@ export class MetricsAssemblerService {
     cpr: PerformanceMetric[];
   } {
     const s = this.settings.settings;
+    const answers = this.wizardState.answers;
     const thresholds = DEFAULT_REGION_CONFIGS[s.region].thresholds;
 
-    // Demo inputs (matches DashboardResultsPanel strategy). These will be replaced
-    // with real Projected vs YTD once wiring is complete.
-    const demoInputs: CalculationInputs = {
+    // Use real wizard data instead of demo inputs
+    const realInputs: CalculationInputs = {
       region: s.region,
       scenario: 'Custom',
-      avgNetFee: 125,
-      taxPrepReturns: 1600,
-      taxRushReturns: s.region === 'CA' ? 150 : 0,
-      discountsPct: 3,
-      otherIncome: s.otherIncome ? 5000 : 0,
-      calculatedTotalExpenses: undefined,
-      salariesPct: 25,
-      empDeductionsPct: 10,
-      rentPct: 18,
-      telephoneAmt: 0.5,
-      utilitiesAmt: 1.2,
-      localAdvAmt: 2.0,
-      insuranceAmt: 0.6,
-      postageAmt: 0.4,
-      suppliesPct: 3.5,
-      duesAmt: 0.8,
-      bankFeesAmt: 0.4,
-      maintenanceAmt: 0.6,
-      travelEntAmt: 0.8,
-      royaltiesPct: 14,
-      advRoyaltiesPct: 5,
-      taxRushRoyaltiesPct: s.region === 'CA' ? 6 : 0,
-      miscPct: 1.0,
+      avgNetFee: answers.avgNetFee || 125,
+      taxPrepReturns: answers.projectedTaxPrepReturns || answers.taxPrepReturns || 1600,
+      taxRushReturns: answers.taxRushReturns || (s.region === 'CA' ? 150 : 0),
+      discountsPct: answers.discountsPct || 3,
+      otherIncome: answers.otherIncome || (s.otherIncome ? 5000 : 0),
+      calculatedTotalExpenses: answers.calculatedTotalExpenses,
+      salariesPct: answers.salariesPct || 25,
+      empDeductionsPct: answers.empDeductionsPct || 10,
+      rentPct: answers.rentPct || 18,
+      telephoneAmt: answers.telephoneAmt || 0.5,
+      utilitiesAmt: answers.utilitiesAmt || 1.2,
+      localAdvAmt: answers.localAdvAmt || 2.0,
+      insuranceAmt: answers.insuranceAmt || 0.6,
+      postageAmt: answers.postageAmt || 0.4,
+      suppliesPct: answers.suppliesPct || 3.5,
+      duesAmt: answers.duesAmt || 0.8,
+      bankFeesAmt: answers.bankFeesAmt || 0.4,
+      maintenanceAmt: answers.maintenanceAmt || 0.6,
+      travelEntAmt: answers.travelEntAmt || 0.8,
+      royaltiesPct: answers.royaltiesPct || 14,
+      advRoyaltiesPct: answers.advRoyaltiesPct || 5,
+      taxRushRoyaltiesPct: answers.taxRushRoyaltiesPct || (s.region === 'CA' ? 6 : 0),
+      miscPct: answers.miscPct || 1.0,
       thresholds,
     };
 
-    const res: CalculationResults = this.calc.calculate(demoInputs);
+    const res: CalculationResults = this.calc.calculate(realInputs);
 
     // Placeholder trend uses projected growth percent (from scenario) until we have YTD.
     const growthPct = this.projected.growthPct;
