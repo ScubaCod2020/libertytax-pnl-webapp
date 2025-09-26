@@ -22,6 +22,7 @@ export type ExpenseCategory =
   | 'facility'
   | 'marketing'
   | 'utilities'
+  | 'operations'
   | 'franchise'
   | 'misc';
 
@@ -30,6 +31,7 @@ export const expenseCategories = {
   facility: { label: 'Facility', description: 'Office and location costs' },
   marketing: { label: 'Marketing', description: 'Local marketing and advertising' },
   utilities: { label: 'Utilities', description: 'Phone, internet, and utilities' },
+  operations: { label: 'Operations', description: 'Day-to-day operational expenses' },
   franchise: { label: 'Franchise', description: 'Franchise fees and royalties' },
   misc: { label: 'Miscellaneous', description: 'Other and miscellaneous expenses' },
 } as const;

@@ -1,42 +1,38 @@
 <header class="header">
-  <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2rem;width:100%">
-    <div style="justify-self:start">
+  <div class="header-grid">
+    <div class="header-logo-section">
       <app-brand-logo [region]="(region$ | async) || 'US'" variant="wide" size="large"></app-brand-logo>
     </div>
-  <div style="display:flex;flex-direction:column;align-items:center;justify-self:center">
+  <div class="header-center-section">
     <!-- Breadcrumb (optional) -->
-    <div *ngIf="hasBreadcrumb" style="font-size:0.875rem;color:#6b7280;margin-bottom:0.25rem;display:flex;gap:0.5rem;align-items:center;">
+    <div *ngIf="hasBreadcrumb" class="header-breadcrumb">
       <ng-container *ngFor="let item of breadcrumb!; let last = last">
-        <button *ngIf="item.onClick; else crumbText" (click)="item.onClick()" style="background:none;border:none;color:#3b82f6;cursor:pointer;text-decoration:underline;padding:0;font-size:inherit">{{ item.label }}</button>
+        <button *ngIf="item.onClick; else crumbText" (click)="item.onClick()" class="breadcrumb-button">{{ item.label }}</button>
         <ng-template #crumbText><span>{{ item.label }}</span></ng-template>
-        <span *ngIf="!last" style="color:#d1d5db">→</span>
+        <span *ngIf="!last" class="breadcrumb-separator">→</span>
       </ng-container>
     </div>
 
-    <div class="h2 brand" style="color:#1e40af;line-height:1.2;text-align:center">Liberty Tax • P&L Budget & Forecast</div>
-    <span class="small text-xs" style="background:#f3f4f6;padding:0.25rem 0.5rem;border-radius:4px;margin-top:0.25rem">v{{ appVersion }} preview</span>
+    <div class="h2 brand header-title">Liberty Tax • P&L Budget & Forecast</div>
+    <span class="small text-xs header-version">v{{ appVersion }} preview</span>
   </div>
-    <div style="display:flex;flex-direction:column;align-items:end;gap:0.5rem;justify-self:end;min-width:220px">
-      <div style="display:flex;align-items:center;gap:0.5rem">
+    <div class="header-actions-section">
+      <div class="header-nav-row">
         <button (click)="goIncome()" class="btn {{ currentPage==='income' ? 'btn--active' : 'btn--nav' }}" title="Income Drivers">Income</button>
         <button (click)="goExpenses()" class="btn {{ currentPage==='expenses' ? 'btn--active' : 'btn--nav' }}" title="Expenses">Expenses</button>
         <button (click)="goReports()" class="btn {{ currentPage==='reports' ? 'btn--active' : 'btn--nav' }}" title="P&L Reports">Reports</button>
       </div>
-      <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
+      <div class="header-controls-row">
         <!-- Optional store pill -->
-        <span *ngIf="storeInfo" [ngStyle]="{
-            backgroundColor: storeInfo.type === 'multi' ? '#dbeafe' : '#f0fdf4',
-            color: storeInfo.type === 'multi' ? '#1e40af' : '#15803d',
-            padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 500
-          }">
+        <span *ngIf="storeInfo" class="store-pill" [ngClass]="storeInfo.type === 'multi' ? 'store-pill--multi' : 'store-pill--single'">
           {{ storeInfo.type === 'multi' ? ('🏢 ' + (storeInfo.count || 1) + ' Stores') : ('🏪 ' + (storeInfo.name || 'Single Store')) }}
         </span>
         <button (click)="goDashboard()" class="btn {{ currentPage==='dashboard' ? 'btn--active' : 'btn--nav' }}" title="Dashboard">Dashboard</button>
-        <button (click)="resetWizard()" class="btn btn--reset" title="Reset Wizard will clear Income, Expenses, and P&L pages.">Reset Wizard</button>
+        <button (click)="resetWizard()" class="btn btn--reset" title="Reset Wizard will clear Income, Expenses, and P&L pages.">Reset App</button>
         <button (click)="toggleDebug()" class="btn {{ (debugOpen$|async) ? 'btn--active' : 'btn--nav' }}" title="Toggle Debug Panel">Debug</button>
         <!-- Optional actions -->
         <ng-container *ngIf="actions?.length">
-          <button *ngFor="let a of actions" (click)="a.onClick()" [ngStyle]="actionStyle(a.variant)" style="padding:0.5rem 1rem;border-radius:6px;font-size:0.875rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:0.5rem;transition:all 0.2s ease">
+          <button *ngFor="let a of actions" (click)="a.onClick()" [ngStyle]="actionStyle(a.variant)" class="action-button">
             <span *ngIf="a.icon">{{ a.icon }}</span>
             {{ a.label }}
           </button>

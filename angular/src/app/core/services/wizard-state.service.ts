@@ -52,6 +52,399 @@ export class WizardStateService {
     return this._answers$.getValue();
   }
 
+  // ============================================================================
+  // COMPUTED PROPERTIES SYSTEM WITH COMPREHENSIVE DEBUGGING
+  // ============================================================================
+  // These methods provide clean, semantic access to values regardless of
+  // Quick Start Wizard configuration. This abstracts away all the complexity
+  // of different store types, regions, and other wizard settings.
+
+  private debugEnabled = true; // Set to false to disable debugging in production
+
+  private debugComputedProperty(methodName: string, result: any, context: any = {}) {
+    if (!this.debugEnabled) return;
+
+    const config = this.getWizardConfiguration();
+    console.log(`🧮 [COMPUTED] ${methodName}():`, {
+      result,
+      wizardConfig: config,
+      context,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
+  /**
+   * Enable or disable computed properties debugging
+   */
+  setDebugMode(enabled: boolean): void {
+    this.debugEnabled = enabled;
+    console.log(`🧮 [COMPUTED] Debug mode ${enabled ? 'ENABLED' : 'DISABLED'}`);
+  }
+
+  /**
+   * Get a comprehensive summary of all computed properties
+   * Useful for debugging and validation
+   */
+  getComputedPropertiesSummary(): any {
+    const summary = {
+      wizardConfiguration: this.getWizardConfiguration(),
+      computedValues: {
+        taxPrepIncome: this.getTaxPrepIncome(),
+        taxPrepReturns: this.getTaxPrepReturns(),
+        avgNetFee: this.getAvgNetFee(),
+        grossFees: this.getGrossFees(),
+        discountsPct: this.getDiscountsPct(),
+        discountsAmt: this.getDiscountsAmt(),
+        otherIncome: this.getOtherIncome(),
+        taxRushReturns: this.getTaxRushReturns(),
+        taxRushGrossFees: this.getTaxRushGrossFees(),
+      },
+      displayLabels: {
+        storeTypeTitle: this.getDisplayLabel('storeTypeTitle'),
+        revenueBreakdownTitle: this.getDisplayLabel('revenueBreakdownTitle'),
+        grossPerReturnTitle: this.getDisplayLabel('grossPerReturnTitle'),
+        regionName: this.getDisplayLabel('regionName'),
+        storeTypeName: this.getDisplayLabel('storeTypeName'),
+      },
+      rawAnswers: {
+        storeType: this.answers.storeType,
+        region: this.answers.region,
+        hasOtherIncome: this.answers.hasOtherIncome,
+        handlesTaxRush: this.answers.handlesTaxRush,
+        projectedTaxPrepReturns: this.answers.projectedTaxPrepReturns,
+        avgNetFee: this.answers.avgNetFee,
+        projectedAvgNetFee: this.answers.projectedAvgNetFee,
+        projectedGrossFees: this.answers.projectedGrossFees,
+        projectedTaxPrepIncome: this.answers.projectedTaxPrepIncome,
+      },
+    };
+
+    console.log('🧮 [COMPUTED] COMPREHENSIVE SUMMARY:', summary);
+    return summary;
+  }
+
+  private getWizardConfiguration() {
+    return {
+      storeType: this.answers.storeType || 'new',
+      region: this.answers.region || 'US',
+      hasOtherIncome: this.answers.hasOtherIncome || false,
+      handlesTaxRush: this.answers.handlesTaxRush || false,
+      isExisting: this.isExistingStore(),
+      isNewStore: this.isNewStore(),
+      isUS: this.isUSRegion(),
+      isCanada: this.isCanadaRegion(),
+      hasTaxRush: this.hasTaxRush(),
+      hasOtherIncomeEnabled: this.hasOtherIncome(),
+    };
+  }
+
+  // Core Business Values - Abstract away store type complexity
+  getTaxPrepIncome(): number {
+    const answers = this.answers;
+    let result: number;
+    let calculationPath: string;
+
+    if (this.isExistingStore()) {
+      result = answers.projectedTaxPrepIncome || 0;
+      calculationPath = 'existing_store_projected';
+      this.debugComputedProperty('getTaxPrepIncome', result, {
+        path: calculationPath,
+        sourceField: 'projectedTaxPrepIncome',
+        sourceValue: answers.projectedTaxPrepIncome,
+        fallbackUsed: !answers.projectedTaxPrepIncome,
+      });
+    } else {
+      // For new stores, calculate from current values
+      const grossFees = this.getGrossFees();
+      const discountAmt = this.getDiscountsAmt();
+      result = grossFees - discountAmt;
+      calculationPath = 'new_store_calculated';
+      this.debugComputedProperty('getTaxPrepIncome', result, {
+        path: calculationPath,
+        calculation: `${grossFees} - ${discountAmt} = ${result}`,
+        grossFees,
+        discountAmt,
+      });
+    }
+
+    return result;
+  }
+
+  getTaxPrepReturns(): number {
+    const answers = this.answers;
+    let result: number;
+    let sourceField: string;
+
+    if (this.isExistingStore()) {
+      result = answers.projectedTaxPrepReturns || 0;
+      sourceField = 'projectedTaxPrepReturns';
+    } else {
+      result = answers.projectedTaxPrepReturns || 0; // New stores use target values
+      sourceField = 'projectedTaxPrepReturns (target)';
+    }
+
+    this.debugComputedProperty('getTaxPrepReturns', result, {
+      sourceField,
+      sourceValue: answers.projectedTaxPrepReturns,
+      fallbackUsed: !answers.projectedTaxPrepReturns,
+    });
+
+    return result;
+  }
+
+  getAvgNetFee(): number {
+    const answers = this.answers;
+    let result: number;
+    let sourceField: string;
+
+    if (this.isExistingStore()) {
+      result = answers.projectedAvgNetFee || 0;
+      sourceField = 'projectedAvgNetFee';
+    } else {
+      result = answers.avgNetFee || 0; // New stores use current target values
+      sourceField = 'avgNetFee (target)';
+    }
+
+    this.debugComputedProperty('getAvgNetFee', result, {
+      sourceField,
+      sourceValue: this.isExistingStore() ? answers.projectedAvgNetFee : answers.avgNetFee,
+      fallbackUsed: result === 0,
+    });
+
+    return result;
+  }
+
+  getGrossFees(): number {
+    const answers = this.answers;
+    let result: number;
+    let calculationMethod: string;
+
+    if (this.isExistingStore()) {
+      result = answers.projectedGrossFees || 0;
+      calculationMethod = 'direct_field';
+      this.debugComputedProperty('getGrossFees', result, {
+        method: calculationMethod,
+        sourceField: 'projectedGrossFees',
+        sourceValue: answers.projectedGrossFees,
+        fallbackUsed: !answers.projectedGrossFees,
+      });
+    } else {
+      const returns = this.getTaxPrepReturns();
+      const avgNetFee = this.getAvgNetFee();
+      result = returns * avgNetFee;
+      calculationMethod = 'calculated';
+      this.debugComputedProperty('getGrossFees', result, {
+        method: calculationMethod,
+        calculation: `${returns} × ${avgNetFee} = ${result}`,
+        returns,
+        avgNetFee,
+      });
+    }
+
+    return result;
+  }
+
+  getDiscountsPct(): number {
+    const answers = this.answers;
+    if (this.isExistingStore()) {
+      return answers.projectedDiscountsPct || 0;
+    } else {
+      return answers.discountsPct || 0;
+    }
+  }
+
+  getDiscountsAmt(): number {
+    const answers = this.answers;
+    if (this.isExistingStore()) {
+      return answers.projectedDiscountsAmt || 0;
+    } else {
+      return answers.discountsAmt || 0;
+    }
+  }
+
+  getOtherIncome(): number {
+    const answers = this.answers;
+    // Other income depends on hasOtherIncome setting
+    if (!this.hasOtherIncome()) {
+      return 0;
+    }
+
+    if (this.isExistingStore()) {
+      return answers.projectedOtherIncome || 0;
+    } else {
+      return answers.otherIncome || 0;
+    }
+  }
+
+  // TaxRush Values - Abstract away region and taxRush settings
+  getTaxRushReturns(): number {
+    const answers = this.answers;
+    if (!this.hasTaxRush()) {
+      return 0;
+    }
+
+    if (this.isExistingStore()) {
+      return answers.projectedTaxRushReturns || 0;
+    } else {
+      return answers.taxRushReturns || 0;
+    }
+  }
+
+  getTaxRushGrossFees(): number {
+    const answers = this.answers;
+    if (!this.hasTaxRush()) {
+      return 0;
+    }
+
+    if (this.isExistingStore()) {
+      return answers.projectedTaxRushGrossFees || 0;
+    } else {
+      return answers.taxRushGrossFees || 0;
+    }
+  }
+
+  // ============================================================================
+  // QUICK START WIZARD STATE ACCESSORS
+  // ============================================================================
+  // These provide clean access to wizard configuration with safety nets
+
+  isExistingStore(): boolean {
+    return this.answers.storeType === 'existing';
+  }
+
+  isNewStore(): boolean {
+    return this.answers.storeType === 'new' || !this.answers.storeType;
+  }
+
+  isUSRegion(): boolean {
+    return this.answers.region === 'US' || !this.answers.region;
+  }
+
+  isCanadaRegion(): boolean {
+    return this.answers.region === 'CA';
+  }
+
+  hasOtherIncome(): boolean {
+    return this.answers.hasOtherIncome === true;
+  }
+
+  hasTaxRush(): boolean {
+    // TaxRush is only available in Canada and only if explicitly enabled
+    return this.isCanadaRegion() && this.answers.handlesTaxRush === true;
+  }
+
+  // ============================================================================
+  // SAFETY NET SYSTEM FOR FUTURE WIZARD OPTIONS
+  // ============================================================================
+
+  /**
+   * Generic method to get configuration-aware values
+   * This provides a safety net for future Quick Start Wizard options
+   */
+  getValue<T>(config: {
+    newStore?: T;
+    existingStore?: T;
+    us?: T;
+    canada?: T;
+    withOtherIncome?: T;
+    withoutOtherIncome?: T;
+    withTaxRush?: T;
+    withoutTaxRush?: T;
+    default?: T;
+  }): T | undefined {
+    let result: T | undefined;
+    let matchedRule: string = 'none';
+
+    // Store type takes precedence
+    if (this.isExistingStore() && config.existingStore !== undefined) {
+      result = config.existingStore;
+      matchedRule = 'existingStore';
+    } else if (this.isNewStore() && config.newStore !== undefined) {
+      result = config.newStore;
+      matchedRule = 'newStore';
+    }
+    // Region-specific values
+    else if (this.isCanadaRegion() && config.canada !== undefined) {
+      result = config.canada;
+      matchedRule = 'canada';
+    } else if (this.isUSRegion() && config.us !== undefined) {
+      result = config.us;
+      matchedRule = 'us';
+    }
+    // Other income
+    else if (this.hasOtherIncome() && config.withOtherIncome !== undefined) {
+      result = config.withOtherIncome;
+      matchedRule = 'withOtherIncome';
+    } else if (!this.hasOtherIncome() && config.withoutOtherIncome !== undefined) {
+      result = config.withoutOtherIncome;
+      matchedRule = 'withoutOtherIncome';
+    }
+    // TaxRush
+    else if (this.hasTaxRush() && config.withTaxRush !== undefined) {
+      result = config.withTaxRush;
+      matchedRule = 'withTaxRush';
+    } else if (!this.hasTaxRush() && config.withoutTaxRush !== undefined) {
+      result = config.withoutTaxRush;
+      matchedRule = 'withoutTaxRush';
+    }
+    // Fallback to default
+    else {
+      result = config.default;
+      matchedRule = 'default';
+    }
+
+    console.log('🎯 [COMPUTED] getValue():', {
+      matchedRule,
+      result,
+      config: Object.keys(config),
+      wizardState: {
+        isExisting: this.isExistingStore(),
+        isNewStore: this.isNewStore(),
+        isUS: this.isUSRegion(),
+        isCanada: this.isCanadaRegion(),
+        hasOtherIncome: this.hasOtherIncome(),
+        hasTaxRush: this.hasTaxRush(),
+      },
+    });
+
+    return result;
+  }
+
+  /**
+   * Get display labels that adapt to wizard configuration
+   */
+  getDisplayLabel(key: string): string {
+    const labels: Record<string, any> = {
+      storeTypeTitle: this.getValue({
+        existingStore: 'Projected Performance',
+        newStore: 'Target Performance',
+        default: 'Performance',
+      }),
+      revenueBreakdownTitle: this.getValue({
+        existingStore: 'Projected Gross Revenue Breakdown',
+        newStore: 'Target Gross Revenue Breakdown',
+        default: 'Revenue Breakdown',
+      }),
+      grossPerReturnTitle: this.getValue({
+        existingStore: 'Projected Gross per Return',
+        newStore: 'Target Gross per Return',
+        default: 'Gross per Return',
+      }),
+      regionName: this.getValue({
+        us: 'United States 🇺🇸',
+        canada: 'Canada 🇨🇦',
+        default: 'Unknown Region',
+      }),
+      storeTypeName: this.getValue({
+        existingStore: 'Existing Store 🏢',
+        newStore: 'New Store 🏪',
+        default: 'Unknown Store Type',
+      }),
+    };
+
+    return labels[key] || key;
+  }
+
   getSelections(): WizardSelections {
     return { ...this.selections };
   }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
@@ -18,6 +18,12 @@ export class QuickStartWizardComponent {
   @Input() editable = false;
   @Input() subtitle = '';
 
+  // Inject dependencies FIRST (before using them in other properties)
+  public appCfg = inject(AppConfigService);
+  private wizardState = inject(WizardStateService);
+  private router = inject(Router);
+
+  // Now we can safely use the injected dependencies
   // Get settings from WizardStateService instead of SettingsService
   readonly settings$ = this.wizardState.answers$.pipe(
     map((answers) => ({
@@ -35,12 +41,6 @@ export class QuickStartWizardComponent {
     map((e) => this.getPageFromUrl(e.urlAfterRedirects || e.url)),
     startWith(this.getPageFromUrl(this.router.url))
   );
-
-  constructor(
-    public appCfg: AppConfigService,
-    private wizardState: WizardStateService,
-    private router: Router
-  ) {}
 
   private getPageFromUrl(
     url: string
@@ -70,30 +70,36 @@ export class QuickStartWizardComponent {
     this.wizardState.updateAnswers({ storeType });
   }
 
-  onTaxRushChange(v: boolean) {
-    console.log('🚀 [Wizard] TaxRush changed to:', !!v);
-    this.wizardState.updateAnswers({ handlesTaxRush: !!v });
+  onTaxRushChange(v: string | boolean) {
+    // Handle both string values from radio buttons and boolean values
+    const boolValue = v === true || v === 'true';
+    console.log('🚀 [Wizard] TaxRush changed to:', boolValue, '(from:', v, ')');
+    this.wizardState.updateAnswers({ handlesTaxRush: boolValue });
   }
 
-  onOtherIncomeChange(v: boolean) {
-    console.log('💼 [Wizard] Other Income changed to:', !!v);
-    this.wizardState.updateAnswers({ hasOtherIncome: !!v });
+  onOtherIncomeChange(v: string | boolean) {
+    // Handle both string values from radio buttons and boolean values
+    const boolValue = v === true || v === 'true';
+    console.log('💼 [Wizard] Other Income changed to:', boolValue, '(from:', v, ')');
+    this.wizardState.updateAnswers({ hasOtherIncome: boolValue });
   }
 
   resetWizard() {
-    // Reset ONLY Quick Start Wizard configuration settings
+    console.log('🔄🔄🔄 [QUICK START RESET] Button clicked - resetting Quick Start Wizard only');
+    console.log('🔄 [QUICK START RESET] Current URL:', window.location.href);
+
+    // Reset ONLY Quick Start Wizard configuration settings (not target values)
     this.wizardState.updateAnswers({
       region: 'US',
       storeType: 'new',
       handlesTaxRush: false,
       hasOtherIncome: false,
-      // Clear other income since hasOtherIncome is now false
       otherIncome: undefined,
-      // Reset discount percentage to new regional default (US = 1%)
       discountsPct: 1.0,
-      // Clear discount amount so it recalculates with new percentage
       discountsAmt: undefined,
     });
+
+    console.log('🔄 [QUICK START RESET] Quick Start Wizard reset to defaults');
   }
 
   isComplete(): boolean {

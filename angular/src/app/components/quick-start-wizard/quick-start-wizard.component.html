@@ -65,12 +65,12 @@
                   <div class="step-help">TaxRush is Liberty Tax's same-day refund service</div>
                   <div class="step-options">
                     <label class="option-card" [class.option-card--selected]="settings.taxRush === true">
-                      <input type="radio" name="taxRush" [value]="true" [ngModel]="settings.taxRush" (ngModelChange)="onTaxRushChange($event)" />
+                      <input type="radio" name="taxRush" value="true" [ngModel]="settings.taxRush" (ngModelChange)="onTaxRushChange($event)" />
                       <div class="option-title">✅ Yes</div>
                       <div class="option-desc">Include TaxRush Returns in your Budget and P & L</div>
                     </label>
                     <label class="option-card" [class.option-card--selected]="settings.taxRush === false">
-                      <input type="radio" name="taxRush" [value]="false" [ngModel]="settings.taxRush" (ngModelChange)="onTaxRushChange($event)" />
+                      <input type="radio" name="taxRush" value="false" [ngModel]="settings.taxRush" (ngModelChange)="onTaxRushChange($event)" />
                       <div class="option-title">❌ No TaxRush</div>
                       <div class="option-desc">Tax prep only</div>
                     </label>
@@ -88,12 +88,12 @@
                   <div class="step-help">Bookkeeping, notary, business consulting, etc.</div>
                   <div class="step-options">
                     <label class="option-card" [class.option-card--selected]="settings.otherIncome === true">
-                      <input type="radio" name="otherIncome" [value]="true" [ngModel]="settings.otherIncome" (ngModelChange)="onOtherIncomeChange($event)" />
+                      <input type="radio" name="otherIncome" value="true" [ngModel]="settings.otherIncome" (ngModelChange)="onOtherIncomeChange($event)" />
                       <div class="option-title">💼 Yes</div>
                       <div class="option-desc">Include additional revenue streams (bookkeeping, notary, business consulting, etc.)</div>
                     </label>
                     <label class="option-card" [class.option-card--selected]="settings.otherIncome === false">
-                      <input type="radio" name="otherIncome" [value]="false" [ngModel]="settings.otherIncome" (ngModelChange)="onOtherIncomeChange($event)" />
+                      <input type="radio" name="otherIncome" value="false" [ngModel]="settings.otherIncome" (ngModelChange)="onOtherIncomeChange($event)" />
                       <div class="option-title">📋 Tax prep only</div>
                       <div class="option-desc">Focused on tax preparation</div>
                     </label>
@@ -124,7 +124,8 @@
           <div class="summary-content">
             <div class="summary-header">
               <span class="summary-label">🏷️ Your Selections <span class="muted">(From Step 1 - Read Only)</span></span>
-              <button class="reset-wizard-btn" (click)="resetWizard()" title="Reset Quick Start Wizard">
+              <!-- DEBUG: currentPage = {{ currentPage }} -->
+              <button *ngIf="currentPage === 'income-drivers'" class="reset-wizard-btn" (click)="resetWizard()" title="Reset Quick Start Wizard">
                 🔄 Reset Wizard
               </button>
             </div>

@@ -33,11 +33,48 @@
 .panel-title { font-weight:700; color:#92400e; margin-bottom:0.5rem; display:flex; justify-content:space-between; align-items:center; }
 .status { font-size:0.75rem; display:flex; align-items:center; gap:0.25rem; }
 .yellow-panel { background:#fffbeb; border:2px solid #f59e0b; border-radius:6px; padding:1rem; margin:0.5rem 0; }
-.panel-grid { display:grid; grid-template-columns:1fr; gap:1rem; margin-bottom:0.5rem; }
+.panel-grid { display:grid; grid-template-columns:1fr auto; gap:1rem; margin-bottom:0.5rem; }
 .panel-sub { font-weight:700; font-size:0.85rem; color:#92400e; margin-bottom:0.25rem; }
 .panel-total { font-weight:700; border-top:1px solid #d1d5db; padding-top:0.5rem; margin-top:0.5rem; color:#92400e; }
 .delta { font-size:0.85rem; margin-left:0.5rem; }
 .panel-note { font-size:0.75rem; color:#92400e; margin-top:0.25rem; }
+
+/* Revenue breakdown layout */
+.revenue-flex-container {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.revenue-main-content {
+  flex: 1;
+}
+
+.projected-gross-per-return {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  padding: 0.75rem;
+  background: #f0f9ff;
+  border: 3px solid #0ea5e9;
+  border-radius: 6px;
+  min-width: 180px;
+  flex-shrink: 0;
+}
+
+.projected-gross-label {
+  font-size: 0.75rem;
+  color: #0369a1;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.projected-gross-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0369a1;
+}
 
 .inline { display:inline-flex; align-items:center; gap:0.25rem; }
 .inline-gap { display:inline-flex; align-items:center; gap:0.75rem; }

@@ -27,19 +27,15 @@ export class IncomeDriversComponent {
   );
 
   readonly storeTypeInfo$ = this.wizardState.answers$.pipe(
-    map((answers) => {
-      const storeType = answers.storeType || 'new';
-      if (storeType === 'existing') {
-        return {
-          title: '🏢 Existing Store',
-          description: 'Use your historical data',
-        };
-      } else {
-        return {
-          title: '🏪 New Store',
-          description: 'First year - use regional benchmarks',
-        };
-      }
+    map(() => {
+      return {
+        title: this.wizardState.getDisplayLabel('storeTypeName'),
+        description: this.wizardState.getValue({
+          existingStore: 'Use your historical data',
+          newStore: 'First year - use regional benchmarks',
+          default: 'Configure your store settings',
+        }),
+      };
     })
   );
 

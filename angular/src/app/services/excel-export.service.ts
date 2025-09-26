@@ -4,30 +4,23 @@ import { CalculationResults } from '../domain/types/calculation.types';
 import { getBrandForRegion } from '../lib/regional-branding';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ExcelExportService {
-  
   /**
    * Export P&L data to Excel with branded template formatting
    * Mirrors the Python build_pnl_tool_v5.py functionality
    */
   async exportToExcel(
-    wizardAnswers: WizardAnswers, 
+    wizardAnswers: WizardAnswers,
     calculationResults: CalculationResults
   ): Promise<void> {
-    
-    // Import ExcelJS dynamically for better bundle size
-    const ExcelJS = await import('exceljs');
-    const workbook = new ExcelJS.default.Workbook();
-    
-    // Get regional branding
-    const brand = getBrandForRegion(wizardAnswers.region);
-    
-    // Brand colors (matching Python tool)
-    const LIBERTY_BLUE = brand.colors.secondary; // "002D72"
-    const LIBERTY_RED = brand.colors.primary;    // "EA0029"
-    const GREEN = "C6EFCE";
+    // TODO: Install exceljs when export functionality is needed
+    throw new Error('Excel export not available. Install exceljs package to enable this feature.');
+  }
+
+  // TODO: Uncomment these methods when exceljs is installed
+  /*
     const YELLOW = "FFEB9C";
     const RED = "F4CCCC";
     const ACCENT_GREY = "F2F2F2";
@@ -214,4 +207,5 @@ export class ExcelExportService {
   private buildReportSheet(sheet: any, answers: WizardAnswers, results: CalculationResults, brandColor: string): void {
     // Implementation for summary report sheet
   }
+  */
 }

@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { WizardAnswers } from '../types/wizard.types';
-import { SuggestionProfile, CalculatedSuggestions, SuggestionProfileRegistry } from '../types/suggestion.types';
+import {
+  SuggestionProfile,
+  CalculatedSuggestions,
+  SuggestionProfileRegistry,
+} from '../types/suggestion.types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SuggestionEngineService {
-  
   // Sample suggestion profiles (subset for demo - full profiles would be loaded from config)
   private readonly profiles: SuggestionProfileRegistry = {
     'CA-new-standard': {
@@ -37,8 +40,8 @@ export class SuggestionEngineService {
         advRoyaltiesPct: 3.0,
         taxRushRoyaltiesPct: 0,
         taxRushShortagesPct: 0,
-        miscPct: 1.5
-      }
+        miscPct: 1.5,
+      },
     },
     'US-new-standard': {
       name: 'US - New Store (Standard)',
@@ -68,9 +71,9 @@ export class SuggestionEngineService {
         advRoyaltiesPct: 3.0,
         taxRushRoyaltiesPct: 0,
         taxRushShortagesPct: 0,
-        miscPct: 2.0
-      }
-    }
+        miscPct: 2.0,
+      },
+    },
   };
 
   /**
@@ -102,7 +105,7 @@ export class SuggestionEngineService {
     const totalRevenue = taxPrepIncome + taxRushIncome + otherIncome;
 
     // Calculate individual expenses based on profile
-    const salariesAmount = totalRevenue * (profile.expenses.salariesPct / 100);
+    const salariesAmount = totalRevenue * (profile.expenses['salariesPct'] / 100);
     const totalExpenses = this.calculateTotalExpenses(profile, totalRevenue, salariesAmount);
     const netIncome = totalRevenue - totalExpenses;
 
@@ -127,24 +130,24 @@ export class SuggestionEngineService {
       netIncome,
 
       // Individual expense suggestions
-      salariesPct: profile.expenses.salariesPct,
-      empDeductionsPct: profile.expenses.empDeductionsPct,
-      rentPct: profile.expenses.rentPct,
-      telephoneAmt: profile.expenses.telephoneAmt,
-      utilitiesAmt: profile.expenses.utilitiesAmt,
-      localAdvAmt: profile.expenses.localAdvAmt,
-      insuranceAmt: profile.expenses.insuranceAmt,
-      postageAmt: profile.expenses.postageAmt,
-      suppliesPct: profile.expenses.suppliesPct,
-      duesAmt: profile.expenses.duesAmt,
-      bankFeesAmt: profile.expenses.bankFeesAmt,
-      maintenanceAmt: profile.expenses.maintenanceAmt,
-      travelEntAmt: profile.expenses.travelEntAmt,
-      royaltiesPct: profile.expenses.royaltiesPct,
-      advRoyaltiesPct: profile.expenses.advRoyaltiesPct,
-      taxRushRoyaltiesPct: profile.expenses.taxRushRoyaltiesPct,
-      taxRushShortagesPct: profile.expenses.taxRushShortagesPct,
-      miscPct: profile.expenses.miscPct
+      salariesPct: profile.expenses['salariesPct'],
+      empDeductionsPct: profile.expenses['empDeductionsPct'],
+      rentPct: profile.expenses['rentPct'],
+      telephoneAmt: profile.expenses['telephoneAmt'],
+      utilitiesAmt: profile.expenses['utilitiesAmt'],
+      localAdvAmt: profile.expenses['localAdvAmt'],
+      insuranceAmt: profile.expenses['insuranceAmt'],
+      postageAmt: profile.expenses['postageAmt'],
+      suppliesPct: profile.expenses['suppliesPct'],
+      duesAmt: profile.expenses['duesAmt'],
+      bankFeesAmt: profile.expenses['bankFeesAmt'],
+      maintenanceAmt: profile.expenses['maintenanceAmt'],
+      travelEntAmt: profile.expenses['travelEntAmt'],
+      royaltiesPct: profile.expenses['royaltiesPct'],
+      advRoyaltiesPct: profile.expenses['advRoyaltiesPct'],
+      taxRushRoyaltiesPct: profile.expenses['taxRushRoyaltiesPct'],
+      taxRushShortagesPct: profile.expenses['taxRushShortagesPct'],
+      miscPct: profile.expenses['miscPct'],
     };
   }
 
@@ -167,7 +170,7 @@ export class SuggestionEngineService {
    */
   getProfilesForContext(region: string, storeType: string): SuggestionProfile[] {
     return Object.values(this.profiles).filter(
-      profile => profile.region === region && profile.storeType === storeType
+      (profile) => profile.region === region && profile.storeType === storeType
     );
   }
 
@@ -185,7 +188,7 @@ export class SuggestionEngineService {
       }
       return this.profiles['CA-new-standard'];
     }
-    
+
     // Default to US profiles
     return this.profiles['US-new-standard'];
   }
@@ -194,33 +197,46 @@ export class SuggestionEngineService {
    * Calculate total expenses from individual expense components
    */
   private calculateTotalExpenses(
-    profile: SuggestionProfile, 
-    totalRevenue: number, 
+    profile: SuggestionProfile,
+    totalRevenue: number,
     salariesAmount: number
   ): number {
     const expenses = profile.expenses;
-    
+
     // Calculate percentage-based expenses
     const salaries = salariesAmount;
-    const empDeductions = salaries * (expenses.empDeductionsPct / 100);
-    const rent = totalRevenue * (expenses.rentPct / 100);
-    const supplies = totalRevenue * (expenses.suppliesPct / 100);
-    const royalties = totalRevenue * (expenses.royaltiesPct / 100);
-    const advRoyalties = totalRevenue * (expenses.advRoyaltiesPct / 100);
-    const taxRushRoyalties = totalRevenue * (expenses.taxRushRoyaltiesPct / 100);
-    const taxRushShortages = totalRevenue * (expenses.taxRushShortagesPct / 100);
-    const misc = totalRevenue * (expenses.miscPct / 100);
+    const empDeductions = salaries * (expenses['empDeductionsPct'] / 100);
+    const rent = totalRevenue * (expenses['rentPct'] / 100);
+    const supplies = totalRevenue * (expenses['suppliesPct'] / 100);
+    const royalties = totalRevenue * (expenses['royaltiesPct'] / 100);
+    const advRoyalties = totalRevenue * (expenses['advRoyaltiesPct'] / 100);
+    const taxRushRoyalties = totalRevenue * (expenses['taxRushRoyaltiesPct'] / 100);
+    const taxRushShortages = totalRevenue * (expenses['taxRushShortagesPct'] / 100);
+    const misc = totalRevenue * (expenses['miscPct'] / 100);
 
     // Fixed amount expenses
-    const fixedExpenses = expenses.telephoneAmt + expenses.utilitiesAmt + 
-                         expenses.localAdvAmt + expenses.insuranceAmt + 
-                         expenses.postageAmt + expenses.duesAmt + 
-                         expenses.bankFeesAmt + expenses.maintenanceAmt + 
-                         expenses.travelEntAmt;
+    const fixedExpenses =
+      expenses['telephoneAmt'] +
+      expenses['utilitiesAmt'] +
+      expenses['localAdvAmt'] +
+      expenses['insuranceAmt'] +
+      expenses['postageAmt'] +
+      expenses['duesAmt'] +
+      expenses['bankFeesAmt'] +
+      expenses['maintenanceAmt'] +
+      expenses['travelEntAmt'];
 
     return Math.round(
-      salaries + empDeductions + rent + supplies + royalties + 
-      advRoyalties + taxRushRoyalties + taxRushShortages + misc + fixedExpenses
+      salaries +
+        empDeductions +
+        rent +
+        supplies +
+        royalties +
+        advRoyalties +
+        taxRushRoyalties +
+        taxRushShortages +
+        misc +
+        fixedExpenses
     );
   }
 }

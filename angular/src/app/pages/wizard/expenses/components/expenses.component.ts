@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule, CurrencyPipe, DecimalPipe, AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SettingsService } from '../../../../services/settings.service';
 import { WizardStateService } from '../../../../core/services/wizard-state.service';
@@ -8,16 +8,26 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-expenses-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CurrencyPipe, DecimalPipe, AsyncPipe],
   templateUrl: './expenses.component.html',
   styleUrls: ['./expenses.component.scss'],
 })
-export class ExpensesFormComponent {
+export class ExpensesFormComponent implements OnInit {
   constructor(
     public settingsSvc: SettingsService,
     public wizardState: WizardStateService
   ) {
     console.log('💰 [EXPENSES FORM] Component loaded');
+  }
+
+  ngOnInit(): void {
+    // Ensure page starts at the top when component loads
+    window.scrollTo(0, 0);
+    console.log('💰 [EXPENSES FORM] Scrolled to top');
+
+    // Trigger comprehensive debugging summary on expenses page load
+    console.log('💰 [EXPENSES FORM] Loading - triggering computed properties summary...');
+    this.wizardState.getComputedPropertiesSummary();
   }
 
   get settings() {
@@ -26,11 +36,11 @@ export class ExpensesFormComponent {
 
   // Reactive getters for income values (read-only from Step 1)
   readonly answers$ = this.wizardState.answers$;
-  readonly avgNetFee$ = this.answers$.pipe(map((a) => a.avgNetFee || 125));
+  readonly avgNetFee$ = this.answers$.pipe(map((a) => a.avgNetFee || 0));
   readonly taxPrepReturns$ = this.answers$.pipe(
-    map((a) => a.projectedTaxPrepReturns || a.taxPrepReturns || 1600)
+    map((a) => a.projectedTaxPrepReturns || a.taxPrepReturns || 0)
   );
-  readonly discountsPct$ = this.answers$.pipe(map((a) => a.discountsPct || 3));
+  readonly discountsPct$ = this.answers$.pipe(map((a) => a.discountsPct || 0));
   readonly grossRevenue$ = this.answers$.pipe(
     map((a) => (a.projectedTaxPrepIncome || 0) + (a.otherIncome || 0))
   );
@@ -46,7 +56,7 @@ export class ExpensesFormComponent {
   readonly postageAmt$ = this.answers$.pipe(map((a) => a.postageAmt || 0.4));
   readonly miscPct$ = this.answers$.pipe(map((a) => a.miscPct || 1.0));
 
-  // Revenue breakdown for the yellow panel (dynamic based on store type)
+  // Revenue breakdown for the yellow panel (uses clean computed properties)
   readonly revenueBreakdown$ = this.answers$.pipe(
     map((answers) => {
       const storeType = answers.storeType || 'new';
@@ -54,27 +64,24 @@ export class ExpensesFormComponent {
 
       console.log('💰 [EXPENSES] Revenue breakdown calculation:', { storeType, isExisting });
 
-      // Use projected data for existing stores, target data for new stores
-      const returns = isExisting
-        ? answers.projectedTaxPrepReturns || 0
-        : answers.taxPrepReturns || 0;
-      const avgNetFee = isExisting ? answers.projectedAvgNetFee || 0 : answers.avgNetFee || 0;
-      const grossFees = isExisting ? answers.projectedGrossFees || 0 : answers.grossFees || 0;
-      const discountPct = isExisting
-        ? answers.projectedDiscountsPct || 0
-        : answers.discountsPct || 0;
-      const discountAmt = isExisting
-        ? answers.projectedDiscountsAmt || 0
-        : answers.discountsAmt || 0;
-      const netIncome = isExisting
-        ? answers.projectedTaxPrepIncome || 0
-        : answers.taxPrepIncome || 0;
-      const otherIncome = isExisting ? answers.projectedOtherIncome || 0 : answers.otherIncome || 0;
+      // Use clean computed properties - no more hardcoded store type logic!
+      const returns = this.wizardState.getTaxPrepReturns();
+      const avgNetFee = this.wizardState.getAvgNetFee();
+      const grossFees = this.wizardState.getGrossFees();
+      const discountPct = this.wizardState.getDiscountsPct();
+      const discountAmt = this.wizardState.getDiscountsAmt();
+      const netIncome = this.wizardState.getTaxPrepIncome();
+      const otherIncome = this.wizardState.getOtherIncome();
 
       const totalRevenue = netIncome + otherIncome;
 
+      // Calculate vs target comparison (simplified for now)
+      const targetRevenue = 194000; // This should come from targets calculation
+      const vsTarget =
+        totalRevenue > 0 ? Math.round(((totalRevenue - targetRevenue) / targetRevenue) * 100) : 0;
+
       const result = {
-        title: isExisting ? 'Projected Gross Revenue Breakdown' : 'Target Gross Revenue Breakdown',
+        title: this.wizardState.getDisplayLabel('revenueBreakdownTitle'),
         returns: returns,
         avgNetFee: avgNetFee,
         grossFees: grossFees,
@@ -83,10 +90,14 @@ export class ExpensesFormComponent {
         netIncome: netIncome,
         otherIncome: otherIncome,
         totalRevenue: totalRevenue,
-        vsTarget: 0, // Calculate vs target comparison
-        description: isExisting
-          ? 'This is your projected gross revenue before expenses based on your historical data and growth targets.'
-          : 'This is your target gross revenue before expenses based on regional benchmarks and your goals.',
+        vsTarget: vsTarget,
+        description: this.wizardState.getValue({
+          existingStore:
+            'This is your projected gross revenue before expenses based on your historical data and growth targets.',
+          newStore:
+            'This is your target gross revenue before expenses based on regional benchmarks and your goals.',
+          default: 'Revenue breakdown before expenses.',
+        }),
       };
 
       console.log('💰 [EXPENSES] Revenue breakdown result:', result);

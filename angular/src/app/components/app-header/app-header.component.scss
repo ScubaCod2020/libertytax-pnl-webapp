@@ -7,6 +7,113 @@ header.header {
     height: var(--app-header-h);
 }
 
+/* Header layout classes */
+.header-grid {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+}
+
+.header-logo-section {
+    justify-self: start;
+}
+
+.header-center-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+}
+
+.header-breadcrumb {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.breadcrumb-button {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    font-size: inherit;
+}
+
+.breadcrumb-separator {
+    color: #d1d5db;
+}
+
+.header-title {
+    color: #1e40af;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.header-version {
+    background: #f3f4f6;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.25rem;
+}
+
+.header-actions-section {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 0.5rem;
+    justify-self: end;
+    min-width: 220px;
+}
+
+.header-nav-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.header-controls-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.store-pill {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.store-pill--multi {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.store-pill--single {
+    background-color: #f0fdf4;
+    color: #15803d;
+}
+
+.action-button {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
 .btn {
     display: inline-flex;
     align-items: center;

@@ -64,15 +64,15 @@ export class DashboardResultsPanelComponent {
       const t = this.thresholds();
       const answers = this.wizardState.answers;
 
-      // Use real wizard data instead of demo
+      // Use real wizard data with computed properties
       const realInputs: CalculationInputs = {
         region: r,
         scenario: 'Custom',
-        avgNetFee: answers.avgNetFee || 125,
-        taxPrepReturns: answers.projectedTaxPrepReturns || answers.taxPrepReturns || 1600,
-        taxRushReturns: answers.taxRushReturns || (r === 'CA' ? 150 : 0),
-        discountsPct: answers.discountsPct || 3,
-        otherIncome: answers.otherIncome || (this.hasOtherIncome ? 5000 : 0),
+        avgNetFee: this.wizardState.getAvgNetFee() || 125,
+        taxPrepReturns: this.wizardState.getTaxPrepReturns() || 1600,
+        taxRushReturns: this.wizardState.getTaxRushReturns() || (r === 'CA' ? 150 : 0),
+        discountsPct: this.wizardState.getDiscountsPct() || 3,
+        otherIncome: this.wizardState.getOtherIncome() || (this.hasOtherIncome ? 5000 : 0),
         calculatedTotalExpenses: answers.calculatedTotalExpenses,
         salariesPct: answers.salariesPct || 25,
         empDeductionsPct: answers.empDeductionsPct || 10,

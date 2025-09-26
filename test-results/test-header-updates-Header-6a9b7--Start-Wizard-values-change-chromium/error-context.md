@@ -1,0 +1,326 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+    - img "Regional Brand Watermark"
+    - banner [ref=e4]:
+        - generic [ref=e5]:
+            - img "Liberty Tax" [ref=e8]
+            - generic [ref=e9]:
+                - generic [ref=e10]: Liberty Tax • P&L Budget & Forecast
+                - generic [ref=e11]: v0.6.0 preview
+            - generic [ref=e12]:
+                - generic [ref=e13]:
+                    - button "Income" [ref=e14] [cursor=pointer]
+                    - button "Expenses" [ref=e15] [cursor=pointer]
+                    - button "Reports" [ref=e16] [cursor=pointer]
+                - generic [ref=e17]:
+                    - button "Dashboard" [ref=e18] [cursor=pointer]
+                    - button "Reset Wizard" [ref=e19] [cursor=pointer]
+                    - button "Debug" [ref=e20] [cursor=pointer]
+    - generic [ref=e23]:
+        - generic [ref=e24]:
+            - generic [ref=e25]: Welcome – Quick Start Wizard
+            - generic [ref=e26]: Create your customized P&L dashboard in just a few quick steps
+        - generic [ref=e27]:
+            - generic [ref=e28]: '1'
+            - generic [ref=e29]:
+                - heading "What region is your store in?" [level=3] [ref=e30]
+                - generic [ref=e31]:
+                    - generic [ref=e32] [cursor=pointer]:
+                        - radio "🇺🇸 United States US tax calculations and features" [checked] [ref=e33]
+                        - generic [ref=e34] [cursor=pointer]: 🇺🇸 United States
+                        - generic [ref=e35] [cursor=pointer]: US tax calculations and features
+                    - generic [ref=e36] [cursor=pointer]:
+                        - radio "🇨🇦 Canada Canadian tax calculations and TaxRush" [ref=e37]
+                        - generic [ref=e38] [cursor=pointer]: 🇨🇦 Canada
+                        - generic [ref=e39] [cursor=pointer]: Canadian tax calculations and TaxRush
+        - generic [ref=e40]:
+            - generic [ref=e41]: '2'
+            - generic [ref=e42]:
+                - heading "Is this a new store or existing store?" [level=3] [ref=e43]
+                - generic [ref=e44]:
+                    - generic [ref=e45] [cursor=pointer]:
+                        - radio "🏪 New Store First year - use regional benchmarks" [checked] [ref=e46]
+                        - generic [ref=e47] [cursor=pointer]: 🏪 New Store
+                        - generic [ref=e48] [cursor=pointer]: First year - use regional benchmarks
+                    - generic [ref=e49] [cursor=pointer]:
+                        - radio "🏢 Existing Store Use your historical data" [ref=e50]
+                        - generic [ref=e51] [cursor=pointer]: 🏢 Existing Store
+                        - generic [ref=e52] [cursor=pointer]: Use your historical data
+        - generic [ref=e53]:
+            - generic [ref=e54]: '3'
+            - generic [ref=e55]:
+                - heading "Do you have other revenue streams?" [level=3] [ref=e56]
+                - generic [ref=e57]: Bookkeeping, notary, business consulting, etc.
+                - generic [ref=e58]:
+                    - generic [ref=e59] [cursor=pointer]:
+                        - radio "💼 Yes Include additional revenue streams (bookkeeping, notary, business consulting, etc.)" [ref=e60]
+                        - generic [ref=e61] [cursor=pointer]: 💼 Yes
+                        - generic [ref=e62] [cursor=pointer]: Include additional revenue streams (bookkeeping, notary, business consulting, etc.)
+                    - generic [ref=e63] [cursor=pointer]:
+                        - radio "📋 Tax prep only Focused on tax preparation" [checked] [ref=e64]
+                        - generic [ref=e65] [cursor=pointer]: 📋 Tax prep only
+                        - generic [ref=e66] [cursor=pointer]: Focused on tax preparation
+    - generic [ref=e68]:
+        - heading "Income Drivers" [level=1] [ref=e69]
+        - generic [ref=e70]:
+            - generic [ref=e72]:
+                - generic [ref=e74]:
+                    - generic [ref=e75]: 📊
+                    - text: Last Year Performance
+                - generic [ref=e76]:
+                    - generic [ref=e77]:
+                        - generic [ref=e78]:
+                            - text: Tax Prep Returns
+                            - generic [ref=e79]: '*'
+                        - generic [ref=e81]:
+                            - generic [ref=e82]: '#'
+                            - spinbutton [ref=e83]
+                    - generic [ref=e84]:
+                        - generic [ref=e85]: Average Net Fee
+                        - generic [ref=e87]:
+                            - generic [ref=e88]: $
+                            - textbox "e.g., 125" [ref=e89]
+                    - generic [ref=e90]:
+                        - generic [ref=e91]: Gross Tax Prep Fees
+                        - generic [ref=e93]:
+                            - generic [ref=e94]: $
+                            - textbox "Auto-calculated" [ref=e95]
+                        - generic [ref=e96]: 'Auto: Returns × Avg Net Fee (clear to re-auto)'
+                    - generic [ref=e97]:
+                        - generic [ref=e98]: Customer Discounts
+                        - generic [ref=e99]:
+                            - generic [ref=e100]:
+                                - generic [ref=e101]:
+                                    - generic [ref=e102]: $
+                                    - spinbutton [ref=e103]
+                                - generic [ref=e104]: =
+                                - generic [ref=e105]:
+                                    - spinbutton [ref=e106]
+                                    - generic [ref=e107]: '%'
+                            - generic [ref=e108]: 'Default: 3% • Enter either dollar amount or percentage — the other will auto-calc'
+                        - generic [ref=e109]: Dollar amount or % of gross fees given as discounts. Enter either field; the other auto-calculates.
+                    - generic [ref=e110]:
+                        - generic [ref=e111]: Total Tax Prep Income
+                        - generic [ref=e113]:
+                            - generic [ref=e114]: $
+                            - textbox "Auto-calculated" [ref=e115]
+                        - generic [ref=e116]: Gross − Discounts (clear to re-auto)
+                    - generic [ref=e117]:
+                        - generic [ref=e118]: Total Expenses
+                        - generic [ref=e120]:
+                            - generic [ref=e121]: $
+                            - textbox "Auto-calculated" [ref=e122]
+                        - generic [ref=e123]: 'Auto: (Tax Prep Income + Other Income) × 76%'
+                    - generic [ref=e124]:
+                        - text: 'Last Year Net Income: $—'
+                        - generic [ref=e125]: (preview)
+            - generic [ref=e126]:
+                - generic [ref=e127]:
+                    - generic [ref=e129]:
+                        - generic [ref=e130]: 📈
+                        - text: Projected Performance
+                    - generic [ref=e131]:
+                        - generic [ref=e132]: Performance Change
+                        - generic [ref=e133]:
+                            - generic [ref=e134]:
+                                - generic [ref=e135]:
+                                    - generic [ref=e136]: Scenario
+                                    - combobox "Scenario" [ref=e137]:
+                                        - option "Custom" [selected]
+                                        - option "Good"
+                                        - option "Better"
+                                        - option "Best"
+                                - spinbutton [ref=e138]: '0'
+                                - generic [ref=e139]: '%'
+                                - combobox [ref=e140]:
+                                    - option "Custom" [selected]
+                                    - 'option "Decline: -10%"'
+                                    - 'option "Decline: -5%"'
+                                    - 'option "No Change: 0%"'
+                                    - 'option "Growth: +5%"'
+                                    - 'option "Growth: +10%"'
+                                    - 'option "Growth: +15%"'
+                                    - 'option "Growth: +20%"'
+                            - slider [ref=e141]: '0'
+                            - generic [ref=e142]:
+                                - generic [ref=e143]:
+                                    - checkbox "Apply to All" [checked] [ref=e144]
+                                    - text: Apply to All
+                                - generic [ref=e145]:
+                                    - checkbox "Returns" [checked] [ref=e146]
+                                    - text: Returns
+                                - generic [ref=e147]:
+                                    - checkbox "Avg Net Fee" [checked] [ref=e148]
+                                    - text: Avg Net Fee
+                                - generic [ref=e149]:
+                                    - checkbox "Other Income" [ref=e150]
+                                    - text: Other Income
+                                - generic [ref=e151]:
+                                    - checkbox "TaxRush" [ref=e152]
+                                    - text: TaxRush
+                    - generic [ref=e153]:
+                        - generic [ref=e154]: Tax Prep Returns
+                        - generic [ref=e156]:
+                            - generic [ref=e157]: '#'
+                            - spinbutton [ref=e158]: '1600'
+                    - generic [ref=e159]:
+                        - generic [ref=e160]: Average Net Fee
+                        - generic [ref=e162]:
+                            - generic [ref=e163]: $
+                            - spinbutton [ref=e164]: '125'
+                    - generic [ref=e165]:
+                        - generic [ref=e166]: Gross Tax Prep Fees
+                        - generic [ref=e168]:
+                            - generic [ref=e169]: $
+                            - spinbutton [ref=e170]: '0'
+                    - generic [ref=e171]:
+                        - generic [ref=e172]: Customer Discounts
+                        - generic [ref=e173]:
+                            - generic [ref=e174]:
+                                - generic [ref=e175]:
+                                    - generic [ref=e176]: $
+                                    - spinbutton [ref=e177]: '0'
+                                - generic [ref=e178]: =
+                                - generic [ref=e179]:
+                                    - spinbutton [ref=e180]: '3'
+                                    - generic [ref=e181]: '%'
+                            - generic [ref=e182]: 'Default: 3% • Enter either dollar amount or percentage — the other will auto-calc'
+                        - generic [ref=e183]: Dollar amount or % of gross fees given as discounts. Enter either field; the other auto-calculates.
+                    - generic [ref=e184]:
+                        - generic [ref=e185]: Total Tax Prep Income
+                        - generic [ref=e187]:
+                            - generic [ref=e188]: $
+                            - spinbutton [ref=e189]: '0'
+                        - generic [ref=e190]: Gross − Discounts (clear to re-auto)
+                    - generic [ref=e191]:
+                        - generic [ref=e192]: Total Expenses
+                        - generic [ref=e194]:
+                            - generic [ref=e195]: $
+                            - spinbutton [ref=e196]: '0'
+                        - generic [ref=e197]: 'Auto: (Tax Prep Income + Other Income) × 76%'
+                    - generic [ref=e198]:
+                        - generic [ref=e199]: TaxRush (Projected)
+                        - generic [ref=e200]:
+                            - generic [ref=e201]: TaxRush Returns
+                            - spinbutton [ref=e203]
+                        - generic [ref=e204]:
+                            - generic [ref=e205]: TaxRush Avg Net Fee
+                            - generic [ref=e207]:
+                                - generic [ref=e208]: $
+                                - spinbutton [ref=e209]
+                        - generic [ref=e210]:
+                            - generic [ref=e211]: TaxRush Gross Fees
+                            - generic [ref=e213]:
+                                - generic [ref=e214]: $
+                                - spinbutton [ref=e215]
+                    - generic [ref=e216]:
+                        - text: 'Projected Net Income: $0'
+                        - generic [ref=e217]: (0.0% margin)
+                - generic [ref=e218]:
+                    - generic [ref=e219]: Analysis
+                    - generic [ref=e221]:
+                        - generic [ref=e222]:
+                            - generic [ref=e223]:
+                                - generic [ref=e224]: 📊
+                                - text: Projected Growth Analysis
+                            - generic [ref=e225]: 0% vs PY
+                        - generic [ref=e226]:
+                            - generic [ref=e227]: Growth Selection
+                            - generic [ref=e228]: 0%
+                        - generic [ref=e229]:
+                            - generic [ref=e230]:
+                                - generic [ref=e231]: 'Custom preset:'
+                                - generic [ref=e232]: 0%
+                                - generic [ref=e233]: →
+                                - generic [ref=e234]: 0%
+                            - generic [ref=e235]: 0%
+                        - generic [ref=e237]:
+                            - generic [ref=e238]: 🎯
+                            - text: Custom matches Custom.
+                    - generic [ref=e239]: 'Dev-only: compares Custom vs selected preset'
+        - 'link "Next: Expenses" [ref=e241] [cursor=pointer]':
+            - /url: /wizard/expenses
+    - contentinfo [ref=e243]:
+        - generic [ref=e244]:
+            - generic [ref=e245]:
+                - heading "Navigation" [level=3] [ref=e246]
+                - generic [ref=e247]:
+                    - button "Income" [ref=e248] [cursor=pointer]
+                    - button "Expenses" [ref=e249] [cursor=pointer]
+                    - button "Reports" [ref=e250] [cursor=pointer]
+                    - button "Dashboard" [ref=e251] [cursor=pointer]
+                    - button "Debug" [ref=e252] [cursor=pointer]
+            - generic [ref=e253]:
+                - heading "Quick Links" [level=3] [ref=e254]
+                - generic [ref=e255]:
+                    - button "💡 Pro-Tips *" [ref=e256] [cursor=pointer]:
+                        - text: 💡 Pro-Tips
+                        - generic [ref=e257] [cursor=pointer]: '*'
+                    - button "🎯 Practice Problems *" [ref=e258] [cursor=pointer]:
+                        - text: 🎯 Practice Problems
+                        - generic [ref=e259] [cursor=pointer]: '*'
+                    - button "📄 Export (PDF/Excel) *" [ref=e260] [cursor=pointer]:
+                        - text: 📄 Export (PDF/Excel)
+                        - generic [ref=e261] [cursor=pointer]: '*'
+                    - button "🧰 Debug" [ref=e262] [cursor=pointer]
+            - generic [ref=e263]:
+                - heading "Resources" [level=3] [ref=e264]
+                - generic [ref=e265]:
+                    - button "⚙️ Settings *" [ref=e266]:
+                        - text: ⚙️ Settings
+                        - generic [ref=e267]: '*'
+                    - button "📚 Training Materials *" [ref=e268]:
+                        - text: 📚 Training Materials
+                        - generic [ref=e269]: '*'
+                    - button "📞 Support Center *" [ref=e270]:
+                        - text: 📞 Support Center
+                        - generic [ref=e271]: '*'
+            - generic [ref=e272]:
+                - heading "About & Status" [level=3] [ref=e273]
+                - generic [ref=e274]:
+                    - strong [ref=e276]: P&L Budget & Forecast
+                    - generic [ref=e277]: Version v0.6 preview
+                    - generic [ref=e278]: Liberty Tax Service
+                    - generic [ref=e279]:
+                        - generic [ref=e280]: '🚀 Current Milestones:'
+                        - list [ref=e281]:
+                            - listitem [ref=e282]:
+                                - generic [ref=e283]: ✅
+                                - text: Angular app boots and routes load
+                            - listitem [ref=e284]:
+                                - generic [ref=e285]: ✅
+                                - text: Global styles consolidated + partials
+                            - listitem [ref=e286]:
+                                - generic [ref=e287]: ✅
+                                - text: Header + Footer (nav, version, layout)
+                            - listitem [ref=e288]:
+                                - generic [ref=e289]: ✅
+                                - text: Debug panel placeholder (push-layout, desktop/mobile)
+                            - listitem [ref=e290]:
+                                - generic [ref=e291]: ✅
+                                - text: Brand assets wired (logo/watermark)
+                            - listitem [ref=e292]:
+                                - generic [ref=e293]: 🟡
+                                - text: 'Wizard: Income Drivers page scaffolded'
+                            - listitem [ref=e294]:
+                                - generic [ref=e295]: 🟡
+                                - text: 'Wizard: Expenses page scaffolded'
+                            - listitem [ref=e296]:
+                                - generic [ref=e297]: 🟡
+                                - text: 'Wizard: P&L page scaffolded'
+                            - listitem [ref=e298]:
+                                - generic [ref=e299]: ⭕
+                                - text: Port calculations from React reference
+                            - listitem [ref=e300]:
+                                - generic [ref=e301]: ⭕
+                                - text: Reports + Export flows
+                    - generic [ref=e302]:
+                        - text: Data persisted locally • Regional features active
+                        - generic [ref=e303]: '* Feature in development'
+    - complementary [ref=e304]:
+        - generic [ref=e305]:
+            - generic [ref=e306]: Debug Panel
+            - button "Open" [ref=e307] [cursor=pointer]
+```

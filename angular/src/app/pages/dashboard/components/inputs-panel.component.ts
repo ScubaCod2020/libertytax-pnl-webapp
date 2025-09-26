@@ -11,8 +11,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { Region } from '../../../domain/types/common.types';
-import { WizardAnswers } from '../../../domain/types/wizard.types';
+import { Region, WizardAnswers } from '../../../domain/types/wizard.types';
 import { ExpenseField, expenseFields } from '../../../domain/types/expenses.types';
 
 export type Scenario = 'Custom' | 'Good' | 'Better' | 'Best';
@@ -767,16 +766,16 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
       salariesPct: this.data.salariesPct,
       empDeductionsPct: this.data.empDeductionsPct,
       rentPct: this.data.rentPct,
-      telephonePct: this.data.telephonePct,
-      utilitiesPct: this.data.utilitiesPct,
-      localAdvPct: this.data.localAdvPct,
-      insurancePct: this.data.insurancePct,
-      postagePct: this.data.postagePct,
+      telephoneAmt: this.data.telephonePct,
+      utilitiesAmt: this.data.utilitiesPct,
+      localAdvAmt: this.data.localAdvPct,
+      insuranceAmt: this.data.insurancePct,
+      postageAmt: this.data.postagePct,
       suppliesPct: this.data.suppliesPct,
-      duesPct: this.data.duesPct,
-      bankFeesPct: this.data.bankFeesPct,
-      maintenancePct: this.data.maintenancePct,
-      travelEntPct: this.data.travelEntPct,
+      duesAmt: this.data.duesPct,
+      bankFeesAmt: this.data.bankFeesPct,
+      maintenanceAmt: this.data.maintenancePct,
+      travelEntAmt: this.data.travelEntPct,
       royaltiesPct: this.data.royaltiesPct,
       advRoyaltiesPct: this.data.advRoyaltiesPct,
       taxRushRoyaltiesPct: this.data.taxRushRoyaltiesPct,

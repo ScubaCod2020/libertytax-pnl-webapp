@@ -27,6 +27,12 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/wizard/pnl/pnl.component').then((m) => m.PnlComponent),
         data: { step: 3, title: 'P&L Review', canProceed: true },
       },
+      {
+        path: 'reports',
+        loadComponent: () =>
+          import('./pages/wizard/pnl/components/reports.component').then((m) => m.ReportsComponent),
+        data: { step: 4, title: 'Monthly Breakdown', canProceed: true },
+      },
       // Legacy step-based routes for backward compatibility
       { path: 'step/1', redirectTo: 'income-drivers', pathMatch: 'full' },
       { path: 'step/2', redirectTo: 'expenses', pathMatch: 'full' },

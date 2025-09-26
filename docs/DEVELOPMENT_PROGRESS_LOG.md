@@ -1,5 +1,56 @@
 ## Development Progress Log — Context-First Hunt & Port
 
+2025-09-26 (Session 3)
+
+### Major Architectural Achievement: Monthly P&L Breakdown System
+
+**Context:** User had brilliant idea to separate P&L components into two distinct views:
+
+- **P&L Components** = Annual Summary (year-in-review)
+- **Reports Components** = 12-Month Breakdown with tax industry seasonality
+- **Dashboard Integration** = Monthly view available from dashboard too
+
+**Implementation Completed:**
+
+- ✅ **Monthly Distribution Data**: Created `monthly-distribution.data.ts` with real tax industry seasonality patterns (15.5% Jan, 28.2% Mar peak, 0.5% Dec low)
+- ✅ **Navigation Flow**: P&L Annual → "📅 Monthly Breakdown" button → Reports Monthly view
+- ✅ **Route Architecture**: Added `/wizard/reports` route for monthly breakdown
+- ✅ **Data Layer**: `calculateMonthlyBreakdown()` function distributes annual totals across 12 months with 60% activity-based + 40% fixed expense allocation
+- ✅ **P&L Component**: Fully wired annual summary with comprehensive debugging
+- ✅ **Reports Component**: Updated to calculate and display monthly data with seasonal insights
+- ✅ **Template Created**: Rich monthly breakdown HTML with tables, seasonal analysis, and cumulative progress
+
+**Technical Architecture:**
+
+```typescript
+// Monthly distribution with real tax industry data
+MONTHLY_RETURN_DISTRIBUTION: MonthlyDistribution[] = [
+  { month: 'January', returnsPercentage: 15.5, description: 'Tax season begins' },
+  { month: 'March', returnsPercentage: 28.2, description: 'Busiest month - deadline approaching' },
+  // ... realistic seasonal distribution totaling 100%
+]
+
+// Smart expense allocation
+const activityBasedExpenses = annualExpenses * (month.returnsPercentage / 100) * 0.6;
+const fixedExpenses = (annualExpenses / 12) * 0.4;
+```
+
+**Remaining TODOs for Next Session:**
+
+- Add helper methods to ReportsComponent for template functionality
+- Create SCSS styles for monthly breakdown table and cards
+- Test navigation between annual P&L and monthly breakdown
+- Plan dashboard integration for monthly view
+
+**Files Modified:**
+
+- `angular/src/app/domain/data/monthly-distribution.data.ts` (NEW)
+- `angular/src/app/pages/wizard/pnl/components/pnl.component.ts` (comprehensive rebuild)
+- `angular/src/app/pages/wizard/pnl/components/pnl.component.html` (added monthly button)
+- `angular/src/app/pages/wizard/pnl/components/reports.component.ts` (monthly logic added)
+- `angular/src/app/pages/wizard/pnl/components/reports.component.html` (NEW monthly template)
+- `angular/src/app/app.routes.ts` (added `/wizard/reports` route)
+
 2025-09-24
 
 - Tooling maintenance: Migrated repo to Husky v9 and removed deprecated shims

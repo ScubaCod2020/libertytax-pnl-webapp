@@ -41,6 +41,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **🇨🇦 Regional Messaging**: TaxRush fields only show for Canada with contextual help
 
 ### Fixed
+
+- **♿ Accessibility Improvements**: Fixed form element accessibility violations in projected income drivers component
+  - Added proper labels with `for` attributes for all form elements (select dropdowns, number inputs, range sliders)
+  - Added `title` attributes for enhanced screen reader support
+  - Implemented screen reader only (sr-only) labels for visual clarity without clutter
+  - Moved inline styles to external CSS classes for better maintainability
+  - Fixed axe/forms violations: select-name, label requirements for all form controls
 - Tooling: Migrated to Husky v9, removed deprecated `.husky/_/husky.sh` shim, and set `core.hooksPath` to `.husky`. Pre-commit now runs `lint-staged` and progress log validation without warnings.
 
 ### Technical Details

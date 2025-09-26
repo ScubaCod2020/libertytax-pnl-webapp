@@ -6,17 +6,21 @@
   <div class="expense-section income">
     <div class="yellow-panel" *ngIf="revenueBreakdown$ | async as revenue">
       <div class="panel-title">💰 {{ revenue.title }} <span class="status">🟡 On track with strategic plan</span></div>
-      <div class="panel-grid">
-        <div>
+      <div class="revenue-flex-container">
+        <div class="revenue-main-content">
           <div class="panel-sub">Tax Prep Revenue:</div>
-          <div class="detail">Gross Tax Prep Fees: <strong>{{ revenue.grossFees | currency }}</strong></div>
-          <div class="detail">Returns: {{ revenue.returns | number }} @ {{ revenue.avgNetFee | currency }}</div>
-          <div class="detail red">Less Discounts ({{ revenue.discountPct }}%): <strong>-{{ revenue.discountAmt | currency }}</strong></div>
-          <div class="detail green strong">Net Tax Prep Income: <strong>{{ revenue.netIncome | currency }}</strong></div>
-          <div class="detail" *ngIf="revenue.otherIncome > 0">Other Income: <strong>{{ revenue.otherIncome | currency }}</strong></div>
+          <div class="detail">Gross Tax Prep Fees: <strong>{{ revenue.grossFees | currency:'USD':'symbol':'1.2-2' }}</strong></div>
+          <div class="detail">Returns: {{ revenue.returns | number:'1.0-0' }} @ {{ revenue.avgNetFee | currency:'USD':'symbol':'1.2-2' }}</div>
+          <div class="detail red">Less Discounts ({{ revenue.discountPct | number:'1.1-1' }}%): <strong>-{{ revenue.discountAmt | currency:'USD':'symbol':'1.2-2' }}</strong></div>
+          <div class="detail green strong">Net Tax Prep Income: <strong>{{ revenue.netIncome | currency:'USD':'symbol':'1.2-2' }}</strong></div>
+          <div class="detail" *ngIf="revenue.otherIncome > 0">Other Income: <strong>{{ revenue.otherIncome | currency:'USD':'symbol':'1.2-2' }}</strong></div>
+        </div>
+        <div *ngIf="revenue.avgNetFee > 0" class="projected-gross-per-return">
+          <div class="projected-gross-label">{{ wizardState.getDisplayLabel('grossPerReturnTitle') }}:</div>
+          <div class="projected-gross-value">{{ revenue.avgNetFee | currency:'USD':'symbol':'1.2-2' }}</div>
         </div>
       </div>
-      <div class="panel-total">Total Gross Revenue: <strong>{{ revenue.totalRevenue | currency }}</strong><span class="delta">({{ revenue.vsTarget }}% vs target)</span></div>
+      <div class="panel-total">Total Gross Revenue: <strong>{{ revenue.totalRevenue | currency:'USD':'symbol':'1.2-2' }}</strong><span class="delta">({{ revenue.vsTarget > 0 ? '+' : '' }}{{ revenue.vsTarget }}% vs target)</span></div>
       <div class="panel-note">{{ revenue.description }}</div>
     </div>
   </div>
@@ -26,8 +30,8 @@
     <div class="section-title with-action">💰 Expense Management <button type="button" class="btn-reset" (click)="resetExpensesToDefaults()" title="Reset ONLY expense fields back to strategic defaults (keeps your target performance goals intact)">💸 Reset Expenses to Strategic Defaults</button></div>
     <div class="blue-outline">
       <div class="blue-title">📊 Performance-Based Targets</div>
-      <div class="blue-line">Strategic Total Expenses: <strong>$147,440</strong><span class="delta">(76.0% of gross revenue)</span></div>
-      <div class="blue-line">Expected Net Income: <strong>$46,560</strong><span class="delta">(24.0% margin)</span></div>
+      <div class="blue-line">Strategic Total Expenses: <strong>{{ 147440 | currency:'USD':'symbol':'1.0-0' }}</strong><span class="delta">(76.0% of gross revenue)</span></div>
+      <div class="blue-line">Expected Net Income: <strong>{{ 46560 | currency:'USD':'symbol':'1.0-0' }}</strong><span class="delta">(24.0% margin)</span></div>
       <div class="small">Operational best practices for expense management (75-77% optimal range)</div>
     </div>
 
@@ -50,9 +54,9 @@
           <span class="eq">=</span>
           <div class="inline">
             <span class="prefix">$</span>
-            <input type="number" class="input xs" 
-                   [ngModel]="((grossRevenue$ | async) || 0) * ((salariesPct$ | async) || 0) / 100" 
-                   placeholder="0" readonly />
+            <input type="text" class="input xs" 
+                   [ngModel]="((grossRevenue$ | async) || 0) * ((salariesPct$ | async) || 0) / 100 | currency:'USD':'symbol':'1.0-0'" 
+                   placeholder="$0" readonly />
           </div>
         </div>
         <div class="slider">
@@ -145,11 +149,61 @@
         <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.4" aria-label="Postage percentage slider" /></div>
         <div class="small note">Mailing/shipping as % of gross fees <span class="green"> • Base: $200,000</span></div>
       </div>
+      <div class="grid-row multi">
+        <label>Office Supplies</label>
+        <div class="grid-field chain">
+          <div class="inline"><input type="number" class="input xs" placeholder="3.5" [value]="3.5" aria-label="Office supplies percentage" /><span class="suffix">%</span></div>
+          <span class="eq">=</span>
+          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput placeholder="0" [value]="7000" aria-label="Office supplies dollar amount" /></div>
+        </div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="3.5" aria-label="Office supplies percentage slider" /></div>
+        <div class="small note">Office supplies as % of gross fees <span class="green"> • Base: $200,000</span></div>
+      </div>
+      <div class="grid-row multi">
+        <label>Dues</label>
+        <div class="grid-field chain">
+          <div class="inline"><input type="number" class="input xs" placeholder="0.8" [value]="0.8" aria-label="Dues percentage" /><span class="suffix">%</span></div>
+          <span class="eq">=</span>
+          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput placeholder="0" [value]="1600" aria-label="Dues dollar amount" /></div>
+        </div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.8" aria-label="Dues percentage slider" /></div>
+        <div class="small note">Dues/subscriptions as % of gross fees <span class="green"> • Base: $200,000</span></div>
+      </div>
+      <div class="grid-row multi">
+        <label>Bank Fees</label>
+        <div class="grid-field chain">
+          <div class="inline"><input type="number" class="input xs" placeholder="0.5" [value]="0.5" aria-label="Bank fees percentage" /><span class="suffix">%</span></div>
+          <span class="eq">=</span>
+          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput placeholder="0" [value]="1000" aria-label="Bank fees dollar amount" /></div>
+        </div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.5" aria-label="Bank fees percentage slider" /></div>
+        <div class="small note">Banking fees as % of gross fees <span class="green"> • Base: $200,000</span></div>
+      </div>
+      <div class="grid-row multi">
+        <label>Maintenance</label>
+        <div class="grid-field chain">
+          <div class="inline"><input type="number" class="input xs" placeholder="1.2" [value]="1.2" aria-label="Maintenance percentage" /><span class="suffix">%</span></div>
+          <span class="eq">=</span>
+          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput placeholder="0" [value]="2400" aria-label="Maintenance dollar amount" /></div>
+        </div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="1.2" aria-label="Maintenance percentage slider" /></div>
+        <div class="small note">Maintenance/repairs as % of gross fees <span class="green"> • Base: $200,000</span></div>
+      </div>
+      <div class="grid-row multi">
+        <label>Travel/Entertainment</label>
+        <div class="grid-field chain">
+          <div class="inline"><input type="number" class="input xs" placeholder="0.9" [value]="0.9" aria-label="Travel entertainment percentage" /><span class="suffix">%</span></div>
+          <span class="eq">=</span>
+          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput placeholder="0" [value]="1800" aria-label="Travel entertainment dollar amount" /></div>
+        </div>
+        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.9" aria-label="Travel entertainment percentage slider" /></div>
+        <div class="small note">Travel/entertainment as % of gross fees <span class="green"> • Base: $200,000</span></div>
+      </div>
     </div>
 
     <!-- Franchise -->
     <div class="expense-section light">
-      <div class="section-title">🏪Franchise <span class="small muted">(2 fields)</span></div>
+      <div class="section-title">🏪Franchise <span class="small muted">({{ wizardState.isCanadaRegion() && wizardState.hasTaxRush() ? '4' : '2' }} fields)</span></div>
       <div class="small italic">Franchise fees and royalties</div>
       <div class="grid-row multi">
         <label>Tax Prep Royalties</label>
@@ -159,6 +213,17 @@
       <div class="grid-row multi">
         <label>Advertising Royalties</label>
         <div class="grid-field chain"><div class="inline"><input type="number" class="input xs" [value]="5" disabled readonly aria-label="Advertising royalties percentage" /><span class="suffix">%</span></div><span class="eq">=</span><div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput [value]="9700" disabled readonly aria-label="Advertising royalties dollar amount" /></div></div>
+        <div class="small note">🔒 Locked per franchise agreement <span class="green"> • Base: $194,000</span></div>
+      </div>
+      <!-- Tax Rush fields - only for Canada offices that handle Tax Rush -->
+      <div *ngIf="wizardState.isCanadaRegion() && wizardState.hasTaxRush()" class="grid-row multi">
+        <label>Tax Rush Royalties</label>
+        <div class="grid-field chain"><div class="inline"><input type="number" class="input xs" [value]="8" disabled readonly aria-label="Tax rush royalties percentage" /><span class="suffix">%</span></div><span class="eq">=</span><div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput [value]="15520" disabled readonly aria-label="Tax rush royalties dollar amount" /></div></div>
+        <div class="small note">🔒 Locked per franchise agreement <span class="green"> • Base: $194,000</span></div>
+      </div>
+      <div *ngIf="wizardState.isCanadaRegion() && wizardState.hasTaxRush()" class="grid-row multi">
+        <label>Tax Rush Shortages</label>
+        <div class="grid-field chain"><div class="inline"><input type="number" class="input xs" [value]="3" disabled readonly aria-label="Tax rush shortages percentage" /><span class="suffix">%</span></div><span class="eq">=</span><div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput [value]="5820" disabled readonly aria-label="Tax rush shortages dollar amount" /></div></div>
         <div class="small note">🔒 Locked per franchise agreement <span class="green"> • Base: $194,000</span></div>
       </div>
     </div>
@@ -177,9 +242,9 @@
 
     <div class="orange-panel">
       <div class="panel-title">💰 Actual Expense Breakdown <span class="status">🟡 Above optimal range - monitor costs</span></div>
-      <div class="panel-line">Total Expenses: <strong>$150,932</strong><span class="delta">(77.8% of gross revenue)</span></div>
-      <div class="panel-line">Final Net Income: <strong>$43,068</strong> <span class="delta strong">✅ Within operational best practices</span></div>
-      <div class="small">Operational Target: $147,440 (76.0% of revenue) • $3,492 over optimal range - monitor costs closely</div>
+      <div class="panel-line">Total Expenses: <strong>{{ 150932 | currency:'USD':'symbol':'1.0-0' }}</strong><span class="delta">(77.8% of gross revenue)</span></div>
+      <div class="panel-line">Final Net Income: <strong>{{ 43068 | currency:'USD':'symbol':'1.0-0' }}</strong> <span class="delta strong">✅ Within operational best practices</span></div>
+      <div class="small">Operational Target: {{ 147440 | currency:'USD':'symbol':'1.0-0' }} (76.0% of revenue) • {{ 3492 | currency:'USD':'symbol':'1.0-0' }} over optimal range - monitor costs closely</div>
     </div>
   </div>
 
@@ -190,4 +255,3 @@
     <button type="button" class="btn green">Review Data →</button>
   </div>
 </div>
-<p>expenses works!</p>

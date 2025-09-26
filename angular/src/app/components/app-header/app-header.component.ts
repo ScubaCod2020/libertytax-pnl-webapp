@@ -1,5 +1,5 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { CommonModule, AsyncPipe } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { BrandLogoComponent } from '../brand-logo/brand-logo.component';
@@ -23,7 +23,7 @@ export interface StoreInfo {
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, BrandLogoComponent],
+  imports: [CommonModule, AsyncPipe, BrandLogoComponent],
   templateUrl: './app-header.component.html',
   styleUrls: ['./app-header.component.scss'],
 })
@@ -42,18 +42,18 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   @Input() actions?: HeaderAction[];
   @Input() storeInfo?: StoreInfo;
 
+  // Inject dependencies FIRST (before using them in other properties)
+  private router = inject(Router);
+  private debugSvc = inject(DebugPanelService);
+  private wizardState = inject(WizardStateService);
+
+  // Now we can safely use the injected dependencies
   private navSub?: any;
   readonly appVersion = APP_VERSION;
   readonly debugOpen$ = this.debugSvc.open$;
 
   // Get region from WizardStateService for reactive updates
   readonly region$ = this.wizardState.answers$.pipe(map((answers) => answers.region || 'US'));
-
-  constructor(
-    private router: Router,
-    private debugSvc: DebugPanelService,
-    private wizardState: WizardStateService
-  ) {}
 
   ngOnInit(): void {
     const derive = (url: string): 'income' | 'expenses' | 'reports' | 'dashboard' => {
@@ -98,13 +98,23 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   }
 
   resetWizard(): void {
+    console.log('🔄🔄🔄 [HEADER RESET] Button clicked - starting full reset');
+    console.log('🔄 [HEADER RESET] Current URL:', window.location.href);
     try {
       // Clear all wizard-related localStorage
       localStorage.removeItem('wizard_state_v1');
       localStorage.removeItem('pnl_settings_v1');
       localStorage.clear();
-    } catch {}
-    location.reload();
+      console.log('🔄 [HEADER RESET] Cleared localStorage');
+    } catch (e) {
+      console.log('🔄 [HEADER RESET] Error clearing localStorage:', e);
+    }
+    // Navigate to the start of the wizard instead of refreshing
+    console.log('🔄 [HEADER RESET] Navigating to /wizard/income-drivers');
+    this.router.navigateByUrl('/wizard/income-drivers').then((success) => {
+      console.log('🔄 [HEADER RESET] Navigation result:', success);
+      console.log('🔄 [HEADER RESET] New URL:', window.location.href);
+    });
   }
 
   toggleDebug(): void {
