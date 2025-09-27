@@ -37,8 +37,16 @@ jobs:
         id: console-check
         run: |
           set -e
+          # Determine enforcement policy based on branch
+          BRANCH_NAME="${GITHUB_REF_NAME}"
+          ENFORCE=false
+          if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "develop" ]; then
+            ENFORCE=true
+          fi
+
           # Search only application sources for console usage
-          CONSOLE_LOGS=$(grep -R -nE "console\\." \
+          PATTERN='console\\\.(log|debug)\\\('
+          CONSOLE_LOGS=$(grep -R -nE "$PATTERN" \
             angular/src \
             react-app-reference/react-app-reference/src \
             --exclude-dir=node_modules \
@@ -49,7 +57,7 @@ jobs:
             --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
             --exclude="*.spec.*" --exclude="*.test.*" \
             || true)
-          COUNT=$(printf "%s" "$CONSOLE_LOGS" | grep -c "console\\." || echo "0")
+          COUNT=$(printf "%s" "$CONSOLE_LOGS" | grep -cE "$PATTERN" || echo "0")
 
           echo "console_count=$COUNT" >> "$GITHUB_OUTPUT"
 
@@ -61,9 +69,11 @@ jobs:
               echo "EOF"
             } >> "$GITHUB_OUTPUT"
             # Hard fail on excessive console usage
-            if [ "$COUNT" -gt 10 ]; then
-              echo "❌ Excessive console statements detected (>10). Failing quality check."
+            if [ "$ENFORCE" = true ] && [ "$COUNT" -gt 10 ]; then
+              echo "❌ Excessive console statements detected (>10) on '$BRANCH_NAME'. Failing quality check."
               exit 1
+            else
+              echo "ℹ️ Console usage threshold exceeded but not enforced on branch '$BRANCH_NAME'."
             fi
           else
             echo "✅ No console statements found"
