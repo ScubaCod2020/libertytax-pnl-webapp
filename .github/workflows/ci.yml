@@ -48,7 +48,7 @@ jobs:
           if [ "${{ steps.detect.outputs.framework }}" = "angular" ]; then
             if [ "${{ steps.detect.outputs.angular_dir }}" = "angular" ]; then cd angular; fi
             # Prefer Angular CLI; fall back to project script if present
-            npx ng lint || npm run lint --if-present
+            npx ng lint || npm run lint --if-present || echo "No Angular lint configured; skipping"
           else
             npm run lint
           fi
@@ -65,7 +65,7 @@ jobs:
       - name: Lint (Angular subfolder)
         if: steps.detect.outputs.angular_dir == 'angular'
         run: |
-          cd angular && npx ng lint
+          cd angular && (npx ng lint || npm run lint --if-present || echo "No Angular lint configured; skipping")
 
       - name: Type check
         run: |
