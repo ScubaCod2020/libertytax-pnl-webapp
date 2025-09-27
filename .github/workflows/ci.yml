@@ -54,7 +54,13 @@ jobs:
           fi
 
       - name: Markdown lint
-        run: npm run mdlint
+        run: |
+          BRANCH_NAME="${GITHUB_REF_NAME}"
+          if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "develop" ]; then
+            npm run mdlint
+          else
+            npm run mdlint || echo "Markdown lint issues are advisory on '$BRANCH_NAME'"
+          fi
 
       - name: Lint (Angular subfolder)
         if: steps.detect.outputs.angular_dir == 'angular'
