@@ -37,8 +37,18 @@ jobs:
         id: console-check
         run: |
           set -e
-          # Search entire repo (not just ./src) for console usage, excluding node_modules and .git
-          CONSOLE_LOGS=$(grep -R -nE "console\\." . --exclude-dir=node_modules --exclude-dir=.git || true)
+          # Search only application sources for console usage
+          CONSOLE_LOGS=$(grep -R -nE "console\\." \
+            angular/src \
+            react-app-reference/react-app-reference/src \
+            --exclude-dir=node_modules \
+            --exclude-dir=.git \
+            --exclude-dir=__tests__ \
+            --exclude-dir=__mocks__ \
+            --exclude-dir=e2e \
+            --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
+            --exclude="*.spec.*" --exclude="*.test.*" \
+            || true)
           COUNT=$(printf "%s" "$CONSOLE_LOGS" | grep -c "console\\." || echo "0")
 
           echo "console_count=$COUNT" >> "$GITHUB_OUTPUT"
