@@ -52,10 +52,18 @@ Object.defineProperty(window, 'localStorage', {
   writable: true,
 });
 
-Object.defineProperty(window, 'location', {
-  value: mockLocation,
-  writable: true,
-});
+// Avoid redefining location under Karma/browser where it's non-configurable
+try {
+  const isKarma = typeof (globalThis as any).__karma__ !== 'undefined';
+  const desc = Object.getOwnPropertyDescriptor(window, 'location');
+  if (!isKarma && (!desc || desc.configurable)) {
+    Object.defineProperty(window, 'location', {
+      value: mockLocation,
+      writable: true,
+      configurable: true,
+    });
+  }
+} catch {}
 
 // Enhanced console mocking for cleaner test output (Jasmine-compatible)
 const originalConsole = { ...console };
