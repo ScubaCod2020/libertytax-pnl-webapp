@@ -9,10 +9,7 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 
 // Angular TestBed initialization
-getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting(),
-);
+getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 
 // Enhanced localStorage mock (from React test setup)
 const localStorageMock = (() => {
@@ -60,28 +57,32 @@ Object.defineProperty(window, 'location', {
   writable: true,
 });
 
-// Enhanced console mocking for cleaner test output (from React test setup)
+// Enhanced console mocking for cleaner test output (Jasmine-compatible)
 const originalConsole = { ...console };
 
-// Mock console methods but preserve originals for debugging
+const isDev = (() => {
+  try {
+    return (process && process.env && process.env['NODE_ENV'] === 'development') || false;
+  } catch {
+    return false;
+  }
+})();
+
+const spyLog = jasmine.createSpy('console.log').and.callFake((...args: unknown[]) => {
+  if (isDev) originalConsole.log(...(args as any[]));
+});
+const spyWarn = jasmine.createSpy('console.warn').and.callFake((...args: unknown[]) => {
+  if (isDev) originalConsole.warn(...(args as any[]));
+});
+const spyError = jasmine.createSpy('console.error').and.callFake((...args: unknown[]) => {
+  if (isDev) originalConsole.error(...(args as any[]));
+});
+
 globalThis.console = {
   ...console,
-  log: jest.fn().mockImplementation((...args) => {
-    // Optionally log to original console in development
-    if (process.env['NODE_ENV'] === 'development') {
-      originalConsole.log(...args);
-    }
-  }),
-  warn: jest.fn().mockImplementation((...args) => {
-    if (process.env['NODE_ENV'] === 'development') {
-      originalConsole.warn(...args);
-    }
-  }),
-  error: jest.fn().mockImplementation((...args) => {
-    if (process.env['NODE_ENV'] === 'development') {
-      originalConsole.error(...args);
-    }
-  }),
+  log: spyLog as unknown as typeof console.log,
+  warn: spyWarn as unknown as typeof console.warn,
+  error: spyError as unknown as typeof console.error,
 };
 
 // Angular-specific test utilities
@@ -89,9 +90,9 @@ export const TestUtils = {
   // Reset all mocks between tests
   resetMocks: () => {
     localStorageMock.clear();
-    (console.log as jest.Mock).mockClear();
-    (console.warn as jest.Mock).mockClear();
-    (console.error as jest.Mock).mockClear();
+    spyLog.calls.reset();
+    spyWarn.calls.reset();
+    spyError.calls.reset();
   },
 
   // Get localStorage mock for test assertions
