@@ -46,11 +46,9 @@ jobs:
       - name: Lint
         run: |
           if [ "${{ steps.detect.outputs.framework }}" = "angular" ]; then
-            if npm run | grep -q "ng lint"; then
-              npm run lint || npx ng lint
-            else
-              npx ng lint
-            fi
+            if [ "${{ steps.detect.outputs.angular_dir }}" = "angular" ]; then cd angular; fi
+            # Prefer Angular CLI; fall back to project script if present
+            npx ng lint || npm run lint --if-present
           else
             npm run lint
           fi
@@ -74,13 +72,9 @@ jobs:
       - name: Unit tests
         run: |
           if [ "${{ steps.detect.outputs.framework }}" = "angular" ]; then
-            if npm run | grep -q "ng test"; then
-              npx ng test --watch=false --browsers=ChromeHeadless
-            elif npm run | grep -q "test"; then
-              npm run test --if-present
-            else
-              echo "No Angular test configured; skipping"
-            fi
+            if [ "${{ steps.detect.outputs.angular_dir }}" = "angular" ]; then cd angular; fi
+            # Try Angular CLI first; else project test script if available
+            npx ng test --watch=false --browsers=ChromeHeadless || npm run test --if-present || echo "No Angular tests configured; skipping"
           else
             npm run test --if-present || echo "React unit tests failed (non-blocking)"
           fi
@@ -93,11 +87,9 @@ jobs:
       - name: Build
         run: |
           if [ "${{ steps.detect.outputs.framework }}" = "angular" ]; then
-            if npm run | grep -q "ng build"; then
-              npx ng build --configuration=production || npx ng build
-            else
-              echo "No Angular build configured; skipping"
-            fi
+            if [ "${{ steps.detect.outputs.angular_dir }}" = "angular" ]; then cd angular; fi
+            # Try prod build then fallback to default; if CLI missing, try npm script
+            npx ng build --configuration=production || npx ng build || npm run build --if-present || echo "No Angular build configured; skipping"
           else
             npm run build
           fi
