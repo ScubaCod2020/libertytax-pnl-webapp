@@ -36,7 +36,8 @@ jobs:
       - name: ⚠️ Console.log analysis
         id: console-check
         run: |
-          set -e
+          # Avoid exiting on non-zero grep; handle counts explicitly
+          set +e
           # Determine enforcement policy based on branch
           BRANCH_NAME="${GITHUB_REF_NAME}"
           ENFORCE=false
@@ -55,13 +56,14 @@ jobs:
             --exclude-dir=__mocks__ \
             --exclude-dir=e2e \
             --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
-            --exclude="*.spec.*" --exclude="*.test.*" \
-            || true)
-          COUNT=$(printf "%s" "$CONSOLE_LOGS" | grep -cE "$PATTERN" || echo "0")
+            --exclude="*.spec.*" --exclude="*.test.*" )
+          # Count matches robustly regardless of grep exit status
+          COUNT=$(printf "%s\n" "$CONSOLE_LOGS" | grep -E "$PATTERN" | wc -l | tr -d ' \r')
+          if [ -z "$COUNT" ]; then COUNT=0; fi
 
           echo "console_count=$COUNT" >> "$GITHUB_OUTPUT"
 
-          if [ "$COUNT" -gt 0 ]; then
+          if [ "$COUNT" -gt 0 ] 2>/dev/null; then
             echo "⚠️ Found $COUNT console statements"
             {
               echo "console_logs<<EOF"
