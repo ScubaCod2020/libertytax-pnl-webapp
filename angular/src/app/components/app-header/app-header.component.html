@@ -3,36 +3,49 @@
     <div class="header-logo-section">
       <app-brand-logo [region]="(region$ | async) || 'US'" variant="wide" size="large"></app-brand-logo>
     </div>
-  <div class="header-center-section">
-    <!-- Breadcrumb (optional) -->
-    <div *ngIf="hasBreadcrumb" class="header-breadcrumb">
-      <ng-container *ngFor="let item of breadcrumb!; let last = last">
-        <button *ngIf="item.onClick; else crumbText" (click)="item.onClick()" class="breadcrumb-button">{{ item.label }}</button>
-        <ng-template #crumbText><span>{{ item.label }}</span></ng-template>
-        <span *ngIf="!last" class="breadcrumb-separator">→</span>
-      </ng-container>
-    </div>
+    <div class="header-center-section">
+      <!-- Breadcrumb (optional) -->
+      <div *ngIf="hasBreadcrumb" class="header-breadcrumb">
+        <ng-container *ngFor="let item of breadcrumb!; let last = last">
+          <button *ngIf="item.onClick; else crumbText" (click)="item.onClick()" class="breadcrumb-button">{{ item.label
+            }}</button>
+          <ng-template #crumbText><span>{{ item.label }}</span></ng-template>
+          <span *ngIf="!last" class="breadcrumb-separator">→</span>
+        </ng-container>
+      </div>
 
-    <div class="h2 brand header-title">Liberty Tax • P&L Budget & Forecast</div>
-    <span class="small text-xs header-version">v{{ appVersion }} preview</span>
-  </div>
+      <div class="h2 brand header-title">Liberty Tax • P&L Budget & Forecast</div>
+      <span class="small text-xs header-version">v{{ appVersion }} preview</span>
+      <div class="small text-xs" data-testid="app-header-summary">
+        Region: {{ (region$ | async) || 'US' }}
+      </div>
+    </div>
     <div class="header-actions-section">
       <div class="header-nav-row">
-        <button (click)="goIncome()" class="btn {{ currentPage==='income' ? 'btn--active' : 'btn--nav' }}" title="Income Drivers">Income</button>
-        <button (click)="goExpenses()" class="btn {{ currentPage==='expenses' ? 'btn--active' : 'btn--nav' }}" title="Expenses">Expenses</button>
-        <button (click)="goReports()" class="btn {{ currentPage==='reports' ? 'btn--active' : 'btn--nav' }}" title="P&L Reports">Reports</button>
+        <button (click)="goIncome()" class="btn {{ currentPage==='income' ? 'btn--active' : 'btn--nav' }}"
+          title="Income Drivers">Income</button>
+        <button (click)="goExpenses()" class="btn {{ currentPage==='expenses' ? 'btn--active' : 'btn--nav' }}"
+          title="Expenses">Expenses</button>
+        <button (click)="goReports()" class="btn {{ currentPage==='reports' ? 'btn--active' : 'btn--nav' }}"
+          title="P&L Reports">Reports</button>
       </div>
       <div class="header-controls-row">
         <!-- Optional store pill -->
-        <span *ngIf="storeInfo" class="store-pill" [ngClass]="storeInfo.type === 'multi' ? 'store-pill--multi' : 'store-pill--single'">
-          {{ storeInfo.type === 'multi' ? ('🏢 ' + (storeInfo.count || 1) + ' Stores') : ('🏪 ' + (storeInfo.name || 'Single Store')) }}
+        <span *ngIf="storeInfo" class="store-pill"
+          [ngClass]="storeInfo.type === 'multi' ? 'store-pill--multi' : 'store-pill--single'">
+          {{ storeInfo.type === 'multi' ? ('🏢 ' + (storeInfo.count || 1) + ' Stores') : ('🏪 ' + (storeInfo.name ||
+          'Single Store')) }}
         </span>
-        <button (click)="goDashboard()" class="btn {{ currentPage==='dashboard' ? 'btn--active' : 'btn--nav' }}" title="Dashboard">Dashboard</button>
-        <button (click)="resetWizard()" class="btn btn--reset" title="Reset Wizard will clear Income, Expenses, and P&L pages.">Reset App</button>
-        <button (click)="toggleDebug()" class="btn {{ (debugOpen$|async) ? 'btn--active' : 'btn--nav' }}" title="Toggle Debug Panel">Debug</button>
+        <button (click)="goDashboard()" class="btn {{ currentPage==='dashboard' ? 'btn--active' : 'btn--nav' }}"
+          title="Dashboard">Dashboard</button>
+        <button (click)="resetWizard()" class="btn btn--reset"
+          title="Reset Wizard will clear Income, Expenses, and P&L pages.">Reset App</button>
+        <button (click)="toggleDebug()" class="btn {{ (debugOpen$|async) ? 'btn--active' : 'btn--nav' }}"
+          title="Toggle Debug Panel">Debug</button>
         <!-- Optional actions -->
         <ng-container *ngIf="actions?.length">
-          <button *ngFor="let a of actions" (click)="a.onClick()" [ngStyle]="actionStyle(a.variant)" class="action-button">
+          <button *ngFor="let a of actions" (click)="a.onClick()" [ngStyle]="actionStyle(a.variant)"
+            class="action-button">
             <span *ngIf="a.icon">{{ a.icon }}</span>
             {{ a.label }}
           </button>

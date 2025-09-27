@@ -1,7 +1,4 @@
-<div
-  *ngIf="adjustments.hasAdjustments"
-  class="strategic-analysis"
->
+<div *ngIf="adjustments.hasAdjustments" class="strategic-analysis">
   <div class="analysis-header">
     🎯 Strategic Analysis
   </div>
@@ -18,12 +15,13 @@
   <div class="performance-analysis">
     <div class="field-performance-header">
       🎯 <strong>Target vs. Actual Performance:</strong>
-      
+
       <div class="performance-details">
         💰 <strong>Revenue Performance:</strong>
         <br />• Target: ${{ formatCurrency(performance.targetRevenue) }}
         <br />• Actual: ${{ formatCurrency(performance.actualRevenue) }}
-        <br />• Variance: {{ performance.variance > 0 ? '+' : '' }}{{ Math.round(performance.variance) }}% {{ performance.variance > 0 ? 'above' : 'below' }} target
+        <br />• Variance: {{ performance.variance > 0 ? '+' : '' }}{{ round(performance.variance) }}% {{
+        performance.variance > 0 ? 'above' : 'below' }} target
         <br />
         <br />
         💸 <strong>Expense Control:</strong>
@@ -32,11 +30,8 @@
         <br />• Status: <em>Review on Page 2 for detailed breakdown</em>
       </div>
 
-      <div 
-        class="performance-status"
-        [class.exceeding]="performance.variance >= 0"
-        [class.missing]="performance.variance < 0"
-      >
+      <div class="performance-status" [class.exceeding]="performance.variance >= 0"
+        [class.missing]="performance.variance < 0">
         {{ performance.variance >= 0 ? '🎉' : '⚠️' }}
         <strong>
           {{ performance.variance >= 0 ? 'Exceeding' : 'Missing' }} your strategic target
@@ -51,4 +46,3 @@
     multiply, not just add together.
   </div>
 </div>
-

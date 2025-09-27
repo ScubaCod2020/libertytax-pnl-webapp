@@ -1,0 +1,1423 @@
+
+Running 89 tests using 4 workers
+
+  Γ£ÿ   2 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:76:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ has correct initial values (6.3s)
+  Γ£ÿ   1 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:65:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ displays the main application interface (6.5s)
+  Γ£ÿ   3 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:89:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ disables and resets TaxRush when switching to US (31.3s)
+  Γ£ÿ   4 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:84:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ enables TaxRush input when region is set to Canada (31.4s)
+  Γ£ÿ   8 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:150:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ displays KPI status colors correctly (6.0s)
+  Γ£ÿ   5 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:101:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ updates calculations when inputs change (31.6s)
+  Γ£ÿ   6 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:114:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ persists data across page reloads (31.6s)
+  Γ£ÿ   9 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:170:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ shows pro-tips based on KPI status (5.8s)
+  Γ£ÿ   7 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:134:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ resets all values when reset button is clicked (31.3s)
+  Γ£ÿ  13 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:212:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ keyboard navigation works correctly (5.9s)
+  Γ£ÿ  10 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:179:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ handles edge case of zero returns (31.6s)
+  Γ£ÿ  11 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:189:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ handles very large input values (31.5s)
+  Γ£ô  14 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:225:3 ΓÇ║ Performance & Responsiveness ΓÇ║ loads within acceptable time (809ms)
+  Γ£ô  15 [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:21:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ wizard can be opened (836ms)
+  Γ£ÿ  17 [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:9:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ homepage loads successfully (943ms)
+  Γ£ô  16 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:234:3 ΓÇ║ Performance & Responsiveness ΓÇ║ calculations are performant (1.6s)
+  Γ£ÿ  19 [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:71:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ responsive design - no horizontal scroll (1.3s)
+  Γ£ô  20 [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:58:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ no JavaScript errors on page load (1.3s)
+≡ƒô▒ Capturing React app screenshots...
+  Γ£ÿ  22 [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:93:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ basic form interactions work (824ms)
+  Γ£ÿ  12 [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:202:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ maintains TaxRush stickiness in Canada (31.5s)
+ΓÜí Capturing Angular app screenshots...
+≡ƒöì Starting UI debug capture...
+  Γ£ÿ  21 [Mobile Chrome] ΓÇ║ test\e2e\compare-react-angular.spec.js:5:3 ΓÇ║ React vs Angular Layout Comparison ΓÇ║ Capture React app screenshots for comparison (2.7s)
+≡ƒÅá Angular homepage captured
+≡ƒôä Angular page title: Liberty Tax P&L Tool (v0.4 Preview)
+≡ƒÜÇ Angular Quick Start components found: [33m1[39m
+≡ƒôè Angular headings found: [33m5[39m
+≡ƒô¥ Angular first heading: New Store ≡ƒÅ¬
+Testing: percentage accepts minimum value
+≡ƒôä Page title: Liberty Tax P&L Tool (v0.4 Preview)
+≡ƒÄ» app-root visible: [33mtrue[39m
+≡ƒîÉ Current URL: http://localhost:4200/wizard/income-drivers
+≡ƒÜÇ Quick Start Wizard visible: [33mtrue[39m
+≡ƒôè Number of h1 headings: [33m1[39m
+≡ƒô¥ First heading text: New Store ≡ƒÅ¬
+≡ƒôä Page contains text (first 200 chars): 
+  Liberty Tax ΓÇó P&L Budget & Forecastv0.6.0 previewIncomeExpensesReportsDashboardReset AppDebug≡ƒÅ╖∩╕Å Your Selections (From Step 1 - Read Only) ≡ƒöä Reset Wizard Region: United States ≡ƒç║≡ƒç╕ ΓÇóStore Type: ≡ƒÅó
+≡ƒÆ░ Expenses link visible: [33mtrue[39m
+≡ƒöä Navigating to expenses page...
+  Γ£ô  25 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:19:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ percentage accepts minimum value (726ms)
+Testing: percentage accepts maximum value
+  Γ£ô  26 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:26:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ percentage accepts maximum value (653ms)
+Testing: percentage rejects below minimum
+  Γ£ô  27 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:33:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ percentage rejects below minimum (717ms)
+Testing: percentage rejects above maximum
+≡ƒÆ░ Angular expenses page captured
+≡ƒÆ░ Angular expenses URL: http://localhost:4200/wizard/expenses
+  Γ£ô  28 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:40:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ percentage rejects above maximum (660ms)
+≡ƒÆ░ Expenses page URL: http://localhost:4200/wizard/expenses
+Testing: percentage rejects string input
+  Γ£ô  29 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:47:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ percentage rejects string input (693ms)
+Testing: percentage rejects null input
+  Γ£ô  30 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:54:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ percentage rejects null input (664ms)
+≡ƒôè Angular P&L page captured
+≡ƒôè P&L page URL: http://localhost:4200/wizard/pnl
+Γ£à Debug capture complete! Check the screenshots.
+Testing: currency accepts minimum value
+  Γ£ô  24 [Mobile Chrome] ΓÇ║ test\e2e\debug-ui-capture.spec.js:5:3 ΓÇ║ Debug UI Capture ΓÇ║ Capture full UI state for debugging (6.1s)
+  Γ£ô  31 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:61:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ currency accepts minimum value (799ms)
+Testing: currency accepts maximum value
+Testing: currency rejects below minimum
+  Γ£ô  32 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:68:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ currency accepts maximum value (719ms)
+  Γ£ô  33 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:75:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ currency rejects below minimum (722ms)
+≡ƒôê Angular dashboard captured
+Testing: currency rejects above maximum
+Testing: currency rejects string input
+  Γ£ô  23 [Mobile Chrome] ΓÇ║ test\e2e\compare-react-angular.spec.js:63:3 ΓÇ║ React vs Angular Layout Comparison ΓÇ║ Capture Angular app screenshots for comparison (7.8s)
+  Γ£ô  34 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:82:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ currency rejects above maximum (697ms)
+  Γ£ô  35 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:89:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ currency rejects string input (709ms)
+Testing: currency rejects null input
+Testing: returns accepts minimum value
+Testing: returns accepts maximum value
+  Γ£ô  36 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:96:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ currency rejects null input (742ms)
+  Γ£ô  37 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:103:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ returns accepts minimum value (765ms)
+  Γ£ô  38 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:110:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ returns accepts maximum value (772ms)
+Testing: returns rejects below minimum
+Testing: returns rejects above maximum
+Testing: returns rejects string input
+  Γ£ô  39 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:117:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ returns rejects below minimum (713ms)
+  Γ£ô  40 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:124:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ returns rejects above maximum (698ms)
+  Γ£ô  41 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:131:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ returns rejects string input (722ms)
+Testing: returns rejects null input
+Testing: growth accepts minimum value
+Testing: growth accepts maximum value
+  Γ£ô  42 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:138:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ returns rejects null input (792ms)
+  Γ£ô  43 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:145:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ growth accepts minimum value (749ms)
+  Γ£ô  44 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:152:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ growth accepts maximum value (859ms)
+Testing: growth rejects above maximum
+Testing: growth rejects below minimum
+Testing: growth rejects string input
+  Γ£ô  46 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:166:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ growth rejects above maximum (720ms)
+  Γ£ô  45 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:159:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ growth rejects below minimum (737ms)
+  Γ£ô  47 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:173:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ growth rejects string input (709ms)
+Testing: growth rejects null input
+Testing: keyboard navigation works correctly
+Testing: screen reader announcements are correct
+  Γ£ô  48 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:180:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Input Validation ΓÇ║ growth rejects null input (693ms)
+  Γ£ô  49 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:194:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Accessibility ΓÇ║ keyboard navigation works correctly (727ms)
+  Γ£ô  50 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:200:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Accessibility ΓÇ║ screen reader announcements are correct (700ms)
+Testing: error messages are announced
+Testing: color contrast meets WCAG standards
+Testing: renders within performance budget
+  Γ£ô  51 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:206:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Accessibility ΓÇ║ error messages are announced (752ms)
+  Γ£ô  52 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:212:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Accessibility ΓÇ║ color contrast meets WCAG standards (745ms)
+  Γ£ô  53 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:225:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Performance ΓÇ║ renders within performance budget (760ms)
+Testing: handles rapid input changes efficiently
+Testing: calculation updates are debounced
+Testing: complete wizard flow successfully
+  Γ£ô  54 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:231:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Performance ΓÇ║ handles rapid input changes efficiently (729ms)
+  Γ£ô  55 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:237:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ Performance ΓÇ║ calculation updates are debounced (730ms)
+  Γ£ô  56 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:250:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ User Journeys ΓÇ║ complete wizard flow successfully (751ms)
+Testing: recover from validation errors gracefully
+Testing: data persistence across page refresh
+  Γ£ô  57 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:262:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ User Journeys ΓÇ║ recover from validation errors gracefully (724ms)
+  Γ£ô  58 [Mobile Chrome] ΓÇ║ test\e2e\generated\wizardinputs.generated.spec.js:272:5 ΓÇ║ WizardInputs - Auto-generated Tests ΓÇ║ User Journeys ΓÇ║ data persistence across page refresh (714ms)
+  Γ£ÿ  59 [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:9:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ touch targets are large enough (806ms)
+  Γ£ô  61 [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:44:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ viewport meta tag prevents zoom (724ms)
+  Γ£ÿ  60 [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:27:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ mobile keyboard interactions (773ms)
+  Γ£ÿ  64 [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:93:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ scroll behavior on mobile (758ms)
+  Γ£ÿ  63 [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:54:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ orientation change handling (1.3s)
+  Γ£ô  66 [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:129:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ mobile gestures do not interfere (810ms)
+  Γ£ô  65 [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:118:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ mobile performance - load time (1.4s)
+  Γ£ÿ  67 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:8:3 ΓÇ║ Mobile Responsiveness ΓÇ║ displays correctly on mobile viewports (5.9s)
+  Γ£ÿ  68 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:15:3 ΓÇ║ Mobile Responsiveness ΓÇ║ region selector is accessible on mobile (5.9s)
+  Γ£ÿ  18 [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:41:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ debug panel can be accessed (30.2s)
+  Γ£ÿ  69 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:24:3 ΓÇ║ Mobile Responsiveness ΓÇ║ input fields are properly sized for mobile (1.2s)
+  Γ£ô  71 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:53:3 ΓÇ║ Mobile Responsiveness ΓÇ║ text is readable on mobile screens (828ms)
+  Γ£ô  72 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:80:3 ΓÇ║ Touch Interactions ΓÇ║ tap to focus inputs works correctly (697ms)
+  Γ£ô  73 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:65:3 ΓÇ║ Mobile Responsiveness ΓÇ║ footer content is accessible on mobile (787ms)
+  Γ£ÿ  74 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:88:3 ΓÇ║ Touch Interactions ΓÇ║ tap and hold does not interfere with input (6.7s)
+  Γ£ÿ  76 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:109:3 ΓÇ║ Touch Interactions ΓÇ║ reset button responds to touch (787ms)
+  Γ£ô  77 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:125:3 ΓÇ║ Mobile Performance ΓÇ║ app loads quickly on mobile connections (1.2s)
+  Γ£ÿ  62 [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:75:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ mobile-specific layout elements (31.1s)
+  Γ£ÿ  70 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:39:3 ΓÇ║ Mobile Responsiveness ΓÇ║ KPI cards stack vertically on mobile (31.1s)
+  Γ£ÿ  75 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:100:3 ΓÇ║ Touch Interactions ΓÇ║ select dropdown works with touch (31.1s)
+  Γ£ÿ  80 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:172:3 ΓÇ║ Mobile Specific Features ΓÇ║ handles device orientation changes gracefully (5.2s)
+  Γ£ÿ  81 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:186:3 ΓÇ║ Mobile Specific Features ΓÇ║ supports dark mode if device prefers it (5.5s)
+  Γ£ÿ  82 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:197:3 ΓÇ║ Accessibility on Mobile ΓÇ║ maintains proper focus management (5.5s)
+  Γ£ÿ  78 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:140:3 ΓÇ║ Mobile Performance ΓÇ║ calculations remain responsive during rapid input (31.6s)
+  Γ£ÿ  84 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:211:3 ΓÇ║ Accessibility on Mobile ΓÇ║ maintains sufficient color contrast (273ms)
+≡ƒöì Starting header update test...
+  Γ£ÿ  79 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:159:3 ΓÇ║ Mobile Specific Features ΓÇ║ prevents zoom on input focus (if implemented) (31.6s)
+≡ƒöì Starting navigation test...
+≡ƒöä Clicking Expenses button...
+  Γ£ô  85 [Mobile Chrome] ΓÇ║ test\e2e\snapshots.spec.ts:19:3 ΓÇ║ UI Snapshots ΓÇ║ capture key screens (9.1s)
+  Γ£ÿ  87 [Mobile Chrome] ΓÇ║ test\e2e\test-header-updates.spec.js:56:3 ΓÇ║ Header Updates from Quick Start Wizard ΓÇ║ should navigate correctly between pages (802ms)
+  Γ£ÿ  83 [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:204:3 ΓÇ║ Accessibility on Mobile ΓÇ║ form labels work with screen readers (31.6s)
+  Γ£ÿ  86 [Mobile Chrome] ΓÇ║ test\e2e\test-header-updates.spec.js:5:3 ΓÇ║ Header Updates from Quick Start Wizard ΓÇ║ should update header when Quick Start Wizard values change (31.1s)
+  Γ£ÿ  88 [Mobile Chrome] ΓÇ║ test\e2e\wizard-flow-matrix.spec.ts:15:5 ΓÇ║ Wizard Flow Matrix (Angular approx) ΓÇ║ Scenario: US returns=500, fee=250, growth=5, other=0 (31.1s)
+  Γ£ÿ  89 [Mobile Chrome] ΓÇ║ test\e2e\wizard-flow-matrix.spec.ts:15:5 ΓÇ║ Wizard Flow Matrix (Angular approx) ΓÇ║ Scenario: CA returns=1600, fee=250, growth=0, other=0 (31.1s)
+
+
+  1) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:65:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ displays the main application interface 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m failed
+
+    Locator:  locator('text=Quick Inputs')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Quick Inputs')[22m
+
+
+      68 |     
+      69 |     // Check main sections are present
+    > 70 |     await expect(page.locator('text=Quick Inputs')).toBeVisible()
+         |                                                     ^
+      71 |     await expect(page.locator('text=Dashboard')).toBeVisible()
+      72 |     await expect(page.locator('text=Income Drivers')).toBeVisible()
+      73 |     await expect(page.locator('text=Expense Percentages')).toBeVisible()
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:70:53
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-28f45--main-application-interface-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-28f45--main-application-interface-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Applic-28f45--main-application-interface-Mobile-Chrome\error-context.md
+
+  2) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:76:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ has correct initial values 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveValue[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('select[aria-label="Region"]')
+    Expected string: [32m"US"[39m
+    Received: <element(s) not found>
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toHaveValue" with timeout 5000ms[22m
+    [2m  - waiting for locator('select[aria-label="Region"]')[22m
+
+
+      75 |
+      76 |   test('has correct initial values', async ({ page }) => {
+    > 77 |     await expect(pnlPage.regionSelect).toHaveValue('US')
+         |                                        ^
+      78 |     await expect(pnlPage.avgNetFeeInput).toHaveValue('125')
+      79 |     await expect(pnlPage.taxPrepReturnsInput).toHaveValue('1600')
+      80 |     await expect(pnlPage.taxRushReturnsInput).toHaveValue('0')
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:77:40
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Application-has-correct-initial-values-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Application-has-correct-initial-values-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Application-has-correct-initial-values-Mobile-Chrome\error-context.md
+
+  3) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:84:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ enables TaxRush input when region is set to Canada 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('select[aria-label="Region"]')[22m
+
+
+      19 |   // Actions
+      20 |   async selectRegion(region: 'US' | 'CA') {
+    > 21 |     await this.regionSelect.selectOption(region)
+         |                             ^
+      22 |   }
+      23 |
+      24 |   async setAvgNetFee(value: number) {
+        at PnLPage.selectRegion (D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:21:29)
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:85:19
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-a7d90-hen-region-is-set-to-Canada-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-a7d90-hen-region-is-set-to-Canada-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Applic-a7d90-hen-region-is-set-to-Canada-Mobile-Chrome\error-context.md
+
+  4) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:89:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ disables and resets TaxRush when switching to US 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('select[aria-label="Region"]')[22m
+
+
+      19 |   // Actions
+      20 |   async selectRegion(region: 'US' | 'CA') {
+    > 21 |     await this.regionSelect.selectOption(region)
+         |                             ^
+      22 |   }
+      23 |
+      24 |   async setAvgNetFee(value: number) {
+        at PnLPage.selectRegion (D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:21:29)
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:91:19
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-41f44-axRush-when-switching-to-US-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-41f44-axRush-when-switching-to-US-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Applic-41f44-axRush-when-switching-to-US-Mobile-Chrome\error-context.md
+
+  5) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:101:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ updates calculations when inputs change 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.textContent: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.kpi:has-text("Net Income") .value')[22m
+
+
+      101 |   test('updates calculations when inputs change', async ({ page }) => {
+      102 |     // Get initial net income
+    > 103 |     const initialNetIncome = await pnlPage.netIncomeValue.textContent()
+          |                                                           ^
+      104 |     
+      105 |     // Change average net fee
+      106 |     await pnlPage.setAvgNetFee(200)
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:103:59
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-bf17e-ulations-when-inputs-change-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-bf17e-ulations-when-inputs-change-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Applic-bf17e-ulations-when-inputs-change-Mobile-Chrome\error-context.md
+
+  6) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:114:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ persists data across page reloads 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('select[aria-label="Region"]')[22m
+
+
+      19 |   // Actions
+      20 |   async selectRegion(region: 'US' | 'CA') {
+    > 21 |     await this.regionSelect.selectOption(region)
+         |                             ^
+      22 |   }
+      23 |
+      24 |   async setAvgNetFee(value: number) {
+        at PnLPage.selectRegion (D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:21:29)
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:116:19
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-5df4b-ts-data-across-page-reloads-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-5df4b-ts-data-across-page-reloads-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Applic-5df4b-ts-data-across-page-reloads-Mobile-Chrome\error-context.md
+
+  7) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:134:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ resets all values when reset button is clicked 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('select[aria-label="Region"]')[22m
+
+
+      19 |   // Actions
+      20 |   async selectRegion(region: 'US' | 'CA') {
+    > 21 |     await this.regionSelect.selectOption(region)
+         |                             ^
+      22 |   }
+      23 |
+      24 |   async setAvgNetFee(value: number) {
+        at PnLPage.selectRegion (D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:21:29)
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:136:19
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-3e526-hen-reset-button-is-clicked-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-3e526-hen-reset-button-is-clicked-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Applic-3e526-hen-reset-button-is-clicked-Mobile-Chrome\error-context.md
+
+  8) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:150:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ displays KPI status colors correctly 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m failed
+
+    Locator:  locator('.kpi:has-text("Net Income")')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('.kpi:has-text("Net Income")')[22m
+
+
+      154 |     const costPerReturnKPI = page.locator('.kpi:has-text("Cost / Return")')
+      155 |     
+    > 156 |     await expect(netIncomeKPI).toBeVisible()
+          |                                ^
+      157 |     await expect(netMarginKPI).toBeVisible()
+      158 |     await expect(costPerReturnKPI).toBeVisible()
+      159 |     
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:156:32
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-a0fcb-KPI-status-colors-correctly-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-a0fcb-KPI-status-colors-correctly-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Applic-a0fcb-KPI-status-colors-correctly-Mobile-Chrome\error-context.md
+
+  9) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:170:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ shows pro-tips based on KPI status 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m failed
+
+    Locator:  locator('.card:has-text("Pro-Tips")')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('.card:has-text("Pro-Tips")')[22m
+
+
+      174 |     // There should be some tips shown (content depends on current KPI status)
+      175 |     const proTipsSection = page.locator('.card:has-text("Pro-Tips")')
+    > 176 |     await expect(proTipsSection).toBeVisible()
+          |                                  ^
+      177 |   })
+      178 |
+      179 |   test('handles edge case of zero returns', async ({ page }) => {
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:176:34
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-79a77-ro-tips-based-on-KPI-status-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-79a77-ro-tips-based-on-KPI-status-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Applic-79a77-ro-tips-based-on-KPI-status-Mobile-Chrome\error-context.md
+
+  10) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:179:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ handles edge case of zero returns 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('label:has-text("Tax Prep Returns") + input')[22m
+
+
+      28 |
+      29 |   async setTaxPrepReturns(value: number) {
+    > 30 |     await this.taxPrepReturnsInput.fill(value.toString())
+         |                                    ^
+      31 |     await this.taxPrepReturnsInput.blur()
+      32 |   }
+      33 |
+        at PnLPage.setTaxPrepReturns (D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:30:36)
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:180:19
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-c5652-s-edge-case-of-zero-returns-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-c5652-s-edge-case-of-zero-returns-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Applic-c5652-s-edge-case-of-zero-returns-Mobile-Chrome\error-context.md
+
+  11) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:189:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ handles very large input values 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('label:has-text("Tax Prep Returns") + input')[22m
+
+
+      28 |
+      29 |   async setTaxPrepReturns(value: number) {
+    > 30 |     await this.taxPrepReturnsInput.fill(value.toString())
+         |                                    ^
+      31 |     await this.taxPrepReturnsInput.blur()
+      32 |   }
+      33 |
+        at PnLPage.setTaxPrepReturns (D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:30:36)
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:191:19
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-4d9a5-les-very-large-input-values-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-4d9a5-les-very-large-input-values-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Applic-4d9a5-les-very-large-input-values-Mobile-Chrome\error-context.md
+
+  12) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:202:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ maintains TaxRush stickiness in Canada 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('select[aria-label="Region"]')[22m
+
+
+      19 |   // Actions
+      20 |   async selectRegion(region: 'US' | 'CA') {
+    > 21 |     await this.regionSelect.selectOption(region)
+         |                             ^
+      22 |   }
+      23 |
+      24 |   async setAvgNetFee(value: number) {
+        at PnLPage.selectRegion (D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:21:29)
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:204:19
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-3048b-axRush-stickiness-in-Canada-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-3048b-axRush-stickiness-in-Canada-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Applic-3048b-axRush-stickiness-in-Canada-Mobile-Chrome\error-context.md
+
+  13) [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:212:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ keyboard navigation works correctly 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeFocused[2m()[22m failed
+
+    Locator:  locator('select[aria-label="Region"]')
+    Expected: focused
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeFocused" with timeout 5000ms[22m
+    [2m  - waiting for locator('select[aria-label="Region"]')[22m
+
+
+      213 |     // Test tab navigation through inputs
+      214 |     await page.keyboard.press('Tab')
+    > 215 |     await expect(pnlPage.regionSelect).toBeFocused()
+          |                                        ^
+      216 |     
+      217 |     // Continue tabbing to inputs
+      218 |     await page.keyboard.press('Tab')
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\app.spec.ts:215:40
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-e3e28--navigation-works-correctly-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\app-Liberty-Tax-P-L-Applic-e3e28--navigation-works-correctly-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\app-Liberty-Tax-P-L-Applic-e3e28--navigation-works-correctly-Mobile-Chrome\error-context.md
+
+  14) [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:9:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ homepage loads successfully 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      16 |     // Look for key elements that should be present
+      17 |     const hasMainContent = await page.locator('main, #root, .app, [class*="app"]').first().isVisible();
+    > 18 |     expect(hasMainContent).toBeTruthy();
+         |                            ^
+      19 |   });
+      20 |
+      21 |   test('wizard can be opened', async ({ page }) => {
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\basic-functionality.spec.js:18:28
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\basic-functionality-Libert-1309d-homepage-loads-successfully-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\basic-functionality-Libert-1309d-homepage-loads-successfully-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\basic-functionality-Libert-1309d-homepage-loads-successfully-Mobile-Chrome\error-context.md
+
+  15) [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:41:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ debug panel can be accessed 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('button').filter({ hasText: /debug/i }).first()[22m
+    [2m    - locator resolved to <button class="btn btn--nav" title="Toggle Debug Panel" _ngcontent-ng-c3736343573="">Debug</button>[22m
+    [2m  - attempting click action[22m
+    [2m    - waiting for element to be visible, enabled and stable[22m
+    [2m    - element is visible, enabled and stable[22m
+    [2m    - scrolling into view if needed[22m
+    [2m    - done scrolling[22m
+    [2m    - <img alt="Liberty Tax" _ngcontent-ng-c24612584="" src="assets/brands/us/LT-2022-Wide-RGB.png"/> from <div class="header-logo-section" _ngcontent-ng-c3736343573="">ΓÇª</div> subtree intercepts pointer events[22m
+    [2m  - retrying click action[22m
+    [2m    - waiting for element to be visible, enabled and stable[22m
+    [2m    - element is visible, enabled and stable[22m
+    [2m    - scrolling into view if needed[22m
+    [2m    - done scrolling[22m
+    [2m    - <div _ngcontent-ng-c3736343573="" class="h2 brand header-title">Liberty Tax ΓÇó P&L Budget & Forecast</div> from <div _ngcontent-ng-c3736343573="" class="header-center-section">ΓÇª</div> subtree intercepts pointer events[22m
+    [2m  - retrying click action[22m
+    [2m    - waiting 20ms[22m
+    [2m    2 ├ù waiting for element to be visible, enabled and stable[22m
+    [2m      - element is visible, enabled and stable[22m
+    [2m      - scrolling into view if needed[22m
+    [2m      - done scrolling[22m
+    [2m      - <img alt="Liberty Tax" _ngcontent-ng-c24612584="" src="assets/brands/us/LT-2022-Wide-RGB.png"/> from <div class="header-logo-section" _ngcontent-ng-c3736343573="">ΓÇª</div> subtree intercepts pointer events[22m
+    [2m    - retrying click action[22m
+    [2m      - waiting 100ms[22m
+    [2m    14 ├ù waiting for element to be visible, enabled and stable[22m
+    [2m       - element is visible, enabled and stable[22m
+    [2m       - scrolling into view if needed[22m
+    [2m       - done scrolling[22m
+    [2m       - <img alt="Liberty Tax" _ngcontent-ng-c24612584="" src="assets/brands/us/LT-2022-Wide-RGB.png"/> from <div class="header-logo-section" _ngcontent-ng-c3736343573="">ΓÇª</div> subtree intercepts pointer events[22m
+    [2m     - retrying click action[22m
+    [2m       - waiting 500ms[22m
+    [2m       - waiting for element to be visible, enabled and stable[22m
+    [2m       - element is visible, enabled and stable[22m
+    [2m       - scrolling into view if needed[22m
+    [2m       - done scrolling[22m
+    [2m       - <div _ngcontent-ng-c3736343573="" class="h2 brand header-title">Liberty Tax ΓÇó P&L Budget & Forecast</div> from <div _ngcontent-ng-c3736343573="" class="header-center-section">ΓÇª</div> subtree intercepts pointer events[22m
+    [2m     - retrying click action[22m
+    [2m       - waiting 500ms[22m
+    [2m       - waiting for element to be visible, enabled and stable[22m
+    [2m       - element is visible, enabled and stable[22m
+    [2m       - scrolling into view if needed[22m
+    [2m       - done scrolling[22m
+    [2m       - <img alt="Liberty Tax" _ngcontent-ng-c24612584="" src="assets/brands/us/LT-2022-Wide-RGB.png"/> from <div class="header-logo-section" _ngcontent-ng-c3736343573="">ΓÇª</div> subtree intercepts pointer events[22m
+    [2m     - retrying click action[22m
+    [2m       - waiting 500ms[22m
+    [2m       - waiting for element to be visible, enabled and stable[22m
+    [2m       - element is visible, enabled and stable[22m
+    [2m       - scrolling into view if needed[22m
+    [2m       - done scrolling[22m
+    [2m       - <img alt="Liberty Tax" _ngcontent-ng-c24612584="" src="assets/brands/us/LT-2022-Wide-RGB.png"/> from <div class="header-logo-section" _ngcontent-ng-c3736343573="">ΓÇª</div> subtree intercepts pointer events[22m
+    [2m     - retrying click action[22m
+    [2m       - waiting 500ms[22m
+
+
+      46 |     
+      47 |     if (await debugButton.isVisible()) {
+    > 48 |       await debugButton.click();
+         |                         ^
+      49 |       
+      50 |       // Check if debug panel opened
+      51 |       const debugPanel = page.locator('[class*="debug"], [id*="debug"], [data-testid*="debug"]');
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\basic-functionality.spec.js:48:25
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\basic-functionality-Libert-44b0b-debug-panel-can-be-accessed-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\basic-functionality-Libert-44b0b-debug-panel-can-be-accessed-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\basic-functionality-Libert-44b0b-debug-panel-can-be-accessed-Mobile-Chrome\error-context.md
+
+  16) [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:71:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ responsive design - no horizontal scroll 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m380[39m
+    Received:    [31m724[39m
+
+      87 |       
+      88 |       // Allow small tolerance (5px) for rounding
+    > 89 |       expect(bodyWidth).toBeLessThanOrEqual(viewportWidth + 5);
+         |                         ^
+      90 |     }
+      91 |   });
+      92 |
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\basic-functionality.spec.js:89:25
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\basic-functionality-Libert-65b29-sign---no-horizontal-scroll-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\basic-functionality-Libert-65b29-sign---no-horizontal-scroll-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\basic-functionality-Libert-65b29-sign---no-horizontal-scroll-Mobile-Chrome\error-context.md
+
+  17) [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:93:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ basic form interactions work 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m"123"[39m
+    Received: [31m""[39m
+
+      109 |             await input.fill('123');
+      110 |             const value = await input.inputValue();
+    > 111 |             expect(value).toBe('123');
+          |                           ^
+      112 |           }
+      113 |         } else if (tagName === 'select') {
+      114 |           await input.click();
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\basic-functionality.spec.js:111:27
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\basic-functionality-Libert-cae2f-asic-form-interactions-work-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\basic-functionality-Libert-cae2f-asic-form-interactions-work-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\basic-functionality-Libert-cae2f-asic-form-interactions-work-Mobile-Chrome\error-context.md
+
+  18) [Mobile Chrome] ΓÇ║ test\e2e\compare-react-angular.spec.js:5:3 ΓÇ║ React vs Angular Layout Comparison ΓÇ║ Capture React app screenshots for comparison 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+    Call log:
+    [2m  - navigating to "http://localhost:3000/", waiting until "load"[22m
+
+
+       7 |
+       8 |     // Go to React app
+    >  9 |     await page.goto('http://localhost:3000');
+         |                ^
+      10 |     await page.waitForLoadState('networkidle');
+      11 |
+      12 |     // Take full page screenshot
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\compare-react-angular.spec.js:9:16
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\compare-react-angular-Reac-36ff0--screenshots-for-comparison-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\compare-react-angular-Reac-36ff0--screenshots-for-comparison-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+  19) [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:9:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ touch targets are large enough 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m44[39m
+    Received:    [31m27[39m
+
+      19 |           // Minimum touch target size should be 44x44px (Apple guidelines)
+      20 |           expect(box.width).toBeGreaterThanOrEqual(44);
+    > 21 |           expect(box.height).toBeGreaterThanOrEqual(44);
+         |                              ^
+      22 |         }
+      23 |       }
+      24 |     }
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\mobile-specific.spec.js:21:30
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-mobile-specific-Lib-3979d-ch-targets-are-large-enough-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-mobile-specific-Lib-3979d-ch-targets-are-large-enough-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\mobile-mobile-specific-Lib-3979d-ch-targets-are-large-enough-Mobile-Chrome\error-context.md
+
+  20) [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:27:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ mobile keyboard interactions 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m"123.45"[39m
+    Received: [31m""[39m
+
+      38 |       await firstInput.fill('123.45');
+      39 |       const value = await firstInput.inputValue();
+    > 40 |       expect(value).toBe('123.45');
+         |                     ^
+      41 |     }
+      42 |   });
+      43 |
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\mobile-specific.spec.js:40:21
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-mobile-specific-Lib-574cd-obile-keyboard-interactions-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-mobile-specific-Lib-574cd-obile-keyboard-interactions-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\mobile-mobile-specific-Lib-574cd-obile-keyboard-interactions-Mobile-Chrome\error-context.md
+
+  21) [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:54:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ orientation change handling 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m380[39m
+    Received:    [31m724[39m
+
+      62 |     // Check no horizontal scroll in portrait
+      63 |     let bodyWidth = await page.evaluate(() => document.body.scrollWidth);
+    > 64 |     expect(bodyWidth).toBeLessThanOrEqual(375 + 5);
+         |                       ^
+      65 |     
+      66 |     // Switch to landscape
+      67 |     await page.setViewportSize({ width: 667, height: 375 });
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\mobile-specific.spec.js:64:23
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-mobile-specific-Lib-0ccce-orientation-change-handling-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-mobile-specific-Lib-0ccce-orientation-change-handling-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\mobile-mobile-specific-Lib-0ccce-orientation-change-handling-Mobile-Chrome\error-context.md
+
+  22) [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:75:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ mobile-specific layout elements 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.boundingBox: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('main, #root, .app').first()[22m
+
+
+      83 |       // Check that content is not cut off
+      84 |       const mainContent = page.locator('main, #root, .app').first();
+    > 85 |       const box = await mainContent.boundingBox();
+         |                                     ^
+      86 |       
+      87 |       if (box) {
+      88 |         expect(box.width).toBeLessThanOrEqual(viewport.width);
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\mobile-specific.spec.js:85:37
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-mobile-specific-Lib-e887c-le-specific-layout-elements-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-mobile-specific-Lib-e887c-le-specific-layout-elements-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\mobile-mobile-specific-Lib-e887c-le-specific-layout-elements-Mobile-Chrome\error-context.md
+
+  23) [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:93:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ scroll behavior on mobile 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m398[39m
+    Received:    [31m724[39m
+
+      105 |       
+      106 |       // Should not have horizontal scroll
+    > 107 |       expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 5);
+          |                                      ^
+      108 |       
+      109 |       // Should be able to scroll vertically if content is tall
+      110 |       if (dimensions.scrollHeight > dimensions.clientHeight) {
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\mobile-specific.spec.js:107:38
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-mobile-specific-Lib-b1e88-s-scroll-behavior-on-mobile-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-mobile-specific-Lib-b1e88-s-scroll-behavior-on-mobile-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\mobile-mobile-specific-Lib-b1e88-s-scroll-behavior-on-mobile-Mobile-Chrome\error-context.md
+
+  24) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:8:3 ΓÇ║ Mobile Responsiveness ΓÇ║ displays correctly on mobile viewports 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m failed
+
+    Locator:  locator('text=Quick Inputs')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Quick Inputs')[22m
+
+
+       9 |     // Test main elements are visible
+      10 |     await expect(page.locator('text=Liberty Tax ΓÇó P&L Budget & Forecast')).toBeVisible()
+    > 11 |     await expect(page.locator('text=Quick Inputs')).toBeVisible()
+         |                                                     ^
+      12 |     await expect(page.locator('text=Dashboard')).toBeVisible()
+      13 |   })
+      14 |
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:11:53
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-R-deefb-rrectly-on-mobile-viewports-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-R-deefb-rrectly-on-mobile-viewports-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\mobile-responsive-Mobile-R-deefb-rrectly-on-mobile-viewports-Mobile-Chrome\error-context.md
+
+  25) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:15:3 ΓÇ║ Mobile Responsiveness ΓÇ║ region selector is accessible on mobile 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m failed
+
+    Locator:  locator('select[aria-label="Region"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('select[aria-label="Region"]')[22m
+
+
+      15 |   test('region selector is accessible on mobile', async ({ page }) => {
+      16 |     const regionSelect = page.locator('select[aria-label="Region"]')
+    > 17 |     await expect(regionSelect).toBeVisible()
+         |                                ^
+      18 |     
+      19 |     // Should be large enough to tap
+      20 |     const box = await regionSelect.boundingBox()
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:17:32
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-R-2141b-tor-is-accessible-on-mobile-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-R-2141b-tor-is-accessible-on-mobile-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\mobile-responsive-Mobile-R-2141b-tor-is-accessible-on-mobile-Mobile-Chrome\error-context.md
+
+  26) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:24:3 ΓÇ║ Mobile Responsiveness ΓÇ║ input fields are properly sized for mobile 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m44[39m
+    Received:    [31m33[39m
+
+      31 |       
+      32 |       // Inputs should be at least 44px high (iOS guideline)
+    > 33 |       expect(box?.height).toBeGreaterThanOrEqual(44)
+         |                           ^
+      34 |       // And visible
+      35 |       await expect(input).toBeVisible()
+      36 |     }
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:33:27
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-R-4ace1-e-properly-sized-for-mobile-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-R-4ace1-e-properly-sized-for-mobile-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\mobile-responsive-Mobile-R-4ace1-e-properly-sized-for-mobile-Mobile-Chrome\error-context.md
+
+  27) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:39:3 ΓÇ║ Mobile Responsiveness ΓÇ║ KPI cards stack vertically on mobile 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.boundingBox: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.kpi').first()[22m
+
+
+      42 |     const secondCard = kpiCards.nth(1)
+      43 |     
+    > 44 |     const firstBox = await firstCard.boundingBox()
+         |                                      ^
+      45 |     const secondBox = await secondCard.boundingBox()
+      46 |     
+      47 |     // Second card should be below first card (higher Y position)
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:44:38
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-R-1fa5d--stack-vertically-on-mobile-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-R-1fa5d--stack-vertically-on-mobile-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\mobile-responsive-Mobile-R-1fa5d--stack-vertically-on-mobile-Mobile-Chrome\error-context.md
+
+  28) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:88:3 ΓÇ║ Touch Interactions ΓÇ║ tap and hold does not interfere with input 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveValue[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('input[type="number"]').first()
+    Expected string: [32m"200"[39m
+    Received string: [31m""[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toHaveValue" with timeout 5000ms[22m
+    [2m  - waiting for locator('input[type="number"]').first()[22m
+    [2m    9 ├ù locator resolved to <input type="number" placeholder="e.g., 1,680" _ngcontent-ng-c149903716="" class="input ng-untouched ng-valid ng-dirty"/>[22m
+    [2m      - unexpected value ""[22m
+
+
+       95 |     // Should still be able to type
+       96 |     await avgNetFeeInput.fill('200')
+    >  97 |     await expect(avgNetFeeInput).toHaveValue('200')
+          |                                  ^
+       98 |   })
+       99 |
+      100 |   test('select dropdown works with touch', async ({ page }) => {
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:97:34
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Touch-In-fbf8d-es-not-interfere-with-input-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Touch-In-fbf8d-es-not-interfere-with-input-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\mobile-responsive-Touch-In-fbf8d-es-not-interfere-with-input-Mobile-Chrome\error-context.md
+
+  29) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:100:3 ΓÇ║ Touch Interactions ΓÇ║ select dropdown works with touch 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.tap: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('select[aria-label="Region"]')[22m
+
+
+      101 |     const regionSelect = page.locator('select[aria-label="Region"]')
+      102 |     
+    > 103 |     await regionSelect.tap()
+          |                        ^
+      104 |     await regionSelect.selectOption('CA')
+      105 |     
+      106 |     await expect(regionSelect).toHaveValue('CA')
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:103:24
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Touch-In-5ec8c-t-dropdown-works-with-touch-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Touch-In-5ec8c-t-dropdown-works-with-touch-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\mobile-responsive-Touch-In-5ec8c-t-dropdown-works-with-touch-Mobile-Chrome\error-context.md
+
+  30) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:109:3 ΓÇ║ Touch Interactions ΓÇ║ reset button responds to touch 
+
+    Error: locator.tap: Error: strict mode violation: locator('button:has-text("Reset")') resolved to 3 elements:
+        1) <button class="btn btn--reset" _ngcontent-ng-c3736343573="" title="Reset Wizard will clear Income, Expenses, and P&L pages.">Reset App</button> aka getByRole('button', { name: 'Reset App' })
+        2) <button class="reset-wizard-btn" _ngcontent-ng-c3691507545="" title="Reset Quick Start Wizard"> ≡ƒöä Reset Wizard </button> aka getByRole('button', { name: '≡ƒöä Reset Wizard' })
+        3) <button class="reset-section-btn" _ngcontent-ng-c149903716="" title="Reset Target Performance Goals"> ≡ƒöä Reset Goals </button> aka getByRole('button', { name: '≡ƒöä Reset Goals' })
+
+    Call log:
+    [2m  - waiting for locator('button:has-text("Reset")')[22m
+
+
+      115 |     
+      116 |     // Tap reset
+    > 117 |     await resetButton.tap()
+          |                       ^
+      118 |     
+      119 |     // Should reset to default
+      120 |     await expect(avgNetFeeInput).toHaveValue('125')
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:117:23
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Touch-In-6d407-et-button-responds-to-touch-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Touch-In-6d407-et-button-responds-to-touch-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\mobile-responsive-Touch-In-6d407-et-button-responds-to-touch-Mobile-Chrome\error-context.md
+
+  31) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:140:3 ΓÇ║ Mobile Performance ΓÇ║ calculations remain responsive during rapid input 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('input[type="number"]').first()[22m
+
+
+      144 |     const values = ['100', '150', '200', '250', '300']
+      145 |     for (const value of values) {
+    > 146 |       await avgNetFeeInput.fill(value)
+          |                            ^
+      147 |       await page.waitForTimeout(100) // Brief pause between changes
+      148 |     }
+      149 |     
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:146:28
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-P-22aae-sponsive-during-rapid-input-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-P-22aae-sponsive-during-rapid-input-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+  32) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:159:3 ΓÇ║ Mobile Specific Features ΓÇ║ prevents zoom on input focus (if implemented) 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.getAttribute: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('meta[name="viewport"]')[22m
+
+
+      160 |     // Check if viewport meta tag prevents zoom
+      161 |     const viewportMeta = page.locator('meta[name="viewport"]')
+    > 162 |     const content = await viewportMeta.getAttribute('content')
+          |                                        ^
+      163 |     
+      164 |     // This test depends on whether zoom prevention is desired
+      165 |     // Some accessibility guidelines recommend allowing zoom
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:162:40
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-S-ce6d6-input-focus-if-implemented--Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-S-ce6d6-input-focus-if-implemented--Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+  33) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:172:3 ΓÇ║ Mobile Specific Features ΓÇ║ handles device orientation changes gracefully 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m failed
+
+    Locator:  locator('text=Liberty Tax ΓÇó P&L Budget & Forecast')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Liberty Tax ΓÇó P&L Budget & Forecast')[22m
+
+
+      173 |     // Start in portrait
+      174 |     await page.setViewportSize({ width: 390, height: 844 })
+    > 175 |     await expect(page.locator('text=Liberty Tax ΓÇó P&L Budget & Forecast')).toBeVisible()
+          |                                                                            ^
+      176 |     
+      177 |     // Switch to landscape
+      178 |     await page.setViewportSize({ width: 844, height: 390 })
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:175:76
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-S-d86fe-entation-changes-gracefully-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+  34) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:186:3 ΓÇ║ Mobile Specific Features ΓÇ║ supports dark mode if device prefers it 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m failed
+
+    Locator:  locator('text=Liberty Tax ΓÇó P&L Budget & Forecast')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Liberty Tax ΓÇó P&L Budget & Forecast')[22m
+
+
+      190 |     
+      191 |     // App should still function (specific styling tests would go here)
+    > 192 |     await expect(page.locator('text=Liberty Tax ΓÇó P&L Budget & Forecast')).toBeVisible()
+          |                                                                            ^
+      193 |   })
+      194 | })
+      195 |
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:192:76
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-S-e1d63-k-mode-if-device-prefers-it-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Mobile-S-e1d63-k-mode-if-device-prefers-it-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+  35) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:197:3 ΓÇ║ Accessibility on Mobile ΓÇ║ maintains proper focus management 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m failed
+
+    Locator:  locator(':focus')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator(':focus')[22m
+
+
+      199 |     await page.keyboard.press('Tab')
+      200 |     const focusedElement = page.locator(':focus')
+    > 201 |     await expect(focusedElement).toBeVisible()
+          |                                  ^
+      202 |   })
+      203 |
+      204 |   test('form labels work with screen readers', async ({ page }) => {
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:201:34
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Accessib-e6101-ins-proper-focus-management-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Accessib-e6101-ins-proper-focus-management-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+  36) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:204:3 ΓÇ║ Accessibility on Mobile ΓÇ║ form labels work with screen readers 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.textContent: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('label:has(input[type="number"])').first()[22m
+
+
+      204 |   test('form labels work with screen readers', async ({ page }) => {
+      205 |     const avgNetFeeInput = page.locator('input[type="number"]').first()
+    > 206 |     const labelText = await page.locator('label:has(input[type="number"])').first().textContent()
+          |                                                                                     ^
+      207 |     
+      208 |     expect(labelText).toContain('Average Net Fee')
+      209 |   })
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:206:85
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Accessib-1b299-ls-work-with-screen-readers-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Accessib-1b299-ls-work-with-screen-readers-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+  37) [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:211:3 ΓÇ║ Accessibility on Mobile ΓÇ║ maintains sufficient color contrast 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      215 |     const count = await kpiElements.count()
+      216 |     
+    > 217 |     expect(count).toBeGreaterThan(0)
+          |                   ^
+      218 |   })
+      219 | })
+      220 |
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\mobile\responsive.spec.js:217:19
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Accessib-cd55a-s-sufficient-color-contrast-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\mobile-responsive-Accessib-cd55a-s-sufficient-color-contrast-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+  38) [Mobile Chrome] ΓÇ║ test\e2e\test-header-updates.spec.js:5:3 ΓÇ║ Header Updates from Quick Start Wizard ΓÇ║ should update header when Quick Start Wizard values change 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.textContent: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.small.text-xs').nth(1)[22m
+
+
+      14 |
+      15 |     // Check initial header values
+    > 16 |     const headerText = await page.locator('.small.text-xs').nth(1).textContent();
+         |                                                                    ^
+      17 |     console.log('≡ƒôè Initial header text:', headerText);
+      18 |
+      19 |     // Change Quick Start Wizard selections
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\test-header-updates.spec.js:16:68
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\test-header-updates-Header-6a9b7--Start-Wizard-values-change-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\test-header-updates-Header-6a9b7--Start-Wizard-values-change-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\test-header-updates-Header-6a9b7--Start-Wizard-values-change-Mobile-Chrome\error-context.md
+
+  39) [Mobile Chrome] ΓÇ║ test\e2e\test-header-updates.spec.js:56:3 ΓÇ║ Header Updates from Quick Start Wizard ΓÇ║ should navigate correctly between pages 
+
+    Error: locator.click: Error: strict mode violation: locator('button:has-text("Expenses")') resolved to 2 elements:
+        1) <button title="Expenses" class="btn btn--nav" _ngcontent-ng-c3736343573="">Expenses</button> aka getByTitle('Expenses', { exact: true })
+        2) <button class="btn btn--nav" _ngcontent-ng-c3182879400="">Expenses</button> aka getByRole('contentinfo').getByRole('button', { name: 'Expenses' })
+
+    Call log:
+    [2m  - waiting for locator('button:has-text("Expenses")')[22m
+
+
+      62 |     // Test expenses navigation
+      63 |     console.log('≡ƒöä Clicking Expenses button...');
+    > 64 |     await page.locator('button:has-text("Expenses")').click();
+         |                                                       ^
+      65 |     await page.waitForTimeout(2000);
+      66 |
+      67 |     const expensesUrl = page.url();
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\test-header-updates.spec.js:64:55
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\test-header-updates-Header-519d9-ate-correctly-between-pages-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\test-header-updates-Header-519d9-ate-correctly-between-pages-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\test-header-updates-Header-519d9-ate-correctly-between-pages-Mobile-Chrome\error-context.md
+
+  40) [Mobile Chrome] ΓÇ║ test\e2e\wizard-flow-matrix.spec.ts:15:5 ΓÇ║ Wizard Flow Matrix (Angular approx) ΓÇ║ Scenario: US returns=500, fee=250, growth=5, other=0 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByLabel('Tax Prep Returns')[22m
+
+
+      24 |       // Tax Prep Returns
+      25 |       const returnsInput = page.getByLabel('Tax Prep Returns');
+    > 26 |       await returnsInput.fill(String(sc.returns));
+         |                          ^
+      27 |       await returnsInput.blur();
+      28 |
+      29 |       // Avg Net Fee
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\wizard-flow-matrix.spec.ts:26:26
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\wizard-flow-matrix-Wizard--cb98c-00-fee-250-growth-5-other-0-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\wizard-flow-matrix-Wizard--cb98c-00-fee-250-growth-5-other-0-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\wizard-flow-matrix-Wizard--cb98c-00-fee-250-growth-5-other-0-Mobile-Chrome\error-context.md
+
+  41) [Mobile Chrome] ΓÇ║ test\e2e\wizard-flow-matrix.spec.ts:15:5 ΓÇ║ Wizard Flow Matrix (Angular approx) ΓÇ║ Scenario: CA returns=1600, fee=250, growth=0, other=0 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByLabel('Tax Prep Returns')[22m
+
+
+      24 |       // Tax Prep Returns
+      25 |       const returnsInput = page.getByLabel('Tax Prep Returns');
+    > 26 |       await returnsInput.fill(String(sc.returns));
+         |                          ^
+      27 |       await returnsInput.blur();
+      28 |
+      29 |       // Avg Net Fee
+        at D:\Dev\liberty\libertytax-pnl-webapp\test\e2e\wizard-flow-matrix.spec.ts:26:26
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\wizard-flow-matrix-Wizard--f5580-00-fee-250-growth-0-other-0-Mobile-Chrome\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\wizard-flow-matrix-Wizard--f5580-00-fee-250-growth-0-other-0-Mobile-Chrome\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\wizard-flow-matrix-Wizard--f5580-00-fee-250-growth-0-other-0-Mobile-Chrome\error-context.md
+
+  41 failed
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:65:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ displays the main application interface 
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:76:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ has correct initial values 
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:84:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ enables TaxRush input when region is set to Canada 
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:89:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ disables and resets TaxRush when switching to US 
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:101:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ updates calculations when inputs change 
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:114:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ persists data across page reloads 
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:134:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ resets all values when reset button is clicked 
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:150:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ displays KPI status colors correctly 
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:170:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ shows pro-tips based on KPI status 
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:179:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ handles edge case of zero returns 
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:189:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ handles very large input values 
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:202:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ maintains TaxRush stickiness in Canada 
+    [Mobile Chrome] ΓÇ║ test\e2e\app.spec.ts:212:3 ΓÇ║ Liberty Tax P&L Application ΓÇ║ keyboard navigation works correctly 
+    [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:9:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ homepage loads successfully 
+    [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:41:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ debug panel can be accessed 
+    [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:71:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ responsive design - no horizontal scroll 
+    [Mobile Chrome] ΓÇ║ test\e2e\basic-functionality.spec.js:93:3 ΓÇ║ Liberty Tax P&L Webapp - Basic Functionality ΓÇ║ basic form interactions work 
+    [Mobile Chrome] ΓÇ║ test\e2e\compare-react-angular.spec.js:5:3 ΓÇ║ React vs Angular Layout Comparison ΓÇ║ Capture React app screenshots for comparison 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:9:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ touch targets are large enough 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:27:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ mobile keyboard interactions 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:54:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ orientation change handling 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:75:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ mobile-specific layout elements 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\mobile-specific.spec.js:93:3 ΓÇ║ Liberty Tax P&L Webapp - Mobile Specific Tests ΓÇ║ scroll behavior on mobile 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:8:3 ΓÇ║ Mobile Responsiveness ΓÇ║ displays correctly on mobile viewports 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:15:3 ΓÇ║ Mobile Responsiveness ΓÇ║ region selector is accessible on mobile 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:24:3 ΓÇ║ Mobile Responsiveness ΓÇ║ input fields are properly sized for mobile 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:39:3 ΓÇ║ Mobile Responsiveness ΓÇ║ KPI cards stack vertically on mobile 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:88:3 ΓÇ║ Touch Interactions ΓÇ║ tap and hold does not interfere with input 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:100:3 ΓÇ║ Touch Interactions ΓÇ║ select dropdown works with touch 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:109:3 ΓÇ║ Touch Interactions ΓÇ║ reset button responds to touch 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:140:3 ΓÇ║ Mobile Performance ΓÇ║ calculations remain responsive during rapid input 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:159:3 ΓÇ║ Mobile Specific Features ΓÇ║ prevents zoom on input focus (if implemented) 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:172:3 ΓÇ║ Mobile Specific Features ΓÇ║ handles device orientation changes gracefully 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:186:3 ΓÇ║ Mobile Specific Features ΓÇ║ supports dark mode if device prefers it 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:197:3 ΓÇ║ Accessibility on Mobile ΓÇ║ maintains proper focus management 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:204:3 ΓÇ║ Accessibility on Mobile ΓÇ║ form labels work with screen readers 
+    [Mobile Chrome] ΓÇ║ test\e2e\mobile\responsive.spec.js:211:3 ΓÇ║ Accessibility on Mobile ΓÇ║ maintains sufficient color contrast 
+    [Mobile Chrome] ΓÇ║ test\e2e\test-header-updates.spec.js:5:3 ΓÇ║ Header Updates from Quick Start Wizard ΓÇ║ should update header when Quick Start Wizard values change 
+    [Mobile Chrome] ΓÇ║ test\e2e\test-header-updates.spec.js:56:3 ΓÇ║ Header Updates from Quick Start Wizard ΓÇ║ should navigate correctly between pages 
+    [Mobile Chrome] ΓÇ║ test\e2e\wizard-flow-matrix.spec.ts:15:5 ΓÇ║ Wizard Flow Matrix (Angular approx) ΓÇ║ Scenario: US returns=500, fee=250, growth=5, other=0 
+    [Mobile Chrome] ΓÇ║ test\e2e\wizard-flow-matrix.spec.ts:15:5 ΓÇ║ Wizard Flow Matrix (Angular approx) ΓÇ║ Scenario: CA returns=1600, fee=250, growth=0, other=0 
+  48 passed (3.2m)

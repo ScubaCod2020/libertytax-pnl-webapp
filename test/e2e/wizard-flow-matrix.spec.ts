@@ -15,42 +15,44 @@ test.describe('Wizard Flow Matrix (Angular approx)', () => {
     test(`Scenario: ${sc.region} returns=${sc.returns}, fee=${sc.fee}, growth=${sc.growth}, other=${sc.otherIncome}`, async ({
       page,
     }) => {
-      // Region quick inputs (header recap reflects SettingsService)
-      // Navigate to dashboard then back to wizard if needed to ensure settings panel present
+      // Ensure on wizard inputs
       await page.goto('/wizard/income-drivers');
 
-      // Step 1 basic inputs
-      // Note: selectors reflect current Angular scaffold labels; adjust when wiring completes
+      // Region (if needed later, use radios by data-testid)
+      // const region = sc.region === 'US' ? 'region-select-us' : 'region-select-ca'
+      // await page.locator(`[data-testid="${region}"]`).check()
+
       // Tax Prep Returns
-      const returnsInput = page.getByLabel('Tax Prep Returns');
+      const returnsInput = page.locator('input[data-testid="tax-prep-returns-input"]');
       await returnsInput.fill(String(sc.returns));
       await returnsInput.blur();
 
       // Avg Net Fee
-      const feeInput = page.getByLabel('Average Net Fee');
+      const feeInput = page.locator('input[data-testid="average-net-fee-input"]');
       await feeInput.fill(String(sc.fee));
       await feeInput.blur();
 
-      // Growth percent (if present)
-      const growthField = page.getByRole('spinbutton').first();
-      if (sc.growth !== 0 && (await growthField.count()) > 0) {
+      // Growth percent (guarded)
+      const growthField = page.locator('input[type="number"]').nth(1);
+      if ((await growthField.count()) > 0) {
         await growthField.fill(String(sc.growth));
         await growthField.blur();
       }
 
       // Go to Step 2 (Expenses)
       await page.goto('/wizard/expenses');
-
-      // Validate revenue breakdown header appears (visual presence only; value checks later)
-      await expect(page.getByText(/Total Expenses/i)).toBeVisible();
+      const expensesHeader = page.locator('text=/^Total Expenses[:\s]/i').first();
+      await expect(expensesHeader).toBeVisible();
 
       // Go to Step 3 (P&L / Reports)
       await page.goto('/wizard/pnl');
-      await expect(page.getByText(/Reports|P&L/i)).toBeVisible();
+      await expect(page.locator('.card-title', { hasText: 'Monthly P&L Breakdown' })).toBeVisible();
 
       // Return to dashboard and ensure presence
       await page.goto('/dashboard');
-      await expect(page.getByText(/Dashboard/i)).toBeVisible();
+      await expect(
+        page.locator('app-dashboard-results-panel .card-title', { hasText: 'Dashboard' }).first()
+      ).toBeVisible();
     });
   }
 });

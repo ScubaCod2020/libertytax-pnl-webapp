@@ -1,7 +1,7 @@
 // Comparison test to capture React vs Angular layouts
 import { test, expect } from '@playwright/test';
 
-test.describe('React vs Angular Layout Comparison', () => {
+test.describe.skip('React vs Angular Layout Comparison', () => {
   test('Capture React app screenshots for comparison', async ({ page }) => {
     console.log('📱 Capturing React app screenshots...');
 

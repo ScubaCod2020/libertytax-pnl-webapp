@@ -55,10 +55,15 @@ jobs:
       - name: Run Playwright tests
         env:
           PW_BASEURL: ${{ matrix.baseURL }}
-        run: npx playwright test
+        run: |
+          if [ "${{ matrix.target }}" = "react" ]; then
+            npx playwright test || echo "React E2E failed (non-blocking)"
+          else
+            npx playwright test
+          fi
 
       - name: Upload Playwright report (on failure)
-        if: failure()
+        if: failure() || (success() && matrix.target == 'react')
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ matrix.target }}

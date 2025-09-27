@@ -180,3 +180,22 @@ Closes #<!-- issue number -->
 - [ ] No console errors in production build
 - [ ] Bundle size impact acceptable
 - [ ] Ready for production deployment
+
+## Summary
+
+Explain the change and motivation.
+
+## Checklist
+
+- [ ] Code Quality: "01 → Code Quality & Analysis" is green
+- [ ] Tests: Angular blocking checks pass (lint, type-check, unit, E2E)
+- [ ] React tests (if applicable): reviewed artifacts if failed (advisory)
+- [ ] OpenAPI lint (if changed): passed
+- [ ] Updated docs in `docs/**` (will sync to wiki via automation)
+
+## Links
+
+- Release Runbook: docs/runbooks/release.md
+- Testing Strategy: docs/testing/strategy.md
+- ADR Index: docs/adr/
+- Wiki Sync: Actions → "99 → Support Automation" → `update-wiki`

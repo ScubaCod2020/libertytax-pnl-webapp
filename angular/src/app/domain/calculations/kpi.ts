@@ -19,26 +19,30 @@ export function statusForCPR(v: number, t: Thresholds, inputs?: CalculationInput
       totalRevenue > 0 && inputs.taxPrepReturns > 0 ? totalRevenue / inputs.taxPrepReturns : 0;
 
     if (revenuePerReturn > 0) {
-      // Strategic range: 74.5-77.5% of revenue per return
-      const cprGreenMin = revenuePerReturn * 0.745; // 74.5% strategic minimum
-      const cprGreenMax = revenuePerReturn * 0.775; // 77.5% strategic maximum
-      const cprYellowMin = revenuePerReturn * 0.715; // 71.5% yellow minimum
-      const cprYellowMax = revenuePerReturn * 0.805; // 80.5% yellow maximum
+      // Strategic range per blueprint:
+      // green: 74.5% - 77.5%
+      // yellow: 72.5% - 74.5% OR 77.6% - 80.0%
+      const cprGreenMin = revenuePerReturn * 0.745;
+      const cprGreenMax = revenuePerReturn * 0.775;
+      const cprYellowLowerMin = revenuePerReturn * 0.725;
+      const cprYellowLowerMax = revenuePerReturn * 0.745;
+      const cprYellowUpperMin = revenuePerReturn * 0.776;
+      const cprYellowUpperMax = revenuePerReturn * 0.8;
 
-      if (v >= cprGreenMin && v <= cprGreenMax) {
-        return 'green'; // Within strategic expense range (74.5-77.5%)
-      }
-      if ((v >= cprYellowMin && v < cprGreenMin) || (v > cprGreenMax && v <= cprYellowMax)) {
-        return 'yellow'; // Monitor range (71.5-74.5% OR 77.5-80.5%)
-      }
-      return 'red'; // Outside acceptable ranges
+      if (v >= cprGreenMin && v <= cprGreenMax) return 'green';
+      if (
+        (v >= cprYellowLowerMin && v < cprYellowLowerMax) ||
+        (v > cprGreenMax && v <= cprYellowUpperMax && v >= cprYellowUpperMin)
+      )
+        return 'yellow';
+      return 'red';
     }
   }
 
   // Fallback to simple thresholds if no inputs provided
-  // For unit expectations where thresholds are abstract, use simple bands
-  if (v <= 20) return 'green';
-  if (v <= 30) return 'yellow';
+  // For unit tests without inputs, use configured absolute thresholds
+  if (v <= t.cprGreen) return 'green';
+  if (v <= t.cprYellow) return 'yellow';
   return 'red';
 }
 

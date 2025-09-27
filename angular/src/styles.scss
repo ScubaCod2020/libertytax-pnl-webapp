@@ -4,3 +4,32 @@
 @use 'styles/kpi';
 
 /* You can add global styles to this file, and also import other style files */
+
+/* Mobile-friendly hit targets and inputs */
+@media (max-width: 480px) {
+
+    input[type='number'],
+    input[type='text'],
+    select,
+    button {
+        min-height: 44px;
+        line-height: 44px;
+    }
+
+    .btn,
+    .button,
+    [role='button'] {
+        min-height: 44px;
+        line-height: 44px;
+    }
+
+    /* Prevent horizontal scroll */
+    html,
+    body,
+    app-root,
+    .app,
+    main {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+}

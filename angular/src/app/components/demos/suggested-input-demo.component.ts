@@ -24,7 +24,7 @@ import { SuggestionEngineService } from '../../domain/services/suggestion-engine
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './suggested-input-demo.component.html',
-  styleUrl: './suggested-input-demo.component.scss',
+  styleUrls: ['./suggested-input-demo.component.scss'],
 })
 export class SuggestedInputDemoComponent {
   @Input() answers: WizardAnswers = { region: 'US' };

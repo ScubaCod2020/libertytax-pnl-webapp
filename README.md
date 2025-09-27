@@ -42,6 +42,12 @@ Example precedence:
 
 - If an app blueprint sets `dev_port: 3001` but repo blueprint defines Angular on 4200, local default remains 4200. Provide an alternate `npm run dev:angular:3001` for migration flows.
 
+### Angular notes
+
+- Template type checking: avoid calling globals like `Math`, `window`, or `document` directly from templates. Instead, expose small wrapper methods on the component (e.g., `round(x: number)`) or specific properties so Angular can type-check them.
+- Component metadata: use `styleUrls` (array), not `styleUrl`.
+- Debugging: core display components emit lightweight `console.debug` logs on init (filter by emojis like `📊`, `📋`). This helps correlate UI with calculation inputs during troubleshooting.
+
 ## Current status (2025-09-23)
 
 - Angular 20 confirmed; standalone components.

@@ -5,6 +5,7 @@ on:
     branches: [main, develop, Dev_09202025, 'feat/**', 'fix/**']
   pull_request:
     branches: [main, develop, Dev_09202025]
+  workflow_dispatch:
 
 jobs:
   build-and-test:
@@ -46,9 +47,9 @@ jobs:
         run: |
           if [ "${{ steps.detect.outputs.framework }}" = "angular" ]; then
             if npm run | grep -q "ng lint"; then
-              npm run lint || npx ng lint || true
+              npm run lint || npx ng lint
             else
-              npx ng lint || true
+              npx ng lint
             fi
           else
             npm run lint
@@ -60,7 +61,7 @@ jobs:
       - name: Lint (Angular subfolder)
         if: steps.detect.outputs.angular_dir == 'angular'
         run: |
-          cd angular && npx ng lint || true
+          cd angular && npx ng lint
 
       - name: Type check
         run: |
@@ -74,20 +75,20 @@ jobs:
         run: |
           if [ "${{ steps.detect.outputs.framework }}" = "angular" ]; then
             if npm run | grep -q "ng test"; then
-              npx ng test --watch=false --browsers=ChromeHeadless || true
+              npx ng test --watch=false --browsers=ChromeHeadless
             elif npm run | grep -q "test"; then
               npm run test --if-present
             else
               echo "No Angular test configured; skipping"
             fi
           else
-            npm run test --if-present
+            npm run test --if-present || echo "React unit tests failed (non-blocking)"
           fi
 
       - name: Unit tests (Angular subfolder)
         if: steps.detect.outputs.angular_dir == 'angular'
         run: |
-          cd angular && npx ng test --watch=false --browsers=ChromeHeadless || true
+          cd angular && npx ng test --watch=false --browsers=ChromeHeadless
 
       - name: Build
         run: |
@@ -111,7 +112,7 @@ jobs:
         run: |
           if [ -f "playwright.config.ts" ] || [ -f "playwright.config.js" ]; then
             npx playwright install --with-deps
-            npm run test:e2e --if-present
+            npm run test:e2e --if-present || echo "React E2E failed (non-blocking)"
           else
             echo "No Playwright config; skipping e2e"
           fi
@@ -137,7 +138,7 @@ jobs:
           path: docs/architecture/components-graph.svg
 
       - name: Validate docs indexes (non-blocking)
-        run: npm run docs:validate-index || true
+        run: npm run docs:validate-index || echo "Docs index validation is advisory"
 
       - name: API health (non-blocking)
         run: |

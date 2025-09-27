@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { WizardAnswers } from '../../../../domain/types/wizard.types';
@@ -26,9 +26,9 @@ interface PerformanceData {
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './strategic-analysis.component.html',
-  styleUrl: './strategic-analysis.component.scss',
+  styleUrls: ['./strategic-analysis.component.scss'],
 })
-export class StrategicAnalysisComponent {
+export class StrategicAnalysisComponent implements OnInit {
   @Input() answers: WizardAnswers = { region: 'US' };
 
   get adjustments(): AdjustmentStatusLike {
@@ -71,5 +71,18 @@ export class StrategicAnalysisComponent {
     })
       .format(value)
       .replace('$', '');
+  }
+
+  round(value: number): number {
+    return Math.round(value);
+  }
+
+  ngOnInit(): void {
+    console.debug('📊 [StrategicAnalysis] init', {
+      answers: this.answers,
+      adjustments: this.adjustments,
+      performance: this.performance,
+      expenseTarget: this.expenseTarget,
+    });
   }
 }

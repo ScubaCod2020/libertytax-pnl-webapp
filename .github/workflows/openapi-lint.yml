@@ -8,6 +8,7 @@ on:
   pull_request:
     paths:
       - 'openapi/**'
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -27,4 +28,3 @@ jobs:
 
       - name: Lint OpenAPI schema
         run: npm run api:lint
-        continue-on-error: true

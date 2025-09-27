@@ -41,6 +41,35 @@ interface ReportData {
   // Wizard answers for detailed breakdown
   answers: WizardAnswers;
   calculationResults: CalculationResults;
+
+  // Expense breakdown sections
+  personnel: {
+    salaries: number;
+    deductions: number;
+  };
+  facility: {
+    rent: number;
+    telephone: number;
+    utilities: number;
+  };
+  operations: {
+    advertising: number;
+    insurance: number;
+    postage: number;
+    supplies: number;
+    dues: number;
+    bankFees: number;
+    maintenance: number;
+    travelEnt: number;
+  };
+  franchise: {
+    royalties: number;
+    advRoyalties: number;
+    taxRushRoyalties?: number;
+  };
+  misc: {
+    misc: number;
+  };
 }
 
 @Component({
@@ -341,7 +370,7 @@ export class ReportsComponent implements OnInit {
     console.log('📅🏗️ [MONTHLY REPORTS] Calculating monthly breakdown...');
     const monthlyData = calculateMonthlyBreakdown(returns, grossFees, discounts, totalExpenses);
 
-    const finalReportData = {
+    const finalReportData: ReportData = {
       // Configuration
       region: this.wizardState.getDisplayLabel('regionName'),
       storeType: this.wizardState.getDisplayLabel('storeTypeName'),
@@ -368,6 +397,13 @@ export class ReportsComponent implements OnInit {
       // Raw data
       answers,
       calculationResults: calcResults,
+
+      // Expense breakdown sections
+      personnel,
+      facility,
+      operations,
+      franchise,
+      misc,
     };
 
     console.log('📋🏗️ [P&L REPORTS] Final report data structure built:', {
@@ -490,5 +526,102 @@ export class ReportsComponent implements OnInit {
       .catch((error) => {
         console.error('🏠❌ [P&L REPORTS] Navigation to dashboard failed:', error);
       });
+  }
+
+  // Navigation handler for Annual Summary button
+  goBackToAnnual(): void {
+    console.log('🔙🚀 [P&L REPORTS] Annual Summary button clicked');
+    this.router
+      .navigateByUrl('/wizard/pnl')
+      .then((success) => console.log('🔙🚀 [P&L REPORTS] Navigated to annual summary:', success))
+      .catch((error) => console.error('🔙❌ [P&L REPORTS] Navigation failed:', error));
+  }
+
+  // ----- Template helper methods -----
+  getSeasonClass(monthNumber: number): string {
+    // Peak season roughly Jan-Apr in tax industry
+    return monthNumber >= 1 && monthNumber <= 4 ? 'season-peak' : 'season-slow';
+  }
+
+  getMonthDescription(monthNumber: number): string {
+    const descriptions: Record<number, string> = {
+      1: 'Kickoff of peak season',
+      2: 'High volume filing period',
+      3: 'Peak processing period',
+      4: 'Final rush before deadlines',
+      5: 'Post-season wrap-up',
+      6: 'Off-season operations',
+      7: 'Off-season operations',
+      8: 'Pre-season planning',
+      9: 'Pre-season planning',
+      10: 'Pre-season setup',
+      11: 'Staffing and training',
+      12: 'Year-end preparation',
+    };
+    return descriptions[monthNumber] || '';
+  }
+
+  getMarginClass(netMarginPct: number): string {
+    if (netMarginPct > 20) return 'excellent';
+    if (netMarginPct > 15) return 'good';
+    return 'needs-improvement';
+  }
+
+  getSeasonBadgeClass(monthNumber: number): string {
+    return monthNumber >= 1 && monthNumber <= 4 ? 'badge-peak' : 'badge-slow';
+  }
+
+  getSeasonLabel(monthNumber: number): string {
+    return monthNumber >= 1 && monthNumber <= 4 ? 'Peak season' : 'Slow season';
+  }
+
+  getQuarterlyData(monthlyData: MonthlyFinancials[]): Array<{
+    label: string;
+    cumulativeReturns: number;
+    cumulativeRevenue: number;
+    cumulativeNetIncome: number;
+  }> {
+    const quarters = [
+      { label: 'Q1 (Jan-Mar)', endMonth: 3 },
+      { label: 'Q2 (Apr-Jun)', endMonth: 6 },
+      { label: 'Q3 (Jul-Sep)', endMonth: 9 },
+      { label: 'Q4 (Oct-Dec)', endMonth: 12 },
+    ];
+
+    return quarters.map((q) => {
+      const upTo = monthlyData.filter((m) => m.monthNumber <= q.endMonth);
+      return {
+        label: q.label,
+        cumulativeReturns: upTo.reduce((sum, m) => sum + (m.returns || 0), 0),
+        cumulativeRevenue: upTo.reduce((sum, m) => sum + (m.netRevenue || 0), 0),
+        cumulativeNetIncome: upTo.reduce((sum, m) => sum + (m.netIncome || 0), 0),
+      };
+    });
+  }
+
+  getPeakSeasonStats(monthlyData: MonthlyFinancials[]): {
+    totalReturns: number;
+    totalRevenue: number;
+    percentage: number;
+  } {
+    const peak = monthlyData.filter((m) => m.monthNumber >= 1 && m.monthNumber <= 4);
+    const totalReturns = peak.reduce((sum, m) => sum + (m.returns || 0), 0);
+    const totalRevenue = peak.reduce((sum, m) => sum + (m.netRevenue || 0), 0);
+    const annualReturns = monthlyData.reduce((sum, m) => sum + (m.returns || 0), 0);
+    const percentage = annualReturns > 0 ? (totalReturns / annualReturns) * 100 : 0;
+    return { totalReturns, totalRevenue, percentage };
+  }
+
+  getSlowSeasonStats(monthlyData: MonthlyFinancials[]): {
+    totalReturns: number;
+    totalRevenue: number;
+    percentage: number;
+  } {
+    const slow = monthlyData.filter((m) => m.monthNumber >= 5 && m.monthNumber <= 12);
+    const totalReturns = slow.reduce((sum, m) => sum + (m.returns || 0), 0);
+    const totalRevenue = slow.reduce((sum, m) => sum + (m.netRevenue || 0), 0);
+    const annualReturns = monthlyData.reduce((sum, m) => sum + (m.returns || 0), 0);
+    const percentage = annualReturns > 0 ? (totalReturns / annualReturns) * 100 : 0;
+    return { totalReturns, totalRevenue, percentage };
   }
 }
