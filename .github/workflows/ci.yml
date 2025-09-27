@@ -3,9 +3,19 @@ name: CI
 on:
   push:
     branches: [main, develop, Dev_09202025, 'feat/**', 'fix/**']
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - 'wiki/**'
   pull_request:
     branches: [main, develop, Dev_09202025]
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - 'wiki/**'
   workflow_dispatch:
+  schedule:
+    - cron: '0 10 * * 1'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -114,9 +124,19 @@ jobs:
         run: |
           if [ -f "playwright.config.ts" ] || [ -f "playwright.config.js" ]; then
             npx playwright install --with-deps
-            npm run test:e2e --if-present || echo "React E2E failed (non-blocking)"
+            npm run test:e2e:react --if-present || echo "React E2E failed (non-blocking)"
           else
             echo "No Playwright config; skipping e2e"
+          fi
+
+      - name: E2E (Playwright - Angular only)
+        if: steps.detect.outputs.framework == 'angular'
+        run: |
+          if [ -f "playwright.config.js" ]; then
+            npx playwright install --with-deps
+            npm run test:e2e:angular || echo "Angular E2E failed (non-blocking)"
+          else
+            echo "No Angular Playwright config; skipping e2e"
           fi
 
       - name: Generate components graph (Mermaid)

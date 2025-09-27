@@ -1,8 +1,9 @@
-import { defineConfig, devices } from '@playwright/test'
+import { defineConfig, devices } from '@playwright/test';
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
+// React E2E config (uses Vite preview on 4173)
 export default defineConfig({
   testDir: './test/e2e',
   /* Run tests in files in parallel */
@@ -17,7 +18,7 @@ export default defineConfig({
   reporter: [
     ['html'],
     ['json', { outputFile: 'playwright-results.json' }],
-    ['junit', { outputFile: 'playwright-results.xml' }]
+    ['junit', { outputFile: 'playwright-results.xml' }],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
@@ -76,4 +77,4 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
   },
-})
+});

@@ -3,8 +3,16 @@ name: '01 → Code Quality & Analysis'
 on:
   push:
     branches: [main, develop, 'feat/*', 'fix/*']
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - 'wiki/**'
   pull_request:
     branches: [main, develop]
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - 'wiki/**'
   workflow_dispatch:
 
 concurrency:
