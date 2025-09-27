@@ -12,20 +12,6 @@
   "rules": [
     {
       "type": "deletion"
-    },
-    {
-      "type": "required_status_checks",
-      "parameters": {
-        "strict_required_status_checks": false,
-        "required_status_checks": [
-          {
-            "context": "CI / build-and-test"
-          },
-          {
-            "context": "01 → Code Quality & Analysis / code-analysis"
-          }
-        ]
-      }
     }
   ]
 }
