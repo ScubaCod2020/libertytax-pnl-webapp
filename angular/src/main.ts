@@ -1,6 +1,7 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter, withRouterConfig, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app/app.routes';
+import { logger } from './app/core/logger';
 import { AppComponent } from './app/app.component';
 import { ApiClientService } from './app/services/api-client.service';
 
@@ -17,13 +18,13 @@ bootstrapApplication(AppComponent, {
       })
     ),
   ],
-}).catch((err) => console.error(err));
+}).catch((err) => logger.error(err));
 
 // Startup health check (non-blocking)
 // Using dynamic import to avoid strict DI setup here
 import('./app/services/api-client.service').then((m) =>
   new m.ApiClientService()
     .getHealth()
-    .then((h) => console.info('[health] api:', h.status))
-    .catch(() => console.warn('[health] api: unavailable'))
+    .then((h) => logger.info('[health] api:', h.status))
+    .catch(() => logger.warn('[health] api: unavailable'))
 );

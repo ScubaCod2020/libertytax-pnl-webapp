@@ -9,6 +9,7 @@ import { PDFExportService } from '../../../../services/pdf-export.service';
 import { ExcelExportService } from '../../../../services/excel-export.service';
 import { WizardAnswers } from '../../../../domain/types/wizard.types';
 import { CalculationResults, CalculationInputs } from '../../../../domain/types/calculation.types';
+import { logger } from '../../../../core/logger';
 import {
   MonthlyFinancials,
   calculateMonthlyBreakdown,
@@ -89,8 +90,8 @@ export class ReportsComponent implements OnInit {
   reportData$: Observable<ReportData>;
 
   constructor() {
-    console.log('📋🔧 [P&L REPORTS] Component constructor started');
-    console.log('📋🔧 [P&L REPORTS] Services injected:', {
+    logger.debug('📋🔧 [P&L REPORTS] Component constructor started');
+    logger.debug('📋🔧 [P&L REPORTS] Services injected:', {
       wizardState: !!this.wizardState,
       calculationService: !!this.calculationService,
       pdfExport: !!this.pdfExport,
@@ -101,29 +102,29 @@ export class ReportsComponent implements OnInit {
     // Combine wizard state and calculations for the report
     this.reportData$ = this.wizardState.answers$.pipe(
       map((answers) => {
-        console.log('📋🔄 [P&L REPORTS] Processing wizard answers:', answers);
+        logger.debug('📋🔄 [P&L REPORTS] Processing wizard answers:', answers);
 
         // Convert WizardAnswers to CalculationInputs
         const calcInputs: CalculationInputs = this.convertAnswersToInputs(answers);
-        console.log('📋🔄 [P&L REPORTS] Converted to calculation inputs:', calcInputs);
+        logger.debug('📋🔄 [P&L REPORTS] Converted to calculation inputs:', calcInputs);
 
         // Calculate results
         const calcResults = this.calculationService.calculate(calcInputs);
-        console.log('📋🔄 [P&L REPORTS] Calculation results:', calcResults);
+        logger.debug('📋🔄 [P&L REPORTS] Calculation results:', calcResults);
 
         const reportData = this.buildReportData(answers, calcResults);
-        console.log('📋🔄 [P&L REPORTS] Final report data built:', reportData);
+        logger.debug('📋🔄 [P&L REPORTS] Final report data built:', reportData);
 
         return reportData;
       })
     );
 
-    console.log('📋🔧 [P&L REPORTS] Component constructor completed');
+    logger.debug('📋🔧 [P&L REPORTS] Component constructor completed');
   }
 
   private convertAnswersToInputs(answers: WizardAnswers): CalculationInputs {
-    console.log('📋🔧 [P&L REPORTS] Converting wizard answers to calculation inputs...');
-    console.log('📋🔧 [P&L REPORTS] Raw wizard answers:', answers);
+    logger.debug('📋🔧 [P&L REPORTS] Converting wizard answers to calculation inputs...');
+    logger.debug('📋🔧 [P&L REPORTS] Raw wizard answers:', answers);
 
     // Use computed properties for consistent data
     const avgNetFee = this.wizardState.getAvgNetFee() || 125;
@@ -132,7 +133,7 @@ export class ReportsComponent implements OnInit {
     const discountsPct = this.wizardState.getDiscountsPct() || 3;
     const otherIncome = this.wizardState.getOtherIncome() || 0;
 
-    console.log('📋🔧 [P&L REPORTS] Computed properties extracted:', {
+    logger.debug('📋🔧 [P&L REPORTS] Computed properties extracted:', {
       avgNetFee,
       taxPrepReturns,
       taxRushReturns,
@@ -180,7 +181,7 @@ export class ReportsComponent implements OnInit {
       },
     };
 
-    console.log('📋🔧 [P&L REPORTS] Final calculation inputs structure:', {
+    logger.debug('📋🔧 [P&L REPORTS] Final calculation inputs structure:', {
       region: calcInputs.region,
       scenario: calcInputs.scenario,
       revenueInputs: { avgNetFee, taxPrepReturns, taxRushReturns, discountsPct, otherIncome },
@@ -212,18 +213,18 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('📋🚀 [P&L REPORTS] Component ngOnInit started');
-    console.log('📋🚀 [P&L REPORTS] Current route:', this.router.url);
-    console.log('📋🚀 [P&L REPORTS] Current wizard state will be logged in stream');
+    logger.debug('📋🚀 [P&L REPORTS] Component ngOnInit started');
+    logger.debug('📋🚀 [P&L REPORTS] Current route:', this.router.url);
+    logger.debug('📋🚀 [P&L REPORTS] Current wizard state will be logged in stream');
 
     // Trigger comprehensive debugging
-    console.log('📋🚀 [P&L REPORTS] Triggering computed properties summary...');
+    logger.debug('📋🚀 [P&L REPORTS] Triggering computed properties summary...');
     this.wizardState.getComputedPropertiesSummary();
 
     // Subscribe to report data for debugging
     this.reportData$.subscribe((reportData) => {
-      console.log('📋🚀 [P&L REPORTS] Report data stream updated:', reportData);
-      console.log('📋🚀 [P&L REPORTS] KPI Analysis:', {
+      logger.debug('📋🚀 [P&L REPORTS] Report data stream updated:', reportData);
+      logger.debug('📋🚀 [P&L REPORTS] KPI Analysis:', {
         netIncomeStatus: reportData.netIncome > 0 ? 'POSITIVE' : 'NEGATIVE',
         marginStatus:
           reportData.netMarginPct > 20
@@ -241,20 +242,20 @@ export class ReportsComponent implements OnInit {
       });
     });
 
-    console.log('📋🚀 [P&L REPORTS] Component ngOnInit completed');
+    logger.debug('📋🚀 [P&L REPORTS] Component ngOnInit completed');
   }
 
   private buildReportData(answers: WizardAnswers, calcResults: CalculationResults): ReportData {
-    console.log('📋🏗️ [P&L REPORTS] Building report data...');
-    console.log('📋🏗️ [P&L REPORTS] Input wizard answers:', answers);
-    console.log('📋🏗️ [P&L REPORTS] Input calculation results:', calcResults);
+    logger.debug('📋🏗️ [P&L REPORTS] Building report data...');
+    logger.debug('📋🏗️ [P&L REPORTS] Input wizard answers:', answers);
+    logger.debug('📋🏗️ [P&L REPORTS] Input calculation results:', calcResults);
 
     const region = answers.region || 'US';
     const storeType = answers.storeType || 'new';
     const isExisting = storeType === 'existing';
     const isCanada = region === 'CA';
 
-    console.log('📋🏗️ [P&L REPORTS] Basic configuration extracted:', {
+    logger.debug('📋🏗️ [P&L REPORTS] Basic configuration extracted:', {
       region,
       storeType,
       isExisting,
@@ -270,7 +271,7 @@ export class ReportsComponent implements OnInit {
     const totalRevenue = calcResults.totalRevenue || 0;
     const totalExpenses = calcResults.totalExpenses || 0;
 
-    console.log('📋🏗️ [P&L REPORTS] Core financial data extracted:', {
+    logger.debug('📋🏗️ [P&L REPORTS] Core financial data extracted:', {
       returns,
       avgNetFee,
       grossFees,
@@ -286,7 +287,7 @@ export class ReportsComponent implements OnInit {
     const profitPerReturn = returns > 0 ? netIncome / returns : 0;
     const expenseRatio = totalRevenue > 0 ? (totalExpenses / totalRevenue) * 100 : 0;
 
-    console.log('📋🏗️ [P&L REPORTS] KPIs calculated:', {
+    logger.debug('📋🏗️ [P&L REPORTS] KPIs calculated:', {
       netMarginPct,
       costPerReturn,
       profitPerReturn,
@@ -294,21 +295,21 @@ export class ReportsComponent implements OnInit {
     });
 
     // Calculate expense breakdown
-    console.log('📋🏗️ [P&L REPORTS] Calculating expense breakdown...');
+    logger.debug('📋🏗️ [P&L REPORTS] Calculating expense breakdown...');
 
     const personnel = {
       salaries: ((answers.salariesPct || 0) / 100) * grossFees,
       deductions:
         ((answers.empDeductionsPct || 0) / 100) * (((answers.salariesPct || 0) / 100) * grossFees),
     };
-    console.log('📋🏗️ [P&L REPORTS] Personnel expenses calculated:', personnel);
+    logger.debug('📋🏗️ [P&L REPORTS] Personnel expenses calculated:', personnel);
 
     const facility = {
       rent: ((answers.rentPct || 0) / 100) * grossFees,
       telephone: answers.telephoneAmt || 0,
       utilities: answers.utilitiesAmt || 0,
     };
-    console.log('📋🏗️ [P&L REPORTS] Facility expenses calculated:', facility);
+    logger.debug('📋🏗️ [P&L REPORTS] Facility expenses calculated:', facility);
 
     const operations = {
       advertising: answers.localAdvAmt || 0,
@@ -320,10 +321,10 @@ export class ReportsComponent implements OnInit {
       maintenance: answers.maintenanceAmt || 0,
       travelEnt: answers.travelEntAmt || 0,
     };
-    console.log('📋🏗️ [P&L REPORTS] Operations expenses calculated:', operations);
+    logger.debug('📋🏗️ [P&L REPORTS] Operations expenses calculated:', operations);
 
     const taxPrepIncome = this.wizardState.getTaxPrepIncome();
-    console.log('📋🏗️ [P&L REPORTS] Tax prep income for franchise calculations:', taxPrepIncome);
+    logger.debug('📋🏗️ [P&L REPORTS] Tax prep income for franchise calculations:', taxPrepIncome);
 
     const franchise = {
       royalties: ((answers.royaltiesPct || 0) / 100) * taxPrepIncome,
@@ -334,12 +335,12 @@ export class ReportsComponent implements OnInit {
           }
         : {}),
     };
-    console.log('📋🏗️ [P&L REPORTS] Franchise expenses calculated:', franchise);
+    logger.debug('📋🏗️ [P&L REPORTS] Franchise expenses calculated:', franchise);
 
     const misc = {
       misc: ((answers.miscPct || 0) / 100) * grossFees,
     };
-    console.log('📋🏗️ [P&L REPORTS] Miscellaneous expenses calculated:', misc);
+    logger.debug('📋🏗️ [P&L REPORTS] Miscellaneous expenses calculated:', misc);
 
     const expenseBreakdownTotal =
       personnel.salaries +
@@ -360,14 +361,14 @@ export class ReportsComponent implements OnInit {
       (franchise.taxRushRoyalties || 0) +
       misc.misc;
 
-    console.log('📋🏗️ [P&L REPORTS] Expense breakdown total vs calc results:', {
+    logger.debug('📋🏗️ [P&L REPORTS] Expense breakdown total vs calc results:', {
       expenseBreakdownTotal,
       calcResultsTotal: totalExpenses,
       difference: Math.abs(expenseBreakdownTotal - totalExpenses),
     });
 
     // Calculate monthly breakdown
-    console.log('📅🏗️ [MONTHLY REPORTS] Calculating monthly breakdown...');
+    logger.debug('📅🏗️ [MONTHLY REPORTS] Calculating monthly breakdown...');
     const monthlyData = calculateMonthlyBreakdown(returns, grossFees, discounts, totalExpenses);
 
     const finalReportData: ReportData = {
@@ -406,7 +407,7 @@ export class ReportsComponent implements OnInit {
       misc,
     };
 
-    console.log('📋🏗️ [P&L REPORTS] Final report data structure built:', {
+    logger.debug('📋🏗️ [P&L REPORTS] Final report data structure built:', {
       configuration: {
         region: finalReportData.region,
         storeType: finalReportData.storeType,
@@ -436,13 +437,13 @@ export class ReportsComponent implements OnInit {
       },
     });
 
-    console.log('📋🏗️ [P&L REPORTS] Report data building completed successfully');
+    logger.debug('📋🏗️ [P&L REPORTS] Report data building completed successfully');
     return finalReportData;
   }
 
   async exportToPDF(reportData: ReportData): Promise<void> {
-    console.log('📄🚀 [P&L REPORTS] PDF export button clicked');
-    console.log('📄🚀 [P&L REPORTS] Report data for PDF export:', {
+    logger.debug('📄🚀 [P&L REPORTS] PDF export button clicked');
+    logger.debug('📄🚀 [P&L REPORTS] Report data for PDF export:', {
       hasAnswers: !!reportData.answers,
       hasCalculationResults: !!reportData.calculationResults,
       netIncome: reportData.netIncome,
@@ -452,15 +453,15 @@ export class ReportsComponent implements OnInit {
     });
 
     try {
-      console.log('📄🚀 [P&L REPORTS] Calling PDF export service...');
+      logger.debug('📄🚀 [P&L REPORTS] Calling PDF export service...');
       await this.pdfExport.generateExecutiveBriefPDF(
         reportData.answers,
         reportData.calculationResults
       );
-      console.log('📄✅ [P&L REPORTS] PDF export completed successfully');
+      logger.info('📄✅ [P&L REPORTS] PDF export completed successfully');
     } catch (error) {
-      console.error('📄❌ [P&L REPORTS] PDF export failed:', error);
-      console.error('📄❌ [P&L REPORTS] Error details:', {
+      logger.error('📄❌ [P&L REPORTS] PDF export failed:', error);
+      logger.error('📄❌ [P&L REPORTS] Error details:', {
         message: error instanceof Error ? error.message : 'Unknown error',
         stack: error instanceof Error ? error.stack : 'No stack trace',
       });
@@ -471,8 +472,8 @@ export class ReportsComponent implements OnInit {
   }
 
   async exportToExcel(reportData: ReportData): Promise<void> {
-    console.log('📊🚀 [P&L REPORTS] Excel export button clicked');
-    console.log('📊🚀 [P&L REPORTS] Report data for Excel export:', {
+    logger.debug('📊🚀 [P&L REPORTS] Excel export button clicked');
+    logger.debug('📊🚀 [P&L REPORTS] Report data for Excel export:', {
       hasAnswers: !!reportData.answers,
       hasCalculationResults: !!reportData.calculationResults,
       expenseFieldCount: Object.keys(reportData.answers).filter(
@@ -483,12 +484,12 @@ export class ReportsComponent implements OnInit {
     });
 
     try {
-      console.log('📊🚀 [P&L REPORTS] Calling Excel export service...');
+      logger.debug('📊🚀 [P&L REPORTS] Calling Excel export service...');
       await this.excelExport.exportToExcel(reportData.answers, reportData.calculationResults);
-      console.log('📊✅ [P&L REPORTS] Excel export completed successfully');
+      logger.info('📊✅ [P&L REPORTS] Excel export completed successfully');
     } catch (error) {
-      console.error('📊❌ [P&L REPORTS] Excel export failed:', error);
-      console.error('📊❌ [P&L REPORTS] Error details:', {
+      logger.error('📊❌ [P&L REPORTS] Excel export failed:', error);
+      logger.error('📊❌ [P&L REPORTS] Error details:', {
         message: error instanceof Error ? error.message : 'Unknown error',
         stack: error instanceof Error ? error.stack : 'No stack trace',
       });
@@ -497,44 +498,44 @@ export class ReportsComponent implements OnInit {
   }
 
   goBack(): void {
-    console.log('🔙🚀 [P&L REPORTS] Back button clicked');
-    console.log('🔙🚀 [P&L REPORTS] Current route before navigation:', this.router.url);
-    console.log('🔙🚀 [P&L REPORTS] Navigating back to expenses...');
+    logger.debug('🔙🚀 [P&L REPORTS] Back button clicked');
+    logger.debug('🔙🚀 [P&L REPORTS] Current route before navigation:', this.router.url);
+    logger.debug('🔙🚀 [P&L REPORTS] Navigating back to expenses...');
 
     this.router
       .navigateByUrl('/wizard/expenses')
       .then((success) => {
-        console.log('🔙🚀 [P&L REPORTS] Navigation to expenses result:', success);
-        console.log('🔙🚀 [P&L REPORTS] New route after navigation:', this.router.url);
+        logger.debug('🔙🚀 [P&L REPORTS] Navigation to expenses result:', success);
+        logger.debug('🔙🚀 [P&L REPORTS] New route after navigation:', this.router.url);
       })
       .catch((error) => {
-        console.error('🔙❌ [P&L REPORTS] Navigation to expenses failed:', error);
+        logger.error('🔙❌ [P&L REPORTS] Navigation to expenses failed:', error);
       });
   }
 
   goToDashboard(): void {
-    console.log('🏠🚀 [P&L REPORTS] Dashboard button clicked');
-    console.log('🏠🚀 [P&L REPORTS] Current route before navigation:', this.router.url);
-    console.log('🏠🚀 [P&L REPORTS] Navigating to dashboard...');
+    logger.debug('🏠🚀 [P&L REPORTS] Dashboard button clicked');
+    logger.debug('🏠🚀 [P&L REPORTS] Current route before navigation:', this.router.url);
+    logger.debug('🏠🚀 [P&L REPORTS] Navigating to dashboard...');
 
     this.router
       .navigateByUrl('/dashboard')
       .then((success) => {
-        console.log('🏠🚀 [P&L REPORTS] Navigation to dashboard result:', success);
-        console.log('🏠🚀 [P&L REPORTS] New route after navigation:', this.router.url);
+        logger.debug('🏠🚀 [P&L REPORTS] Navigation to dashboard result:', success);
+        logger.debug('🏠🚀 [P&L REPORTS] New route after navigation:', this.router.url);
       })
       .catch((error) => {
-        console.error('🏠❌ [P&L REPORTS] Navigation to dashboard failed:', error);
+        logger.error('🏠❌ [P&L REPORTS] Navigation to dashboard failed:', error);
       });
   }
 
   // Navigation handler for Annual Summary button
   goBackToAnnual(): void {
-    console.log('🔙🚀 [P&L REPORTS] Annual Summary button clicked');
+    logger.debug('🔙🚀 [P&L REPORTS] Annual Summary button clicked');
     this.router
       .navigateByUrl('/wizard/pnl')
-      .then((success) => console.log('🔙🚀 [P&L REPORTS] Navigated to annual summary:', success))
-      .catch((error) => console.error('🔙❌ [P&L REPORTS] Navigation failed:', error));
+      .then((success) => logger.debug('🔙🚀 [P&L REPORTS] Navigated to annual summary:', success))
+      .catch((error) => logger.error('🔙❌ [P&L REPORTS] Navigation failed:', error));
   }
 
   // ----- Template helper methods -----

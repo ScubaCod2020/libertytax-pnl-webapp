@@ -49,7 +49,6 @@ jobs:
           PATTERN='console\\\.(log|debug)\\\('
           CONSOLE_LOGS=$(grep -R -nE "$PATTERN" \
             angular/src \
-            react-app-reference/react-app-reference/src \
             --exclude-dir=node_modules \
             --exclude-dir=.git \
             --exclude-dir=__tests__ \
@@ -57,6 +56,8 @@ jobs:
             --exclude-dir=e2e \
             --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
             --exclude="*.spec.*" --exclude="*.test.*" )
+          # Exclude logger wrapper implementation files from counting
+          CONSOLE_LOGS=$(printf "%s\n" "$CONSOLE_LOGS" | grep -v "angular/src/app/core/logger\.ts")
           # Count matches robustly regardless of grep exit status
           COUNT=$(printf "%s\n" "$CONSOLE_LOGS" | grep -E "$PATTERN" | wc -l | tr -d ' \r')
           if [ -z "$COUNT" ]; then COUNT=0; fi

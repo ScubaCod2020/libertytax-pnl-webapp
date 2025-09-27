@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import type { RegionCode } from '../tokens/region-configs.token';
 import type { WizardAnswers } from '../../domain/types/wizard.types';
 import { BiDirService } from './bidir/bidir.service';
+import { logger } from '../logger';
 import { ProjectedService } from '../../services/projected.service';
 
 export type StoreType = 'new' | 'existing';
@@ -36,13 +37,13 @@ export class WizardStateService {
   ) {
     // Subscribe to ProjectedService changes to trigger recalculation
     this.projectedService.targets$.subscribe(() => {
-      console.log('🚀 [PROJECTED] Targets changed, recalculating...');
+      logger.debug('🚀 [PROJECTED] Targets changed, recalculating...');
       this.calculateDerivedValues(this.answers);
       this.saveToStorage(this.answers);
     });
 
     this.projectedService.growthPct$.subscribe(() => {
-      console.log('🚀 [PROJECTED] Growth percentage changed, recalculating...');
+      logger.debug('🚀 [PROJECTED] Growth percentage changed, recalculating...');
       this.calculateDerivedValues(this.answers);
       this.saveToStorage(this.answers);
     });
@@ -65,7 +66,7 @@ export class WizardStateService {
     if (!this.debugEnabled) return;
 
     const config = this.getWizardConfiguration();
-    console.log(`🧮 [COMPUTED] ${methodName}():`, {
+    logger.debug(`🧮 [COMPUTED] ${methodName}():`, {
       result,
       wizardConfig: config,
       context,
@@ -78,7 +79,7 @@ export class WizardStateService {
    */
   setDebugMode(enabled: boolean): void {
     this.debugEnabled = enabled;
-    console.log(`🧮 [COMPUTED] Debug mode ${enabled ? 'ENABLED' : 'DISABLED'}`);
+    logger.info(`🧮 [COMPUTED] Debug mode ${enabled ? 'ENABLED' : 'DISABLED'}`);
   }
 
   /**
@@ -119,7 +120,7 @@ export class WizardStateService {
       },
     };
 
-    console.log('🧮 [COMPUTED] COMPREHENSIVE SUMMARY:', summary);
+    logger.info('🧮 [COMPUTED] COMPREHENSIVE SUMMARY:', summary);
     return summary;
   }
 
