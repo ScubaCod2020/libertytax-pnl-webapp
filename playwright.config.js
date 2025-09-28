@@ -16,7 +16,8 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ['html'],
+    ['list'],
+    ['html', { outputFolder: 'playwright-report' }],
     ['json', { outputFile: 'test-results/results.json' }],
     ['junit', { outputFile: 'test-results/results.xml' }],
   ],
@@ -25,14 +26,18 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'http://localhost:4200',
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    /* Collect trace for failures and retries */
+    trace: process.env.CI ? 'retain-on-failure' : 'on-first-retry',
 
     /* Screenshot on failure */
     screenshot: 'only-on-failure',
 
     /* Video recording */
     video: 'retain-on-failure',
+    /* Console and network diagnostics */
+    launchOptions: {
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    },
   },
 
   /* Configure projects for major browsers */

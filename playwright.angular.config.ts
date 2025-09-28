@@ -8,14 +8,18 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [
     ['list'],
+    ['html', { outputFolder: 'playwright-report-angular' }],
     ['json', { outputFile: 'playwright-results.json' }],
     ['junit', { outputFile: 'playwright-results.xml' }],
   ],
   use: {
     baseURL: process.env.PW_BASEURL || 'http://localhost:4200',
-    trace: 'on-first-retry',
+    trace: process.env.CI ? 'retain-on-failure' : 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    launchOptions: {
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    },
   },
   testIgnore: ['**/compare-react-angular.spec.*'],
   projects: [
