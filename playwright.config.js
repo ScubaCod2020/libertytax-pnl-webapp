@@ -73,7 +73,8 @@ export default defineConfig({
   webServer: {
     command: 'cd angular && npm run dev:angular',
     url: 'http://localhost:4200',
-    reuseExistingServer: !process.env.CI,
+    // In CI we start the server in the workflow; allow reuse to avoid port-in-use errors
+    reuseExistingServer: true,
     timeout: 240 * 1000,
   },
 });

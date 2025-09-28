@@ -49,7 +49,7 @@ jobs:
             npx wait-on ${{ matrix.baseURL }}
           else
             cd angular && npx ng serve --port 4200 --configuration=development &
-            npx wait-on ${{ matrix.baseURL }}
+            npx wait-on http-get://localhost:4200
           fi
 
       - name: Run Playwright tests
