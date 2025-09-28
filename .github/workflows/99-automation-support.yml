@@ -24,6 +24,46 @@ on:
           - create-issues
           - update-board
           - full-automation
+      sim_workflow_name:
+        description: 'Simulated workflow name (for manual tests)'
+        required: false
+        type: string
+      sim_conclusion:
+        description: 'Simulated workflow conclusion (success|failure)'
+        required: false
+        type: string
+      sim_run_url:
+        description: 'Simulated run URL'
+        required: false
+        type: string
+      sim_sha:
+        description: 'Simulated commit SHA'
+        required: false
+        type: string
+      project_kind:
+        description: 'Project automation target (none|v2)'
+        required: false
+        default: 'none'
+        type: choice
+        options:
+          - none
+          - v2
+      project_owner:
+        description: 'Project owner login (org/user). Defaults to repo owner.'
+        required: false
+        type: string
+      project_number:
+        description: 'Project (v2) number'
+        required: false
+        type: number
+      status_field_name:
+        description: 'Project Status field name (v2). Default: Status'
+        required: false
+        type: string
+      status_value:
+        description: 'Desired Status value (e.g., In Review, Testing, Done)'
+        required: false
+        type: string
 
   # Scheduled maintenance
   schedule:
@@ -33,6 +73,7 @@ on:
 permissions:
   contents: read
   issues: write
+  projects: write
 
 jobs:
   # Issue creation from workflow failures
@@ -124,6 +165,59 @@ jobs:
             }
 
             console.log(`Project board updated for ${workflowName} (${workflowStatus})`);
+
+            // Optional: Real Project v2 update when manually triggered with inputs
+            if (isManual && inputs.project_kind === 'v2' && inputs.project_number && inputs.status_value) {
+              const owner = inputs.project_owner || context.repo.owner;
+              const statusFieldName = inputs.status_field_name || 'Status';
+              const projectNumber = Number(inputs.project_number);
+
+              // Find PR associated with SHA (if any)
+              const sha = inputs.sim_sha || context.sha;
+              const prs = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/pulls', {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: sha,
+                mediaType: { previews: ['groot'] }
+              });
+              if (!prs.data || prs.data.length === 0) {
+                console.log('ℹ️ No PR associated with SHA; skipping real project update');
+                return;
+              }
+              const pr = prs.data[0];
+
+              const findProjectQuery = `
+                query($owner:String!, $number:Int!) {
+                  organization(login:$owner){ projectV2(number:$number){ id title fields(first:50){ nodes{ __typename id name dataType ... on ProjectV2SingleSelectField { options { id name } } } } } }
+                  user(login:$owner){ projectV2(number:$number){ id title fields(first:50){ nodes{ __typename id name dataType ... on ProjectV2SingleSelectField { options { id name } } } } } }
+                }
+              `;
+              const projRes = await github.graphql(findProjectQuery, { owner, number: projectNumber });
+              const project = projRes.organization?.projectV2 || projRes.user?.projectV2;
+              if (!project) {
+                console.log(`❌ Project v2 #${projectNumber} not found under ${owner}`);
+                return;
+              }
+              const statusField = (project.fields.nodes || []).find(f => f.name === statusFieldName && f.dataType === 'SINGLE_SELECT');
+              if (!statusField) {
+                console.log(`❌ Field '${statusFieldName}' not found or not SINGLE_SELECT`);
+                return;
+              }
+              const option = statusField.options.find(o => o.name === inputs.status_value);
+              if (!option) {
+                console.log(`❌ Status option '${inputs.status_value}' not found`);
+                return;
+              }
+
+              // Add PR to project and set status
+              const addItemMutation = `mutation($projectId:ID!, $contentId:ID!){ addProjectV2ItemById(input:{projectId:$projectId, contentId:$contentId}){ item { id } } }`;
+              const addItemRes = await github.graphql(addItemMutation, { projectId: project.id, contentId: pr.node_id });
+              const itemId = addItemRes.addProjectV2ItemById.item.id;
+
+              const setFieldMutation = `mutation($projectId:ID!, $itemId:ID!, $fieldId:ID!, $optionId:String!){ updateProjectV2ItemFieldValue(input:{ projectId:$projectId, itemId:$itemId, fieldId:$fieldId, value:{ singleSelectOptionId:$optionId }}){ projectV2Item { id } } }`;
+              await github.graphql(setFieldMutation, { projectId: project.id, itemId, fieldId: statusField.id, optionId: option.id });
+              console.log(`✅ Updated Project #${projectNumber} status to '${inputs.status_value}' for PR #${pr.number}`);
+            }
 
   # Wiki updates
   update-wiki:
