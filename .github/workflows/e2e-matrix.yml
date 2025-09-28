@@ -57,9 +57,9 @@ jobs:
           PW_BASEURL: ${{ matrix.baseURL }}
         run: |
           if [ "${{ matrix.target }}" = "react" ]; then
-            npx playwright test || echo "React E2E failed (non-blocking)"
+            npx playwright test -c playwright.config.ts || echo "React E2E failed (non-blocking)"
           else
-            npx playwright test
+            npx playwright test -c playwright.config.js
           fi
 
       - name: Upload Playwright report (on failure)
