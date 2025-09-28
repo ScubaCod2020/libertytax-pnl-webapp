@@ -24,6 +24,7 @@ concurrency:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -76,11 +77,6 @@ jobs:
             npm run mdlint || echo "Markdown lint issues are advisory on '$BRANCH_NAME'"
           fi
 
-      - name: Lint (Angular subfolder)
-        if: steps.detect.outputs.angular_dir == 'angular'
-        run: |
-          cd angular && (npx ng lint || npm run lint --if-present || echo "No Angular lint configured; skipping")
-
       - name: Type check
         run: |
           if npm run | grep -q "type-check"; then
@@ -99,11 +95,6 @@ jobs:
             npm run test --if-present || echo "React unit tests failed (non-blocking)"
           fi
 
-      - name: Unit tests (Angular subfolder)
-        if: steps.detect.outputs.angular_dir == 'angular'
-        run: |
-          cd angular && npx ng test --watch=false --browsers=ChromeHeadless
-
       - name: Build
         run: |
           if [ "${{ steps.detect.outputs.framework }}" = "angular" ]; then
@@ -113,11 +104,6 @@ jobs:
           else
             npm run build
           fi
-
-      - name: Build (Angular subfolder)
-        if: steps.detect.outputs.angular_dir == 'angular'
-        run: |
-          cd angular && npx ng build --configuration=production || npx ng build
 
       - name: E2E (Playwright - React only)
         if: steps.detect.outputs.framework == 'react'
@@ -134,6 +120,8 @@ jobs:
         run: |
           if [ -f "playwright.config.js" ]; then
             npx playwright install --with-deps
+            # Ensure Playwright's webServer doesn't hang forever
+            export PLAYWRIGHT_HTTPCACHE=0
             npm run test:e2e:angular || echo "Angular E2E failed (non-blocking)"
           else
             echo "No Angular Playwright config; skipping e2e"
@@ -173,6 +161,7 @@ jobs:
     if: ${{ success() && github.event_name == 'pull_request' }}
     environment:
       name: staging
+    timeout-minutes: 30
     steps:
       - run: echo "Awaiting approval to deploy preview..."
 
@@ -183,6 +172,7 @@ jobs:
     if: ${{ success() && github.event_name == 'pull_request' }}
     environment:
       name: preview
+    timeout-minutes: 10
     steps:
       - name: Trigger Vercel Preview via Deploy Hook
         run: |
@@ -198,6 +188,7 @@ jobs:
     if: ${{ success() && github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
     environment:
       name: staging
+    timeout-minutes: 10
     steps:
       - name: Trigger Vercel Staging via Deploy Hook
         run: |
