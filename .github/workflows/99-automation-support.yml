@@ -101,6 +101,25 @@ jobs:
             const labels = ['bug', 'workflow-failure'];
             if (isProd) labels.push('critical');
 
+            // Ensure labels exist (idempotent)
+            const desired = [
+              { name: 'bug', color: 'd73a4a', description: 'Something is not working' },
+              { name: 'workflow-failure', color: '5319e7', description: 'Created by automation on CI failure' },
+              { name: 'critical', color: 'b60205', description: 'Highest urgency' },
+            ];
+            for (const l of desired) {
+              try {
+                await github.rest.issues.getLabel({ owner: context.repo.owner, repo: context.repo.repo, name: l.name });
+              } catch (e) {
+                if (e.status === 404) {
+                  await github.rest.issues.createLabel({ owner: context.repo.owner, repo: context.repo.repo, name: l.name, color: l.color, description: l.description });
+                  console.log(`Created label: ${l.name}`);
+                } else {
+                  console.warn(`Skipping label check for ${l.name}:`, e.message);
+                }
+              }
+            }
+
             // Create issue for failed workflow
             const issue = await github.rest.issues.create({
               owner: context.repo.owner,
