@@ -22,9 +22,14 @@ bootstrapApplication(AppComponent, {
 
 // Startup health check (non-blocking)
 // Using dynamic import to avoid strict DI setup here
-import('./app/services/api-client.service').then((m) =>
-  new m.ApiClientService()
-    .getHealth()
-    .then((h) => logger.info('[health] api:', h.status))
-    .catch(() => logger.warn('[health] api: unavailable'))
-);
+try {
+  const enableHealth = (window as any).__ENABLE_API_HEALTH__ === true;
+  if (enableHealth) {
+    import('./app/services/api-client.service').then((m) =>
+      new m.ApiClientService()
+        .getHealth()
+        .then((h) => logger.info('[health] api:', h.status))
+        .catch(() => logger.warn('[health] api: unavailable'))
+    );
+  }
+} catch {}
