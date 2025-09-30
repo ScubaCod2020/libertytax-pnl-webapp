@@ -147,8 +147,13 @@ export class ReportsComponent implements OnInit {
       avgNetFee,
       taxPrepReturns,
       taxRushReturns,
+      handlesTaxRush: answers.handlesTaxRush === true,
       discountsPct,
       otherIncome,
+
+      // If the Expenses page computed a total, prefer it for consistency across pages
+      calculatedTotalExpenses:
+        answers.calculatedTotalExpenses ?? answers.projectedExpenses ?? undefined,
 
       // Expense percentages
       salariesPct: answers.payrollPct || 25,
