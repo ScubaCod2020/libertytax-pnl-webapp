@@ -5,7 +5,7 @@ import { defineConfig, devices } from '@playwright/test';
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  testDir: './tests',
+  testDir: './test/e2e',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -16,23 +16,28 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ['html'],
+    ['list'],
+    ['html', { outputFolder: 'playwright-report' }],
     ['json', { outputFile: 'test-results/results.json' }],
-    ['junit', { outputFile: 'test-results/results.xml' }]
+    ['junit', { outputFile: 'test-results/results.xml' }],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:4173',
-    
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-    
+    baseURL: 'http://localhost:4200',
+
+    /* Collect trace for failures and retries */
+    trace: process.env.CI ? 'retain-on-failure' : 'on-first-retry',
+
     /* Screenshot on failure */
     screenshot: 'only-on-failure',
-    
+
     /* Video recording */
     video: 'retain-on-failure',
+    /* Console and network diagnostics */
+    launchOptions: {
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    },
   },
 
   /* Configure projects for major browsers */
@@ -71,9 +76,10 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run preview',
-    url: 'http://localhost:4173',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
+    command: 'cd angular && npm run dev:angular',
+    url: 'http://localhost:4200',
+    // In CI we start the server in the workflow; allow reuse to avoid port-in-use errors
+    reuseExistingServer: true,
+    timeout: 240 * 1000,
   },
 });

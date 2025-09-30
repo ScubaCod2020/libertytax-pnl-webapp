@@ -1,0 +1,33 @@
+# Controls what the wiki sync mirrors and where
+home:
+  prefer:
+    - MASTER_INDEX.md
+    - docs/INDEX.md
+sections:
+  Architecture:
+    from: docs/architecture
+  Runbooks:
+    from: docs/runbooks
+  Testing:
+    from: docs/testing
+  Growth:
+    from: docs/growth
+  Snapshots:
+    from: docs/ui-snapshots
+catch_all:
+  from: docs
+  to: Docs
+  exclude:
+    - architecture/
+    - runbooks/
+    - testing/
+    - growth/
+    - ui-snapshots/
+indexes:
+  - path: Workflows/Overview.md
+    type: workflows
+  - path: Docs/_Index.md
+    type: tree
+progress_page:
+  path: Growth/Progress-Last-4-Weeks.md
+  since: '4 weeks ago'

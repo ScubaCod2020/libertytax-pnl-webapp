@@ -1,0 +1,15 @@
+blueprint:
+  kpi:
+    rulesVersion: 2
+    featureFlag: features.kpiRulesV2
+    lifecycleBands:
+      new: Year 1
+      existing: Years 2+
+    expenseBands:
+      rent:
+        us: { hardCapMonthly: 1500 }
+        ca: { revenuePctMax: 0.18, ownerOccupiedSuppression: true }
+      payroll: { minPct: 0.35, maxPct: 0.45 }
+      marketing: { minPct: 0.08, maxPct: 0.12 }
+      tech: { minPct: 0.02, maxPct: 0.05 }
+      misc: { warningPct: 0.05 }

@@ -4,6 +4,37 @@
     <app-kpi-card></app-kpi-card>
   </div>
   <div class="col col-b"><!-- inputs summary placeholder --></div>
+  <div class="col col-b">
+    <section class="card">
+      <div class="card-title">Average Net Fee</div>
+      <div class="anf-chip">
+        <span class="value">{{ (anfValue$ | async) || 0 | currency:'USD':'symbol':'1.0-0' }}</span>
+        <span class="chip" [ngClass]="anfStatus$ | async" [title]="(text.anfTooltip$() | async) || ''"></span>
+      </div>
+      <div class="small" [ngClass]="anfStatus$ | async">{{ text.anfNote$() | async }}</div>
+    </section>
+  </div>
+  <div class="col col-b" *ngIf="flags.showMonthlyForecastCard">
+    <app-monthly-forecast-card></app-monthly-forecast-card>
+  </div>
+  <div class="col col-b" *ngIf="showAnalysis">
+    <section class="card">
+      <div class="card-title">Projected vs Preset (Preview)</div>
+      <lt-analysis-block [data]="analysisData"></lt-analysis-block>
+      <div class="small" style="color:#6b7280">Dev-only preview; will compare YTD vs Projected later</div>
+    </section>
+  </div>
+  <div class="col col-b" *ngIf="flags.showPerformanceCards">
+    <section class="card">
+      <div class="card-title">Performance (Preview)</div>
+      <div style="display:grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+        <lt-performance-card title="Revenue Pace" [metrics]="revenueMetrics" variant="dashboard"></lt-performance-card>
+        <lt-performance-card title="Returns Pace" [metrics]="returnMetrics" variant="dashboard"></lt-performance-card>
+        <lt-performance-card title="CPR" [metrics]="cprMetrics" variant="dashboard"></lt-performance-card>
+      </div>
+      <div class="small" style="color:#6b7280">Template preview; final cards will bind to YTD vs Projected</div>
+    </section>
+  </div>
   <div class="col col-c">
     <app-dashboard-results-panel></app-dashboard-results-panel>
   </div>

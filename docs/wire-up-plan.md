@@ -1,3 +1,27 @@
+Wire-Up Plan — AnalysisBlock
+
+Targets
+
+- Wizard Step 1 (Income Drivers): show projected growth analysis vs presets (now placed under Projected section)
+- Dashboard: show projected vs baseline snapshot analysis (middle column preview)
+
+Connections
+
+- Inputs: ProjectedService (growthPct, scenario)
+- Assembler: `AnalysisDataAssemblerService` (domain/service) → returns `AnalysisData`
+- UI: `AnalysisBlockComponent` consumes `AnalysisData`
+
+Rationale
+
+- Keep UI presentational; compute AnalysisData in pure TS service for reuse.
+- Gate UI via feature flag until fully configured.
+
+Performance Cards wiring (planned)
+
+- Inputs: SettingsService (region/flags), CalculationService (compute), future YTD service
+- Assembler: `MetricsAssemblerService` → returns `PerformanceMetric[]` groups
+- UI: `PerformanceCardComponent` consumes arrays
+
 # Wire-Up Plan (Inputs → Services → Domain)
 
 ## Dashboard
@@ -34,3 +58,9 @@
 - Provide token at bootstrap with `DEFAULT_REGION_CONFIGS`
 - `ConfigService` injects token and exposes effective thresholds/bands per selected region
 - Consumers: `CalculationService`, `ReportAssemblerService`, UI gating for TaxRush fields
+
+### 2025-09-29 Progress Snapshot
+
+- Quick Start Wizard lock/unlock behavior aligned with UX memo (editable until navigation away).
+- Expenses page overhaul in progress: strategic KPI card updated, payroll & employee deductions refactored with new layout and notes.
+- Remaining to-do items: propagate new layout to all expense categories, reorder sections (Misc before Franchise, Dues moved), add info definitions, and wire cost/net per return metrics from KPI Rules V2.

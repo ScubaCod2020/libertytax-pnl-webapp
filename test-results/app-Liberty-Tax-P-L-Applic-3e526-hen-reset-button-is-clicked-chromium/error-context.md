@@ -1,103 +1,173 @@
 # Page snapshot
 
 ```yaml
-- generic [ref=e3]:
-  - generic:
-    - img "Liberty Tax watermark"
-  - generic [ref=e4]:
-    - generic [ref=e5]:
-      - img "Liberty Tax US" [ref=e7]
-      - generic [ref=e8]:
-        - generic [ref=e9]: Liberty Tax • P&L Budget & Forecast
-        - generic [ref=e10]: v0.5 preview
-        - generic [ref=e11]: Debug
-      - generic [ref=e12]:
-        - combobox "Region" [ref=e14]:
-          - option "US" [selected]
-          - option "CA"
-        - button "Reset to defaults" [ref=e16] [cursor=pointer]: 🔄 Reset All
-    - generic [ref=e17]:
-      - generic [ref=e18]:
-        - generic [ref=e19]:
-          - button "Step 1 · Welcome" [ref=e20] [cursor=pointer]
-          - button "Step 2 · Inputs" [disabled] [ref=e21]
-          - button "Step 3 · Review" [disabled] [ref=e22]
-        - button "Go to dashboard" [ref=e24] [cursor=pointer]: ↩ Go to Dashboard
-      - generic [ref=e25]:
+- generic [ref=e2]:
+    - img "Regional Brand Watermark"
+    - banner [ref=e4]:
+        - generic [ref=e5]:
+            - img "Liberty Tax" [ref=e8]
+            - generic [ref=e9]:
+                - generic [ref=e10]: Liberty Tax • P&L Budget & Forecast
+                - generic [ref=e11]: v0.6.0 preview
+                - generic [ref=e12]: 'Region: US'
+            - generic [ref=e13]:
+                - generic [ref=e14]:
+                    - button "Income" [ref=e15] [cursor=pointer]
+                    - button "Expenses" [ref=e16] [cursor=pointer]
+                    - button "Reports" [ref=e17] [cursor=pointer]
+                - generic [ref=e18]:
+                    - button "Dashboard" [ref=e19] [cursor=pointer]
+                    - button "Reset App" [active] [ref=e20] [cursor=pointer]
+                    - button "Debug" [ref=e21] [cursor=pointer]
+    - generic [ref=e25]:
         - generic [ref=e26]:
-          - generic [ref=e27]: Welcome – Quick Start Wizard
-          - generic [ref=e28]: Create your customized P&L dashboard in just a few quick steps
-        - generic [ref=e29]:
-          - generic [ref=e30]:
-            - text: Region
-            - generic [ref=e31]: "*"
-          - combobox "Region" [ref=e33]:
-            - option "United States" [selected]
-            - option "Canada"
-          - generic [ref=e34]: Affects tax calculations and available features
-        - generic [ref=e35]:
-          - generic [ref=e36]:
-            - text: Store Type
-            - generic [ref=e37]: "*"
-          - combobox "Store Type" [ref=e39]:
-            - option "Select store type..." [selected]
-            - option "New Store (First year)"
-            - option "Existing Store"
-          - generic [ref=e40]: New stores use regional stats, existing stores use your historical data
+            - generic [ref=e27]:
+                - text: 🏷️ Your Selections
+                - generic [ref=e28]: (From Step 1 - Read Only)
+            - button "🔄 Reset Wizard" [ref=e29] [cursor=pointer]
+        - generic [ref=e30]:
+            - generic [ref=e31]:
+                - strong [ref=e32]: 'Region:'
+                - text: United States 🇺🇸
+            - generic [ref=e33]: •
+            - generic [ref=e34]:
+                - strong [ref=e35]: 'Store Type:'
+                - text: 🏢 New Store
+            - generic [ref=e36]: •
+            - generic [ref=e37]:
+                - strong [ref=e38]: 'Other Income:'
+                - text: No, only tax preparation
+    - generic [ref=e40]:
         - generic [ref=e41]:
-          - generic [ref=e42]:
-            - button "Clear wizard data" [ref=e43] [cursor=pointer]: 🔄 Reset Data
-            - button "Go to dashboard" [ref=e44] [cursor=pointer]: ↩ Go to Dashboard
-          - 'button "Next Step: Detailed Inputs →" [disabled] [ref=e45]'
-    - contentinfo [ref=e46]:
-      - generic [ref=e47]:
-        - generic [ref=e48]:
-          - heading "Navigation" [level=3] [ref=e49]
-          - generic [ref=e50]:
-            - button "🚀 Setup Wizard" [ref=e51] [cursor=pointer]
-            - button "📊 Dashboard" [disabled] [ref=e52]
-            - button "📈 Reports" [disabled] [ref=e53]
-        - generic [ref=e54]:
-          - heading "Quick Links" [level=3] [ref=e55]
-          - generic [ref=e56]:
-            - button "💡 Pro-Tips *" [ref=e57] [cursor=pointer]:
-              - text: 💡 Pro-Tips
-              - generic [ref=e58] [cursor=pointer]: "*"
-            - button "🎯 Practice Problems *" [ref=e59] [cursor=pointer]:
-              - text: 🎯 Practice Problems
-              - generic [ref=e60] [cursor=pointer]: "*"
-            - button "📄 Export (PDF/Excel) *" [disabled] [ref=e61]:
-              - text: 📄 Export (PDF/Excel)
-              - generic [ref=e62]: "*"
-        - generic [ref=e63]:
-          - heading "Resources" [level=3] [ref=e64]
-          - generic [ref=e65]:
-            - button "⚙️ Settings *" [ref=e66]:
-              - text: ⚙️ Settings
-              - generic [ref=e67]: "*"
-            - link "📚 Training Materials *" [ref=e68]:
-              - /url: "#"
-              - text: 📚 Training Materials
-              - generic [ref=e69]: "*"
-            - link "📞 Support Center *" [ref=e70]:
-              - /url: "#"
-              - text: 📞 Support Center
-              - generic [ref=e71]: "*"
-        - generic [ref=e72]:
-          - heading "About & Status" [level=3] [ref=e73]
-          - generic [ref=e74]:
-            - strong [ref=e76]: P&L Budget & Forecast
-            - generic [ref=e77]: Version 0.5 Preview
-            - generic [ref=e78]: Liberty Tax Service
-            - generic [ref=e79]:
-              - generic [ref=e80]: "🚀 Current Milestones:"
-              - generic [ref=e81]: ✅ Wizard-driven setup complete
-              - generic [ref=e82]: ✅ Modular component architecture
-              - generic [ref=e83]: ✅ Regional branding & features
-              - generic [ref=e84]: ✅ Real-time calculations & validation
-            - generic [ref=e85]:
-              - text: Data persisted locally • Regional features active
-              - generic [ref=e86]: "* Feature in development"
-  - button "Debug" [ref=e87] [cursor=pointer]:
-    - img "US Support Agent" [ref=e88] [cursor=pointer]
+            - heading "New Store 🏪" [level=1] [ref=e42]
+            - paragraph [ref=e43]: First year - use regional benchmarks
+        - generic [ref=e46]:
+            - generic [ref=e47]:
+                - generic [ref=e48]:
+                    - generic [ref=e49]: 🎯
+                    - text: Target Performance Goals
+                - button "🔄 Reset Goals" [ref=e50] [cursor=pointer]
+            - generic [ref=e51]:
+                - generic [ref=e52]:
+                    - text: Tax Prep Returns
+                    - generic [ref=e53]: '*'
+                - spinbutton [ref=e55]: '2000'
+                - generic [ref=e56]: Your target number of tax returns
+            - generic [ref=e57]:
+                - generic [ref=e58]:
+                    - text: Average Net Fee
+                    - generic [ref=e59]: '*'
+                - generic [ref=e61]:
+                    - generic [ref=e62]: $
+                    - spinbutton [ref=e63]
+                - generic [ref=e64]: Your target average net fee per return
+            - generic [ref=e65]:
+                - generic [ref=e66]: Gross Tax Prep Fees
+                - generic [ref=e68]:
+                    - generic [ref=e69]: $
+                    - spinbutton [ref=e70]
+                - generic [ref=e71]: 'Auto: Returns × Avg Net Fee'
+            - generic [ref=e72]:
+                - generic [ref=e73]: Customer Discounts
+                - generic [ref=e74]:
+                    - generic [ref=e75]:
+                        - generic [ref=e76]: $
+                        - spinbutton [ref=e77]
+                    - generic [ref=e78]: =
+                    - generic [ref=e79]:
+                        - spinbutton [ref=e80]: '1'
+                        - generic [ref=e81]: '%'
+                - generic [ref=e82]: 'Default: 1.0% • Enter either dollar amount or percentage — the other will auto-calc'
+            - generic [ref=e83]:
+                - generic [ref=e84]: Total Tax Prep Income
+                - generic [ref=e86]:
+                    - generic [ref=e87]: $
+                    - spinbutton [ref=e88]
+                - generic [ref=e89]: Gross Tax Prep Fees minus Customer Discounts (you can override)
+            - generic [ref=e90]:
+                - text: 'Gross Net Income: $0'
+                - generic [ref=e91]: '• Gross Net per Return: $0'
+        - 'link "Next: Expenses" [ref=e93] [cursor=pointer]':
+            - /url: /wizard/expenses
+    - contentinfo [ref=e95]:
+        - generic [ref=e96]:
+            - generic [ref=e97]:
+                - heading "Navigation" [level=3] [ref=e98]
+                - generic [ref=e99]:
+                    - button "Income" [ref=e100] [cursor=pointer]
+                    - button "Expenses" [ref=e101] [cursor=pointer]
+                    - button "Reports" [ref=e102] [cursor=pointer]
+                    - button "Dashboard" [ref=e103] [cursor=pointer]
+                    - button "Debug" [ref=e104] [cursor=pointer]
+            - generic [ref=e105]:
+                - heading "Quick Links" [level=3] [ref=e106]
+                - generic [ref=e107]:
+                    - button "💡 Pro-Tips *" [ref=e108] [cursor=pointer]:
+                        - text: 💡 Pro-Tips
+                        - generic [ref=e109] [cursor=pointer]: '*'
+                    - button "🎯 Practice Problems *" [ref=e110] [cursor=pointer]:
+                        - text: 🎯 Practice Problems
+                        - generic [ref=e111] [cursor=pointer]: '*'
+                    - button "📄 Export (PDF/Excel) *" [ref=e112] [cursor=pointer]:
+                        - text: 📄 Export (PDF/Excel)
+                        - generic [ref=e113] [cursor=pointer]: '*'
+                    - button "🧰 Debug" [ref=e114] [cursor=pointer]
+            - generic [ref=e115]:
+                - heading "Resources" [level=3] [ref=e116]
+                - generic [ref=e117]:
+                    - button "⚙️ Settings *" [ref=e118]:
+                        - text: ⚙️ Settings
+                        - generic [ref=e119]: '*'
+                    - button "📚 Training Materials *" [ref=e120]:
+                        - text: 📚 Training Materials
+                        - generic [ref=e121]: '*'
+                    - button "📞 Support Center *" [ref=e122]:
+                        - text: 📞 Support Center
+                        - generic [ref=e123]: '*'
+            - generic [ref=e124]:
+                - heading "About & Status" [level=3] [ref=e125]
+                - generic [ref=e126]:
+                    - strong [ref=e128]: P&L Budget & Forecast
+                    - generic [ref=e129]: Version v0.6 preview
+                    - generic [ref=e130]: Liberty Tax Service
+                    - generic [ref=e131]:
+                        - generic [ref=e132]: '🚀 Current Milestones:'
+                        - list [ref=e133]:
+                            - listitem [ref=e134]:
+                                - generic [ref=e135]: ✅
+                                - text: Angular app boots and routes load
+                            - listitem [ref=e136]:
+                                - generic [ref=e137]: ✅
+                                - text: Global styles consolidated + partials
+                            - listitem [ref=e138]:
+                                - generic [ref=e139]: ✅
+                                - text: Header + Footer (nav, version, layout)
+                            - listitem [ref=e140]:
+                                - generic [ref=e141]: ✅
+                                - text: Debug panel placeholder (push-layout, desktop/mobile)
+                            - listitem [ref=e142]:
+                                - generic [ref=e143]: ✅
+                                - text: Brand assets wired (logo/watermark)
+                            - listitem [ref=e144]:
+                                - generic [ref=e145]: 🟡
+                                - text: 'Wizard: Income Drivers page scaffolded'
+                            - listitem [ref=e146]:
+                                - generic [ref=e147]: 🟡
+                                - text: 'Wizard: Expenses page scaffolded'
+                            - listitem [ref=e148]:
+                                - generic [ref=e149]: 🟡
+                                - text: 'Wizard: P&L page scaffolded'
+                            - listitem [ref=e150]:
+                                - generic [ref=e151]: ⭕
+                                - text: Port calculations from React reference
+                            - listitem [ref=e152]:
+                                - generic [ref=e153]: ⭕
+                                - text: Reports + Export flows
+                    - generic [ref=e154]:
+                        - text: Data persisted locally • Regional features active
+                        - generic [ref=e155]: '* Feature in development'
+    - complementary [ref=e156]:
+        - generic [ref=e157]:
+            - generic [ref=e158]: Debug Panel
+            - button "Open" [ref=e159] [cursor=pointer]
 ```

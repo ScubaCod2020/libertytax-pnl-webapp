@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { DebugPanelService } from './debug-panel.service';
 import { MilestonesService } from '../../services/milestones.service';
 import { MilestoneItem, MilestoneState } from '../../lib/milestones';
 import { CommonModule } from '@angular/common';
+import { FEATURE_FLAGS } from '../../core/tokens/feature-flags.token';
 
 @Component({
   selector: 'app-debug-panel',
@@ -13,11 +14,15 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./debug-panel.component.scss'],
 })
 export class DebugPanelComponent implements OnInit, OnDestroy {
-  constructor(public debugSvc: DebugPanelService, private ms: MilestonesService) {}
+  constructor(
+    public debugSvc: DebugPanelService,
+    private ms: MilestonesService
+  ) {}
   showDetails = false;
   private sub?: Subscription;
   milestones$!: Observable<MilestoneItem[]>;
   logText = '';
+  readonly flags = inject(FEATURE_FLAGS);
 
   ngOnInit(): void {
     this.sub = this.debugSvc.open$.subscribe((open) => (this.showDetails = open));
@@ -32,17 +37,38 @@ export class DebugPanelComponent implements OnInit, OnDestroy {
   cycleState(id: string): void {
     // done -> planned -> in_progress -> done (simple cycle)
     let next: MilestoneState = 'done';
-    this.milestones$.subscribe(list => {
-      const m = list.find(x => x.id === id);
-      if (!m) return;
-      next = m.state === 'done' ? 'planned' : m.state === 'planned' ? 'in_progress' : 'done';
-      this.ms.updateState(id, next);
-      this.refreshLog();
-    }).unsubscribe();
+    this.milestones$
+      .subscribe((list) => {
+        const m = list.find((x) => x.id === id);
+        if (!m) return;
+        next = m.state === 'done' ? 'planned' : m.state === 'planned' ? 'in_progress' : 'done';
+        this.ms.updateState(id, next);
+        this.refreshLog();
+      })
+      .unsubscribe();
   }
 
-  clearLog(): void { this.ms.clearLog(); this.refreshLog(); }
-  private refreshLog(): void { this.logText = this.ms.getLog().slice().reverse().join('\n'); }
+  clearLog(): void {
+    this.ms.clearLog();
+    this.refreshLog();
+  }
+  private refreshLog(): void {
+    this.logText = this.ms.getLog().slice().reverse().join('\n');
+  }
+
+  // Feature flags controls (mutates shared token instance)
+  setShowAnalysisBlock(v: boolean): void {
+    this.flags.showAnalysisBlock = !!v;
+  }
+  setShowMonthlyForecastCard(v: boolean): void {
+    this.flags.showMonthlyForecastCard = !!v;
+  }
+  setShowMultiStoreSummaryCard(v: boolean): void {
+    this.flags.showMultiStoreSummaryCard = !!v;
+  }
+  setShowPerformanceCards(v: boolean): void {
+    this.flags.showPerformanceCards = !!v;
+  }
 
   copyMarkdown(): void {
     const md = this.toMarkdown();
@@ -66,7 +92,7 @@ export class DebugPanelComponent implements OnInit, OnDestroy {
   private toMarkdown(): string {
     const lines = this.ms.getLog();
     const header = '# Development Progress Log\n\n';
-    const body = lines.map(l => `- ${l}`).join('\n');
+    const body = lines.map((l) => `- ${l}`).join('\n');
     return header + body + '\n';
   }
 }

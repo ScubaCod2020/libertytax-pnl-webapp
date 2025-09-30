@@ -1,5 +1,14 @@
-<app-header></app-header>
-<app-quick-start-wizard [title]="pageTitle" [editable]="pageEditable" [subtitle]="pageSubtitle"></app-quick-start-wizard>
+<!-- Page-wide Regional Watermark -->
+<img class="page-watermark" *ngIf="regionalWatermark$ | async as watermarkSrc" [src]="watermarkSrc"
+    alt="Regional Brand Watermark" />
+
+<app-header [currentPage]="currentPage"></app-header>
+<app-quick-start-wizard [title]="pageTitle" [editable]="pageEditable"
+    [subtitle]="pageSubtitle"></app-quick-start-wizard>
 <router-outlet></router-outlet>
+<app-debug-overlay></app-debug-overlay>
+<app-loading-overlay *ngIf="showExpensesLoading()" [watermarkSrc]="(regionalWatermark$ | async) ?? ''"
+    message="Preparing expense guidance"
+    subMessage="Applying Liberty Tax best practices for your region"></app-loading-overlay>
 <app-footer></app-footer>
 <app-debug-panel></app-debug-panel>

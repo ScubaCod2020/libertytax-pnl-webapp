@@ -42,6 +42,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **♿ Accessibility Improvements**: Fixed form element accessibility violations in projected income drivers component
+  - Added proper labels with `for` attributes for all form elements (select dropdowns, number inputs, range sliders)
+  - Added `title` attributes for enhanced screen reader support
+  - Implemented screen reader only (sr-only) labels for visual clarity without clutter
+  - Moved inline styles to external CSS classes for better maintainability
+  - Fixed axe/forms violations: select-name, label requirements for all form controls
+- Tooling: Migrated to Husky v9, removed deprecated `.husky/_/husky.sh` shim, and set `core.hooksPath` to `.husky`. Pre-commit now runs `lint-staged` and progress log validation without warnings.
+
+### Angular Maintenance
+
+- Avoided direct `Math.` usage in templates by adding a `round(...)` helper to `StrategicAnalysisComponent` and updating the template accordingly.
+- Corrected component metadata to use `styleUrls` where `styleUrl` was mistakenly used.
+- Implemented missing helper methods used by `reports.component.html` (season labels, margin class, quarterly and seasonal stats) and extended `ReportData` to include expense sections referenced by the template.
+- Increased `anyComponentStyle` budget in `angular.json` to reduce noisy SCSS warnings masking real errors.
+
+### Docs
+
+- Added Angular template guidance (avoid globals in templates; provide component wrappers) and debugging notes to README.
+
+### Technical Details
+
+- package.json: `prepare` now `husky`; added devDependency `husky@^9`; removed `simple-git-hooks` and its config
+- Git config: `core.hooksPath=.husky`
+- Deleted directory: `.husky/_`
+- Verified Angular workspace is on v20.3.x with Node v24.8.0
+
 - **🐛 Custom Growth Dropdown**: Fixed reversion issue when selecting "Custom percentage..."
 - **📊 Dashboard KPI Cards**: Restored proper visibility with enhanced styling and spacing
 - **🎯 Excel Parity**: Confirmed all 17 expense categories match Excel workbook exactly

@@ -97,6 +97,10 @@ export function usePersistence() {
         }
       }
 
+      // Ensure raw is non-null before parsing to satisfy strict typing
+      if (raw == null) {
+        return undefined;
+      }
       const parsed = JSON.parse(raw) as PersistEnvelopeV1;
 
       // Critical security fix: Validate data integrity before using

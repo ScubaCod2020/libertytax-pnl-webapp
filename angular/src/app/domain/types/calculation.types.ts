@@ -17,14 +17,15 @@ export interface CalculationInputs {
   avgNetFee: number;
   taxPrepReturns: number;
   taxRushReturns: number;
+  handlesTaxRush?: boolean; // Optional - defaults to true for backward compatibility
+  otherIncome?: number; // Other revenue streams (bookkeeping, notary, etc.)
   discountsPct: number;
-  otherIncome?: number;
 
   // Optional pre-calculated total (from Expenses page)
   calculatedTotalExpenses?: number;
 
   // 17 expense fields (current engine subset; percent vs fixed as indicated by name)
-  salariesPct: number;
+  salariesPct: number; // keep type name for calc engine compatibility; value source now payrollPct
   empDeductionsPct: number; // % of salaries
   rentPct: number;
   telephoneAmt: number;

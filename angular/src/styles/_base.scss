@@ -20,33 +20,115 @@ body {
 }
 
 /* Typography utilities */
-.h1 { font-family: var(--font-base); font-weight: var(--fw-extrabold); font-size: var(--fz-2xl); letter-spacing: 0.02em; }
-.h2 { font-family: var(--font-base); font-weight: var(--fw-semibold); font-size: var(--fz-xl); }
-.h3 { font-family: var(--font-base); font-weight: var(--fw-medium); font-size: var(--fz-lg); }
-.text-sm { font-size: var(--fz-sm); }
-.text-xs { font-size: var(--fz-xs); }
-.semibold { font-weight: var(--fw-semibold); }
-.medium { font-weight: var(--fw-medium); }
-.regular { font-weight: var(--fw-regular); }
+.h1 {
+    font-family: var(--font-base);
+    font-weight: var(--fw-extrabold);
+    font-size: var(--fz-2xl);
+    letter-spacing: 0.02em;
+}
+
+.h2 {
+    font-family: var(--font-base);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fz-xl);
+}
+
+.h3 {
+    font-family: var(--font-base);
+    font-weight: var(--fw-medium);
+    font-size: var(--fz-lg);
+}
+
+.text-sm {
+    font-size: var(--fz-sm);
+}
+
+.text-xs {
+    font-size: var(--fz-xs);
+}
+
+.semibold {
+    font-weight: var(--fw-semibold);
+}
+
+.medium {
+    font-weight: var(--fw-medium);
+}
+
+.regular {
+    font-weight: var(--fw-regular);
+}
 
 /* Shared button styles (header/footer) */
 .btn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 6px;
+    color: var(--btn-text-color);
+    padding: 6px 14px;
+    border-radius: var(--btn-border-radius);
     border: none;
     font-weight: 600;
     font-size: 13px;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: var(--btn-shadow);
+    transition: all 0.2s ease;
 }
-.btn--nav { background: linear-gradient(45deg, #4f46e5, #7c3aed); }
-.btn--active { background: linear-gradient(45deg, #0ea5e9, #3b82f6); }
-.btn--reset { background: linear-gradient(45deg, #dc2626, #ef4444); }
-.btn-link { background: none; border: none; color: var(--liberty-navy); cursor: pointer; text-decoration: underline; padding: 0; }
+
+.btn--sm {
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+.btn--primary {
+    background: linear-gradient(45deg, var(--btn-primary-bg-start), var(--btn-primary-bg-end));
+}
+
+.btn--secondary {
+    background: linear-gradient(45deg, var(--btn-secondary-bg-start), var(--btn-secondary-bg-end));
+}
+
+.btn--danger {
+    background: linear-gradient(45deg, var(--btn-danger-bg-start), var(--btn-danger-bg-end));
+}
+
+.btn--outline {
+    background: transparent;
+    color: var(--liberty-navy);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    box-shadow: none;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--btn-hover-shadow);
+}
+
+.btn--primary:hover {
+    background: linear-gradient(45deg, var(--btn-primary-hover-start), var(--btn-primary-hover-end));
+}
+
+.btn--secondary:hover {
+    background: linear-gradient(45deg, var(--btn-secondary-hover-start), var(--btn-secondary-hover-end));
+}
+
+.btn--danger:hover {
+    background: linear-gradient(45deg, var(--btn-danger-hover-start), var(--btn-danger-hover-end));
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--liberty-navy);
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+}
 
 
 .brand {

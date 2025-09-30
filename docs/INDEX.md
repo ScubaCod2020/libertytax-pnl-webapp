@@ -1,28 +1,63 @@
-# Docs — Index
+# Project Documentation Index
 
-Path: /docs
+This index groups related documents into sections to improve discoverability.
 
-Purpose: Quick links to key documentation.
+## Overview
 
-- Project overview: ../README.md
-- Ops (CI/CD, QA, Deploy): ../ops/README.md
-- Master Index: ../MASTER_INDEX.md
-- Lessons Learned: ./LESSONS_LEARNED.md
-- Components Tree: ./COMPONENTS_TREE.md
-- Cross-Reference Map: ./MAPPING.md
-- Repo Blueprint: ../repo-blueprint.yml
-- Components Graph: ./architecture/components-graph.md
-- Environment Setup: ./ENV_SETUP.md
-- Virtual Team Guide: ./VIRTUAL_TEAM_GUIDE.md
-- Scope: ./SCOPE.md
-- Testing strategy: ./AUTOMATED_TESTING_STRATEGY.md
-- Pre-deploy checklist: ./PRE_DEPLOYMENT_CHECKLIST.md
-- Development notes: ./DEV_NOTES_V5.md
+- docs/ARCHITECTURE.md — System overview
+- docs/DEVELOPMENT.md — Developer guide and conventions
+- docs/STYLE_GUIDE.md — Code style and naming
 
-## Intake
+## Planning and Decisions
 
-- Enhancement Inbox: ./inbox.enhancements.md
+- docs/SCOPE.md
+- docs/INTEGRATION_STRATEGY.md
+- docs/SEQUENTIAL_WORKFLOW_STRATEGY.md
+- docs/adr/ — Architecture Decision Records
 
-## Parity
+## Testing and Quality
 
-- React → Angular Parity Checklist: ./parity-checklist.md
+- docs/TESTING.md
+- docs/testing/strategy.md
+- docs/PRO_TIPS_TESTING_FRAMEWORK.md
+- docs/COMPREHENSIVE_TESTING_CHECKLIST.md
+- docs/QA_ANALYSIS_REPORT.md
+- docs/OVERNIGHT_QA_REPORT.md
+
+## Architecture & Data
+
+- docs/architecture/components-graph.md
+- docs/DATA-FLOW-ARCHITECTURE-ANALYSIS.md
+- docs/COMPONENTS_TREE.md
+- docs/VARIABLES.md
+
+## Operations & Runbooks
+
+- docs/runbooks/release.md
+- docs/PRE_DEPLOYMENT_CHECKLIST.md
+- ops/README.md
+
+## Growth & Logs
+
+- docs/growth/ — Weekly logs and progress
+- docs/LESSONS_LEARNED.md
+- docs/SESSION_LOG.md
+- docs/SESSION-SUMMARY-\*.md
+
+## Known Issues & Fixes
+
+- docs/KNOWN_ISSUES.md
+- CURRENT_ISSUES.md
+- docs/FIXES-IMPLEMENTATION-SUMMARY.md
+
+## Blueprints & Audits
+
+- docs/BLUEPRINT_DELTA.md
+- docs/CONSOLIDATED-DEPENDENCY-ANALYSIS.md
+- docs/render-audit.md
+
+## Miscellaneous
+
+- MASTER_INDEX.md (root)
+- CHANGELOG.md
+- docs/CHANGELOG.md

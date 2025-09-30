@@ -343,4 +343,16 @@ npm ci && npm run build && npm run preview
 
 ---
 
+## 🧭 Manual Navigator Job Card — Stopping Point (2025-09-24)
+
+- Focused files completed: AnalysisBlock, PerformanceCard, Wizard calculations; Existing store sections reviewed.
+- Staged Angular: shared AnalysisBlock/PerformanceCard, wizard UI shells, MetricsAssembler (preview), wizard helpers.
+- Added: Debug Panel toggles; Dashboard previews under feature flags.
+- Pending next session:
+  - Replace wizard templates with `lt-wizard-form-section`, `lt-wizard-form-field`, `lt-net-income-summary` and wire Reset per section.
+  - Implement real YTD vs Projected in MetricsAssembler when YTD inputs exist.
+  - Run/stabilize Playwright E2E (wizard flow matrix) and expand coverage.
+
+---
+
 **🎉 The sequential workflow system provides predictable, efficient, and cost-effective CI/CD for the Liberty Tax P&L webapp!**

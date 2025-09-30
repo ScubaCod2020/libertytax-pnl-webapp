@@ -1,0 +1,71 @@
+.strategic-analysis {
+  margin: 1rem 0;
+  padding: 0.75rem;
+  background-color: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.analysis-header {
+  font-weight: bold;
+  color: #92400e;
+  margin-bottom: 0.5rem;
+}
+
+.strategic-target,
+.field-performance-header {
+  color: #92400e;
+  margin-bottom: 0.5rem;
+}
+
+.adjustment-list {
+  margin-left: 1rem;
+}
+
+.adjustment-item {
+  color: #92400e;
+  margin-bottom: 0.25rem;
+}
+
+.performance-analysis {
+  color: #92400e;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f59e0b;
+  font-weight: bold;
+}
+
+.performance-details {
+  font-weight: normal;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.performance-status {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.performance-status.exceeding {
+  background-color: #d1fae5;
+  border-color: #10b981;
+}
+
+.performance-status.missing {
+  background-color: #fee2e2;
+  border-color: #ef4444;
+}
+
+.business-lesson {
+  color: #92400e;
+  margin-top: 0.5rem;
+  font-style: italic;
+  background-color: #fef9e7;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #fcd34d;
+}
+

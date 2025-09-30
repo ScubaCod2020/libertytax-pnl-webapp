@@ -1,23 +1,49 @@
 <header class="header">
-  <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2rem;width:100%">
-    <div style="justify-self:start">
-      <app-brand-logo [region]="region" variant="wide" size="medium"></app-brand-logo>
+  <div class="header-grid">
+    <div class="header-logo-section">
+      <app-brand-logo [region]="(region$ | async) || 'US'" variant="wide" size="large"></app-brand-logo>
     </div>
-    <div style="display:flex;flex-direction:column;align-items:center;justify-self:center">
-      <div class="h2 brand" style="color:#1e40af;line-height:1.2;text-align:center">Liberty Tax • P&L Budget & Forecast</div>
-      <span class="small text-xs" style="background:#f3f4f6;padding:0.25rem 0.5rem;border-radius:4px;margin-top:0.25rem">v{{ appVersion }} preview</span>
-      <span class="small text-xs" style="margin-top:0.25rem">Debug</span>
-    </div>
-    <div style="display:flex;flex-direction:column;align-items:end;gap:0.5rem;justify-self:end;min-width:180px">
-      <div style="display:flex;align-items:center;gap:0.5rem">
-        <button (click)="goIncome()" class="btn {{ currentPage==='income' ? 'btn--active' : 'btn--nav' }}" title="Income Drivers">Income</button>
-        <button (click)="goExpenses()" class="btn {{ currentPage==='expenses' ? 'btn--active' : 'btn--nav' }}" title="Expenses">Expenses</button>
-        <button (click)="goReports()" class="btn {{ currentPage==='reports' ? 'btn--active' : 'btn--nav' }}" title="P&L Reports">Reports</button>
+    <div class="header-center-section">
+      <!-- Breadcrumb (optional) -->
+      <div *ngIf="hasBreadcrumb" class="header-breadcrumb">
+        <ng-container *ngFor="let item of breadcrumb!; let last = last">
+          <button *ngIf="item.onClick; else crumbText" (click)="item.onClick()" class="breadcrumb-button">{{ item.label
+            }}</button>
+          <ng-template #crumbText><span>{{ item.label }}</span></ng-template>
+          <span *ngIf="!last" class="breadcrumb-separator">→</span>
+        </ng-container>
       </div>
-      <div>
-        <button (click)="goDashboard()" class="btn {{ currentPage==='dashboard' ? 'btn--active' : 'btn--nav' }}" title="Dashboard">Dashboard</button>
-        <button (click)="resetWizard()" class="btn btn--reset" title="Reset Wizard will clear Income, Expenses, and P&L pages.">Reset Wizard</button>
-        <button (click)="toggleDebug()" class="btn {{ (debugOpen$|async) ? 'btn--active' : 'btn--nav' }}" title="Toggle Debug Panel">Debug</button>
+
+      <div class="h2 brand header-title">Liberty Tax • P&L Budget & Forecast</div>
+      <span class="small text-xs header-version">v{{ appVersion }} preview</span>
+      <div class="small text-xs" data-testid="app-header-summary">
+        Region: {{ (region$ | async) || 'US' }}
+      </div>
+    </div>
+    <div class="header-actions-section">
+      <div class="header-nav-row">
+        <button class="btn btn--secondary" (click)="goIncome()">Income</button>
+        <button class="btn btn--secondary" (click)="goExpenses()">Expenses</button>
+        <button class="btn btn--secondary" (click)="goReports()">Reports</button>
+      </div>
+      <div class="header-controls-row">
+        <!-- Optional store pill -->
+        <span *ngIf="storeInfo" class="store-pill"
+          [ngClass]="storeInfo.type === 'multi' ? 'store-pill--multi' : 'store-pill--single'">
+          {{ storeInfo.type === 'multi' ? ('🏢 ' + (storeInfo.count || 1) + ' Stores') : ('🏪 ' + (storeInfo.name ||
+          'Single Store')) }}
+        </span>
+        <button class="btn btn--secondary" (click)="goDashboard()">Dashboard</button>
+        <button class="btn btn--danger" (click)="resetWizard()">Reset App</button>
+        <button class="btn btn--primary" (click)="toggleDebug()">Debug</button>
+        <!-- Optional actions -->
+        <ng-container *ngIf="actions?.length">
+          <button *ngFor="let a of actions" (click)="a.onClick()" [ngStyle]="actionStyle(a.variant)"
+            class="action-button">
+            <span *ngIf="a.icon">{{ a.icon }}</span>
+            {{ a.label }}
+          </button>
+        </ng-container>
       </div>
     </div>
   </div>

@@ -17,12 +17,17 @@ export class BrandWatermarkComponent {
 
   get watermarkUrl(): string | undefined {
     const assets = this.region === 'US' ? (BrandAssets.us as any) : (BrandAssets.ca as any);
-    // Prefer the US torch for watermark; otherwise fall back sensibly
-    if (this.region === 'US' && assets?.torch) return assets.torch;
-    return assets?.wide ?? assets?.logo ?? assets?.stack ?? assets?.leaf;
+    // Enhanced watermark asset selection for React parity
+    // Prefer wider/logo versions for better watermark effect
+    return assets?.wide ?? assets?.logo ?? assets?.stack ?? assets?.torch ?? assets?.leaf;
+  }
+
+  get brandName(): string {
+    return this.region === 'US' ? 'LIBERTY TAX' : 'LIBERTY TAX CANADA';
   }
 
   onError(): void {
+    console.warn(`Failed to load watermark for ${this.region} region`);
     this.imgError = true;
   }
 }

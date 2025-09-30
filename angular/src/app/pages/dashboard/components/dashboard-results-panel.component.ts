@@ -1,9 +1,14 @@
 import { Component, Input, computed, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CalculationService } from '../../../core/services/calculation.service';
-import type { CalculationInputs, CalculationResults, Thresholds } from '../../../domain/types/calculation.types';
+import type {
+  CalculationInputs,
+  CalculationResults,
+  Thresholds,
+} from '../../../domain/types/calculation.types';
 import { SettingsService, type Region } from '../../../services/settings.service';
 import { DEFAULT_REGION_CONFIGS } from '../../../core/tokens/region-configs.token';
+import { WizardStateService } from '../../../core/services/wizard-state.service';
 
 /**
  * DashboardResultsPanelComponent
@@ -22,23 +27,33 @@ import { ProTipsCardComponent } from './pro-tips-card.component';
 @Component({
   selector: 'app-dashboard-results-panel',
   standalone: true,
-  imports: [CommonModule, KPIStoplightsComponent, IncomeSummaryCardComponent, ExpenseBreakdownCardComponent, ProTipsCardComponent],
+  imports: [
+    CommonModule,
+    KPIStoplightsComponent,
+    IncomeSummaryCardComponent,
+    ExpenseBreakdownCardComponent,
+    ProTipsCardComponent,
+  ],
   templateUrl: './dashboard-results-panel.component.html',
-  styleUrls: ['./dashboard-results-panel.component.scss']
+  styleUrls: ['./dashboard-results-panel.component.scss'],
 })
 export class DashboardResultsPanelComponent {
   @Input() results: CalculationResults | null = null;
   @Input() hasOtherIncome: boolean = false;
 
   private readonly region = signal<Region>(this.settings.settings.region);
-  private readonly thresholds = computed<Thresholds>(() => {
+  readonly thresholds = computed<Thresholds>(() => {
     const cfg = DEFAULT_REGION_CONFIGS[this.region()];
     return cfg.thresholds;
   });
 
   readonly viewResults = signal<CalculationResults | null>(null);
 
-  constructor(private readonly calc: CalculationService, private readonly settings: SettingsService) {
+  constructor(
+    private readonly calc: CalculationService,
+    private readonly settings: SettingsService,
+    private readonly wizardState: WizardStateService
+  ) {
     effect(() => {
       // When explicit results provided, use them; otherwise compute a minimal demo
       if (this.results) {
@@ -47,41 +62,43 @@ export class DashboardResultsPanelComponent {
       }
       const r = this.region();
       const t = this.thresholds();
-      const demo: CalculationInputs = {
+      const answers = this.wizardState.answers;
+
+      // Use real wizard data with computed properties
+      const realInputs: CalculationInputs = {
         region: r,
         scenario: 'Custom',
-        avgNetFee: 125,
-        taxPrepReturns: 1600,
-        taxRushReturns: r === 'CA' ? 150 : 0,
-        discountsPct: 3,
-        otherIncome: this.hasOtherIncome ? 0 : 0,
-        calculatedTotalExpenses: undefined,
-        // Percent vs. fixed fields — demo values chosen to match reference screenshots
-        salariesPct: 25,
-        empDeductionsPct: 10,
-        rentPct: 18,
-        telephoneAmt: 0.5,
-        utilitiesAmt: 1.2,
-        localAdvAmt: 2.0,
-        insuranceAmt: 0.6,
-        postageAmt: 0.4,
-        suppliesPct: 3.5,
-        duesAmt: 0.8,
-        bankFeesAmt: 0.4,
-        maintenanceAmt: 0.6,
-        travelEntAmt: 0.8,
-        royaltiesPct: 14,
-        advRoyaltiesPct: 5,
-        taxRushRoyaltiesPct: r === 'CA' ? 6 : 0,
-        miscPct: 1.0,
-        thresholds: t
+        avgNetFee: this.wizardState.getAvgNetFee() || 125,
+        taxPrepReturns: this.wizardState.getTaxPrepReturns() || 1600,
+        taxRushReturns: this.wizardState.getTaxRushReturns() || (r === 'CA' ? 150 : 0),
+        discountsPct: this.wizardState.getDiscountsPct() || 3,
+        otherIncome: this.wizardState.getOtherIncome() || (this.hasOtherIncome ? 5000 : 0),
+        calculatedTotalExpenses: answers.calculatedTotalExpenses,
+        salariesPct: answers.payrollPct || 25,
+        empDeductionsPct: answers.empDeductionsPct || 10,
+        rentPct: answers.rentPct || 18,
+        telephoneAmt: answers.telephoneAmt || 0.5,
+        utilitiesAmt: answers.utilitiesAmt || 1.2,
+        localAdvAmt: answers.localAdvAmt || 2.0,
+        insuranceAmt: answers.insuranceAmt || 0.6,
+        postageAmt: answers.postageAmt || 0.4,
+        suppliesPct: answers.suppliesPct || 3.5,
+        duesAmt: answers.duesAmt || 0.8,
+        bankFeesAmt: answers.bankFeesAmt || 0.4,
+        maintenanceAmt: answers.maintenanceAmt || 0.6,
+        travelEntAmt: answers.travelEntAmt || 0.8,
+        royaltiesPct: answers.royaltiesPct || 14,
+        advRoyaltiesPct: answers.advRoyaltiesPct || 5,
+        taxRushRoyaltiesPct: answers.taxRushRoyaltiesPct || (r === 'CA' ? 6 : 0),
+        miscPct: answers.miscPct || 1.0,
+        thresholds: t,
       };
-      const computedResults = this.calc.calculate(demo);
+      const computedResults = this.calc.calculate(realInputs);
       this.viewResults.set(computedResults);
     });
 
     // React to runtime region changes
-    this.settings.settings$.subscribe(s => this.region.set(s.region));
+    this.settings.settings$.subscribe((s) => this.region.set(s.region));
   }
 
   // Formatting helpers (match React helpers)
@@ -95,5 +112,3 @@ export class DashboardResultsPanelComponent {
     return n.toLocaleString(undefined, { maximumFractionDigits: 1 }) + '%';
   }
 }
-
-

@@ -25,5 +25,27 @@
       <button class="btn" (click)="downloadMarkdown()">Download MD</button>
       <button class="btn btn--reset" (click)="clearLog()">Clear Log</button>
     </div>
+
+    <hr style="border-color: rgba(255,255,255,0.1); margin: 12px 0;" />
+    <div class="small text-xs" style="margin-bottom:8px">Feature Flags</div>
+    <div style="display:flex; flex-direction:column; gap:6px">
+      <label style="display:flex; align-items:center; gap:8px">
+        <input type="checkbox" [checked]="flags.showAnalysisBlock" (change)="setShowAnalysisBlock($event.target.checked)" />
+        Analysis Block (Wizard + Dashboard)
+      </label>
+      <label style="display:flex; align-items:center; gap:8px">
+        <input type="checkbox" [checked]="flags.showMonthlyForecastCard" (change)="setShowMonthlyForecastCard($event.target.checked)" />
+        Monthly Forecast Card (Roadmap)
+      </label>
+      <label style="display:flex; align-items:center; gap:8px">
+        <input type="checkbox" [checked]="flags.showMultiStoreSummaryCard" (change)="setShowMultiStoreSummaryCard($event.target.checked)" />
+        Multi-Store Summary Card (Roadmap)
+      </label>
+      <label style="display:flex; align-items:center; gap:8px">
+        <input type="checkbox" [checked]="flags.showPerformanceCards" (change)="setShowPerformanceCards($event.target.checked)" />
+        Performance Cards (Dashboard)
+      </label>
+      <!-- Future: add toggles for other enhancement flags here -->
+    </div>
   </section>
 </aside>

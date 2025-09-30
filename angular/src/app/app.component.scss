@@ -1,0 +1,44 @@
+// Page-wide regional watermark image
+.page-watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw; /* 60% of viewport width */
+  max-width: 800px; /* Don't get too huge on very wide screens */
+  min-width: 300px; /* Don't get too small */
+  height: auto;
+  opacity: 0.05;
+  -webkit-user-select: none; /* Safari support */
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
+  object-fit: contain;
+}
+
+@media (max-width: 1400px) {
+  .page-watermark {
+    width: 50vw;
+  }
+}
+
+@media (max-width: 1024px) {
+  .page-watermark {
+    width: 55vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-watermark {
+    width: 65vw;
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-watermark {
+    width: 75vw;
+    max-width: 350px;
+    min-width: 250px;
+  }
+}

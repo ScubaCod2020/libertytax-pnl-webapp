@@ -1,3 +1,276 @@
-<app-reports></app-reports>
+<div data-wizard-step="review" class="review-wrap" *ngIf="reportData$ | async as report">
+  <div class="card-title">📋 P&L Report Summary</div>
+  <p class="small"><strong>Final report ready for review and printing.</strong> This summary compiles all your wizard
+    inputs into a professional P&L forecast. Print this page or proceed to the dashboard.</p>
 
+  <!-- Export buttons bar -->
+  <div class="export-bar">
+    <div class="export-actions">
+      <button type="button" class="btn blue" (click)="exportToPDF(report)">📄 Print PDF</button>
+      <button type="button" class="btn green" (click)="exportToExcel(report)">📊 Export Excel</button>
+    </div>
+    <div class="export-note">
+      <div><strong>PDF:</strong> Management review one-pager<br><strong>Excel:</strong> Current wizard inputs + calc
+        results</div>
+    </div>
+  </div>
 
+  <!-- Printable report frame (scaffolded content) -->
+  <div data-print-report="true" class="print-report">
+    <div class="print-header">
+      <div class="brand"><!-- logo placeholder --></div>
+      <h2>P&L Budget & Forecast Summary</h2>
+      <div class="generated">Generated: <span>{{ report.generatedDate | date:'fullDate' }}</span></div>
+    </div>
+
+    <div class="config-summary">
+      <div><span>Region:</span> {{ report.region }}</div>
+      <div><span>Store Type:</span> {{ report.storeType }}</div>
+      <div><span>Projected Returns:</span> {{ report.returns | number:'1.0-0' }}</div>
+      <div><span>Projected Avg Net Fee:</span> {{ report.avgNetFee | currency:'USD':'symbol':'1.2-2' }}</div>
+    </div>
+
+    <div class="kpis">
+      <h3>KEY FINANCIAL METRICS</h3>
+      <table class="kpi-table">
+        <tbody>
+          <tr class="row-gray">
+            <td class="label">Net Income</td>
+            <td class="val" [ngClass]="report.netIncome > 0 ? 'green' : 'red'">{{ report.netIncome |
+              currency:'USD':'symbol':'1.0-0' }}</td>
+          </tr>
+          <tr>
+            <td class="label">Average Net Fee</td>
+            <td class="val">
+              {{ report.avgNetFee | currency:'USD':'symbol':'1.0-0' }}
+              <span class="chip" [ngClass]="(wizardState.answers$ | async) ? ('' + '') : ''" [title]="''"></span>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Net Margin %</td>
+            <td class="val"
+              [ngClass]="report.netMarginPct > 20 ? 'green' : (report.netMarginPct > 15 ? 'amber' : 'red')">{{
+              report.netMarginPct | number:'1.1-1' }}%</td>
+          </tr>
+          <tr class="row-blue">
+            <td class="label">Cost per Return</td>
+            <td class="val" [ngClass]="report.costPerReturn < 100 ? 'green' : 'amber'">${{ report.costPerReturn |
+              number:'1.0-0' }}</td>
+          </tr>
+          <tr class="row-green">
+            <td class="label">Profit per Return</td>
+            <td class="val" [ngClass]="report.profitPerReturn > 0 ? 'green' : 'red'">${{ report.profitPerReturn |
+              number:'1.0-0' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pl-breakdown">
+      <h3>DETAILED P&L BREAKDOWN</h3>
+      <table class="pl-table">
+        <thead>
+          <tr class="head-green">
+            <th>REVENUE</th>
+            <th class="right">AMOUNT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Gross Tax Prep Fees</td>
+            <td class="right">{{ report.grossFees | currency:'USD':'symbol':'1.0-0' }}</td>
+          </tr>
+          <tr class="row-gray">
+            <td>Less: Customer Discounts</td>
+            <td class="right red">-{{ report.discounts | currency:'USD':'symbol':'1.0-0' }}</td>
+          </tr>
+          <tr class="total-rev">
+            <td>TOTAL REVENUE</td>
+            <td class="right">{{ report.totalRevenue | currency:'USD':'symbol':'1.0-0' }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="pl-table">
+        <thead>
+          <tr class="head-red">
+            <th>EXPENSE ITEM</th>
+            <th class="center">RATE</th>
+            <th class="right">AMOUNT</th>
+            <th>NOTES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="section">
+            <td colspan="4">👥 PERSONNEL</td>
+          </tr>
+          <tr>
+            <td class="indent">Salaries <span class="tag">customized</span></td>
+            <td class="center">{{ report.answers.payrollPct | number:'1.1-1' }}%</td>
+            <td class="right">{{ report.personnel.salaries | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>{{ report.answers.payrollPct | number:'1.1-1' }}% of Gross Fees</td>
+          </tr>
+          <tr>
+            <td class="indent">Employee Deductions <span class="tag">customized</span></td>
+            <td class="center">{{ report.answers.empDeductionsPct | number:'1.1-1' }}%</td>
+            <td class="right">{{ report.personnel.deductions | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>{{ report.answers.empDeductionsPct | number:'1.1-1' }}% of Salaries</td>
+          </tr>
+          <tr class="section">
+            <td colspan="4">🏢 FACILITY</td>
+          </tr>
+          <tr>
+            <td class="indent">Rent <span class="tag">customized</span></td>
+            <td class="center">{{ report.answers.rentPct | number:'1.1-1' }}%</td>
+            <td class="right">{{ report.facility.rent | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>{{ report.answers.rentPct | number:'1.1-1' }}% of Gross Fees</td>
+          </tr>
+          <tr>
+            <td class="indent">Telephone</td>
+            <td class="center">Fixed</td>
+            <td class="right">{{ report.facility.telephone | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>Fixed amount</td>
+          </tr>
+          <tr>
+            <td class="indent">Utilities</td>
+            <td class="center">Fixed</td>
+            <td class="right">{{ report.facility.utilities | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>Fixed amount</td>
+          </tr>
+          <tr class="section">
+            <td colspan="4">⚙️ OPERATIONS</td>
+          </tr>
+          <tr>
+            <td class="indent">Local Advertising</td>
+            <td class="center">Fixed</td>
+            <td class="right">{{ report.operations.advertising | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>Fixed amount</td>
+          </tr>
+          <tr>
+            <td class="indent">Insurance</td>
+            <td class="center">Fixed</td>
+            <td class="right">{{ report.operations.insurance | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>Fixed amount</td>
+          </tr>
+          <tr>
+            <td class="indent">Postage</td>
+            <td class="center">Fixed</td>
+            <td class="right">{{ report.operations.postage | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>Fixed amount</td>
+          </tr>
+          <tr>
+            <td class="indent">Office Supplies <span class="tag">customized</span></td>
+            <td class="center">{{ report.answers.suppliesPct | number:'1.1-1' }}%</td>
+            <td class="right">{{ report.operations.supplies | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>{{ report.answers.suppliesPct | number:'1.1-1' }}% of Gross Fees</td>
+          </tr>
+          <tr>
+            <td class="indent">Dues</td>
+            <td class="center">Fixed</td>
+            <td class="right">{{ report.operations.dues | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>Fixed amount</td>
+          </tr>
+          <tr>
+            <td class="indent">Bank Fees</td>
+            <td class="center">Fixed</td>
+            <td class="right">{{ report.operations.bankFees | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>Fixed amount</td>
+          </tr>
+          <tr>
+            <td class="indent">Maintenance</td>
+            <td class="center">Fixed</td>
+            <td class="right">{{ report.operations.maintenance | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>Fixed amount</td>
+          </tr>
+          <tr>
+            <td class="indent">Travel/Entertainment</td>
+            <td class="center">Fixed</td>
+            <td class="right">{{ report.operations.travelEnt | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>Fixed amount</td>
+          </tr>
+          <tr class="section">
+            <td colspan="4">🏪 FRANCHISE</td>
+          </tr>
+          <tr>
+            <td class="indent">Tax Prep Royalties <span class="tag">customized</span></td>
+            <td class="center">{{ report.answers.royaltiesPct | number:'1.1-1' }}%</td>
+            <td class="right">{{ report.franchise.royalties | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>{{ report.answers.royaltiesPct | number:'1.1-1' }}% of Tax Prep Income</td>
+          </tr>
+          <tr>
+            <td class="indent">Advertising Royalties <span class="tag">customized</span></td>
+            <td class="center">{{ report.answers.advRoyaltiesPct | number:'1.1-1' }}%</td>
+            <td class="right">{{ report.franchise.advRoyalties | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>{{ report.answers.advRoyaltiesPct | number:'1.1-1' }}% of Tax Prep Income</td>
+          </tr>
+          <tr *ngIf="report.franchise.taxRushRoyalties">
+            <td class="indent">Tax Rush Royalties <span class="tag">customized</span></td>
+            <td class="center">{{ report.answers.taxRushRoyaltiesPct | number:'1.1-1' }}%</td>
+            <td class="right">{{ report.franchise.taxRushRoyalties | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>{{ report.answers.taxRushRoyaltiesPct | number:'1.1-1' }}% of Tax Prep Income</td>
+          </tr>
+          <tr class="section">
+            <td colspan="4">📝 MISCELLANEOUS</td>
+          </tr>
+          <tr>
+            <td class="indent">Miscellaneous <span class="tag">customized</span></td>
+            <td class="center">{{ report.answers.miscPct | number:'1.1-1' }}%</td>
+            <td class="right">{{ report.misc.misc | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>{{ report.answers.miscPct | number:'1.1-1' }}% of Gross Fees</td>
+          </tr>
+          <tr class="total-exp">
+            <td>TOTAL EXPENSES</td>
+            <td class="center">{{ report.expenseRatio | number:'1.1-1' }}%</td>
+            <td class="right">{{ report.totalExpenses | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>of Total Revenue</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="net-summary">
+      <div class="net-box">NET INCOME: {{ report.netIncome | currency:'USD':'symbol':'1.0-0' }} ({{ report.netMarginPct
+        | number:'1.1-1' }}% margin)</div>
+    </div>
+
+    <div class="mgmt">
+      <h3>MANAGEMENT REVIEW CHECKLIST</h3>
+      <div class="checklist">
+        <div><span class="bold">□ REVENUE OPTIMIZATION:</span>
+          <ul>
+            <li>Projected returns: {{ report.returns | number:'1.0-0' }}</li>
+            <li>Projected average fee: {{ report.avgNetFee | currency:'USD':'symbol':'1.2-2' }}</li>
+            <li>Discount policy: {{ report.answers.discountsPct | number:'1.1-1' }}% (industry: ~3%)</li>
+          </ul>
+        </div>
+        <div><span class="bold">□ EXPENSE MANAGEMENT:</span>
+          <ul>
+            <li>Total expense ratio: {{ report.expenseRatio | number:'1.1-1' }}% (target: 75–77%)</li>
+            <li>Cost per return: ${{ report.costPerReturn | number:'1.0-0' }}</li>
+            <li>Profit per return: ${{ report.profitPerReturn | number:'1.0-0' }}</li>
+          </ul>
+        </div>
+        <div><span class="bold">□ PERFORMANCE TARGETS:</span>
+          <ul>
+            <li>Net margin target: {{ report.netMarginPct | number:'1.1-1' }}% (benchmark: 20–25%)</li>
+            <li>Total returns (incl. TaxRush if CA): {{ report.returns | number:'1.0-0' }}</li>
+          </ul>
+        </div>
+        <div><span class="bold">□ ACTION ITEMS:</span>
+          <ul>
+            <li>Review staffing plan & facility costs</li>
+            <li>Validate marketing/advertising budget</li>
+            <li>Schedule monthly P&L reviews vs this forecast</li>
+            <li>Set up dashboard tracking for real-time performance</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wizard-nav">
+    <button type="button" class="btn gray" (click)="goBack()">← Back to Customize</button>
+    <button type="button" class="btn green" (click)="viewMonthlyBreakdown()">📅 Monthly Breakdown</button>
+    <button type="button" class="btn blue" (click)="goToDashboard()">Dashboard</button>
+  </div>
+</div>

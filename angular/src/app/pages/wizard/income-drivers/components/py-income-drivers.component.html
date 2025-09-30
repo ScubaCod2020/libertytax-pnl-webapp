@@ -1,68 +1,143 @@
-<div class="expense-section">
+<div class="expense-section target-section">
   <div class="section-title">
-    <div class="title-left"><span>📊</span>Last Year Performance</div>
+    <div class="title-left"><span>📈</span>Prior Year Performance</div>
+    <button class="btn btn--secondary btn--sm" (click)="resetPriorYear()" title="Reset Prior Year Performance">
+      Reset PY
+    </button>
   </div>
-  <div>
-    <!-- Tax Prep Returns -->
-    <div class="grid-row">
-      <label>Tax Prep Returns <span class="req">*</span></label>
-      <div class="grid-field">
-        <div class="inline"><span class="prefix">#</span><input type="number" class="input sm" placeholder="e.g., 1,680" value="1200" /></div>
+
+  <!-- 1. Tax Prep Returns -->
+  <div class="row">
+    <label>Tax Prep Returns <span class="req">*</span></label>
+    <div class="field">
+      <input type="number" class="input" [ngModel]="taxPrepReturns$ | async"
+        (ngModelChange)="updateTaxPrepReturns($event)" placeholder="e.g., 1,680" />
+    </div>
+    <div class="note">Your actual number of tax returns last year</div>
+  </div>
+
+  <!-- 2. Average Net Fee -->
+  <div class="row">
+    <label>Average Net Fee <span class="req">*</span></label>
+    <div class="field">
+      <div class="currency">
+        <span class="prefix">$</span>
+        <input type="number" class="input" appCurrencyInput [ngModel]="avgNetFee$ | async"
+          (ngModelChange)="updateAvgNetFee($event)" placeholder="e.g., 130" />
       </div>
     </div>
+    <div class="note">Your actual average net fee per return</div>
+  </div>
 
-    <!-- Average Net Fee -->
-    <div class="grid-row">
-      <label>Average Net Fee</label>
-      <div class="grid-field">
-        <div class="inline"><span class="prefix">$</span><input type="text" class="input sm" placeholder="e.g., 125" value="110" /></div>
+  <!-- 3. Gross Tax Prep Fees -->
+  <div class="row">
+    <label>Gross Tax Prep Fees</label>
+    <div class="field">
+      <div class="currency">
+        <span class="prefix">$</span>
+        <input type="number" class="input" appCurrencyInput [ngModel]="grossFees$ | async" placeholder="Auto-calculated"
+          readonly />
       </div>
     </div>
+    <div class="note">Auto: Returns × Avg Net Fee (override allowed)</div>
+  </div>
 
-    <!-- Gross Tax Prep Fees -->
-    <div class="grid-row">
-      <label>Gross Tax Prep Fees</label>
-      <div class="grid-field">
-        <div class="inline"><span class="prefix">$</span><input type="text" class="input sm readonly" placeholder="Auto-calculated" value="132,000" /></div>
-      </div>
-      <div class="small note">Auto: Returns × Avg Net Fee (clear to re-auto)</div>
-    </div>
-
-    <!-- Customer Discounts -->
-    <div class="grid-row">
-      <label>Customer Discounts</label>
-      <div class="grid-field">
+  <!-- 4. TaxRush (conditional for CA AND TaxRush enabled) -->
+  @if (showTaxRush$ | async) {
+  <div class="box info">
+    <div class="box-title">TaxRush Returns</div>
+    <div class="box-desc">Your actual TaxRush returns last year and avg fee</div>
+    <div class="row compact">
+      <label>TaxRush Returns</label>
+      <div class="field">
         <div class="inline-gap">
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" min="0" step="1" placeholder="3960" /></div>
+          <input type="number" class="input xs" [ngModel]="taxRushReturns$ | async"
+            (ngModelChange)="updateTaxRushReturns($event)" placeholder="180" />
           <span class="eq">=</span>
-          <div class="inline"><input type="number" class="input xs" step="0.1" min="0" max="20" placeholder="3.0" /><span class="suffix">%</span></div>
+          <div class="inline">
+            <input type="number" class="input xs" step="0.1" min="0" max="50" [ngModel]="taxRushReturnsPct$ | async" (ngModelChange)="updateTaxRushReturnsPct($event)" placeholder="15.0" />
+            <span class="suffix">%</span>
+          </div>
         </div>
-        <div class="help italic">Default: 3% • Enter either dollar amount or percentage — the other will auto-calc</div>
+        <div class="help italic">Auto: {{ (taxPrepReturns$ | async) || 0 }} × {{ (taxRushReturnsPct$ | async) || 15 }}%
+          = {{ (taxRushReturns$ | async) || 0 }} • Enter either returns or percentage</div>
       </div>
-      <div class="small note">Dollar amount or % of gross fees given as discounts. Enter either field; the other auto-calculates.</div>
     </div>
-
-    <!-- Total Tax Prep Income -->
-    <div class="grid-row">
-      <label>Total Tax Prep Income</label>
-      <div class="grid-field">
-        <div class="inline"><span class="prefix">$</span><input type="text" class="input sm readonly" placeholder="Auto-calculated" value="132,000" /></div>
+    <div class="row compact">
+      <label>TaxRush Avg Net Fee</label>
+      <div class="field">
+        <div class="currency">
+          <span class="prefix">$</span>
+          <input type="number" class="input" appCurrencyInput [ngModel]="taxRushAvgNetFee$ | async"
+            (ngModelChange)="updateTaxRushAvgNetFee($event)" placeholder="125" />
+        </div>
       </div>
-      <div class="small note">Gross − Discounts (clear to re-auto)</div>
     </div>
-
-    <!-- Total Expenses -->
-    <div class="grid-row">
-      <label>Total Expenses</label>
-      <div class="grid-field">
-        <div class="inline"><span class="prefix">$</span><input type="text" class="input sm readonly" placeholder="Auto-calculated" value="100,320" /></div>
+    <div class="row compact">
+      <label>TaxRush Gross Fees</label>
+      <div class="field">
+        <div class="currency">
+          <span class="prefix">$</span>
+          <input type="number" class="input" appCurrencyInput [ngModel]="taxRushGrossFees$ | async"
+            placeholder="Auto-calculated" readonly />
+        </div>
       </div>
-      <div class="small note">Auto: (Tax Prep Income + Other Income) × 76%</div>
+      <div class="note">Auto: Returns × Avg Net Fee (override allowed)</div>
     </div>
+  </div>
+  }
 
-    <!-- Summary Banner -->
-    <div class="net-banner">Last Year Net Income: $132,000 <span class="muted">(0% margin)</span></div>
+  <!-- 5. Customer Discounts (Amt + %) -->
+  <div class="row">
+    <label>Customer Discounts</label>
+    <div class="field dual">
+      <div class="currency">
+        <span class="prefix">$</span>
+        <input type="number" class="input small" appCurrencyInput [ngModel]="discountsAmt$ | async"
+          (ngModelChange)="updateDiscountsAmt($event)" placeholder="Auto-calculated" />
+      </div>
+      <span class="eq">=</span>
+      <div class="percent">
+        <input type="number" class="input small" step="0.1" min="0" max="100" [ngModel]="discountsPctFormatted$ | async"
+          (ngModelChange)="updateDiscountsPct($event)" [placeholder]="(regionalDiscountDefault$ | async) + '%'" />
+        <span class="suffix">%</span>
+      </div>
+    </div>
+    <div class="note italic">Default: {{ (regionalDiscountDefault$ | async) }}% • Enter either dollar amount or
+      percentage — the other will auto-calc</div>
+  </div>
+
+  <!-- 6. Total Tax Prep Income -->
+  <div class="row">
+    <label>Total Tax Prep Income</label>
+    <div class="field">
+      <div class="currency">
+        <span class="prefix">$</span>
+        <input type="number" class="input" appCurrencyInput [ngModel]="taxPrepIncome$ | async"
+          placeholder="Auto-calculated" readonly />
+      </div>
+    </div>
+    <div class="note">Gross Tax Prep Fees minus Customer Discounts</div>
+  </div>
+
+  <!-- 7. Other Income (conditional based on Quick Start Wizard) -->
+  @if (showOtherIncome$ | async) {
+  <div class="row">
+    <label>Other Income</label>
+    <div class="field">
+      <div class="currency">
+        <span class="prefix">$</span>
+        <input type="number" class="input" appCurrencyInput [ngModel]="otherIncome$ | async"
+          (ngModelChange)="updateOtherIncome($event)" placeholder="5,000" />
+      </div>
+    </div>
+    <div class="note">Bookkeeping, notary, business consulting, etc.</div>
+  </div>
+  }
+
+  <!-- Summary Banner -->
+  <div class="net-banner blue">
+    Gross Net Income: ${{ (grossNetIncome$ | async) | number:'1.0-0' }}
+    <span class="muted">• Gross Net per Return: ${{ (grossNetPerReturn$ | async) | number:'1.0-0' }}</span>
   </div>
 </div>
-
-

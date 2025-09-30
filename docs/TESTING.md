@@ -1,3 +1,18 @@
+## React → Angular test mapping (Wizard)
+
+- Branding.test.tsx → Unit (branding service/header rendering)
+- Calculations.test.tsx → Unit (domain calc functions in `domain/calculations`)
+- Expenses.test.tsx → E2E (wizard step-2 interactions and visibility)
+- Navigation.test.tsx → E2E (routes and next/previous flow)
+- WizardInputs.test.tsx → E2E (step-1 inputs, gating by region/store type)
+- WizardFlowMatrix.test.tsx → E2E (happy-path multi-scenario flow; Angular approximation added)
+- wizard.test.tsx → E2E (smoke/bootstrapping of wizard pages)
+
+Notes
+
+- Value assertions that depend on unfinished wiring are marked for future enablement.
+- Prefer Playwright E2E for full-page flows; keep domain math in unit tests.
+
 # Testing Strategy for Liberty Tax P&L Webapp
 
 ## Overview

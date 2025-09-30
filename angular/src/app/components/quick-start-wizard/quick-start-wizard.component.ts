@@ -1,8 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SettingsService, AppSettings } from '../../services/settings.service';
+import { NavigationStart, Router, NavigationEnd } from '@angular/router';
+import { Subject } from 'rxjs';
+import { map, filter, startWith, takeUntil } from 'rxjs/operators';
 import { AppConfigService } from '../../services/app-config.service';
+import { WizardStateService } from '../../core/services/wizard-state.service';
 
 @Component({
   selector: 'app-quick-start-wizard',
@@ -11,37 +14,102 @@ import { AppConfigService } from '../../services/app-config.service';
   templateUrl: './quick-start-wizard.component.html',
   styleUrls: ['./quick-start-wizard.component.scss'],
 })
-export class QuickStartWizardComponent {
+export class QuickStartWizardComponent implements OnInit, OnDestroy {
   @Input() title = '';
   @Input() editable = false;
   @Input() subtitle = '';
 
-  settings: AppSettings = this.settingsSvc.settings;
+  public appCfg = inject(AppConfigService);
+  private wizardState = inject(WizardStateService);
+  private router = inject(Router);
+  private destroy$ = new Subject<void>();
 
-  constructor(
-    public settingsSvc: SettingsService,
-    public appCfg: AppConfigService
-  ) {}
+  readonly settings$ = this.wizardState.answers$.pipe(
+    map((answers) => ({
+      region: answers.region || 'US',
+      storeType: answers.storeType || 'new',
+      taxYear: new Date().getFullYear(),
+      taxRush: answers.handlesTaxRush || false,
+      otherIncome: answers.hasOtherIncome || false,
+    }))
+  );
+
+  readonly currentPage$ = this.router.events.pipe(
+    filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+    map((e) => this.getPageFromUrl(e.urlAfterRedirects || e.url)),
+    startWith(this.getPageFromUrl(this.router.url))
+  );
+
+  ngOnInit(): void {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((evt) => {
+      if (evt instanceof NavigationStart) {
+        const isLeavingIncome = !evt.url.includes('/wizard/income-drivers');
+        if (isLeavingIncome && this.wizardState.isWizardConfigComplete(this.wizardState.answers)) {
+          this.wizardState.lockQuickWizard();
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private getPageFromUrl(
+    url: string
+  ): 'income-drivers' | 'expenses' | 'pnl' | 'dashboard' | 'other' {
+    const page = url.includes('/wizard/income-drivers')
+      ? 'income-drivers'
+      : url.includes('/wizard/expenses')
+        ? 'expenses'
+        : url.includes('/wizard/pnl')
+          ? 'pnl'
+          : url.includes('/dashboard')
+            ? 'dashboard'
+            : 'other';
+    console.log('🧙 [Quick Start Wizard] Page detected from URL:', url, '→', page);
+    return page;
+  }
 
   onRegionChange(v: string) {
-    this.settingsSvc.update({ region: v === 'US' ? 'US' : 'CA' });
-    this.settings = this.settingsSvc.settings;
+    const region = v === 'US' ? 'US' : 'CA';
+    console.log('🌍 [Wizard] Region changed to:', region);
+    this.wizardState.updateAnswers({ region });
   }
+
   onStoreTypeChange(v: string) {
-    this.settingsSvc.update({ storeType: v === 'new' ? 'new' : 'existing' });
-    this.settings = this.settingsSvc.settings;
+    const storeType = v === 'new' ? 'new' : 'existing';
+    console.log('🏪 [Wizard] Store Type changed to:', storeType);
+    this.wizardState.updateAnswers({ storeType });
   }
-  onTaxYearChange(v: string) {
-    const n = Number(v) || new Date().getFullYear();
-    this.settingsSvc.update({ taxYear: n });
-    this.settings = this.settingsSvc.settings;
+
+  onTaxRushChange(v: string | boolean) {
+    const boolValue = v === true || v === 'true';
+    console.log('🚀 [Wizard] TaxRush changed to:', boolValue, '(from:', v, ')');
+    this.wizardState.updateAnswers({ handlesTaxRush: boolValue });
   }
-  onTaxRushChange(v: boolean) {
-    this.settingsSvc.update({ taxRush: !!v });
-    this.settings = this.settingsSvc.settings;
+
+  onOtherIncomeChange(v: string | boolean) {
+    const boolValue = v === true || v === 'true';
+    console.log('💼 [Wizard] Other Income changed to:', boolValue, '(from:', v, ')');
+    this.wizardState.updateAnswers({ hasOtherIncome: boolValue });
   }
-  onOtherIncomeChange(v: boolean) {
-    this.settingsSvc.update({ otherIncome: !!v });
-    this.settings = this.settingsSvc.settings;
+
+  resetWizard() {
+    console.log('🔄🔄🔄 [QUICK START RESET] Button clicked - resetting Quick Start Wizard only');
+    console.log('🔄 [QUICK START RESET] Current URL:', window.location.href);
+
+    this.wizardState.resetQuickStartConfig();
+
+    console.log('🔄 [QUICK START RESET] Quick Start Wizard reset to defaults');
+  }
+
+  isComplete(): boolean {
+    const answers = this.wizardState.answers;
+    if (!this.wizardState.isWizardConfigComplete(answers)) {
+      return false;
+    }
+    return this.wizardState.isQuickWizardLocked();
   }
 }
