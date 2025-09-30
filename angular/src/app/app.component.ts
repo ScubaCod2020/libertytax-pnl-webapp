@@ -17,7 +17,6 @@ import { QuickStartWizardComponent } from './components/quick-start-wizard/quick
 import { WizardStateService } from './core/services/wizard-state.service';
 import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 import { DebugOverlayComponent } from './shared/debug/debug-overlay.component';
-import { ProjectedService } from './services/projected.service';
 
 @Component({
   selector: 'app-root',
@@ -48,7 +47,6 @@ export class AppComponent implements OnInit, OnDestroy {
   readonly showExpensesLoading = computed(() => this.pendingRoutes().size > 0);
 
   // Streams used by template
-  recalculating$ = this.projected.recalculating$;
 
   // Regional watermark image based on selected region
   readonly regionalWatermark$ = this.wizardState.answers$.pipe(
@@ -71,8 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private wizardState: WizardStateService,
-    private projected: ProjectedService
+    private wizardState: WizardStateService
   ) {}
 
   ngOnInit(): void {
@@ -254,10 +251,7 @@ export class AppComponent implements OnInit, OnDestroy {
           '🧭 UI trace enabled (dev mode or localStorage.debug_ui_trace = "1"). Values masked.'
         );
 
-        // Mirror recalculating$ changes for overlay diagnosis
-        this.recalculating$.subscribe((v) => {
-          console.log('⏳ recalculating$ →', v);
-        });
+        // Recalc overlay logs removed to satisfy strict builds.
       }
     } catch {}
   }
