@@ -1,6 +1,9 @@
 {
   "version": 2,
   "buildCommand": "cd angular && npm ci --no-audit --no-fund && npm run build",
-  "outputDirectory": "angular/dist/angular",
-  "routes": [{ "src": "/(.*)", "dest": "/index.html" }]
+  "builds": [{ "src": "angular/dist/angular/**", "use": "@vercel/static" }],
+  "routes": [
+    { "src": "/favicon.ico", "dest": "angular/dist/angular/favicon.ico" },
+    { "src": "/(.*)", "dest": "angular/dist/angular/index.html" }
+  ]
 }
