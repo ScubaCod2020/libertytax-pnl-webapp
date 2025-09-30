@@ -1,5 +1,6 @@
 {
+  "version": 2,
   "buildCommand": "cd angular && npm ci --no-audit --no-fund && npm run build",
   "outputDirectory": "angular/dist/angular",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "routes": [{ "src": "/(.*)", "dest": "/index.html" }]
 }
