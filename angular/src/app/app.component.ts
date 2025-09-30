@@ -44,7 +44,16 @@ export class AppComponent implements OnInit, OnDestroy {
   private onFocusIn?: (ev: FocusEvent) => void;
 
   // Show overlay when navigating or recalculating
-  readonly showExpensesLoading = computed(() => this.pendingRoutes().size > 0);
+  readonly showExpensesLoading = computed(() => {
+    try {
+      const host = window.location?.hostname || '';
+      const isLocal = host === 'localhost' || host === '127.0.0.1';
+      // Only show overlay during local development to avoid preview lockups
+      return isLocal && this.pendingRoutes().size > 0;
+    } catch {
+      return false;
+    }
+  });
 
   // Streams used by template
 
