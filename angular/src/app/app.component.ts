@@ -82,6 +82,26 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // Region-branded favicon
+    try {
+      this.wizardState.answers$.subscribe((answers) => {
+        const region = answers?.region === 'CA' ? 'CA' : 'US';
+        const href =
+          region === 'CA'
+            ? '/assets/brands/ca/LTCA-Leaf-ISO-Red.jpg'
+            : '/assets/brands/us/LT-Torch-CMYK.png';
+        const head = document.head || document.getElementsByTagName('head')[0];
+        let link = head.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          head.appendChild(link);
+        }
+        link.type = 'image/png';
+        link.href = href;
+      });
+    } catch {}
+
     const derive = (url: string) => {
       console.log('🚀 Route detection - URL:', url);
       if (url.includes('/wizard/income-drivers')) {

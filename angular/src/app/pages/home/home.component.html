@@ -1,9 +1,9 @@
 <section class="home">
+  <img class="home__watermark" [src]="watermarkSrc$ | async" alt="" aria-hidden="true" />
   <div class="home__content">
-    <h1>Liberty Tax P&L Application</h1>
-    <p>Build your plan in a few quick steps.</p>
+    <img class="home__brand" [src]="brandSrc$ | async" alt="Liberty Tax" />
+    <h1>Plan & Profit</h1>
+    <p>Build your P&L in a few quick steps.</p>
     <a routerLink="/wizard/income-drivers" class="home__cta">Get Started</a>
   </div>
 </section>
-
-
