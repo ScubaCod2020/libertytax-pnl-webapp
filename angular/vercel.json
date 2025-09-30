@@ -1,7 +1,5 @@
 {
+  "version": 2,
   "outputDirectory": "dist/angular",
-  "rewrites": [
-    { "source": "/favicon.ico", "destination": "/favicon.ico" },
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "routes": [{ "handle": "filesystem" }, { "src": "/.*", "dest": "/index.html" }]
 }
