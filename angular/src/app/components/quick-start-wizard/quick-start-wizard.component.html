@@ -1,4 +1,4 @@
-<div class="interview-wizard" [class.interview-wizard--completed]="!editable">
+<div class="interview-wizard" [class.interview-wizard--completed]="!editable || isComplete()">
   <!-- Different views based on current page -->
   <ng-container *ngIf="currentPage$ | async as currentPage">
     <ng-container *ngIf="settings$ | async as settings">
@@ -136,7 +136,7 @@
           <div class="summary-header">
             <span class="summary-label">🏷️ Your Selections <span class="muted">(From Step 1 - Read Only)</span></span>
             <!-- DEBUG: currentPage = {{ currentPage }} -->
-            <button *ngIf="currentPage === 'income-drivers'" class="reset-wizard-btn" (click)="resetWizard()"
+            <button *ngIf="currentPage === 'income-drivers'" class="btn btn--danger btn--sm" (click)="resetWizard()"
               title="Reset Quick Start Wizard">
               🔄 Reset Wizard
             </button>

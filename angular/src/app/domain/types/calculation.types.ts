@@ -25,7 +25,7 @@ export interface CalculationInputs {
   calculatedTotalExpenses?: number;
 
   // 17 expense fields (current engine subset; percent vs fixed as indicated by name)
-  salariesPct: number;
+  salariesPct: number; // keep type name for calc engine compatibility; value source now payrollPct
   empDeductionsPct: number; // % of salaries
   rentPct: number;
   telephoneAmt: number;

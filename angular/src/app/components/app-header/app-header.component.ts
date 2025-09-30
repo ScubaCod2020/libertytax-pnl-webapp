@@ -100,21 +100,28 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   resetWizard(): void {
     console.log('🔄🔄🔄 [HEADER RESET] Button clicked - starting full reset');
     console.log('🔄 [HEADER RESET] Current URL:', window.location.href);
+
     try {
-      // Clear all wizard-related localStorage
+      this.wizardState.resetEverything();
+      console.log('🔄 [HEADER RESET] Wizard state reset to defaults');
+    } catch (e) {
+      console.log('🔄 [HEADER RESET] Error resetting state:', e);
+    }
+
+    try {
       localStorage.removeItem('wizard_state_v1');
       localStorage.removeItem('pnl_settings_v1');
-      localStorage.clear();
-      console.log('🔄 [HEADER RESET] Cleared localStorage');
+      console.log('🔄 [HEADER RESET] Cleared wizard-related storage keys');
     } catch (e) {
       console.log('🔄 [HEADER RESET] Error clearing localStorage:', e);
     }
-    // Navigate to the start of the wizard instead of refreshing
+
     console.log('🔄 [HEADER RESET] Navigating to /wizard/income-drivers');
-    this.router.navigateByUrl('/wizard/income-drivers').then((success) => {
-      console.log('🔄 [HEADER RESET] Navigation result:', success);
-      console.log('🔄 [HEADER RESET] New URL:', window.location.href);
-    });
+    setTimeout(() => {
+      this.router.navigateByUrl('/wizard/income-drivers').then((success) => {
+        console.log('🔄 [HEADER RESET] Navigation result:', success);
+      });
+    }, 0);
   }
 
   toggleDebug(): void {

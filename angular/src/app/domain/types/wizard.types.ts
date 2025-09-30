@@ -91,7 +91,9 @@ export interface WizardAnswers {
   manualTaxRushReturns?: number;
 
   // All 17 expense fields
+  // Payroll (renamed): keep backward-compat with salariesPct, prefer payrollPct going forward
   salariesPct?: number;
+  payrollPct?: number;
   empDeductionsPct?: number;
   rentPct?: number;
   telephoneAmt?: number;
@@ -107,11 +109,17 @@ export interface WizardAnswers {
   royaltiesPct?: number;
   advRoyaltiesPct?: number;
   taxRushRoyaltiesPct?: number;
-  taxRushShortagesPct?: number;
+  shortagesPct?: number;
+  shortagesAmt?: number;
   miscPct?: number;
 
   // Derived expense values for export (TODO: define ExpenseValues interface if needed)
   expenses?: any; // Placeholder for ExpenseValues when implemented
+  expenseBaselines?: Record<string, number>;
+  expenseNotes?: Record<string, string>;
+  expensesSeeded?: boolean;
+  minRecommendedExpenses?: number;
+  maxRecommendedExpenses?: number;
 
   // Pre-calculated expense total from Page 2
   calculatedTotalExpenses?: number;

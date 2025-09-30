@@ -80,7 +80,7 @@ export interface CalculatedSuggestions {
   royaltiesPct: number;
   advRoyaltiesPct: number;
   taxRushRoyaltiesPct: number;
-  taxRushShortagesPct: number;
+  shortagesPct: number;
   miscPct: number;
 }
 

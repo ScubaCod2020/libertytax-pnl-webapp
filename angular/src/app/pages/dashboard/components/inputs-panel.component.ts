@@ -609,8 +609,7 @@ export class InputsPanelComponent implements OnInit, OnDestroy {
       if (!regionMatch) return false;
 
       // Then filter out TaxRush-related fields if handlesTaxRush is false
-      const isTaxRushField =
-        field.id === 'taxRushRoyaltiesPct' || field.id === 'taxRushShortagesPct';
+      const isTaxRushField = field.id === 'taxRushRoyaltiesPct' || field.id === 'shortagesPct';
       if (isTaxRushField && this.data.handlesTaxRush === false) return false;
 
       return true;

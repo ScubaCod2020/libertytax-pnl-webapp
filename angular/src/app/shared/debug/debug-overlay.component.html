@@ -1,0 +1,38 @@
+<div *ngIf="show$ | async" class="debug-overlay">
+    <div class="debug-card">
+        <header>
+            <strong>Diagnostics</strong>
+            <small>(Ctrl+` to toggle)</small>
+        </header>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>$</th>
+                    <th>%</th>
+                    <th>Status</th>
+                    <th>Baseline</th>
+                    <th>Guardrail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ANF</td>
+                    <td>{{ anfDisplay.amount | number:'1.0-0' }}</td>
+                    <td>—</td>
+                    <td>{{ anfDisplay.status }}</td>
+                    <td>{{ anfDisplay.region }}</td>
+                    <td>{{ anfDisplay.band }}</td>
+                </tr>
+                <tr *ngFor="let r of (rows$ | async)">
+                    <td>{{r.key}}</td>
+                    <td>{{r.amount | number:'1.0-0'}}</td>
+                    <td>{{r.percent | number:'1.1-1'}}%</td>
+                    <td>{{r.status}}</td>
+                    <td>{{r.baseline | currency:'USD':'symbol':'1.0-0'}}</td>
+                    <td>{{r.tooltip}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

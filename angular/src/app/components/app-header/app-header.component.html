@@ -22,12 +22,9 @@
     </div>
     <div class="header-actions-section">
       <div class="header-nav-row">
-        <button (click)="goIncome()" class="btn {{ currentPage==='income' ? 'btn--active' : 'btn--nav' }}"
-          title="Income Drivers">Income</button>
-        <button (click)="goExpenses()" class="btn {{ currentPage==='expenses' ? 'btn--active' : 'btn--nav' }}"
-          title="Expenses">Expenses</button>
-        <button (click)="goReports()" class="btn {{ currentPage==='reports' ? 'btn--active' : 'btn--nav' }}"
-          title="P&L Reports">Reports</button>
+        <button class="btn btn--secondary" (click)="goIncome()">Income</button>
+        <button class="btn btn--secondary" (click)="goExpenses()">Expenses</button>
+        <button class="btn btn--secondary" (click)="goReports()">Reports</button>
       </div>
       <div class="header-controls-row">
         <!-- Optional store pill -->
@@ -36,12 +33,9 @@
           {{ storeInfo.type === 'multi' ? ('🏢 ' + (storeInfo.count || 1) + ' Stores') : ('🏪 ' + (storeInfo.name ||
           'Single Store')) }}
         </span>
-        <button (click)="goDashboard()" class="btn {{ currentPage==='dashboard' ? 'btn--active' : 'btn--nav' }}"
-          title="Dashboard">Dashboard</button>
-        <button (click)="resetWizard()" class="btn btn--reset"
-          title="Reset Wizard will clear Income, Expenses, and P&L pages.">Reset App</button>
-        <button (click)="toggleDebug()" class="btn {{ (debugOpen$|async) ? 'btn--active' : 'btn--nav' }}"
-          title="Toggle Debug Panel">Debug</button>
+        <button class="btn btn--secondary" (click)="goDashboard()">Dashboard</button>
+        <button class="btn btn--danger" (click)="resetWizard()">Reset App</button>
+        <button class="btn btn--primary" (click)="toggleDebug()">Debug</button>
         <!-- Optional actions -->
         <ng-container *ngIf="actions?.length">
           <button *ngFor="let a of actions" (click)="a.onClick()" [ngStyle]="actionStyle(a.variant)"

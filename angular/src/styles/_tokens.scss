@@ -10,7 +10,8 @@
     /* Typography tokens */
     --font-proxima: 'Proxima Nova', 'Inter', 'Source Sans Pro', Arial, sans-serif;
     --font-fallback: 'Inter', 'Source Sans Pro', Arial, sans-serif;
-    --font-base: var(--font-proxima, var(--font-fallback));
+    --font-base: 'Inter', sans-serif;
+    --font-alt: 'Source Sans Pro', sans-serif;
 
     --fz-xs: 12px;
     --fz-sm: 14px;
@@ -23,4 +24,36 @@
     --fw-medium: 500;
     --fw-semibold: 600;
     --fw-extrabold: 800;
+
+    /* Primary brand colors */
+    --liberty-blue: #1a237e;
+    --liberty-navy: #0f172a;
+    --liberty-purple: #4f46e5;
+    --liberty-purple-dark: #3730a3;
+    --liberty-gold: #f5a623;
+    --liberty-red: #dc2626;
+    --liberty-red-dark: #b91c1c;
+    --liberty-emerald: #059669;
+    --liberty-sky: #0ea5e9;
+
+    /* Button palette */
+    --btn-primary-bg-start: #4f46e5;
+    --btn-primary-bg-end: #7c3aed;
+    --btn-primary-hover-start: #4338ca;
+    --btn-primary-hover-end: #6d28d9;
+
+    --btn-secondary-bg-start: #0ea5e9;
+    --btn-secondary-bg-end: #3b82f6;
+    --btn-secondary-hover-start: #0284c7;
+    --btn-secondary-hover-end: #2563eb;
+
+    --btn-danger-bg-start: #dc2626;
+    --btn-danger-bg-end: #ef4444;
+    --btn-danger-hover-start: #b91c1c;
+    --btn-danger-hover-end: #dc2626;
+
+    --btn-text-color: #ffffff;
+    --btn-border-radius: 6px;
+    --btn-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+    --btn-hover-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
 }

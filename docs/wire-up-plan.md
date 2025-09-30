@@ -58,3 +58,9 @@ Performance Cards wiring (planned)
 - Provide token at bootstrap with `DEFAULT_REGION_CONFIGS`
 - `ConfigService` injects token and exposes effective thresholds/bands per selected region
 - Consumers: `CalculationService`, `ReportAssemblerService`, UI gating for TaxRush fields
+
+### 2025-09-29 Progress Snapshot
+
+- Quick Start Wizard lock/unlock behavior aligned with UX memo (editable until navigation away).
+- Expenses page overhaul in progress: strategic KPI card updated, payroll & employee deductions refactored with new layout and notes.
+- Remaining to-do items: propagate new layout to all expense categories, reorder sections (Misc before Franchise, Dues moved), add info definitions, and wire cost/net per return metrics from KPI Rules V2.

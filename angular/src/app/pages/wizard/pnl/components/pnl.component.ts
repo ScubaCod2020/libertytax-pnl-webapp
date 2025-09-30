@@ -60,7 +60,7 @@ interface ReportData {
   styleUrls: ['./pnl.component.scss'],
 })
 export class PnlComponent implements OnInit {
-  private wizardState = inject(WizardStateService);
+  wizardState = inject(WizardStateService);
   private calculationService = inject(CalculationService);
   private pdfExport = inject(PDFExportService);
   private excelExport = inject(ExcelExportService);
@@ -121,7 +121,7 @@ export class PnlComponent implements OnInit {
       otherIncome,
 
       // Expense percentages
-      salariesPct: answers.salariesPct || 25,
+      salariesPct: answers.payrollPct || 25,
       empDeductionsPct: answers.empDeductionsPct || 10,
       rentPct: answers.rentPct || 18,
       suppliesPct: answers.suppliesPct || 2,
@@ -194,9 +194,9 @@ export class PnlComponent implements OnInit {
 
     // Calculate expense breakdown
     const personnel = {
-      salaries: ((answers.salariesPct || 0) / 100) * grossFees,
+      salaries: ((answers.payrollPct || 0) / 100) * grossFees,
       deductions:
-        ((answers.empDeductionsPct || 0) / 100) * (((answers.salariesPct || 0) / 100) * grossFees),
+        ((answers.empDeductionsPct || 0) / 100) * (((answers.payrollPct || 0) / 100) * grossFees),
     };
 
     const facility = {

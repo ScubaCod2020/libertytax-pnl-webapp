@@ -10,8 +10,13 @@ import { inject } from '@angular/core';
 import { AnalysisDataAssemblerService } from '../../../../domain/services/analysis-data-assembler.service';
 import { WizardStateService } from '../../../../core/services/wizard-state.service';
 import { map, combineLatest } from 'rxjs/operators';
-import { combineLatest as combineLatestStatic } from 'rxjs';
+import { combineLatest as combineLatestStatic, Observable } from 'rxjs';
+import { pairwise, startWith } from 'rxjs/operators';
 import { CurrencyInputDirective, PercentageInputDirective } from '../../../../shared/directives';
+import { KpiEvaluatorService } from '../../../../domain/services/kpi-evaluator.service';
+import { SharedExpenseTextService } from '../../../../shared/expenses/expense-text.service';
+import { ExpensesService } from '../../../../shared/expenses/expenses.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-projected-income-drivers',
@@ -31,7 +36,10 @@ export class ProjectedIncomeDriversComponent {
     public appCfg: AppConfigService,
     public settings: SettingsService,
     public projSvc: ProjectedService,
-    public wizardState: WizardStateService
+    public wizardState: WizardStateService,
+    private readonly evaluator: KpiEvaluatorService,
+    public readonly expenseText: SharedExpenseTextService,
+    public readonly expenses: ExpensesService
   ) {}
 
   scenarios: Scenario[] = ['Custom', 'Good', 'Better', 'Best'];
@@ -152,8 +160,42 @@ export class ProjectedIncomeDriversComponent {
     map((a) => a.projectedTaxPrepReturns || a.taxPrepReturns || 0)
   );
   readonly avgNetFee$ = this.answers$.pipe(map((a) => a.avgNetFee || 0));
+
+  // ANF KPI bindings
+  readonly anfValue$ = this.answers$.pipe(map((a) => a.projectedAvgNetFee ?? a.avgNetFee ?? null));
+  readonly anfStatus$ = this.answers$.pipe(map((a) => this.evaluator.getAnfStatus(a)));
+  readonly anfTooltip$ = this.expenseText.anfTooltip$();
+  readonly anfNote$ = this.expenseText.anfNote$();
+  readonly recommendedAnf$ = this.answers$.pipe(
+    map((a) => {
+      const d = this.evaluator.getAnfDescriptor(a);
+      return (d.green.min + d.green.max) / 2;
+    })
+  );
+
+  recommendedAnfSnapshot(): number | null {
+    let val: number | null = null;
+    this.recommendedAnf$.pipe(take(1)).subscribe((v) => {
+      val = v ? Math.round(v / 5) * 5 : null; // round to $5
+    });
+    return val;
+  }
+
+  updateAnf(value: number): void {
+    // Update avgNetFee (new store) or projectedAvgNetFee (existing)
+    if (this.wizardState.answers.storeType === 'existing') {
+      this.wizardState.updateAnswers({ projectedAvgNetFee: value });
+    } else {
+      this.wizardState.updateAnswers({ avgNetFee: value });
+    }
+  }
   readonly grossFees$ = this.answers$.pipe(map((a) => a.projectedGrossFees || 0));
   readonly discountsAmt$ = this.answers$.pipe(map((a) => a.projectedDiscountsAmt || 0));
+  readonly discountsDelta$: Observable<number> = this.discountsAmt$.pipe(
+    pairwise(),
+    map(([prev, curr]) => curr - prev),
+    startWith(0)
+  );
   readonly discountsPct$ = this.answers$.pipe(
     map((a) => {
       if (a.projectedDiscountsPct !== undefined && a.projectedDiscountsPct !== null) {
@@ -175,6 +217,11 @@ export class ProjectedIncomeDriversComponent {
     })
   );
   readonly taxPrepIncome$ = this.answers$.pipe(map((a) => a.projectedTaxPrepIncome || 0));
+  readonly taxPrepIncomeDelta$: Observable<number> = this.taxPrepIncome$.pipe(
+    pairwise(),
+    map(([prev, curr]) => curr - prev),
+    startWith(0)
+  );
   readonly otherIncome$ = this.answers$.pipe(map((a) => a.projectedOtherIncome || 0));
   readonly totalExpenses$ = this.answers$.pipe(map((a) => a.projectedExpenses || 0));
   readonly taxRushReturns$ = this.answers$.pipe(map((a) => a.projectedTaxRushReturns || null));

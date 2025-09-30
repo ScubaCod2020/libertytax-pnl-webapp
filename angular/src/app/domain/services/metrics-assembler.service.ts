@@ -48,7 +48,7 @@ export class MetricsAssemblerService {
       discountsPct: answers.discountsPct || 3,
       otherIncome: answers.otherIncome || (s.otherIncome ? 5000 : 0),
       calculatedTotalExpenses: answers.calculatedTotalExpenses,
-      salariesPct: answers.salariesPct || 25,
+      salariesPct: answers.payrollPct || 25,
       empDeductionsPct: answers.empDeductionsPct || 10,
       rentPct: answers.rentPct || 18,
       telephoneAmt: answers.telephoneAmt || 0.5,

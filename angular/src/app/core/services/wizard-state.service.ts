@@ -23,6 +23,8 @@ const STORAGE_KEY = 'wizard_state_v1';
 export class WizardStateService {
   private readonly _answers$ = new BehaviorSubject<WizardAnswers>(this.loadFromStorage());
   readonly answers$ = this._answers$.asObservable();
+  private readonly quickWizardLock$ = new BehaviorSubject<boolean>(false);
+  readonly quickWizardLockChanges$ = this.quickWizardLock$.asObservable();
 
   private selections: WizardSelections = {
     region: 'US',
@@ -476,15 +478,22 @@ export class WizardStateService {
     let next = { ...current, ...updates };
     console.log('🔄 After applying updates:', Object.keys(updates));
 
+    const wasConfigComplete = this.isWizardConfigComplete(current);
+    const isConfigComplete = this.isWizardConfigComplete(next);
+    const hasUserInput = this.hasMeaningfulUserInput(updates, current);
+
+    if (!isConfigComplete && this.quickWizardLock$.value) {
+      this.unlockQuickWizard();
+    }
+
     // Apply regional defaults when region changes
     if ('region' in updates && updates.region !== current.region) {
       console.log('🌍 Region changed from', current.region, 'to', updates.region);
       next = this.applyRegionalDefaults(next);
     }
 
-    // Clear example data on first user input (except for wizard config changes)
-    if (current._isExampleData && this.isUserDataInput(updates)) {
-      console.log('🧹 Clearing example data on first user input');
+    if (current._isExampleData && ((isConfigComplete && !wasConfigComplete) || hasUserInput)) {
+      console.log('🧹 Clearing example data after wizard completion/user input');
       next = this.clearExampleData(next);
     }
 
@@ -534,6 +543,40 @@ export class WizardStateService {
     this._answers$.next(next);
     this.saveToStorage(next);
     console.groupEnd();
+  }
+
+  private hasMeaningfulUserInput(updates: Partial<WizardAnswers>, current: WizardAnswers): boolean {
+    const userInputFields: Array<keyof WizardAnswers> = [
+      'projectedTaxPrepReturns',
+      'avgNetFee',
+      'discountsPct',
+      'discountsAmt',
+      'otherIncome',
+      'taxRushReturns',
+      'taxRushAvgNetFee',
+      'projectedExpenses',
+      'projectedTaxRushReturns',
+      'projectedTaxRushAvgNetFee',
+      'projectedTaxRushReturnsPct',
+      'projectedOtherIncome',
+      'pyTaxPrepReturns',
+      'pyAvgNetFee',
+      'pyDiscountsPct',
+      'pyDiscountsAmt',
+      'pyOtherIncome',
+    ];
+
+    return userInputFields.some((field) => {
+      if (!(field in updates)) {
+        return false;
+      }
+      const nextValue = (updates as any)[field];
+      if (nextValue === undefined || nextValue === null) {
+        return false;
+      }
+      const currentValue = (current as any)[field];
+      return nextValue !== currentValue;
+    });
   }
 
   private isUserDataInput(updates: Partial<WizardAnswers>): boolean {
@@ -699,15 +742,102 @@ export class WizardStateService {
     }
 
     // Calculate total expenses (auto: 76% of total income)
-    if (answers.projectedTaxPrepIncome && !answers.calculatedTotalExpenses) {
-      const totalIncome = (answers.projectedTaxPrepIncome || 0) + (answers.otherIncome || 0);
-      const oldExpenses = answers.projectedExpenses;
-      answers.projectedExpenses = Math.round(totalIncome * 0.76);
-      console.log(
-        '💸 Total Expenses:',
-        `($${answers.projectedTaxPrepIncome} + $${answers.otherIncome || 0}) × 76% = $${answers.projectedExpenses}`,
-        oldExpenses !== answers.projectedExpenses ? '(CHANGED)' : '(same)'
-      );
+    if (answers.projectedTaxPrepIncome) {
+      // Use the same revenue basis as the UI: projected tax prep income + (TaxRush gross if CA & enabled) + projected other income if enabled
+      const taxRush =
+        answers.region === 'CA' && answers.handlesTaxRush
+          ? answers.projectedTaxRushGrossFees || 0
+          : 0;
+      const other = answers.hasOtherIncome ? answers.projectedOtherIncome || 0 : 0;
+      const totalIncome = (answers.projectedTaxPrepIncome || 0) + taxRush + other;
+      const minimumExpenses = Math.round(totalIncome * 0.6);
+      const maximumExpenses = Math.round(totalIncome * 0.8);
+      const targetExpenses = Math.round((minimumExpenses + maximumExpenses) / 2);
+
+      if (!answers.calculatedTotalExpenses) {
+        answers.minRecommendedExpenses = minimumExpenses;
+        answers.maxRecommendedExpenses = maximumExpenses;
+        answers.projectedExpenses = targetExpenses;
+
+        console.log(
+          '💸 Total Expenses (Strategic Range):',
+          `Recommended 60%–80% → $${minimumExpenses} – $${maximumExpenses} (target $${targetExpenses})`
+        );
+      }
+    }
+
+    // Seed or update frozen expense guardrail baselines when income drivers change
+    // Baselines are computed from gross revenue context and only set if not already present
+    // Baselines should be computed from the same total revenue used for display/guardrails
+    const grossRevenue = (() => {
+      const base = answers.projectedTaxPrepIncome || 0;
+      const taxRush =
+        answers.region === 'CA' && answers.handlesTaxRush
+          ? answers.projectedTaxRushGrossFees || 0
+          : 0;
+      const other = answers.hasOtherIncome ? answers.projectedOtherIncome || 0 : 0;
+      return base + taxRush + other;
+    })();
+    const nextBaselines: Record<string, number> = { ...(answers.expenseBaselines || {}) };
+    const setOnce = (key: string, value: number | undefined) => {
+      if (value === undefined) return;
+      if (nextBaselines[key] === undefined) nextBaselines[key] = Math.round(value);
+    };
+
+    // Max-style caps (pct of gross) — choose conservative green targets (below warn bands)
+    setOnce('telephone', grossRevenue * 0.01); // 1.0% (warn at 1.05%)
+    setOnce('utilities', grossRevenue * 0.009); // 0.9% (warn at 1.05%)
+    setOnce('localAdv', grossRevenue * 0.015); // 1.5% (warn at 1.75%)
+    setOnce('supplies', grossRevenue * 0.03); // 3.0% (warn at 3.5%)
+
+    // Min-style floors (pct of gross)
+    setOnce('dues', grossRevenue * 0.0025);
+    setOnce('bankFees', grossRevenue * 0.0015);
+    setOnce('maintenance', grossRevenue * 0.0025);
+    setOnce('travel', grossRevenue * 0.01);
+
+    // Ranges (annual dollars)
+    setOnce('insuranceMin', 4800);
+    setOnce('insuranceMax', 6000);
+    setOnce('miscMin', 600);
+    setOnce('miscMax', 1200);
+
+    // Shortages (% baseline)
+    setOnce('shortagesPct', answers.shortagesPct ?? 2);
+
+    if (
+      Object.keys(nextBaselines).length > 0 &&
+      JSON.stringify(nextBaselines) !== JSON.stringify(answers.expenseBaselines || {})
+    ) {
+      answers.expenseBaselines = nextBaselines;
+      // Seed expense inputs to baselines on first compute only, after projected drivers are ready
+      const projectedReady =
+        (answers.projectedTaxPrepIncome || 0) > 0 &&
+        // If CA + TaxRush is enabled, allow zero when not enabled; otherwise wait until projectedTaxRushGrossFees is resolved
+        (!(answers.region === 'CA' && answers.handlesTaxRush) ||
+          (answers.projectedTaxRushGrossFees || 0) >= 0);
+      if (!answers.expensesSeeded && projectedReady) {
+        const seeded: Partial<WizardAnswers> = {
+          payrollPct: this.isCanadaRegion() ? 25 : 35,
+          empDeductionsPct: 10,
+          rentPct: 18,
+          telephoneAmt: Math.round(nextBaselines['telephone'] || 0),
+          utilitiesAmt: Math.round(nextBaselines['utilities'] || 0),
+          localAdvAmt: Math.round(nextBaselines['localAdv'] || 0),
+          insuranceAmt: Math.round(
+            ((nextBaselines['insuranceMin'] || 4800) + (nextBaselines['insuranceMax'] || 6000)) / 2
+          ),
+          postageAmt: 800,
+          suppliesPct: 3.5,
+          duesAmt: Math.round(nextBaselines['dues'] || 0),
+          bankFeesAmt: Math.round(nextBaselines['bankFees'] || 0),
+          maintenanceAmt: Math.round(nextBaselines['maintenance'] || 0),
+          travelEntAmt: Math.round(nextBaselines['travel'] || 0),
+          expensesSeeded: true,
+        };
+        Object.assign(answers, seeded);
+        logger.debug('💸 [SEED] Expense inputs initialized from baselines', seeded);
+      }
     }
 
     // Prior Year calculations
@@ -1083,20 +1213,23 @@ export class WizardStateService {
       console.warn('Failed to load wizard state from storage:', error);
     }
 
-    // Return initial state with example data (will be cleared on first user input)
+    return this.createInitialAnswers();
+  }
+
+  private createInitialAnswers(): WizardAnswers {
     return {
       region: 'US',
       storeType: 'new',
       handlesTaxRush: false,
       hasOtherIncome: false,
-      // Example data - will be cleared when user starts entering data
       _isExampleData: true,
       projectedTaxPrepReturns: 1600,
       avgNetFee: 125,
-      discountsPct: 1.0, // US default: 1%
+      discountsPct: 1.0,
       otherIncome: 5000,
       taxRushReturns: 240,
       taxRushAvgNetFee: 125,
+      expenseNotes: {},
     };
   }
 
@@ -1109,8 +1242,209 @@ export class WizardStateService {
   }
 
   resetAnswers(): void {
-    const defaultAnswers = this.loadFromStorage();
-    this._answers$.next(defaultAnswers);
     localStorage.removeItem(STORAGE_KEY);
+    const defaults = this.createInitialAnswers();
+    this._answers$.next(defaults);
+    this.selections = {
+      region: defaults.region || 'US',
+      storeType: defaults.storeType === 'existing' ? 'existing' : 'new',
+      handlesTaxRush: defaults.handlesTaxRush === true,
+      hasOtherIncome: defaults.hasOtherIncome === true,
+    };
+    this.unlockQuickWizard();
+  }
+
+  resetQuickStartConfig(): void {
+    const defaults = this.createInitialAnswers();
+    const resetState: WizardAnswers = {
+      ...this.answers,
+      region: defaults.region,
+      storeType: defaults.storeType,
+      handlesTaxRush: defaults.handlesTaxRush,
+      hasOtherIncome: defaults.hasOtherIncome,
+      otherIncome: defaults.otherIncome,
+      discountsPct: defaults.discountsPct,
+      discountsAmt: undefined,
+      _isExampleData: true,
+    };
+
+    this._answers$.next(resetState);
+    this.saveToStorage(resetState);
+    this.selections = {
+      region: defaults.region as RegionCode,
+      storeType: 'new',
+      handlesTaxRush: defaults.handlesTaxRush === true,
+      hasOtherIncome: defaults.hasOtherIncome === true,
+    };
+    this.unlockQuickWizard();
+  }
+
+  isWizardConfigComplete(answers: Partial<WizardAnswers>): boolean {
+    if (!answers.region || !answers.storeType) {
+      return false;
+    }
+    if (answers.region === 'CA' && answers.handlesTaxRush === undefined) {
+      return false;
+    }
+    if (answers.hasOtherIncome === undefined) {
+      return false;
+    }
+    return true;
+  }
+
+  resetPriorYearPerformance(): void {
+    const currentRegion = this.answers.region || 'US';
+    const regionalDiscountPct = currentRegion === 'CA' ? 3.0 : 1.0;
+
+    this.updateAnswers({
+      pyTaxPrepReturns: undefined,
+      pyAvgNetFee: undefined,
+      pyDiscountsPct: regionalDiscountPct,
+      pyDiscountsAmt: undefined,
+      pyOtherIncome: undefined,
+      pyTaxRushReturns: undefined,
+      pyTaxRushAvgNetFee: undefined,
+      pyGrossFees: undefined,
+      pyTaxPrepIncome: undefined,
+      pyTaxRushGrossFees: undefined,
+      manualPyTaxRushReturns: undefined,
+    });
+  }
+
+  resetProjectedGoals(): void {
+    this.updateAnswers({
+      projectedTaxPrepIncome: undefined,
+      projectedDiscountsAmt: undefined,
+      projectedDiscountsPct: undefined,
+      projectedOtherIncome: undefined,
+      projectedTaxRushReturns: undefined,
+      projectedTaxRushAvgNetFee: undefined,
+      projectedTaxRushGrossFees: undefined,
+      projectedTaxRushReturnsPct: undefined,
+      manualProjectedDiscountsAmt: undefined,
+      manualProjectedDiscountsPct: undefined,
+      manualProjectedTaxRushReturns: undefined,
+      projectedGrossFees: undefined,
+      projectedTaxPrepReturns: undefined,
+      projectedAvgNetFee: undefined,
+      taxRushReturns: this.answers.taxRushReturns,
+      taxRushAvgNetFee: this.answers.taxRushAvgNetFee,
+      taxRushReturnsPct: this.answers.taxRushReturnsPct,
+      // Clear frozen baselines so they regenerate from new income drivers
+      expenseBaselines: undefined,
+    });
+  }
+
+  resetTargetGoals(): void {
+    const currentRegion = this.answers.region || 'US';
+    const regionalDiscountPct = currentRegion === 'CA' ? 3.0 : 1.0;
+
+    this.updateAnswers({
+      projectedTaxPrepReturns: undefined,
+      avgNetFee: undefined,
+      discountsPct: regionalDiscountPct,
+      discountsAmt: undefined,
+      otherIncome: undefined,
+      taxRushReturns: undefined,
+      taxRushAvgNetFee: undefined,
+      projectedAvgNetFee: undefined,
+      projectedGrossFees: undefined,
+      projectedTaxPrepIncome: undefined,
+      taxRushReturnsPct: undefined,
+      taxRushGrossFees: undefined,
+      projectedExpenses: undefined,
+      manualAvgNetFee: undefined,
+      manualTaxPrepIncome: undefined,
+      manualTaxRushReturns: undefined,
+      // Clear frozen baselines so they regenerate from new income drivers
+      expenseBaselines: undefined,
+    });
+  }
+
+  resetExpenseDefaults(force = false): void {
+    const region = this.answers.region || 'US';
+    const grossRevenue =
+      (this.answers.projectedTaxPrepIncome || 0) + (this.answers.otherIncome || 0);
+    const b = this.answers.expenseBaselines || {};
+    const insuranceSeed =
+      b['insuranceMin'] !== undefined && b['insuranceMax'] !== undefined
+        ? Math.round(((b['insuranceMin'] || 0) + (b['insuranceMax'] || 0)) / 2)
+        : 1200;
+    const miscSeedPct =
+      b['miscMin'] !== undefined && b['miscMax'] !== undefined && grossRevenue > 0
+        ? (((b['miscMin'] || 600) + (b['miscMax'] || 1200)) / 2 / grossRevenue) * 100
+        : 1.0;
+
+    const defaults: Partial<WizardAnswers> = {
+      payrollPct: region === 'CA' ? 25 : 35,
+      empDeductionsPct: 10,
+      rentPct: 18,
+      telephoneAmt: Math.round((b['telephone'] as number) || 1000),
+      utilitiesAmt: Math.round((b['utilities'] as number) || 2400),
+      localAdvAmt: Math.round((b['localAdv'] as number) || 4000),
+      insuranceAmt: insuranceSeed,
+      postageAmt: 800,
+      suppliesPct: 3.5,
+      duesAmt: Math.round((b['dues'] as number) || 0.8),
+      bankFeesAmt: Math.round((b['bankFees'] as number) || 0.4),
+      maintenanceAmt: Math.round((b['maintenance'] as number) || 2400),
+      travelEntAmt: Math.round((b['travel'] as number) || 1800),
+      royaltiesPct: 14,
+      advRoyaltiesPct: 5,
+      taxRushRoyaltiesPct: region === 'CA' ? 6 : 0,
+      shortagesPct: 2,
+      miscPct: Math.round(miscSeedPct * 10) / 10,
+    };
+
+    const updates: Partial<WizardAnswers> = {};
+    (Object.keys(defaults) as Array<keyof WizardAnswers>).forEach((key) => {
+      const value = defaults[key];
+      if (value === undefined) {
+        return;
+      }
+      if (force || this.answers[key] === undefined) {
+        updates[key] = value;
+      }
+    });
+
+    if (!this.answers.expenseNotes) {
+      updates.expenseNotes = {};
+    }
+
+    if (Object.keys(updates).length > 0) {
+      this.updateAnswers(updates);
+    }
+  }
+
+  resetEverything(): void {
+    const previousStoreType = this.answers.storeType || 'new';
+
+    this.resetQuickStartConfig();
+
+    if (previousStoreType === 'existing') {
+      this.resetPriorYearPerformance();
+      this.resetProjectedGoals();
+    } else {
+      this.resetTargetGoals();
+    }
+
+    this.resetExpenseDefaults(true);
+    this.unlockQuickWizard();
+  }
+
+  isQuickWizardLocked(): boolean {
+    return this.quickWizardLock$.value;
+  }
+
+  lockQuickWizard(): void {
+    if (!this.quickWizardLock$.value) {
+      this.quickWizardLock$.next(true);
+    }
+  }
+
+  unlockQuickWizard(): void {
+    if (this.quickWizardLock$.value) {
+      this.quickWizardLock$.next(false);
+    }
   }
 }

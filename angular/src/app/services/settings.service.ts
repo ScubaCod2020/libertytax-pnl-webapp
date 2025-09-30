@@ -12,6 +12,7 @@ export interface AppSettings {
   otherIncome: boolean;
   localAvgRent?: number; // dollars per period
   rentPeriod?: 'monthly' | 'yearly';
+  empDeductionsPct?: number;
 }
 
 const STORAGE_KEY = 'pnl_settings_v1';
@@ -44,6 +45,7 @@ export class SettingsService {
       otherIncome: false,
       localAvgRent: undefined,
       rentPeriod: 'monthly',
+      empDeductionsPct: 10,
     };
   }
 

@@ -10,6 +10,10 @@ import { inject } from '@angular/core';
 import { AnalysisDataAssemblerService } from '../../domain/services/analysis-data-assembler.service';
 import { PerformanceCardComponent } from '../../components/performance-card/performance-card.component';
 import { MetricsAssemblerService } from '../../domain/services/metrics-assembler.service';
+import { WizardStateService } from '../../core/services/wizard-state.service';
+import { KpiEvaluatorService } from '../../domain/services/kpi-evaluator.service';
+import { SharedExpenseTextService } from '../../shared/expenses/expense-text.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,6 +34,9 @@ export class DashboardComponent {
   readonly flags = inject(FEATURE_FLAGS);
   private readonly assembler = inject(AnalysisDataAssemblerService);
   private readonly metrics = inject(MetricsAssemblerService);
+  private readonly wizard = inject(WizardStateService);
+  private readonly evaluator = inject(KpiEvaluatorService);
+  readonly text = inject(SharedExpenseTextService);
 
   get showAnalysis(): boolean {
     return this.flags.showAnalysisBlock === true;
@@ -48,4 +55,10 @@ export class DashboardComponent {
   get cprMetrics() {
     return this.metrics.buildDashboardPreviewMetrics().cpr;
   }
+
+  // ANF chip streams
+  readonly anfValue$ = this.wizard.answers$.pipe(
+    map((a) => a.projectedAvgNetFee ?? a.avgNetFee ?? null)
+  );
+  readonly anfStatus$ = this.wizard.answers$.pipe(map((a) => this.evaluator.getAnfStatus(a)));
 }

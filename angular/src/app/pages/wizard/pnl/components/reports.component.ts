@@ -151,7 +151,7 @@ export class ReportsComponent implements OnInit {
       otherIncome,
 
       // Expense percentages
-      salariesPct: answers.salariesPct || 25,
+      salariesPct: answers.payrollPct || 25,
       empDeductionsPct: answers.empDeductionsPct || 10,
       rentPct: answers.rentPct || 18,
       suppliesPct: answers.suppliesPct || 2,
@@ -298,9 +298,9 @@ export class ReportsComponent implements OnInit {
     logger.debug('📋🏗️ [P&L REPORTS] Calculating expense breakdown...');
 
     const personnel = {
-      salaries: ((answers.salariesPct || 0) / 100) * grossFees,
+      salaries: ((answers.payrollPct || 0) / 100) * grossFees,
       deductions:
-        ((answers.empDeductionsPct || 0) / 100) * (((answers.salariesPct || 0) / 100) * grossFees),
+        ((answers.empDeductionsPct || 0) / 100) * (((answers.payrollPct || 0) / 100) * grossFees),
     };
     logger.debug('📋🏗️ [P&L REPORTS] Personnel expenses calculated:', personnel);
 

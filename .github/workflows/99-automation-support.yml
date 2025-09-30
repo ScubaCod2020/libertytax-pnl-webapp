@@ -73,7 +73,8 @@ on:
 permissions:
   contents: read
   issues: write
-  projects: write
+  repository-projects: write
+  pull-requests: write
 
 jobs:
   # Issue creation from workflow failures
@@ -106,6 +107,7 @@ jobs:
               { name: 'bug', color: 'd73a4a', description: 'Something is not working' },
               { name: 'workflow-failure', color: '5319e7', description: 'Created by automation on CI failure' },
               { name: 'critical', color: 'b60205', description: 'Highest urgency' },
+              { name: 'automation', color: '0366d6', description: 'Automation support issue' }
             ];
             for (const l of desired) {
               try {

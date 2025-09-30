@@ -1,6 +1,6 @@
-<div data-wizard-step="inputs" class="inputs-wrap">
-  <div class="card-title">Income &amp; Expense Inputs</div>
-  <p class="small intro">Enter your expected income and expense values. All fields have reasonable defaults, but
+<div data-wizard-step="inputs" class="inputs-wrap" *ngIf="expenseStatuses$ | async as expenseStatuses">
+  <div class="card-title">Income recap &amp; Expense Projections</div>
+  <p class="small intro">Enter your expected expense values. All fields have reasonable defaults, but
     customizing them will give you more accurate P&amp;L projections.</p>
 
   <!-- Revenue Summary (Dynamic based on store type) -->
@@ -9,25 +9,46 @@
       <div class="panel-title">💰 {{ revenue.title }} <span class="status">🟡 On track with strategic plan</span></div>
       <div class="revenue-flex-container">
         <div class="revenue-main-content">
-          <div class="panel-sub">Tax Prep Revenue:</div>
-          <div class="detail">Gross Tax Prep Fees: <strong>{{ revenue.grossFees | currency:'USD':'symbol':'1.2-2'
-              }}</strong></div>
-          <div class="detail">Returns: {{ revenue.returns | number:'1.0-0' }} @ {{ revenue.avgNetFee |
-            currency:'USD':'symbol':'1.2-2' }}</div>
-          <div class="detail red">Less Discounts ({{ revenue.discountPct | number:'1.1-1' }}%): <strong>-{{
-              revenue.discountAmt | currency:'USD':'symbol':'1.2-2' }}</strong></div>
-          <div class="detail green strong">Net Tax Prep Income: <strong>{{ revenue.netIncome |
+          <div class="panel-sub">Tax Prep Revenue</div>
+          <div class="detail">Tax Prep Returns: {{ revenue.taxPrepReturns | number:'1.0-0' }} @
+            {{ revenue.avgNetFee | currency:'USD':'symbol':'1.2-2' }}</div>
+          <div class="detail">Gross Tax Prep Fees: <strong>{{ revenue.grossFees |
               currency:'USD':'symbol':'1.2-2' }}</strong></div>
-          <div class="detail" *ngIf="revenue.otherIncome > 0">Other Income: <strong>{{ revenue.otherIncome |
+          <div class="detail red">Customer Discounts ({{ revenue.discountPct | number:'1.1-1' }}%): <strong>-{{
+              revenue.discountAmt | currency:'USD':'symbol':'1.2-2' }}</strong></div>
+          <div class="detail green strong">Net Tax Prep Income: <strong>{{ revenue.taxPrepIncome |
+              currency:'USD':'symbol':'1.2-2' }}</strong></div>
+
+          <div class="panel-sub" *ngIf="revenue.handlesTaxRush">TaxRush (Projected)</div>
+          <div class="detail" *ngIf="revenue.handlesTaxRush">
+            TaxRush Returns: {{ revenue.taxRushReturns | number:'1.0-0' }} ({{ revenue.taxRushReturnsPct |
+            number:'1.1-1'
+            }}%)
+          </div>
+          <div class="detail" *ngIf="revenue.handlesTaxRush">
+            TaxRush Avg Net Fee: <strong>{{ revenue.taxRushAvgFee | currency:'USD':'symbol':'1.2-2' }}</strong>
+          </div>
+          <div class="detail" *ngIf="revenue.handlesTaxRush">
+            TaxRush Gross Fees: <strong>{{ revenue.taxRushGrossFees | currency:'USD':'symbol':'1.2-2' }}</strong>
+          </div>
+
+          <div class="panel-sub" *ngIf="revenue.otherIncome > 0">Other Income</div>
+          <div class="detail" *ngIf="revenue.otherIncome > 0">
+            Other Income: <strong>{{ revenue.otherIncome | currency:'USD':'symbol':'1.2-2' }}</strong>
+          </div>
+
+          <div class="panel-sub">Total</div>
+          <div class="detail">Total Returns: <strong>{{ revenue.totalReturns | number:'1.0-0' }}</strong></div>
+          <div class="detail">Total Revenue: <strong>{{ revenue.totalRevenue |
               currency:'USD':'symbol':'1.2-2' }}</strong></div>
         </div>
         <div *ngIf="revenue.avgNetFee > 0" class="projected-gross-per-return">
-          <div class="projected-gross-label">{{ wizardState.getDisplayLabel('grossPerReturnTitle') }}:</div>
+          <div class="projected-gross-label">{{ wizardState.getDisplayLabel('grossPerReturnTitle') }}</div>
           <div class="projected-gross-value">{{ revenue.avgNetFee | currency:'USD':'symbol':'1.2-2' }}</div>
         </div>
       </div>
       <div class="panel-total">Total Gross Revenue: <strong>{{ revenue.totalRevenue | currency:'USD':'symbol':'1.2-2'
-          }}</strong><span class="delta">({{ revenue.vsTarget > 0 ? '+' : '' }}{{ revenue.vsTarget }}% vs target)</span>
+          }}</strong>
       </div>
       <div class="panel-note">{{ revenue.description }}</div>
     </div>
@@ -35,311 +56,296 @@
 
   <!-- Expense Management -->
   <div class="expense-section">
-    <div class="section-title with-action">💰 Expense Management <button type="button" class="btn-reset"
-        (click)="resetExpensesToDefaults()"
+    <div class="section-title with-action">💰 Expense Management <button type="button"
+        class="btn btn--secondary btn--sm" (click)="resetExpensesToDefaults()"
         title="Reset ONLY expense fields back to strategic defaults (keeps your target performance goals intact)">💸
         Reset Expenses to Strategic Defaults</button></div>
     <div class="blue-outline">
-      <div class="blue-title">📊 Performance-Based Targets</div>
-      <div class="blue-line">Strategic Total Expenses: <strong>{{ 147440 | currency:'USD':'symbol':'1.0-0'
-          }}</strong><span class="delta">(76.0% of gross revenue)</span></div>
-      <div class="blue-line">Expected Net Income: <strong>{{ 46560 | currency:'USD':'symbol':'1.0-0' }}</strong><span
-          class="delta">(24.0% margin)</span></div>
-      <div class="small">Operational best practices for expense management (75-77% optimal range)</div>
+      <div class="blue-title">📊 Expense Guardrails</div>
+      <div class="blue-line">
+        Strategic Expenses:
+        <span class="range-value" *ngIf="(wizardState.answers.minRecommendedExpenses ?? 0) > 0">
+          {{ wizardState.answers.minRecommendedExpenses | currency:'USD':'symbol':'1.0-0' }} –
+          {{ wizardState.answers.maxRecommendedExpenses | currency:'USD':'symbol':'1.0-0' }}
+        </span>
+        <span class="delta">(60 – 80% of gross revenue)</span>
+      </div>
+      <div class="blue-line">Net Income (Target): <strong>20 – 40%</strong><span class="delta"> of gross
+          revenue</span></div>
+      <div class="small">Aim to keep expenses between 60–80% so your net profit holds the 20–40% strategic band.</div>
     </div>
 
     <div class="section-sub">📊 Expense Categories <span class="small muted">(16 total fields)</span></div>
+
+    <!-- Structural template for generic expense rows -->
+    <ng-template #expenseRowTmpl let-key="key" let-label="label" let-amount$="amount$" let-percent$="percent$"
+      let-status$="status$" let-gross$="gross$" let-baseline$="baseline$" let-noteText$="noteText$"
+      let-tooltip$="tooltip$" let-noteValue$="noteValue$" let-slider="slider" let-placeholderAmt="placeholderAmt"
+      let-placeholderPct="placeholderPct">
+      <p class="legend">
+        <span class="dot green"></span> Within guardrails
+        <span class="dot yellow"></span> Watchlist
+        <span class="dot red"></span> Over limit
+      </p>
+      <div class="grid-row multi expense-row" [attr.data-testid]="'row-' + key">
+        <label>{{ label }}</label>
+
+        <div class="grid-field chain">
+          <div class="inline amount" [ngClass]="status$ | async">
+            <button type="button" class="info-btn" [attr.data-testid]="'info-' + key"
+              [attr.aria-label]="label + ' guidance'" [attr.title]="tooltip$ | async">ℹ️</button>
+
+            <span class="prefix">$</span>
+            <input type="number" class="input xs" [attr.data-testid]="'amount-' + key" [ngModel]="amount$ | async"
+              (ngModelChange)="onAmt(key, $event)" [attr.placeholder]="placeholderAmt ?? 0" />
+          </div>
+
+          <div class="inline percent">
+            <input type="number" class="input xs" [attr.data-testid]="'percent-' + key" [ngModel]="percent$ | async"
+              (ngModelChange)="onPct(key, $event)" (input)="clampPercent($event, key)"
+              [attr.placeholder]="placeholderPct ?? 0" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+
+        <div class="slider">
+          <input type="range" [attr.data-testid]="'slider-' + key" [min]="slider?.min ?? 0" [max]="slider?.max ?? 10"
+            [step]="slider?.step ?? 0.1" [ngModel]="percent$ | async" (ngModelChange)="onPct(key, $event)"
+            [attr.aria-label]="label + ' percentage slider'" />
+        </div>
+
+        <div class="small note">
+          {{ (noteText$ | async) || '' }}
+          <span class="green"> • Base: {{ (gross$ | async) | number:'1.0-0' }} (gross revenue)</span>
+        </div>
+
+        <div class="note-field" *ngIf="(status$ | async) !== 'green'">
+          <textarea class="expense-note" [attr.data-testid]="'note-' + key" placeholder="Add notes or justification"
+            rows="3" [ngModel]="noteValue$ | async" (ngModelChange)="onNote(key, $event)"></textarea>
+        </div>
+        <!-- Reset per-row removed per UX: use global reset button only -->
+      </div>
+    </ng-template>
 
     <!-- Personnel -->
     <div class="expense-section light">
       <div class="section-title">👥Personnel <span class="small muted">(2 fields)</span></div>
       <div class="small italic">Staff-related expenses</div>
-      <div class="grid-row multi">
-        <label title="Staff salaries as % of gross fees (25% recommended for optimal operations)">Salaries</label>
+      <div class="grid-row multi expense-row">
+        <label title="Payroll as % of gross fees (regional guardrail)">
+          Payroll
+        </label>
+        <button type="button" class="info-btn" aria-label="Payroll guidance"
+          [attr.title]="'Payroll guardrail: ' + ((wizardState.answers.region === 'CA') ? '25% of gross revenue' : '35% of gross revenue') + ' • Baseline: ' + (((grossRevenue$ | async) || 0) * ((wizardState.answers.region === 'CA') ? 0.25 : 0.35) | currency:'USD':'symbol':'1.0-0')">
+          ℹ️
+        </button>
         <div class="grid-field chain">
-          <div class="inline">
-            <input type="number" class="input xs" [ngModel]="salariesPct$ | async"
-              (ngModelChange)="updateSalariesPct($event)" placeholder="25" />
-            <span class="suffix">%</span>
-          </div>
-          <span class="eq">=</span>
-          <div class="inline">
+          <div class="inline amount" [ngClass]="expenseStatuses['payroll']">
             <span class="prefix">$</span>
-            <input type="text" class="input xs"
-              [ngModel]="((grossRevenue$ | async) || 0) * ((salariesPct$ | async) || 0) / 100 | currency:'USD':'symbol':'1.0-0'"
-              placeholder="$0" readonly />
+            <input type="number" class="input xs" [ngModel]="payrollAmount$ | async"
+              (ngModelChange)="updatePayrollAmount($event)" placeholder="0" />
+          </div>
+          <div class="inline percent">
+            <input type="number" class="input xs" [ngModel]="payrollPct$ | async"
+              (ngModelChange)="updatePayrollPct($event)"
+              [attr.placeholder]="wizardState.answers.region === 'CA' ? '25' : '35'" />
+            <span class="suffix">%</span>
           </div>
         </div>
         <div class="slider">
-          <input type="range" min="0" max="50" step="1" [ngModel]="salariesPct$ | async"
-            (ngModelChange)="updateSalariesPct($event)" aria-label="Salaries percentage slider" />
+          <input type="range" min="0" max="60" step="1" [ngModel]="payrollPct$ | async"
+            (ngModelChange)="updatePayrollPct($event)" aria-label="Payroll percentage slider" />
         </div>
-        <div class="small note">Staff salaries as % of gross fees (25% recommended for optimal operations) <span
-            class="green"> • Base: ${{ (grossRevenue$ | async) | number:'1.0-0' }} (gross revenue)</span></div>
+        <div class="small note">
+          Payroll guardrail: {{ wizardState.answers.region === 'CA' ? '25%' : '35%' }} of gross revenue
+          <span class="green"> • Baseline: {{ (((grossRevenue$ | async) || 0) * (wizardState.answers.region === 'CA' ?
+            0.25 : 0.35)) | currency:'USD':'symbol':'1.0-0' }}</span>
+        </div>
+        <div class="note-field" *ngIf="expenseStatuses['payroll'] !== 'green'">
+          <textarea class="expense-note" placeholder="Add notes or justification" [ngModel]="getExpenseNote('payroll')"
+            (ngModelChange)="updateExpenseNote('payroll', $event)" rows="3"></textarea>
+        </div>
       </div>
-      <div class="grid-row multi">
-        <label title="Payroll taxes, benefits as % of salaries (10% recommended for optimal operations)">Employee
-          Deductions</label>
+      <div class="grid-row multi expense-row">
+        <label title="Payroll taxes, benefits as % of salaries (10% recommended for optimal operations)">
+          Employee Deductions
+        </label>
+        <button type="button" class="info-btn" aria-label="Employee deductions guidance"
+          [attr.title]="'Employee deductions guardrail: 10% of salaries • Baseline: ' + ((((payrollAmount$ | async) || 0) * 0.10) | currency:'USD':'symbol':'1.0-0')">ℹ️</button>
         <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="10" [value]="10"
-              aria-label="Employee deductions percentage" /><span class="suffix">%</span></div>
-          <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              placeholder="0" [value]="5000" aria-label="Employee deductions dollar amount" /></div>
+          <div class="inline amount" [ngClass]="expenseStatuses['empDeductions']">
+            <span class="prefix">$</span>
+            <input type="number" class="input xs" [ngModel]="empDeductionsAmount$ | async"
+              (ngModelChange)="updateEmpDeductionsAmount($event)" placeholder="0" />
+          </div>
+          <div class="inline percent">
+            <input type="number" class="input xs" [ngModel]="empDeductionsPct$ | async"
+              (ngModelChange)="updateEmpDeductionsPct($event)" placeholder="10" />
+            <span class="suffix">%</span>
+          </div>
         </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="10"
-            aria-label="Employee deductions percentage slider" /></div>
-        <div class="small note">Payroll taxes, benefits as % of salaries (10% recommended for optimal operations) <span
-            class="green"> • Base: $50,000 (salary amount)</span></div>
+        <div class="slider">
+          <input type="range" min="0" max="50" step="1" [ngModel]="empDeductionsPct$ | async"
+            (ngModelChange)="updateEmpDeductionsPct($event)" aria-label="Employee deductions percentage slider" />
+        </div>
+        <div class="small note">Employee deductions guardrail: 10% of salaries
+          <span class="green"> • Baseline: {{ (((payrollAmount$ | async) || 0) * 0.10) | currency:'USD':'symbol':'1.0-0'
+            }}</span>
+        </div>
+        <div class="note-field" *ngIf="expenseStatuses['empDeductions'] !== 'green'">
+          <textarea class="expense-note" placeholder="Add notes or justification"
+            [ngModel]="getExpenseNote('empDeductions')" (ngModelChange)="updateExpenseNote('empDeductions', $event)"
+            rows="3"></textarea>
+        </div>
       </div>
     </div>
 
-    <!-- Facility -->
+    <!-- Facility and Operations generic rows driven by config -->
     <div class="expense-section light">
-      <div class="section-title">🏢Facility <span class="small muted">(3 fields)</span></div>
-      <div class="small italic">Office and location costs</div>
-      <div class="grid-row multi">
-        <label title="Office rent as % of gross fees (18% recommended for optimal operations)">Rent</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="18" [value]="18"
-              aria-label="Rent percentage" /><span class="suffix">%</span></div>
-          <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              placeholder="0" [value]="36000" aria-label="Rent dollar amount" /></div>
-        </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="18"
-            aria-label="Rent percentage slider" /></div>
-        <div class="small note">Office rent as % of gross fees (18% recommended) <span class="green"> • Base: $200,000
-            (gross fees)</span></div>
-      </div>
-      <div class="grid-row multi">
-        <label>Telephone</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="0.5" [value]="0.5"
-              aria-label="Telephone percentage" /><span class="suffix">%</span></div>
-          <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              placeholder="0" [value]="1000" aria-label="Telephone dollar amount" /></div>
-        </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.5"
-            aria-label="Telephone percentage slider" /></div>
-        <div class="small note">Phone/internet costs as % of gross fees <span class="green"> • Base: $200,000</span>
-        </div>
-      </div>
-      <div class="grid-row multi">
-        <label>Utilities</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="1.2" [value]="1.2"
-              aria-label="Utilities percentage" /><span class="suffix">%</span></div>
-          <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              placeholder="0" [value]="2400" aria-label="Utilities dollar amount" /></div>
-        </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="1.2"
-            aria-label="Utilities percentage slider" /></div>
-        <div class="small note">Utilities as % of gross fees <span class="green"> • Base: $200,000</span></div>
-      </div>
+      <div class="section-title">🏢Facility & Operations <span class="small muted">(auto)</span></div>
+      <div class="small italic">Office costs and operational expenses</div>
+      <ng-container *ngFor="let row of rows; trackBy: trackKey" [ngTemplateOutlet]="expenseRowTmpl"
+        [ngTemplateOutletContext]="{
+          key: row.key,
+          label: row.label,
+          amount$: expenses.amount$(row.key),
+          percent$: expenses.percent$(row.key),
+          status$: expenses.statusClass$(row.key),
+          gross$: expenses.grossRevenue$,
+          baseline$: expenses.baselineUSD$(row.key),
+          noteText$: text.note$(row.key),
+          tooltip$: text.tooltip$(row.key),
+          noteValue$: expenses.noteValue$(row.key),
+          slider: row.slider,
+          placeholderAmt: row.placeholderAmt,
+          placeholderPct: row.placeholderPct
+        }"></ng-container>
     </div>
 
-    <!-- Operations (subset example) -->
-    <div class="expense-section light">
-      <div class="section-title">⚙️Operations <span class="small muted">(8 fields)</span></div>
-      <div class="small italic">Day-to-day operational expenses</div>
-      <div class="grid-row multi">
-        <label>Local Advertising</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="2" [value]="2"
-              aria-label="Local advertising percentage" /><span class="suffix">%</span></div>
-          <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              placeholder="0" [value]="4000" aria-label="Local advertising dollar amount" /></div>
+    <!-- BEGIN LEGACY ROWS: Operations group (commented out post-Card 2.1) -->
+    <!-- (Local Advertising, Insurance, Postage, Office Supplies, Bank Fees, Maintenance, Travel) -->
+    <!-- END LEGACY ROWS -->
+    <div class="grid-row multi">
+      <label>Shortages</label>
+      <button type="button" class="info-btn" aria-label="Shortages guidance">ℹ️</button>
+      <div class="grid-field chain">
+        <div class="inline amount">
+          <span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput [value]="5820" disabled
+            readonly aria-label="Shortages dollar amount" />
         </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="2"
-            aria-label="Local advertising percentage slider" /></div>
-        <div class="small note">Local marketing as % of gross fees <span class="green"> • Base: $200,000</span></div>
-      </div>
-      <div class="grid-row multi">
-        <label>Insurance</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="0.6" [value]="0.6"
-              aria-label="Insurance percentage" /><span class="suffix">%</span></div>
-          <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              placeholder="0" [value]="1200" aria-label="Insurance dollar amount" /></div>
-        </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.6"
-            aria-label="Insurance percentage slider" /></div>
-        <div class="small note">Business insurance as % of gross fees <span class="green"> • Base: $200,000</span></div>
-      </div>
-      <div class="grid-row multi">
-        <label>Postage</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="0.4" [value]="0.4"
-              aria-label="Postage percentage" /><span class="suffix">%</span></div>
-          <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              placeholder="0" [value]="800" aria-label="Postage dollar amount" /></div>
-        </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.4"
-            aria-label="Postage percentage slider" /></div>
-        <div class="small note">Mailing/shipping as % of gross fees <span class="green"> • Base: $200,000</span></div>
-      </div>
-      <div class="grid-row multi">
-        <label>Office Supplies</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="3.5" [value]="3.5"
-              aria-label="Office supplies percentage" /><span class="suffix">%</span></div>
-          <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              placeholder="0" [value]="7000" aria-label="Office supplies dollar amount" /></div>
-        </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="3.5"
-            aria-label="Office supplies percentage slider" /></div>
-        <div class="small note">Office supplies as % of gross fees <span class="green"> • Base: $200,000</span></div>
-      </div>
-      <div class="grid-row multi">
-        <label>Dues</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="0.8" [value]="0.8"
-              aria-label="Dues percentage" /><span class="suffix">%</span></div>
-          <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              placeholder="0" [value]="1600" aria-label="Dues dollar amount" /></div>
-        </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.8"
-            aria-label="Dues percentage slider" /></div>
-        <div class="small note">Dues/subscriptions as % of gross fees <span class="green"> • Base: $200,000</span></div>
-      </div>
-      <div class="grid-row multi">
-        <label>Bank Fees</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="0.5" [value]="0.5"
-              aria-label="Bank fees percentage" /><span class="suffix">%</span></div>
-          <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              placeholder="0" [value]="1000" aria-label="Bank fees dollar amount" /></div>
-        </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.5"
-            aria-label="Bank fees percentage slider" /></div>
-        <div class="small note">Banking fees as % of gross fees <span class="green"> • Base: $200,000</span></div>
-      </div>
-      <div class="grid-row multi">
-        <label>Maintenance</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="1.2" [value]="1.2"
-              aria-label="Maintenance percentage" /><span class="suffix">%</span></div>
-          <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              placeholder="0" [value]="2400" aria-label="Maintenance dollar amount" /></div>
-        </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="1.2"
-            aria-label="Maintenance percentage slider" /></div>
-        <div class="small note">Maintenance/repairs as % of gross fees <span class="green"> • Base: $200,000</span>
+        <div class="inline percent">
+          <input type="number" class="input xs" [value]="3" disabled readonly aria-label="Shortages percentage" />
+          <span class="suffix">%</span>
         </div>
       </div>
-      <div class="grid-row multi">
-        <label>Travel/Entertainment</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" placeholder="0.9" [value]="0.9"
-              aria-label="Travel entertainment percentage" /><span class="suffix">%</span></div>
-          <span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              placeholder="0" [value]="1800" aria-label="Travel entertainment dollar amount" /></div>
-        </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="0.9"
-            aria-label="Travel entertainment percentage slider" /></div>
-        <div class="small note">Travel/entertainment as % of gross fees <span class="green"> • Base: $200,000</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Franchise -->
-    <div class="expense-section light">
-      <div class="section-title">🏪Franchise <span class="small muted">({{ wizardState.isCanadaRegion() &&
-          wizardState.hasTaxRush() ? '4' : '2' }} fields)</span></div>
-      <div class="small italic">Franchise fees and royalties</div>
-      <div class="grid-row multi">
-        <label>Tax Prep Royalties</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" [value]="14" disabled readonly
-              aria-label="Tax prep royalties percentage" /><span class="suffix">%</span></div><span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              [value]="27160" disabled readonly aria-label="Tax prep royalties dollar amount" /></div>
-        </div>
-        <div class="small note">🔒 Locked per franchise agreement <span class="green"> • Base: $194,000</span></div>
-      </div>
-      <div class="grid-row multi">
-        <label>Advertising Royalties</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" [value]="5" disabled readonly
-              aria-label="Advertising royalties percentage" /><span class="suffix">%</span></div><span
-            class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              [value]="9700" disabled readonly aria-label="Advertising royalties dollar amount" /></div>
-        </div>
-        <div class="small note">🔒 Locked per franchise agreement <span class="green"> • Base: $194,000</span></div>
-      </div>
-      <!-- Tax Rush fields - only for Canada offices that handle Tax Rush -->
-      <div *ngIf="wizardState.isCanadaRegion() && wizardState.hasTaxRush()" class="grid-row multi">
-        <label>Tax Rush Royalties</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" [value]="8" disabled readonly
-              aria-label="Tax rush royalties percentage" /><span class="suffix">%</span></div><span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              [value]="15520" disabled readonly aria-label="Tax rush royalties dollar amount" /></div>
-        </div>
-        <div class="small note">🔒 Locked per franchise agreement <span class="green"> • Base: $194,000</span></div>
-      </div>
-      <div *ngIf="wizardState.isCanadaRegion() && wizardState.hasTaxRush()" class="grid-row multi">
-        <label>Tax Rush Shortages</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" [value]="3" disabled readonly
-              aria-label="Tax rush shortages percentage" /><span class="suffix">%</span></div><span class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              [value]="5820" disabled readonly aria-label="Tax rush shortages dollar amount" /></div>
-        </div>
-        <div class="small note">🔒 Locked per franchise agreement <span class="green"> • Base: $194,000</span></div>
-      </div>
-    </div>
-
-    <!-- Misc -->
-    <div class="expense-section light">
-      <div class="section-title">📝Miscellaneous <span class="small muted">(1 field)</span></div>
-      <div class="small italic">Other and miscellaneous expenses</div>
-      <div class="grid-row multi">
-        <label>Miscellaneous</label>
-        <div class="grid-field chain">
-          <div class="inline"><input type="number" class="input xs" [value]="2.5"
-              aria-label="Miscellaneous expenses percentage" /><span class="suffix">%</span></div><span
-            class="eq">=</span>
-          <div class="inline"><span class="prefix">$</span><input type="number" class="input xs" appCurrencyInput
-              [value]="5000" aria-label="Miscellaneous expenses dollar amount" /></div>
-        </div>
-        <div class="slider"><input type="range" min="0" max="50" step="1" [value]="2.5"
-            aria-label="Miscellaneous expenses percentage slider" /></div>
-        <div class="small note">Other misc expenses (0-1% recommended) <span class="green"> • Base: $200,000</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="orange-panel">
-      <div class="panel-title">💰 Actual Expense Breakdown <span class="status">🟡 Above optimal range - monitor
-          costs</span></div>
-      <div class="panel-line" data-testid="total-expenses-summary">Total Expenses: <strong>{{ 150932 |
-          currency:'USD':'symbol':'1.0-0' }}</strong><span class="delta">(77.8% of gross revenue)</span></div>
-      <div class="panel-line">Final Net Income: <strong>{{ 43068 | currency:'USD':'symbol':'1.0-0' }}</strong> <span
-          class="delta strong">✅ Within operational best practices</span></div>
-      <div class="small">Operational Target: {{ 147440 | currency:'USD':'symbol':'1.0-0' }} (76.0% of revenue) • {{ 3492
-        | currency:'USD':'symbol':'1.0-0' }} over optimal range - monitor costs closely</div>
+      <div class="small note">Shortages as % of gross fees <span class="green"> • Base: {{
+          (grossRevenue$ | async) | number:'1.0-0' }} (gross revenue)</span></div>
     </div>
   </div>
 
+
+  <!-- BEGIN LEGACY ROWS: Misc group (commented out post-Card 2.1) -->
+  <!-- (Dues, Miscellaneous) -->
+  <!-- END LEGACY ROWS -->
+  <!-- Franchise -->
+  <div class="expense-section light">
+    <div class="section-title">🏪Franchise <span class="small muted">({{ wizardState.isCanadaRegion() &&
+        wizardState.hasTaxRush() ? '4' : '2' }} fields)</span></div>
+    <div class="small italic">Franchise fees and royalties</div>
+    <div class="grid-row multi expense-row locked">
+      <label>Tax Prep Royalties</label>
+      <div class="grid-field chain">
+        <div class="inline amount">
+          <button type="button" class="info-btn" aria-label="Tax prep royalties guidance">ℹ️</button>
+          <span class="prefix">$</span>
+          <input type="number" class="input xs readonly" [ngModel]="taxPrepRoyaltiesAmount$ | async" readonly
+            disabled />
+        </div>
+        <div class="inline percent">
+          <input type="number" class="input xs readonly" [ngModel]="royaltiesPct$ | async" readonly disabled />
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="small note">🔒 Locked per franchise agreement <span class="green"> • Base: {{
+          (taxPrepGrossFees$ | async) | number:'1.0-0' }} (Tax Prep gross fees)</span></div>
+    </div>
+    <div class="grid-row multi expense-row locked">
+      <label>Advertising Royalties</label>
+      <div class="grid-field chain">
+        <div class="inline amount">
+          <button type="button" class="info-btn" aria-label="Advertising royalties guidance">ℹ️</button>
+          <span class="prefix">$</span>
+          <input type="number" class="input xs readonly" [ngModel]="advRoyaltiesAmount$ | async" readonly disabled />
+        </div>
+        <div class="inline percent">
+          <input type="number" class="input xs readonly" [ngModel]="advRoyaltiesPct$ | async" readonly disabled />
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="small note">🔒 Locked per franchise agreement <span class="green"> • Base: {{
+          (taxPrepGrossFees$ | async) | number:'1.0-0' }} (Tax Prep gross fees)</span></div>
+    </div>
+    <!-- Tax Rush fields - only for Canada offices that handle Tax Rush -->
+    <div *ngIf="wizardState.isCanadaRegion() && wizardState.hasTaxRush()" class="grid-row multi expense-row locked">
+      <label>Tax Rush Royalties</label>
+      <div class="grid-field chain">
+        <div class="inline amount">
+          <button type="button" class="info-btn" aria-label="Tax rush royalties guidance">ℹ️</button>
+          <span class="prefix">$</span>
+          <input type="number" class="input xs readonly" [ngModel]="taxRushRoyaltiesAmount$ | async" readonly
+            disabled />
+        </div>
+        <div class="inline percent">
+          <input type="number" class="input xs readonly" [ngModel]="taxRushRoyaltiesPct$ | async" readonly disabled />
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="small note">🔒 Locked per franchise agreement <span class="green"> • Base: {{
+          (taxRushGrossFees$ | async) | number:'1.0-0' }} (gross revenue)</span></div>
+    </div>
+  </div>
+
+
+  <div class="orange-panel" [ngClass]="expenseStatus$ | async" *ngIf="(totalExpenses$ | async) as totalExpenses">
+    <div class="panel-title">
+      💰 Actual Expense Breakdown
+      <span class="status" [ngClass]="expenseStatus$ | async">
+        {{ (expenseStatus$ | async) === 'green' ? '🟢 Within strategic range' : (expenseStatus$ | async) === 'yellow'
+        ? '🟡 Needs attention' : '🔴 Outside strategic range' }}
+      </span>
+    </div>
+    <div class="revenue-flex-container expense-flex">
+      <div class="revenue-main-content">
+        <div class="panel-sub">Expense Summary:</div>
+        <div class="detail">Total Expenses: <strong>{{ totalExpenses | currency:'USD':'symbol':'1.0-0' }}</strong>
+        </div>
+        <div class="detail">Expense Ratio: <strong>{{ (totalExpensePct$ | async) | number:'1.1-1' }}%</strong></div>
+        <div class="detail green strong" *ngIf="(netIncome$ | async) as netIncome">
+          Net Income: <strong>{{ netIncome | currency:'USD':'symbol':'1.0-0' }}</strong>
+        </div>
+        <div class="detail" *ngIf="(wizardState.answers.minRecommendedExpenses ?? 0) > 0">
+          Strategic Guardrail: {{ wizardState.answers.minRecommendedExpenses | currency:'USD':'symbol':'1.0-0' }} –
+          {{ wizardState.answers.maxRecommendedExpenses | currency:'USD':'symbol':'1.0-0' }} (60–80% of revenue)
+        </div>
+      </div>
+      <div class="expense-metrics" *ngIf="(costPerReturn$ | async) as cpr">
+        <div class="metric-box">
+          <div class="metric-label">Cost per Return</div>
+          <div class="metric-value">{{ cpr | currency:'USD':'symbol':'1.2-2' }}</div>
+        </div>
+        <div class="metric-box" *ngIf="(netPerReturn$ | async) as npr">
+          <div class="metric-label">Net Income per Return</div>
+          <div class="metric-value">{{ npr | currency:'USD':'symbol':'1.2-2' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="ready-panel">
     <div class="small strong green">✅ Ready to proceed - All required fields completed</div>
   </div>
 
   <div class="footer-actions">
-    <button type="button" class="btn gray">← Back</button>
-    <button type="button" class="btn green">Review Data →</button>
+    <button type="button" class="btn gray" (click)="wizardState.resetQuickStartConfig()">← Back</button>
+    <button type="button" class="btn green" (click)="goReview()">Review Data →</button>
   </div>
 </div>

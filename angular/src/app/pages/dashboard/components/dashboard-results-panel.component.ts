@@ -74,7 +74,7 @@ export class DashboardResultsPanelComponent {
         discountsPct: this.wizardState.getDiscountsPct() || 3,
         otherIncome: this.wizardState.getOtherIncome() || (this.hasOtherIncome ? 5000 : 0),
         calculatedTotalExpenses: answers.calculatedTotalExpenses,
-        salariesPct: answers.salariesPct || 25,
+        salariesPct: answers.payrollPct || 25,
         empDeductionsPct: answers.empDeductionsPct || 10,
         rentPct: answers.rentPct || 18,
         telephoneAmt: answers.telephoneAmt || 0.5,

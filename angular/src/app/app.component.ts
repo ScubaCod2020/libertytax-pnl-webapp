@@ -1,5 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnDestroy, OnInit, signal, computed } from '@angular/core';
+import {
+  Event,
+  NavigationCancel,
+  NavigationEnd,
+  NavigationStart,
+  Router,
+  RouterOutlet,
+} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { map } from 'rxjs/operators';
 import { DebugPanelComponent } from './components/debug-panel/debug-panel.component';
@@ -7,7 +14,8 @@ import { AppHeaderComponent } from './components/app-header/app-header.component
 import { AppFooterComponent } from './components/app-footer/app-footer.component';
 import { QuickStartWizardComponent } from './components/quick-start-wizard/quick-start-wizard.component';
 import { WizardStateService } from './core/services/wizard-state.service';
-import { Router } from '@angular/router';
+import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
+import { DebugOverlayComponent } from './shared/debug/debug-overlay.component';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +26,8 @@ import { Router } from '@angular/router';
     QuickStartWizardComponent,
     AppFooterComponent,
     DebugPanelComponent,
+    LoadingOverlayComponent,
+    DebugOverlayComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
@@ -28,6 +38,9 @@ export class AppComponent implements OnInit, OnDestroy {
   pageEditable = false;
   currentPage: 'income' | 'expenses' | 'reports' | 'dashboard' = 'income';
   private navSub?: any;
+  private pendingRoutes = signal<Set<string>>(new Set());
+
+  readonly showExpensesLoading = computed(() => this.pendingRoutes().has('/wizard/expenses'));
 
   // Regional watermark image based on selected region
   readonly regionalWatermark$ = this.wizardState.answers$.pipe(
@@ -91,7 +104,17 @@ export class AppComponent implements OnInit, OnDestroy {
     this.pageSubtitle = now.subtitle;
     this.pageEditable = now.editable;
     this.currentPage = now.page;
-    this.navSub = this.router.events.subscribe((e: any) => {
+    this.navSub = this.router.events.subscribe((e: Event & { url?: string }) => {
+      if (e instanceof NavigationStart && e.url) {
+        const next = new Set(this.pendingRoutes());
+        next.add(e.url);
+        this.pendingRoutes.set(next);
+      }
+      if ((e instanceof NavigationEnd || e instanceof NavigationCancel) && e.url) {
+        const next = new Set(this.pendingRoutes());
+        next.delete(e.url);
+        this.pendingRoutes.set(next);
+      }
       if (e?.url) {
         const d = derive(e.url);
         this.pageTitle = d.title;

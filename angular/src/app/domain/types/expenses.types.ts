@@ -206,7 +206,7 @@ export const expenseFields: ExpenseField[] = [
     description: 'Advertising fees on tax prep income',
   },
   {
-    id: 'taxRushShortagesPct',
+    id: 'shortagesPct',
     label: 'Shortages',
     category: 'misc',
     calculationBase: 'percentage_gross',
@@ -260,7 +260,7 @@ export type ExpenseValues = {
   royaltiesPct: number;
   advRoyaltiesPct: number;
   taxRushRoyaltiesPct: number;
-  taxRushShortagesPct: number;
+  shortagesPct: number;
   miscPct: number;
 };
 

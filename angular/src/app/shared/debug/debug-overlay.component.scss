@@ -1,0 +1,35 @@
+.debug-overlay {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 9999;
+}
+
+.debug-card {
+    background: rgba(20, 20, 20, 0.9);
+    color: #fff;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    width: 560px;
+    max-height: 60vh;
+    overflow: auto;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.debug-card header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.debug-card table {
+    width: 100%;
+    font-size: 0.85rem;
+    border-collapse: collapse;
+}
+
+.debug-card th,
+.debug-card td {
+    padding: 0.25rem 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}

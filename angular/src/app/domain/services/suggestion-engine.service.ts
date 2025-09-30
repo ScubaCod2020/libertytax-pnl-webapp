@@ -39,7 +39,7 @@ export class SuggestionEngineService {
         royaltiesPct: 7.0,
         advRoyaltiesPct: 3.0,
         taxRushRoyaltiesPct: 0,
-        taxRushShortagesPct: 0,
+        shortagesPct: 0,
         miscPct: 1.5,
       },
     },
@@ -70,7 +70,7 @@ export class SuggestionEngineService {
         royaltiesPct: 7.0,
         advRoyaltiesPct: 3.0,
         taxRushRoyaltiesPct: 0,
-        taxRushShortagesPct: 0,
+        shortagesPct: 0,
         miscPct: 2.0,
       },
     },
@@ -146,7 +146,7 @@ export class SuggestionEngineService {
       royaltiesPct: profile.expenses['royaltiesPct'],
       advRoyaltiesPct: profile.expenses['advRoyaltiesPct'],
       taxRushRoyaltiesPct: profile.expenses['taxRushRoyaltiesPct'],
-      taxRushShortagesPct: profile.expenses['taxRushShortagesPct'],
+      shortagesPct: profile.expenses['shortagesPct'],
       miscPct: profile.expenses['miscPct'],
     };
   }
@@ -211,7 +211,7 @@ export class SuggestionEngineService {
     const royalties = totalRevenue * (expenses['royaltiesPct'] / 100);
     const advRoyalties = totalRevenue * (expenses['advRoyaltiesPct'] / 100);
     const taxRushRoyalties = totalRevenue * (expenses['taxRushRoyaltiesPct'] / 100);
-    const taxRushShortages = totalRevenue * (expenses['taxRushShortagesPct'] / 100);
+    const taxRushShortages = totalRevenue * (expenses['shortagesPct'] / 100);
     const misc = totalRevenue * (expenses['miscPct'] / 100);
 
     // Fixed amount expenses

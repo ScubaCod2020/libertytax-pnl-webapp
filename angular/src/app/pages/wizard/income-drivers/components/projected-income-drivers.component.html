@@ -1,44 +1,40 @@
 <div class="proj-section">
   <div class="section-title">
     <div class="title-left"><span>📈</span>Projected Performance</div>
-    <button class="reset-section-btn" (click)="resetProjectedGoals()" title="Reset Projected Performance">
-      🔄 Reset Projected
+    <button class="btn btn--secondary btn--sm" (click)="resetProjectedGoals()" title="Reset Projected Performance">
+      Reset Projected
     </button>
   </div>
 
   <!-- Scenario Presets Row -->
   <div class="scenario-presets">
     <div class="preset-option">
-      <input type="radio" id="good" name="scenario" value="2" 
-             [checked]="projSvc.growthPct === 2 && !isCustomSelected" 
-             (change)="selectPreset(2)" />
+      <input type="radio" id="good" name="scenario" value="2" [checked]="projSvc.growthPct === 2 && !isCustomSelected"
+        (change)="selectPreset(2)" />
       <label for="good" class="preset-label good">
         <span class="preset-name">Good</span>
         <span class="preset-value">+2%</span>
       </label>
     </div>
     <div class="preset-option">
-      <input type="radio" id="better" name="scenario" value="5" 
-             [checked]="projSvc.growthPct === 5 && !isCustomSelected" 
-             (change)="selectPreset(5)" />
+      <input type="radio" id="better" name="scenario" value="5" [checked]="projSvc.growthPct === 5 && !isCustomSelected"
+        (change)="selectPreset(5)" />
       <label for="better" class="preset-label better">
         <span class="preset-name">Better</span>
         <span class="preset-value">+5%</span>
       </label>
     </div>
     <div class="preset-option">
-      <input type="radio" id="best" name="scenario" value="10" 
-             [checked]="projSvc.growthPct === 10 && !isCustomSelected" 
-             (change)="selectPreset(10)" />
+      <input type="radio" id="best" name="scenario" value="10" [checked]="projSvc.growthPct === 10 && !isCustomSelected"
+        (change)="selectPreset(10)" />
       <label for="best" class="preset-label best">
         <span class="preset-name">Best</span>
         <span class="preset-value">+10%</span>
       </label>
     </div>
     <div class="preset-option">
-      <input type="radio" id="custom" name="scenario" value="custom" 
-             [checked]="isCustomSelected" 
-             (change)="selectCustomMode()" />
+      <input type="radio" id="custom" name="scenario" value="custom" [checked]="isCustomSelected"
+        (change)="selectCustomMode()" />
       <label for="custom" class="preset-label custom">
         <span class="preset-name">Custom</span>
         <span class="preset-value">Setup</span>
@@ -55,8 +51,8 @@
         <div class="perf-input-group">
           <!-- Scenario Dropdown (React app style with named scenarios) -->
           <label for="scenario-select" class="sr-only">Performance Change Scenario</label>
-          <select id="scenario-select" class="select" [ngModel]="getScenarioForDropdown()" (ngModelChange)="onDropdownScenarioChange($event)" title="Select performance change scenario">
-            <option value="custom">Custom</option>
+          <select id="scenario-select" class="select" [ngModel]="getScenarioForDropdown()"
+            (ngModelChange)="onDropdownScenarioChange($event)" title="Select performance change scenario">
             <option value="decline-10">Decline: -10%</option>
             <option value="decline-5">Decline: -5%</option>
             <option value="no-change">No Change: 0%</option>
@@ -64,19 +60,17 @@
             <option value="growth-10">Growth: +10%</option>
             <option value="growth-15">Growth: +15%</option>
             <option value="growth-20">Growth: +20%</option>
+            <option value="custom">Custom</option>
           </select>
           <label for="growth-percentage" class="sr-only">Growth Percentage</label>
-          <input id="growth-percentage" type="number" class="input small" step="0.1" min="-50" max="100" 
-                 [ngModel]="projSvc.growthPct" 
-                 (ngModelChange)="projSvc.setGrowthPct($event)" 
-                 title="Enter growth percentage (-50% to 100%)" />
+          <input id="growth-percentage" type="number" class="input small" step="0.1" min="-50" max="100"
+            [ngModel]="projSvc.growthPct" (ngModelChange)="projSvc.setGrowthPct($event)"
+            title="Enter growth percentage (-50% to 100%)" />
           <span class="suffix">%</span>
         </div>
         <label for="growth-range" class="sr-only">Growth Percentage Range Slider</label>
-        <input id="growth-range" type="range" class="range" min="-50" max="100" step="0.1" 
-               [ngModel]="projSvc.growthPct" 
-               (ngModelChange)="projSvc.setGrowthPct($event)" 
-               title="Adjust growth percentage using slider" />
+        <input id="growth-range" type="range" class="range" min="-50" max="100" step="0.1" [ngModel]="projSvc.growthPct"
+          (ngModelChange)="projSvc.setGrowthPct($event)" title="Adjust growth percentage using slider" />
       </div>
       <div class="note">Select a preset or enter a custom percentage</div>
     </div>
@@ -88,11 +82,15 @@
     <label>Apply Performance Change To</label>
     <div class="field">
       <div class="targets">
-        <label class="target"><input type="checkbox" [checked]="projSvc.targets.all" (change)="projSvc.toggleTarget('all', $event.target.checked)" /> Apply to All</label>
-        <label class="target"><input type="checkbox" [checked]="projSvc.targets.returns" (change)="projSvc.toggleTarget('returns', $event.target.checked)" /> Returns</label>
-        <label class="target"><input type="checkbox" [checked]="projSvc.targets.avgNetFee" (change)="projSvc.toggleTarget('avgNetFee', $event.target.checked)" /> Avg Net Fee</label>
-        <label class="target" *ngIf="showOtherIncome$ | async"><input type="checkbox" [checked]="projSvc.targets.otherIncome" (change)="projSvc.toggleTarget('otherIncome', $event.target.checked)" /> Other Income</label>
-        <label class="target" *ngIf="showTaxRush$ | async"><input type="checkbox" [checked]="projSvc.targets.taxRush" (change)="projSvc.toggleTarget('taxRush', $event.target.checked)" /> TaxRush</label>
+        <label class="target"><input type="checkbox" [checked]="projSvc.targets.all"
+            (change)="projSvc.toggleTarget('all', $event.target.checked)" /> Apply to All</label>
+        <label class="target"><input type="checkbox" [checked]="projSvc.targets.returns"
+            (change)="projSvc.toggleTarget('returns', $event.target.checked)" /> Returns</label>
+        <label class="target"><input type="checkbox" [checked]="projSvc.targets.avgNetFee"
+            (change)="projSvc.toggleTarget('avgNetFee', $event.target.checked)" /> Avg Net Fee</label>
+        <label class="target" *ngIf="showOtherIncome$ | async"><input type="checkbox"
+            [checked]="projSvc.targets.otherIncome"
+            (change)="projSvc.toggleTarget('otherIncome', $event.target.checked)" /> Other Income</label>
       </div>
     </div>
     <div class="note">Select which fields should be affected by the performance change percentage</div>
@@ -104,26 +102,26 @@
     <div class="field">
       <div class="currency">
         <span class="prefix">#</span>
-        <input type="number" class="input readonly" 
-               [ngModel]="projectedTaxPrepReturns$ | async" 
-               placeholder="Auto: PY + Growth %" readonly />
+        <input type="number" class="input readonly" [ngModel]="projectedTaxPrepReturns$ | async"
+          placeholder="Auto: PY + Growth %" readonly />
       </div>
     </div>
     <div class="note">Projected from Prior Year + {{ projSvc.growthPct }}% growth</div>
   </div>
-  
+
   <div class="row">
     <label>Average Net Fee</label>
     <div class="field">
-      <div class="currency">
+      <div class="currency anf">
         <span class="prefix">$</span>
-        <input type="number" class="input readonly" 
-               appCurrencyInput
-               [ngModel]="projectedAvgNetFee$ | async" 
-               placeholder="Auto: PY + Growth %" readonly />
+        <input type="number" class="input" [ngClass]="anfStatus$ | async" [ngModel]="anfValue$ | async"
+          (ngModelChange)="updateAnf($event)" />
+        <span class="chip" [ngClass]="anfStatus$ | async"></span>
+        <button type="button" class="icon" [title]="anfTooltip$ | async">ℹ️</button>
+        <button type="button" class="mini" (click)="updateAnf(recommendedAnfSnapshot() ?? 0)">Use recommended</button>
       </div>
     </div>
-    <div class="note">Projected from Prior Year + {{ projSvc.growthPct }}% growth</div>
+    <div class="note small" [ngClass]="anfStatus$ | async">{{ anfNote$ | async }}</div>
   </div>
 
   <!-- Gross (derived unless override) -->
@@ -132,10 +130,8 @@
     <div class="field">
       <div class="currency">
         <span class="prefix">$</span>
-        <input type="number" class="input readonly" 
-               appCurrencyInput
-               [ngModel]="projectedGrossFees$ | async" 
-               placeholder="Auto-calculated" readonly />
+        <input type="number" class="input readonly" appCurrencyInput [ngModel]="projectedGrossFees$ | async"
+          placeholder="Auto-calculated" readonly />
       </div>
     </div>
     <div class="note">Auto: Projected Returns × Projected Avg Net Fee</div>
@@ -146,37 +142,31 @@
   <div class="box info">
     <div class="box-title">TaxRush (Projected)</div>
     <div class="box-desc">Your projected TaxRush returns and avg fee</div>
-            <div class="row compact">
-              <label>TaxRush Returns</label>
-              <div class="field">
-                <div class="inline-gap">
-                  <input type="number" class="input xs" 
-                         [ngModel]="taxRushReturns$ | async" 
-                         (ngModelChange)="updateTaxRushReturns($event)"
-                         placeholder="180" />
-                  <span class="eq">=</span>
-                  <div class="inline">
-                    <input type="number" class="input xs" 
-                           appPercentageInput [maxPercent]="50"
-                           [ngModel]="taxRushReturnsPct$ | async" 
-                           (ngModelChange)="updateTaxRushReturnsPct($event)"
-                           placeholder="15.0" />
-                    <span class="suffix">%</span>
-                  </div>
-                </div>
-                <div class="help italic">Auto: {{ (projectedTaxPrepReturns$ | async) || 0 }} × {{ (taxRushReturnsPct$ | async) || 15 }}% = {{ (taxRushReturns$ | async) || 0 }} • Enter either returns or percentage</div>
-              </div>
-            </div>
+    <div class="row compact">
+      <label>TaxRush Returns</label>
+      <div class="field">
+        <div class="inline-gap">
+          <input type="number" class="input xs" [ngModel]="taxRushReturns$ | async"
+            (ngModelChange)="updateTaxRushReturns($event)" placeholder="180" />
+          <span class="eq">=</span>
+          <div class="inline">
+            <input type="number" class="input xs" step="0.1" min="0" max="50" [ngModel]="taxRushReturnsPct$ | async"
+              (ngModelChange)="updateTaxRushReturnsPct($event)" placeholder="15.0" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="help italic">Auto: {{ (projectedTaxPrepReturns$ | async) || 0 }} × {{ (taxRushReturnsPct$ | async)
+          || 15 }}% =
+          {{ (taxRushReturns$ | async) || 0 }} • Enter either returns or percentage</div>
+      </div>
+    </div>
     <div class="row compact">
       <label>TaxRush Avg Net Fee</label>
       <div class="field">
         <div class="currency">
           <span class="prefix">$</span>
-          <input type="number" class="input" 
-                 appCurrencyInput
-                 [ngModel]="taxRushAvgNetFee$ | async" 
-                 (ngModelChange)="updateTaxRushAvgNetFee($event)"
-                 placeholder="125" />
+          <input type="number" class="input" appCurrencyInput [ngModel]="taxRushAvgNetFee$ | async"
+            (ngModelChange)="updateTaxRushAvgNetFee($event)" placeholder="50" />
         </div>
       </div>
     </div>
@@ -185,10 +175,8 @@
       <div class="field">
         <div class="currency">
           <span class="prefix">$</span>
-          <input type="number" class="input" 
-                 appCurrencyInput
-                 [ngModel]="taxRushGrossFees$ | async" 
-                 placeholder="Auto-calculated" readonly />
+          <input type="number" class="input" appCurrencyInput [ngModel]="taxRushGrossFees$ | async"
+            placeholder="Auto-calculated" readonly />
         </div>
       </div>
       <div class="note">Auto: Returns × Avg Net Fee (override allowed)</div>
@@ -203,27 +191,30 @@
       <div class="dual">
         <div class="currency">
           <span class="prefix">$</span>
-          <input type="number" class="input small" 
-                 appCurrencyInput
-                 [ngModel]="discountsAmt$ | async" 
-                 (ngModelChange)="updateDiscountsAmt($event)"
-                 placeholder="6000" />
+          <input type="number" class="input small" appCurrencyInput [ngModel]="discountsAmt$ | async"
+            (ngModelChange)="updateDiscountsAmt($event)" placeholder="0" />
         </div>
         <span class="eq">=</span>
         <div class="percent">
           <label for="discounts-percentage" class="sr-only">Discounts Percentage</label>
-          <input id="discounts-percentage" type="number" class="input small" 
-                 appPercentageInput [maxPercent]="20"
-                 [ngModel]="discountsPctFormatted$ | async" 
-                 (ngModelChange)="updateDiscountsPct($event)"
-                 [placeholder]="(regionalDiscountDefault$ | async) + '%'" 
-                 title="Enter discount percentage (0% to 20%)" />
+          <input id="discounts-percentage" type="number" class="input small" appPercentageInput [maxPercent]="20"
+            [ngModel]="discountsPctFormatted$ | async" (ngModelChange)="updateDiscountsPct($event)"
+            [placeholder]="(regionalDiscountDefault$ | async) + '%'" title="Enter discount percentage (0% to 20%)" />
           <span class="suffix">%</span>
         </div>
       </div>
-      <div class="note italic">Default: {{ (regionalDiscountDefault$ | async) }}% • Enter either dollar amount or percentage — the other will auto-calc</div>
+      <div class="delta-chip" *ngIf="(discountsDelta$ | async) as discountsDelta">
+        Δ
+        <span
+          [ngClass]="{ 'delta-positive': discountsDelta > 0, 'delta-negative': discountsDelta < 0, 'delta-neutral': discountsDelta === 0 }">
+          {{ discountsDelta | currency:'USD':'symbol':'1.0-0' }}
+        </span>
+      </div>
+      <div class="note italic">Default: {{ (regionalDiscountDefault$ | async) }}% • Enter either dollar amount or
+        percentage — the other will auto-calc</div>
     </div>
-    <div class="note">Dollar amount or % of gross fees given as discounts. Enter either field; the other auto-calculates.</div>
+    <div class="note">Dollar amount or % of gross fees given as discounts. Enter either field; the other
+      auto-calculates.</div>
   </div>
 
   <!-- Total Tax Prep Income (projected) -->
@@ -232,11 +223,15 @@
     <div class="field">
       <div class="currency">
         <span class="prefix">$</span>
-        <input type="number" class="input readonly" 
-               appCurrencyInput
-               [ngModel]="taxPrepIncome$ | async" 
-               (ngModelChange)="overrideTaxPrepIncome($event)"
-               placeholder="Auto-calculated" />
+        <input type="number" class="input readonly" appCurrencyInput [ngModel]="taxPrepIncome$ | async"
+          (ngModelChange)="overrideTaxPrepIncome($event)" placeholder="Auto-calculated" />
+      </div>
+      <div class="delta-chip" *ngIf="(taxPrepIncomeDelta$ | async) as incomeDelta">
+        Δ
+        <span
+          [ngClass]="{ 'delta-positive': incomeDelta > 0, 'delta-negative': incomeDelta < 0, 'delta-neutral': incomeDelta === 0 }">
+          {{ incomeDelta | currency:'USD':'symbol':'1.0-0' }}
+        </span>
       </div>
     </div>
     <div class="note">Gross − Discounts (clear to re-auto)</div>
@@ -250,11 +245,8 @@
       <div class="currency">
         <span class="prefix">$</span>
         <label for="other-income" class="sr-only">Other Income Amount</label>
-        <input id="other-income" type="number" class="input" 
-               appCurrencyInput
-               [ngModel]="otherIncome$ | async" 
-               (ngModelChange)="updateOtherIncome($event)" 
-               title="Enter other income amount" />
+        <input id="other-income" type="number" class="input" appCurrencyInput [ngModel]="otherIncome$ | async"
+          (ngModelChange)="updateOtherIncome($event)" title="Enter other income amount" />
       </div>
     </div>
     <div class="note">Additional income not from tax prep</div>
@@ -289,5 +281,3 @@
   <lt-analysis-block [data]="analysisData" size="medium"></lt-analysis-block>
   <div class="small analysis-note">Dev-only: compares Custom vs selected preset</div>
 </section>
-
-
