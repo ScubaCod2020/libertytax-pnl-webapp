@@ -5,6 +5,25 @@ import { logger } from './app/core/logger';
 import { AppComponent } from './app/app.component';
 import { ApiClientService } from './app/services/api-client.service';
 
+// Production hardening for previews: silence verbose logs and clear debug flags on non-localhost
+try {
+  const host = window.location?.hostname || '';
+  const isLocal = host === 'localhost' || host === '127.0.0.1';
+  if (!isLocal) {
+    (window as any).__LOG_LEVEL__ = 'error';
+    try {
+      localStorage.removeItem('debug_ui_trace');
+      localStorage.removeItem('debug_calcs');
+    } catch {}
+    try {
+      // Keep warnings/errors, drop noisy logs
+      console.debug = () => {};
+      console.log = () => {};
+      console.info = () => {};
+    } catch {}
+  }
+} catch {}
+
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(
