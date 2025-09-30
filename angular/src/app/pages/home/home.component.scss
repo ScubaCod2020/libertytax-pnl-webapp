@@ -1,0 +1,18 @@
+.home {
+  display: grid;
+  place-items: center;
+  min-height: 70vh;
+  text-align: center;
+}
+
+.home__cta {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: #0b63ce;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+

@@ -1,7 +1,10 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'wizard' },
+  {
+    path: '',
+    loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent),
+  },
 
   // Wizard flow with descriptive routing
   {
@@ -74,5 +77,5 @@ export const routes: Routes = [
   },
 
   // Catch-all redirect
-  { path: '**', redirectTo: 'wizard' },
+  { path: '**', redirectTo: '' },
 ];
