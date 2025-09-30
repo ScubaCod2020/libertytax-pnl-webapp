@@ -1,5 +1,13 @@
 {
   "version": 2,
-  "outputDirectory": "dist/angular",
-  "routes": [{ "handle": "filesystem" }, { "src": "/.*", "dest": "/index.html" }]
+  "outputDirectory": "dist",
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/index.html"
+    }
+  ]
 }
