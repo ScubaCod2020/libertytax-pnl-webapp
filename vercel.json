@@ -1,5 +1,17 @@
 {
-  "version": 2,
-  "routes": [{ "src": "/(.)", "dest": "/index.html" }]
+    "version": 2,
+    "routes": [
+        {
+            "src": "/(.)",
+            "dest": "/"
+        }
+    ],
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                { "key": "X-Content-Type-Options", "value": "nosniff" }
+            ]
+        }
+    ]
 }
-
