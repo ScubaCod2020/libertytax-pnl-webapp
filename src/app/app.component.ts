@@ -42,6 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private pendingRoutes = signal<Set<string>>(new Set());
   private a11yObserver?: MutationObserver;
   private onFocusIn?: (ev: FocusEvent) => void;
+  isWizardRoute = false;
 
   // Show overlay when navigating or recalculating
   readonly showExpensesLoading = computed(() => {
@@ -154,6 +155,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.pageSubtitle = now.subtitle;
     this.pageEditable = now.editable;
     this.currentPage = now.page;
+    this.isWizardRoute = this.router.url.startsWith('/wizard');
     // Apply form a11y/autofill fixups on initial render (immediately and after paint)
     this.applyFormA11yFixups();
     requestAnimationFrame(() => this.applyFormA11yFixups());
@@ -213,6 +215,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.pageSubtitle = d.subtitle;
           this.pageEditable = d.editable;
           this.currentPage = d.page;
+          this.isWizardRoute = effectiveUrl.startsWith('/wizard');
           // Re-apply fixups after each successful navigation to handle new views
           setTimeout(() => this.applyFormA11yFixups(), 0);
         }
