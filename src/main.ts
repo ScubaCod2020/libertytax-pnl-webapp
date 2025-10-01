@@ -5,11 +5,13 @@ import { logger } from './app/core/logger';
 import { AppComponent } from './app/app.component';
 import { ApiClientService } from './app/services/api-client.service';
 
-// Production hardening for previews: silence verbose logs and clear debug flags on non-localhost
+// Production hardening for previews: silence verbose logs unless ?debug=1
 try {
   const host = window.location?.hostname || '';
   const isLocal = host === 'localhost' || host === '127.0.0.1';
-  if (!isLocal) {
+  const params = new URLSearchParams(window.location.search || '');
+  const debugOverride = params.get('debug') === '1' || localStorage.getItem('debug_ui_trace') === '1';
+  if (!isLocal && !debugOverride) {
     (window as any).__LOG_LEVEL__ = 'error';
     try {
       localStorage.removeItem('debug_ui_trace');

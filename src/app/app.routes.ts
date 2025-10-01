@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  {
-    path: '',
-    loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent),
-  },
+  // Default to wizard landing to avoid Home regressions blocking flows
+  { path: '', redirectTo: 'wizard/income-drivers', pathMatch: 'full' },
+  { path: 'home', loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent) },
 
   // Wizard flow with descriptive routing
   {
