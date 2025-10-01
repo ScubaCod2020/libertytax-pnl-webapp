@@ -41,14 +41,17 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
   );
 
   ngOnInit(): void {
-    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((evt) => {
-      if (evt instanceof NavigationStart) {
-        const isLeavingIncome = !evt.url.includes('/wizard/income-drivers');
-        if (isLeavingIncome && this.wizardState.isWizardConfigComplete(this.wizardState.answers)) {
-          this.wizardState.lockQuickWizard();
+    const lockEnabled = (typeof window !== 'undefined' && localStorage.getItem('enable_wizard_lock') === '1');
+    if (lockEnabled) {
+      this.router.events.pipe(takeUntil(this.destroy$)).subscribe((evt) => {
+        if (evt instanceof NavigationStart) {
+          const isLeavingIncome = !evt.url.includes('/wizard/income-drivers');
+          if (isLeavingIncome && this.wizardState.isWizardConfigComplete(this.wizardState.answers)) {
+            this.wizardState.lockQuickWizard();
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   ngOnDestroy(): void {

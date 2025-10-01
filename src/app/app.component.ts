@@ -46,8 +46,9 @@ export class AppComponent implements OnInit, OnDestroy {
   // Show overlay when navigating or recalculating
   readonly showExpensesLoading = computed(() => {
     try {
-      // Show overlay whenever navigation is pending (local and preview)
-      return this.pendingRoutes().size > 0;
+      // Opt-in only via localStorage('enable_overlay') === '1'
+      const enabled = localStorage.getItem('enable_overlay') === '1';
+      return enabled && this.pendingRoutes().size > 0;
     } catch {
       return false;
     }
@@ -86,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (params.get('debug') === '1') {
         localStorage.setItem('debug_ui_trace', '1');
       }
-    } catch {}
+    } catch { }
     // Region-branded favicon
     try {
       this.wizardState.answers$.subscribe((answers) => {
