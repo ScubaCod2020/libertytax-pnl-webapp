@@ -45,8 +45,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: 📦 Install dependencies (SHARED - build once)
-        run: npm ci
+      - name: 📦 Install dependencies (Angular)
+        run: npm install --no-audit --no-fund
 
       - name: 🧮 Run core calculation tests
         id: test
@@ -63,7 +63,7 @@ jobs:
           echo "results=passed" >> $GITHUB_OUTPUT
           echo "✅ All calculation tests passed"
 
-      - name: 🏗️ Build application (SHARED - build once)
+      - name: 🏗️ Build application (Angular)
         id: build
         run: |
           echo "🏗️ Building application..."
@@ -71,12 +71,12 @@ jobs:
 
           # Validate build artifacts
           [ -f "dist/index.html" ] || (echo "❌ Missing index.html" && exit 1)
-          [ -f dist/assets/index-*.js ] || (echo "❌ Missing JavaScript bundle" && exit 1)
-          [ -f dist/assets/index-*.css ] || (echo "❌ Missing CSS bundle" && exit 1)
+          [ -n "$(ls -1 dist/*.js 2>/dev/null)" ] || (echo "❌ Missing JS bundles" && exit 1)
+          [ -n "$(ls -1 dist/*.css 2>/dev/null)" ] || (echo "❌ Missing CSS bundles" && exit 1)
 
           # Calculate bundle sizes
-          MAIN_BUNDLE=$(find dist/assets -name "index-*.js" -exec stat -c%s {} \; | sort -n | tail -1)
-          VENDOR_BUNDLE=$(find dist/assets -name "vendor-*.js" -exec stat -c%s {} \; | sort -n | tail -1 || echo "0")
+          MAIN_BUNDLE=$(find dist -maxdepth 1 -name "*.js" -exec stat -c%s {} \; | sort -n | tail -1)
+          VENDOR_BUNDLE=0
           TOTAL_SIZE=$((MAIN_BUNDLE + VENDOR_BUNDLE))
 
           echo "bundle_size=$((TOTAL_SIZE / 1024))" >> $GITHUB_OUTPUT
@@ -96,12 +96,10 @@ jobs:
 
           echo "✅ Build completed successfully"
 
-      - name: 🧪 Preview server test (SHARED - test once)
+      - name: 🧪 Preview server test (static serve)
         run: |
           echo "🧪 Testing preview server..."
-
-          # Start server in background
-          npm run preview &
+          npx serve@14 dist -l 4173 &
           SERVER_PID=$!
 
           # Wait for startup with timeout
@@ -121,7 +119,7 @@ jobs:
           # Test critical functionality
           RESPONSE=$(curl -s http://localhost:4173)
 
-          if echo "$RESPONSE" | grep -q "Liberty Tax"; then
+          if echo "$RESPONSE" | grep -qi "Liberty Tax"; then
             echo "✅ Liberty Tax branding found"
           else
             echo "❌ Liberty Tax branding missing"

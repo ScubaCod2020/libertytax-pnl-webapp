@@ -40,9 +40,9 @@ jobs:
           cache: 'npm'
 
       - name: 📦 Install dependencies (quality check only)
-        run: npm ci --only=dev
+        run: npm install --no-audit --no-fund
 
-      - name: 🔍 TypeScript check
+      - name: 🔍 TypeScript check (Angular only)
         run: npx tsc --noEmit
 
       - name: ⚠️ Console.log analysis
@@ -60,7 +60,7 @@ jobs:
           # Search only application sources for console usage
           PATTERN='console\\\.(log|debug)\\\('
           CONSOLE_LOGS=$(grep -R -nE "$PATTERN" \
-            angular/src \
+            src \
             --exclude-dir=node_modules \
             --exclude-dir=.git \
             --exclude-dir=__tests__ \
