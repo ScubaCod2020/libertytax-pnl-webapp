@@ -15,8 +15,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - target: react
-            baseURL: http://localhost:3000
           - target: angular
             baseURL: http://localhost:4200
     steps:
@@ -45,13 +43,8 @@ jobs:
 
       - name: Start target server
         run: |
-          if [ "${{ matrix.target }}" = "react" ]; then
-            npm run dev:react &
-            npx wait-on --timeout 180000 ${{ matrix.baseURL }}
-          else
-            cd angular && npx ng serve --port 4200 --configuration=development &
-            npx wait-on --timeout 180000 http-get://localhost:4200
-          fi
+          cd angular && npx ng serve --port 4200 --configuration=development &
+          npx wait-on --timeout 180000 http-get://localhost:4200
 
       - name: Run Playwright tests
         env:
@@ -59,18 +52,10 @@ jobs:
           # Enable verbose diagnostics from Playwright
           DEBUG: pw:api
         run: |
-          if [ "${{ matrix.target }}" = "react" ]; then
-            if ls test/e2e/*.* 1> /dev/null 2>&1; then
-              npx playwright test -c playwright.config.ts || echo "React E2E failed (non-blocking)"
-            else
-              echo "No React Playwright tests found, skipping"
-            fi
+          if ls test/e2e/*.* 1> /dev/null 2>&1; then
+            npx playwright test -c playwright.config.js || echo "Angular E2E failed (non-blocking)"
           else
-            if ls test/e2e/*.* 1> /dev/null 2>&1; then
-              npx playwright test -c playwright.config.js || echo "Angular E2E failed (non-blocking)"
-            else
-              echo "No Angular Playwright tests found, skipping"
-            fi
+            echo "No Angular Playwright tests found, skipping"
           fi
 
       - name: Cleanup background servers
@@ -80,7 +65,7 @@ jobs:
           pkill -f "vite" || true
 
       - name: Upload Playwright report (on failure)
-        if: failure() || (success() && matrix.target == 'react')
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ matrix.target }}
