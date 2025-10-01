@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 3001",
-    "build": "ng build",
+    "build": "ng build && node scripts/postbuild-flatten-dist.cjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "dev:angular": "ng serve --port 4200"
