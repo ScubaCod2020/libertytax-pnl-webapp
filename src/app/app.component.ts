@@ -46,10 +46,8 @@ export class AppComponent implements OnInit, OnDestroy {
   // Show overlay when navigating or recalculating
   readonly showExpensesLoading = computed(() => {
     try {
-      const host = window.location?.hostname || '';
-      const isLocal = host === 'localhost' || host === '127.0.0.1';
-      // Only show overlay during local development to avoid preview lockups
-      return isLocal && this.pendingRoutes().size > 0;
+      // Show overlay whenever navigation is pending (local and preview)
+      return this.pendingRoutes().size > 0;
     } catch {
       return false;
     }

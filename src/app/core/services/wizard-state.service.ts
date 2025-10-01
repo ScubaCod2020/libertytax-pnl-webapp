@@ -182,14 +182,22 @@ export class WizardStateService {
       result = answers.projectedTaxPrepReturns || 0;
       sourceField = 'projectedTaxPrepReturns';
     } else {
-      result = answers.projectedTaxPrepReturns || 0; // New stores use target values
-      sourceField = 'projectedTaxPrepReturns (target)';
+      // For new stores, prefer explicit projected target, but fall back to direct input field
+      result =
+        (answers.projectedTaxPrepReturns as number | undefined) ??
+        (answers.taxPrepReturns as number | undefined) ??
+        0;
+      sourceField = answers.projectedTaxPrepReturns !== undefined
+        ? 'projectedTaxPrepReturns (target)'
+        : 'taxPrepReturns (target fallback)';
     }
 
     this.debugComputedProperty('getTaxPrepReturns', result, {
       sourceField,
-      sourceValue: answers.projectedTaxPrepReturns,
-      fallbackUsed: !answers.projectedTaxPrepReturns,
+      sourceValue:
+        this.isExistingStore() ? answers.projectedTaxPrepReturns : (answers.projectedTaxPrepReturns ?? answers.taxPrepReturns),
+      fallbackUsed:
+        !this.isExistingStore() && answers.projectedTaxPrepReturns === undefined && answers.taxPrepReturns !== undefined,
     });
 
     return result;
@@ -639,13 +647,13 @@ export class WizardStateService {
     console.group('🧮 calculateDerivedValues()');
 
     // Calculate projected gross fees
-    if (answers.projectedTaxPrepReturns && answers.avgNetFee) {
+    const effectiveReturns = (answers.projectedTaxPrepReturns ?? answers.taxPrepReturns) || 0;
+    if (effectiveReturns && answers.avgNetFee) {
       const oldGrossFees = answers.projectedGrossFees;
-      answers.projectedGrossFees =
-        Math.round(answers.projectedTaxPrepReturns * answers.avgNetFee * 100) / 100;
+      answers.projectedGrossFees = Math.round(effectiveReturns * answers.avgNetFee * 100) / 100;
       console.log(
         '💰 Gross Fees:',
-        `${answers.projectedTaxPrepReturns} × $${answers.avgNetFee} = $${answers.projectedGrossFees}`,
+        `${effectiveReturns} × $${answers.avgNetFee} = $${answers.projectedGrossFees}`,
         oldGrossFees !== answers.projectedGrossFees ? '(CHANGED)' : '(same)'
       );
     }
@@ -704,17 +712,15 @@ export class WizardStateService {
     if (
       answers.region === 'CA' &&
       answers.handlesTaxRush &&
-      answers.projectedTaxPrepReturns &&
+      effectiveReturns &&
       answers.taxRushReturnsPct &&
       !answers.manualTaxRushReturns
     ) {
       const oldTaxRushReturns = answers.taxRushReturns;
-      answers.taxRushReturns = Math.round(
-        answers.projectedTaxPrepReturns * (answers.taxRushReturnsPct / 100)
-      );
+      answers.taxRushReturns = Math.round(effectiveReturns * (answers.taxRushReturnsPct / 100));
       console.log(
         '🚀 TaxRush Returns:',
-        `${answers.projectedTaxPrepReturns} × ${answers.taxRushReturnsPct}% = ${answers.taxRushReturns}`,
+        `${effectiveReturns} × ${answers.taxRushReturnsPct}% = ${answers.taxRushReturns}`,
         oldTaxRushReturns !== answers.taxRushReturns ? '(CHANGED)' : '(same)'
       );
 
@@ -1008,7 +1014,7 @@ export class WizardStateService {
     }
 
     // Projected TaxRush calculations for Canada
-    if (answers.region === 'CA' && answers.handlesTaxRush && answers.projectedTaxPrepReturns) {
+    if (answers.region === 'CA' && answers.handlesTaxRush && ((answers.projectedTaxPrepReturns ?? answers.taxPrepReturns) || 0)) {
       // Set default TaxRush percentage if not set
       if (!answers.projectedTaxRushReturnsPct) {
         if (answers.pyTaxRushReturnsPct) {
@@ -1030,16 +1036,17 @@ export class WizardStateService {
       if (
         !answers.manualProjectedTaxRushReturns &&
         answers.projectedTaxRushReturnsPct &&
-        answers.projectedTaxPrepReturns
+        ((answers.projectedTaxPrepReturns ?? answers.taxPrepReturns) || 0)
       ) {
         const oldProjectedTaxRushReturns = answers.projectedTaxRushReturns;
+        const baseReturns = (answers.projectedTaxPrepReturns ?? answers.taxPrepReturns) as number;
         // Ensure clean integer for returns count
         answers.projectedTaxRushReturns = Math.round(
-          answers.projectedTaxPrepReturns * (answers.projectedTaxRushReturnsPct / 100)
+          baseReturns * (answers.projectedTaxRushReturnsPct / 100)
         );
         console.log(
           '🚀 [PROJECTED] TaxRush Returns from %:',
-          `${answers.projectedTaxPrepReturns} × ${answers.projectedTaxRushReturnsPct}% = ${answers.projectedTaxRushReturns}`,
+          `${baseReturns} × ${answers.projectedTaxRushReturnsPct}% = ${answers.projectedTaxRushReturns}`,
           '(growth naturally applied via tax prep returns)',
           oldProjectedTaxRushReturns !== answers.projectedTaxRushReturns ? '(CHANGED)' : '(same)'
         );
