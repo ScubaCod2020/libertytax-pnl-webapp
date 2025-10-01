@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { debounce } from 'lodash-es';
 import type { RegionCode } from '../tokens/region-configs.token';
 import type { WizardAnswers } from '../../domain/types/wizard.types';
 import { BiDirService } from './bidir/bidir.service';
@@ -464,7 +465,25 @@ export class WizardStateService {
     this.selections = { ...this.selections, ...update };
   }
 
+  // Debounced wrapper prevents rapid recalculation loops from UI inputs
+  private readonly _applyUpdates = debounce((updates: Partial<WizardAnswers>) => {
+    this._applyUpdatesImmediate(updates);
+  }, 60, { leading: false, trailing: true });
+
   updateAnswers(updates: Partial<WizardAnswers>): void {
+    // Use debounced apply for high-frequency inputs; allow immediate for config flips
+    const isConfigFlip =
+      'region' in updates || 'storeType' in updates || 'handlesTaxRush' in updates || 'hasOtherIncome' in updates;
+    if (isConfigFlip) {
+      this._applyUpdates.flush?.();
+      this._applyUpdates.cancel?.();
+      this._applyUpdatesImmediate(updates);
+      return;
+    }
+    this._applyUpdates(updates);
+  }
+
+  private _applyUpdatesImmediate(updates: Partial<WizardAnswers>): void {
     console.group('🔄 WizardState.updateAnswers()');
     console.log('📥 Input updates:', updates);
 

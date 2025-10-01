@@ -80,6 +80,13 @@ export class AppComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // Runtime debug toggle via query param (?debug=1) or localStorage('debug_ui_trace')
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('debug') === '1') {
+        localStorage.setItem('debug_ui_trace', '1');
+      }
+    } catch {}
     // Region-branded favicon
     try {
       this.wizardState.answers$.subscribe((answers) => {
