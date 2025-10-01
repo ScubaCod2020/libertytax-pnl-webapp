@@ -77,7 +77,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private wizardState: WizardStateService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Region-branded favicon
@@ -98,7 +98,7 @@ export class AppComponent implements OnInit, OnDestroy {
         link.type = 'image/png';
         link.href = href;
       });
-    } catch {}
+    } catch { }
 
     const derive = (url: string) => {
       console.log('🚀 Route detection - URL:', url);
@@ -171,7 +171,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       };
       document.addEventListener('focusin', this.onFocusIn as any, { capture: true });
-    } catch {}
+    } catch { }
     this.navSub = this.router.events.subscribe(
       (e: RouterEvent & { url?: string; urlAfterRedirects?: string }) => {
         if (e instanceof NavigationStart) {
@@ -195,14 +195,11 @@ export class AppComponent implements OnInit, OnDestroy {
           e instanceof NavigationError
         ) {
           // Clear all pending routes on settle to avoid mismatched URL variants
-          if (this.pendingRoutes().size > 0) {
-            console.log('✅ overlay cleared on navigation settle', { type: e.constructor.name });
-            this.pendingRoutes.set(new Set());
-          }
+          this.pendingRoutes.set(new Set());
         }
         // Only derive and update page metadata once navigation has completed
         if (e instanceof NavigationEnd) {
-          const effectiveUrl = e.urlAfterRedirects || e.url;
+          const effectiveUrl = e.urlAfterRedirects || e.url || '';
           const d = derive(effectiveUrl);
           this.pageTitle = d.title;
           this.pageSubtitle = d.subtitle;
@@ -280,18 +277,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Recalc overlay logs removed to satisfy strict builds.
       }
-    } catch {}
+    } catch { }
   }
 
   ngOnDestroy(): void {
     this.navSub?.unsubscribe?.();
     try {
       this.a11yObserver?.disconnect?.();
-    } catch {}
+    } catch { }
     try {
       if (this.onFocusIn)
         document.removeEventListener('focusin', this.onFocusIn as any, { capture: true } as any);
-    } catch {}
+    } catch { }
   }
 
   // Minimal runtime fixups for form a11y/autofill without altering templates
@@ -376,6 +373,6 @@ export class AppComponent implements OnInit, OnDestroy {
           label.htmlFor = control.id;
         }
       }
-    } catch {}
+    } catch { }
   }
 }

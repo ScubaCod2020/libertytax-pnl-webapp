@@ -62,7 +62,7 @@ export class WizardStateService {
   // Quick Start Wizard configuration. This abstracts away all the complexity
   // of different store types, regions, and other wizard settings.
 
-  private debugEnabled = true; // Set to false to disable debugging in production
+  private debugEnabled = false; // Off by default in preview/production; enable via setDebugMode or localStorage
 
   private debugComputedProperty(methodName: string, result: any, context: any = {}) {
     if (!this.debugEnabled) return;
