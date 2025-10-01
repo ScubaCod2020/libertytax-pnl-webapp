@@ -1,9 +1,11 @@
 import { bootstrapApplication } from '@angular/platform-browser';
+import { ErrorHandler } from '@angular/core';
 import { provideRouter, withRouterConfig, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app/app.routes';
 import { logger } from './app/core/logger';
 import { AppComponent } from './app/app.component';
 import { ApiClientService } from './app/services/api-client.service';
+import { DebugErrorHandler } from './app/components/debug-panel/debug-error.handler';
 
 // Production hardening for previews: silence verbose logs unless ?debug=1
 try {
@@ -16,15 +18,15 @@ try {
     try {
       localStorage.removeItem('debug_ui_trace');
       localStorage.removeItem('debug_calcs');
-    } catch {}
+    } catch { }
     try {
       // Keep warnings/errors, drop noisy logs
-      console.debug = () => {};
-      console.log = () => {};
-      console.info = () => {};
-    } catch {}
+      console.debug = () => { };
+      console.log = () => { };
+      console.info = () => { };
+    } catch { }
   }
-} catch {}
+} catch { }
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -38,6 +40,7 @@ bootstrapApplication(AppComponent, {
         anchorScrolling: 'enabled',
       })
     ),
+    { provide: ErrorHandler, useClass: DebugErrorHandler },
   ],
 }).catch((err) => logger.error(err));
 
@@ -53,4 +56,4 @@ try {
         .catch(() => logger.warn('[health] api: unavailable'))
     );
   }
-} catch {}
+} catch { }
