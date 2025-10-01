@@ -510,6 +510,7 @@ export class WizardStateService {
     const hasUserInput = this.hasMeaningfulUserInput(updates, current);
 
     if (!isConfigComplete && this.quickWizardLock$.value) {
+      console.log('🔓 Auto-unlocking wizard: config incomplete');
       this.unlockQuickWizard();
     }
 
@@ -1464,12 +1465,14 @@ export class WizardStateService {
 
   lockQuickWizard(): void {
     if (!this.quickWizardLock$.value) {
+      console.log('🔒 Wizard locked');
       this.quickWizardLock$.next(true);
     }
   }
 
   unlockQuickWizard(): void {
     if (this.quickWizardLock$.value) {
+      console.log('🔓 Wizard unlocked');
       this.quickWizardLock$.next(false);
     }
   }

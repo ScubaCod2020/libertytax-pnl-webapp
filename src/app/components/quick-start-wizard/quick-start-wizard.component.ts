@@ -79,6 +79,11 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
     const region = v === 'US' ? 'US' : 'CA';
     console.log('🌍 [Wizard] Region changed to:', region);
     this.wizardState.updateAnswers({ region });
+    // Safety: ensure wizard remains editable after config flips
+    try {
+      (this.wizardState as any).unlockQuickWizard?.();
+      console.log('🔓 Wizard unlocked after region change');
+    } catch {}
     // Ensure dependent flags are present to keep form editable
     if (region === 'CA' && this.wizardState.answers.handlesTaxRush === undefined) {
       this.wizardState.updateAnswers({ handlesTaxRush: false });
@@ -92,6 +97,11 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
     const storeType = v === 'new' ? 'new' : 'existing';
     console.log('🏪 [Wizard] Store Type changed to:', storeType);
     this.wizardState.updateAnswers({ storeType });
+    // Safety: ensure wizard remains editable after config flips
+    try {
+      (this.wizardState as any).unlockQuickWizard?.();
+      console.log('🔓 Wizard unlocked after store type change');
+    } catch {}
   }
 
   onTaxRushChange(v: string | boolean) {
