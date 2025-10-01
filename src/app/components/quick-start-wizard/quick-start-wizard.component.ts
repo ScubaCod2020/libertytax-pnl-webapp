@@ -79,6 +79,13 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
     const region = v === 'US' ? 'US' : 'CA';
     console.log('🌍 [Wizard] Region changed to:', region);
     this.wizardState.updateAnswers({ region });
+    // Ensure dependent flags are present to keep form editable
+    if (region === 'CA' && this.wizardState.answers.handlesTaxRush === undefined) {
+      this.wizardState.updateAnswers({ handlesTaxRush: false });
+    }
+    if (this.wizardState.answers.hasOtherIncome === undefined) {
+      this.wizardState.updateAnswers({ hasOtherIncome: false });
+    }
   }
 
   onStoreTypeChange(v: string) {

@@ -4,7 +4,7 @@
     <ng-container *ngIf="settings$ | async as settings">
 
       <!-- Full Interview View - Only when wizard is incomplete -->
-      @if (currentPage === 'income-drivers' && editable && !isComplete()) {
+      @if (currentPage === 'income-drivers' && editable) {
       <!-- Interview Content -->
       <div class="interview-content">
         @if (editable) {
