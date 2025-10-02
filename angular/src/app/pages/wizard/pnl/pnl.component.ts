@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
-import { ReportsComponent } from './components/reports.component';
+// Import the Annual P&L component and alias to avoid name conflict
+import { PnlComponent as PnlAnnualComponent } from './components/pnl.component';
 
 @Component({
-  selector: 'app-pnl',
+  selector: 'app-pnl-wrapper',
   standalone: true,
-  imports: [ReportsComponent],
+  imports: [PnlAnnualComponent],
   templateUrl: './pnl.component.html',
   styleUrls: ['./pnl.component.scss'],
 })
-export class PnlComponent {
+export class PnlWrapperComponent {
   constructor() {
-    console.log('📋🎯 [PNL WRAPPER] PnL wrapper component loaded - delegating to ReportsComponent');
+    console.log('📋🎯 [PNL WRAPPER] Wrapper loaded - rendering Annual P&L component');
   }
 }

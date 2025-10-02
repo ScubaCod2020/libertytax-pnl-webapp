@@ -5,6 +5,10 @@ export type Scenario = 'Custom' | 'Good' | 'Better' | 'Best';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectedService {
+  // Emits whether calculations are in-flight; used for UI overlays
+  private readonly _recalculating$ = new BehaviorSubject<boolean>(false);
+  readonly recalculating$ = this._recalculating$.asObservable();
+
   private readonly _scenario$ = new BehaviorSubject<Scenario>('Custom');
   readonly scenario$ = this._scenario$.asObservable();
 
@@ -69,5 +73,18 @@ export class ProjectedService {
     const preset = s === 'Good' ? 2 : s === 'Better' ? 5 : s === 'Best' ? 10 : 0;
     console.log('🚀 [ProjectedService] Applying scenario preset:', s, '→', `${preset}%`);
     this.setGrowthPct(preset);
+  }
+
+  // Helpers to toggle recalculation state around expensive operations
+  beginRecalculation(): void {
+    if (!this._recalculating$.getValue()) {
+      this._recalculating$.next(true);
+    }
+  }
+
+  endRecalculation(): void {
+    if (this._recalculating$.getValue()) {
+      this._recalculating$.next(false);
+    }
   }
 }

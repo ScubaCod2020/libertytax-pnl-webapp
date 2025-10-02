@@ -24,7 +24,8 @@ export const routes: Routes = [
       },
       {
         path: 'pnl',
-        loadComponent: () => import('./pages/wizard/pnl/pnl.component').then((m) => m.PnlComponent),
+        loadComponent: () =>
+          import('./pages/wizard/pnl/pnl.component').then((m) => m.PnlWrapperComponent),
         data: { step: 3, title: 'P&L Review', canProceed: true },
       },
       {
