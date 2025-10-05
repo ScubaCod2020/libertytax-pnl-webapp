@@ -92,31 +92,39 @@ jobs:
           echo "outdir=$CANDIDATE" >> "$GITHUB_OUTPUT"
           echo "Using OUTDIR=$CANDIDATE"
 
-      - name: Trigger Vercel deploy (optional & currently off)
-  if: ${{ vars.SKIP_VERCEL != 'true' }}   # gate only on your variable
-  env:
-    HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}  # safe to read; may be empty
-  run: |
-    if [ -n "$HOOK" ]; then
-      echo "POST $HOOK"
-      curl -fsSL -X POST -H "Content-Type: application/json" \
-        -d "{\"branch\":\"${GITHUB_REF_NAME}\",\"repo\":\"${GITHUB_REPOSITORY}\"}" \
-        "$HOOK"
-    else
-      echo "No Vercel hook configured. Skipping."
-    fi
-
+           - name: Trigger Vercel deploy (optional & currently off)
+        if: ${{ vars.SKIP_VERCEL != 'true' }}
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+          BRANCH: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          if [ -n "$HOOK" ]; then
+            echo "POST $HOOK"
+            curl -fsSL -X POST -H "Content-Type: application/json" \
+              -d "{\"branch\":\"$BRANCH\",\"repo\":\"$REPO\"}" \
+              "$HOOK"
+          else
+            echo "No Vercel hook configured. Skipping."
+          fi
 
       - name: Compute Unraid deploy path
         id: target
         shell: bash
+        env:
+          ENV_NGINX_DEPLOY_PATH: ${{ vars.NGINX_DEPLOY_PATH }}
+          ENV_NGINX_ROOT: ${{ vars.NGINX_ROOT }}
+          ENV_APP_ENV: ${{ vars.APP_ENV }}
+          ENV_APP_NAME: ${{ vars.APP_NAME }}
         run: |
-          # Prefer environment variable if set; else compute from repo vars
-          if [[ -n "${{ vars.NGINX_DEPLOY_PATH }}" ]]; then
-            echo "path=${{ vars.NGINX_DEPLOY_PATH }}" >> "$GITHUB_OUTPUT"
+          if [ -n "$ENV_NGINX_DEPLOY_PATH" ]; then
+            echo "path=$ENV_NGINX_DEPLOY_PATH" >> "$GITHUB_OUTPUT"
           else
-            echo "path=${{ vars.NGINX_ROOT }}/${{ vars.APP_ENV }}/${{ vars.APP_NAME }}" >> "$GITHUB_OUTPUT"
+            echo "path=$ENV_NGINX_ROOT/$ENV_APP_ENV/$ENV_APP_NAME" >> "$GITHUB_OUTPUT"
           fi
+          echo "Computed deploy path: $(grep '^path=' $GITHUB_OUTPUT | cut -d= -f2)"
+
 
       - name: Copy build to Unraid Nginx
         shell: bash
