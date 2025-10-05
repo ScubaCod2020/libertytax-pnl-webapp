@@ -1,0 +1,121 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - 'feature/*'
+      - 'fix/*'
+      - 'chore/*'
+  pull_request:
+    branches:
+      - main
+      - staging
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  map-env:
+    name: Select environment
+    runs-on: ubuntu-latest
+    outputs:
+      env_name: ${{ steps.set.outputs.env_name }}
+    steps:
+      - id: set
+        shell: bash
+        run: |
+          ref="${GITHUB_REF_NAME}"
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "env_name=Preview" >> "$GITHUB_OUTPUT"
+          elif [[ "$ref" == "main" ]]; then
+            echo "env_name=Production" >> "$GITHUB_OUTPUT"
+          elif [[ "$ref" == "staging" ]]; then
+            echo "env_name=Staging" >> "$GITHUB_OUTPUT"
+          else
+            echo "env_name=Preview" >> "$GITHUB_OUTPUT"
+
+  build-and-deploy:
+    name: Build & Deploy
+    needs: map-env
+    runs-on: [self-hosted, unraid]
+    environment:
+      name: ${{ needs.map-env.outputs.env_name }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Print Angular workspace (debug)
+        run: |
+          echo "Package scripts:"
+          cat package.json | jq -r '.scripts'
+          echo "Angular projects (if angular.json exists):"
+          [[ -f angular.json ]] && cat angular.json | jq -r '.projects | keys[]' || echo "no angular.json"
+
+      - name: Build
+        run: |
+          if npm run | grep -q "^  build"; then
+            npm run build
+          else
+            npx ng build --configuration ${{ vars.BUILD_CONFIGURATION }}
+          fi
+
+      - name: Resolve build output directory
+        id: outdir
+        shell: bash
+        run: |
+          # Prefer repo variable DIST_DIR, else attempt Angular 17+ default
+          PATTERN="${{ vars.DIST_DIR }}"
+          CANDIDATE="$(ls -d ${PATTERN} 2>/dev/null | head -n1 || true)"
+          if [[ -z "$CANDIDATE" ]]; then
+            CANDIDATE="$(ls -d dist/*/browser 2>/dev/null | head -n1 || true)"
+          fi
+          if [[ -z "$CANDIDATE" ]]; then
+            echo "❌ Could not find build output. Set DIST_DIR repo variable to your dist path." >&2
+            echo "Dist tree:"; find dist -maxdepth 3 -type d || true
+            exit 1
+          fi
+          echo "outdir=$CANDIDATE" >> "$GITHUB_OUTPUT"
+          echo "Using OUTDIR=$CANDIDATE"
+
+      - name: Trigger Vercel deploy (optional & currently off)
+        if: ${{ secrets.VERCEL_DEPLOY_HOOK_URL != '' && vars.SKIP_VERCEL != 'true' }}
+        run: |
+          echo "POST ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"
+          curl -fsSL -X POST -H "Content-Type: application/json" \
+            -d "{\"branch\":\"${GITHUB_REF_NAME}\",\"repo\":\"${GITHUB_REPOSITORY}\"}" \
+            "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"
+
+      - name: Compute Unraid deploy path
+        id: target
+        shell: bash
+        run: |
+          # Prefer environment variable if set; else compute from repo vars
+          if [[ -n "${{ vars.NGINX_DEPLOY_PATH }}" ]]; then
+            echo "path=${{ vars.NGINX_DEPLOY_PATH }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "path=${{ vars.NGINX_ROOT }}/${{ vars.APP_ENV }}/${{ vars.APP_NAME }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Copy build to Unraid Nginx
+        shell: bash
+        run: |
+          DEST="${{ steps.target.outputs.path }}"
+          SRC="${{ steps.outdir.outputs.outdir }}"
+          echo "Deploy path: $DEST"
+          mkdir -p "$DEST"
+          rsync -av --delete "${SRC}/" "${DEST}/"
