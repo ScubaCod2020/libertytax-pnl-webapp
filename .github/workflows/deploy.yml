@@ -39,6 +39,7 @@ jobs:
             echo "env_name=Staging" >> "$GITHUB_OUTPUT"
           else
             echo "env_name=Preview" >> "$GITHUB_OUTPUT"
+          fi
 
   build:
     name: Build & Deploy
