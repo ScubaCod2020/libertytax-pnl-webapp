@@ -29,19 +29,18 @@ jobs:
       env_name: ${{ steps.set.outputs.env_name }}
     steps:
       - id: set
-        shell: bash
         run: |
           ref="${GITHUB_REF_NAME}"
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
             echo "env_name=Preview" >> "$GITHUB_OUTPUT"
-          elif [[ "$ref" == "main" ]]; then
+          elif [ "$ref" = "main" ]; then
             echo "env_name=Production" >> "$GITHUB_OUTPUT"
-          elif [[ "$ref" == "staging" ]]; then
+          elif [ "$ref" = "staging" ]; then
             echo "env_name=Staging" >> "$GITHUB_OUTPUT"
           else
             echo "env_name=Preview" >> "$GITHUB_OUTPUT"
 
-  build-and-deploy:
+  build:
     name: Build & Deploy
     needs: map-env
     runs-on: [self-hosted, unraid]
@@ -59,40 +58,29 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Print Angular workspace (debug)
-        run: |
-          echo "Package scripts:"
-          cat package.json | jq -r '.scripts'
-          echo "Angular projects (if angular.json exists):"
-          [[ -f angular.json ]] && cat angular.json | jq -r '.projects | keys[]' || echo "no angular.json"
-
       - name: Build
         run: |
           if npm run | grep -q "^  build"; then
             npm run build
           else
-            npx ng build --configuration ${{ vars.BUILD_CONFIGURATION }}
+            npx ng build --configuration "${{ vars.BUILD_CONFIGURATION || 'production' }}"
           fi
 
       - name: Resolve build output directory
         id: outdir
-        shell: bash
         run: |
-          # Prefer repo variable DIST_DIR, else attempt Angular 17+ default
-          PATTERN="${{ vars.DIST_DIR }}"
+          PATTERN="${{ vars.DIST_DIR || 'dist/*/browser' }}"
           CANDIDATE="$(ls -d ${PATTERN} 2>/dev/null | head -n1 || true)"
-          if [[ -z "$CANDIDATE" ]]; then
-            CANDIDATE="$(ls -d dist/*/browser 2>/dev/null | head -n1 || true)"
-          fi
-          if [[ -z "$CANDIDATE" ]]; then
-            echo "❌ Could not find build output. Set DIST_DIR repo variable to your dist path." >&2
-            echo "Dist tree:"; find dist -maxdepth 3 -type d || true
+          if [ -z "$CANDIDATE" ]; then
+            echo "❌ Could not find build output. Set repo variable DIST_DIR to your dist path." >&2
+            echo "Dist tree (3 levels):"
+            find dist -maxdepth 3 -type d -print 2>/dev/null || true
             exit 1
           fi
           echo "outdir=$CANDIDATE" >> "$GITHUB_OUTPUT"
           echo "Using OUTDIR=$CANDIDATE"
 
-             - name: Trigger Vercel deploy (optional & currently off)
+      - name: Trigger Vercel deploy (optional; gated off by var)
         if: ${{ vars.SKIP_VERCEL != 'true' }}
         env:
           HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
@@ -114,19 +102,16 @@ jobs:
           ENV_NGINX_DEPLOY_PATH: ${{ vars.NGINX_DEPLOY_PATH }}
           ENV_NGINX_ROOT: ${{ vars.NGINX_ROOT }}
           ENV_APP_ENV: ${{ vars.APP_ENV }}
-          ENV_APP_NAME: ${{ vars.APP_NAME }}
+          ENV_APP_NAME: ${{ vars.APP_NAME || 'libertytax-pnl-webapp' }}
         run: |
           if [ -n "$ENV_NGINX_DEPLOY_PATH" ]; then
             echo "path=$ENV_NGINX_DEPLOY_PATH" >> "$GITHUB_OUTPUT"
           else
             echo "path=$ENV_NGINX_ROOT/$ENV_APP_ENV/$ENV_APP_NAME" >> "$GITHUB_OUTPUT"
           fi
-          echo "Computed deploy path: $(grep '^path=' $GITHUB_OUTPUT | cut -d= -f2)"
-
-
+          echo "Computed deploy path: $(grep '^path=' "$GITHUB_OUTPUT" | cut -d= -f2)"
 
       - name: Copy build to Unraid Nginx
-        shell: bash
         run: |
           DEST="${{ steps.target.outputs.path }}"
           SRC="${{ steps.outdir.outputs.outdir }}"
