@@ -13,7 +13,7 @@ body.debug-open .container {
     margin-right: var(--debug-panel-w);
 }
 
-.container > * {
+.container>* {
     min-width: 0;
 }
 
@@ -26,7 +26,9 @@ body.debug-open .container {
 }
 
 /* Full-width footer bar; inner content constrained by .footer */
-.site-footer { width: 100%; }
+.site-footer {
+    width: 100%;
+}
 
 .card {
     background: #fff;
@@ -72,7 +74,7 @@ body.debug-open .container {
     grid-template-columns: 1fr;
 }
 
-.stack .input-row > label {
+.stack .input-row>label {
     font-size: 12px;
     color: #6b7280;
     white-space: nowrap;
@@ -82,7 +84,7 @@ body.debug-open .container {
     font-weight: 400;
 }
 
-.stack .grid-2 .input-row > label {
+.stack .grid-2 .input-row>label {
     margin-bottom: 4px;
     white-space: normal;
     display: block;
@@ -90,16 +92,48 @@ body.debug-open .container {
     line-height: 1.2;
 }
 
-.stack .input-row > input {
+.stack .input-row>input {
     width: 100%;
     box-sizing: border-box;
 }
 
-.stack .grid-2 .input-row > input {
+.stack .grid-2 .input-row>input {
     width: 100%;
     min-width: 0;
 }
 
-.grid > * {
+.grid>* {
     min-width: 0;
+}
+
+/* Stabilization shim — responsive grid & gutters */
+.page-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+.dashboard-panel {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
 }

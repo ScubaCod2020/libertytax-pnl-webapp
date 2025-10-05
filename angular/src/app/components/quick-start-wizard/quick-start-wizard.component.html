@@ -1,4 +1,4 @@
-<div class="interview-wizard" [class.interview-wizard--completed]="!editable || isComplete()">
+<div data-view="wizard" class="interview-wizard" [class.interview-wizard--completed]="!editable || isComplete()">
   <!-- Different views based on current page -->
   <ng-container *ngIf="currentPage$ | async as currentPage">
     <ng-container *ngIf="settings$ | async as settings">

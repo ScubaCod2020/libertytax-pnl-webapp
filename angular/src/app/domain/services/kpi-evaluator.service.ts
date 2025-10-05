@@ -9,6 +9,8 @@ import {
   RegionCode,
   StoreType,
 } from '../expenses/expense-rules';
+import { startTrace } from '../../shared/debug/calc-trace';
+import { coerceJson } from '../_util/sanity.guard';
 
 @Injectable({ providedIn: 'root' })
 export class KpiEvaluatorService {
@@ -125,6 +127,9 @@ export class KpiEvaluatorService {
   }
 
   evaluate(a: WizardAnswers): Record<string, KpiStatus> {
+    const __t = startTrace('kpi');
+    const __in = coerceJson<WizardAnswers>(a as unknown);
+    __t.log('inputs', __in);
     const gross = this.getExpensesRevenueTotal(a);
     const toPct = (amount: number) => (gross > 0 ? (amount / gross) * 100 : 0);
     const region = this.getRegion(a);
@@ -222,6 +227,7 @@ export class KpiEvaluatorService {
       }
     }
 
+    __t.log('outputs', statuses);
     return statuses;
   }
 }

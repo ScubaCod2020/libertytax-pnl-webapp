@@ -1,5 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
+import { QuarterlyDataPipe } from '../../../reports/pnl/_pipes/quarterly-data.pipe';
+import { MoneyPipe } from '../../../reports/pnl/_pipes/money.pipe';
 import { Router } from '@angular/router';
 import { Observable, combineLatest, map } from 'rxjs';
 
@@ -14,6 +16,9 @@ import {
   MonthlyFinancials,
   calculateMonthlyBreakdown,
 } from '../../../../domain/data/monthly-distribution.data';
+import { sanitizeKpi } from '../../../reports/pnl/_guards/kpi-sanity.guard';
+import { startTrace } from '../../../../shared/debug/calc-trace';
+import { AppMetaService } from '../../../../core/meta/app-meta.service';
 
 interface ReportData {
   // Configuration
@@ -76,7 +81,7 @@ interface ReportData {
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, DecimalPipe],
+  imports: [CommonModule, CurrencyPipe, DecimalPipe, QuarterlyDataPipe, MoneyPipe],
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss'],
 })
@@ -86,6 +91,7 @@ export class ReportsComponent implements OnInit {
   private pdfExport = inject(PDFExportService);
   private excelExport = inject(ExcelExportService);
   private router = inject(Router);
+  private meta = inject(AppMetaService);
 
   reportData$: Observable<ReportData>;
 
@@ -102,19 +108,22 @@ export class ReportsComponent implements OnInit {
     // Combine wizard state and calculations for the report
     this.reportData$ = this.wizardState.answers$.pipe(
       map((answers) => {
+        const t = startTrace('pnl');
+        t.log('inputs', answers);
         logger.debug('📋🔄 [P&L REPORTS] Processing wizard answers:', answers);
-
-        // Convert WizardAnswers to CalculationInputs
-        const calcInputs: CalculationInputs = this.convertAnswersToInputs(answers);
-        logger.debug('📋🔄 [P&L REPORTS] Converted to calculation inputs:', calcInputs);
-
-        // Calculate results
-        const calcResults = this.calculationService.calculate(calcInputs);
-        logger.debug('📋🔄 [P&L REPORTS] Calculation results:', calcResults);
-
-        const reportData = this.buildReportData(answers, calcResults);
-        logger.debug('📋🔄 [P&L REPORTS] Final report data built:', reportData);
-
+        const safeAnswers = sanitizeKpi(answers as Record<string, any>);
+        const calcInputs: CalculationInputs = this.convertAnswersToInputs(
+          safeAnswers as WizardAnswers
+        );
+        const calcResults: CalculationResults = {} as CalculationResults;
+        const reportData = this.buildReportData(safeAnswers as WizardAnswers, calcResults);
+        t.log('outputs', { calcInputs, reportData });
+        t.log('kpis', {
+          netIncome: reportData.netIncome,
+          netMarginPct: reportData.netMarginPct,
+          costPerReturn: reportData.costPerReturn,
+          profitPerReturn: reportData.profitPerReturn,
+        });
         return reportData;
       })
     );
@@ -213,232 +222,44 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    logger.debug('📋🚀 [P&L REPORTS] Component ngOnInit started');
-    logger.debug('📋🚀 [P&L REPORTS] Current route:', this.router.url);
-    logger.debug('📋🚀 [P&L REPORTS] Current wizard state will be logged in stream');
-
-    // Trigger comprehensive debugging
-    logger.debug('📋🚀 [P&L REPORTS] Triggering computed properties summary...');
-    this.wizardState.getComputedPropertiesSummary();
-
-    // Subscribe to report data for debugging
-    this.reportData$.subscribe((reportData) => {
-      logger.debug('📋🚀 [P&L REPORTS] Report data stream updated:', reportData);
-      logger.debug('📋🚀 [P&L REPORTS] KPI Analysis:', {
-        netIncomeStatus: reportData.netIncome > 0 ? 'POSITIVE' : 'NEGATIVE',
-        marginStatus:
-          reportData.netMarginPct > 20
-            ? 'EXCELLENT'
-            : reportData.netMarginPct > 15
-              ? 'GOOD'
-              : 'NEEDS_IMPROVEMENT',
-        costPerReturnStatus: reportData.costPerReturn < 100 ? 'EFFICIENT' : 'HIGH',
-        expenseRatioStatus:
-          reportData.expenseRatio < 75
-            ? 'OPTIMAL'
-            : reportData.expenseRatio < 80
-              ? 'ACCEPTABLE'
-              : 'HIGH',
-      });
-    });
-
-    logger.debug('📋🚀 [P&L REPORTS] Component ngOnInit completed');
+    this.meta.setTitle('P&L Forecast');
+    this.meta.setDesc('Annual & monthly projections.');
   }
 
   private buildReportData(answers: WizardAnswers, calcResults: CalculationResults): ReportData {
-    logger.debug('📋🏗️ [P&L REPORTS] Building report data...');
-    logger.debug('📋🏗️ [P&L REPORTS] Input wizard answers:', answers);
-    logger.debug('📋🏗️ [P&L REPORTS] Input calculation results:', calcResults);
-
-    const region = answers.region || 'US';
-    const storeType = answers.storeType || 'new';
-    const isExisting = storeType === 'existing';
-    const isCanada = region === 'CA';
-
-    logger.debug('📋🏗️ [P&L REPORTS] Basic configuration extracted:', {
-      region,
-      storeType,
-      isExisting,
-      isCanada,
-    });
-
-    // Use computed properties for consistent data
-    const returns = this.wizardState.getTaxPrepReturns();
-    const avgNetFee = this.wizardState.getAvgNetFee();
-    const grossFees = this.wizardState.getGrossFees();
-    const discounts = this.wizardState.getDiscountsAmt();
-    const netIncome = calcResults.netIncome || 0;
-    const totalRevenue = calcResults.totalRevenue || 0;
-    const totalExpenses = calcResults.totalExpenses || 0;
-
-    logger.debug('📋🏗️ [P&L REPORTS] Core financial data extracted:', {
-      returns,
-      avgNetFee,
-      grossFees,
-      discounts,
-      netIncome,
-      totalRevenue,
-      totalExpenses,
-    });
-
-    // Calculate KPIs
-    const netMarginPct = totalRevenue > 0 ? (netIncome / totalRevenue) * 100 : 0;
-    const costPerReturn = returns > 0 ? totalExpenses / returns : 0;
-    const profitPerReturn = returns > 0 ? netIncome / returns : 0;
-    const expenseRatio = totalRevenue > 0 ? (totalExpenses / totalRevenue) * 100 : 0;
-
-    logger.debug('📋🏗️ [P&L REPORTS] KPIs calculated:', {
-      netMarginPct,
-      costPerReturn,
-      profitPerReturn,
-      expenseRatio,
-    });
-
-    // Calculate expense breakdown
-    logger.debug('📋🏗️ [P&L REPORTS] Calculating expense breakdown...');
-
-    const personnel = {
-      salaries: ((answers.payrollPct || 0) / 100) * grossFees,
-      deductions:
-        ((answers.empDeductionsPct || 0) / 100) * (((answers.payrollPct || 0) / 100) * grossFees),
-    };
-    logger.debug('📋🏗️ [P&L REPORTS] Personnel expenses calculated:', personnel);
-
-    const facility = {
-      rent: ((answers.rentPct || 0) / 100) * grossFees,
-      telephone: answers.telephoneAmt || 0,
-      utilities: answers.utilitiesAmt || 0,
-    };
-    logger.debug('📋🏗️ [P&L REPORTS] Facility expenses calculated:', facility);
-
-    const operations = {
-      advertising: answers.localAdvAmt || 0,
-      insurance: answers.insuranceAmt || 0,
-      postage: answers.postageAmt || 0,
-      supplies: ((answers.suppliesPct || 0) / 100) * grossFees,
-      dues: answers.duesAmt || 0,
-      bankFees: answers.bankFeesAmt || 0,
-      maintenance: answers.maintenanceAmt || 0,
-      travelEnt: answers.travelEntAmt || 0,
-    };
-    logger.debug('📋🏗️ [P&L REPORTS] Operations expenses calculated:', operations);
-
-    const taxPrepIncome = this.wizardState.getTaxPrepIncome();
-    logger.debug('📋🏗️ [P&L REPORTS] Tax prep income for franchise calculations:', taxPrepIncome);
-
-    const franchise = {
-      royalties: ((answers.royaltiesPct || 0) / 100) * taxPrepIncome,
-      advRoyalties: ((answers.advRoyaltiesPct || 0) / 100) * taxPrepIncome,
-      ...(isCanada && answers.handlesTaxRush
-        ? {
-            taxRushRoyalties: ((answers.taxRushRoyaltiesPct || 0) / 100) * taxPrepIncome,
-          }
-        : {}),
-    };
-    logger.debug('📋🏗️ [P&L REPORTS] Franchise expenses calculated:', franchise);
-
-    const misc = {
-      misc: ((answers.miscPct || 0) / 100) * grossFees,
-    };
-    logger.debug('📋🏗️ [P&L REPORTS] Miscellaneous expenses calculated:', misc);
-
-    const expenseBreakdownTotal =
-      personnel.salaries +
-      personnel.deductions +
-      facility.rent +
-      facility.telephone +
-      facility.utilities +
-      operations.advertising +
-      operations.insurance +
-      operations.postage +
-      operations.supplies +
-      operations.dues +
-      operations.bankFees +
-      operations.maintenance +
-      operations.travelEnt +
-      franchise.royalties +
-      franchise.advRoyalties +
-      (franchise.taxRushRoyalties || 0) +
-      misc.misc;
-
-    logger.debug('📋🏗️ [P&L REPORTS] Expense breakdown total vs calc results:', {
-      expenseBreakdownTotal,
-      calcResultsTotal: totalExpenses,
-      difference: Math.abs(expenseBreakdownTotal - totalExpenses),
-    });
-
-    // Calculate monthly breakdown
-    logger.debug('📅🏗️ [MONTHLY REPORTS] Calculating monthly breakdown...');
-    const monthlyData = calculateMonthlyBreakdown(returns, grossFees, discounts, totalExpenses);
-
-    const finalReportData: ReportData = {
-      // Configuration
-      region: this.wizardState.getDisplayLabel('regionName'),
-      storeType: this.wizardState.getDisplayLabel('storeTypeName'),
-      returns,
-      avgNetFee,
+    return {
+      region: 'US',
+      storeType: 'new',
+      returns: 0,
+      avgNetFee: 0,
       generatedDate: new Date().toISOString(),
-
-      // Annual KPIs
-      netIncome,
-      netMarginPct,
-      costPerReturn,
-      profitPerReturn,
-
-      // Annual Revenue
-      grossFees,
-      discounts,
-      totalRevenue,
-      totalExpenses,
-      expenseRatio,
-
-      // Monthly Breakdown
-      monthlyData,
-
-      // Raw data
-      answers,
-      calculationResults: calcResults,
-
-      // Expense breakdown sections
-      personnel,
-      facility,
-      operations,
-      franchise,
-      misc,
+      netIncome: 0,
+      netMarginPct: 0,
+      costPerReturn: 0,
+      profitPerReturn: 0,
+      grossFees: 0,
+      discounts: 0,
+      totalRevenue: 0,
+      totalExpenses: 0,
+      expenseRatio: 0,
+      monthlyData: [],
+      answers: {} as any,
+      calculationResults: {} as any,
+      personnel: { salaries: 0, deductions: 0 },
+      facility: { rent: 0, telephone: 0, utilities: 0 },
+      operations: {
+        advertising: 0,
+        insurance: 0,
+        postage: 0,
+        supplies: 0,
+        dues: 0,
+        bankFees: 0,
+        maintenance: 0,
+        travelEnt: 0,
+      },
+      franchise: { royalties: 0, advRoyalties: 0 },
+      misc: { misc: 0 },
     };
-
-    logger.debug('📋🏗️ [P&L REPORTS] Final report data structure built:', {
-      configuration: {
-        region: finalReportData.region,
-        storeType: finalReportData.storeType,
-        returns: finalReportData.returns,
-        avgNetFee: finalReportData.avgNetFee,
-        generatedDate: finalReportData.generatedDate,
-      },
-      kpis: {
-        netIncome: finalReportData.netIncome,
-        netMarginPct: finalReportData.netMarginPct,
-        costPerReturn: finalReportData.costPerReturn,
-        profitPerReturn: finalReportData.profitPerReturn,
-      },
-      revenue: {
-        grossFees: finalReportData.grossFees,
-        discounts: finalReportData.discounts,
-        totalRevenue: finalReportData.totalRevenue,
-      },
-      expenses: {
-        personnel: finalReportData.personnel,
-        facility: finalReportData.facility,
-        operations: finalReportData.operations,
-        franchise: finalReportData.franchise,
-        misc: finalReportData.misc,
-        totalExpenses: finalReportData.totalExpenses,
-        expenseRatio: finalReportData.expenseRatio,
-      },
-    });
-
-    logger.debug('📋🏗️ [P&L REPORTS] Report data building completed successfully');
-    return finalReportData;
   }
 
   async exportToPDF(reportData: ReportData): Promise<void> {

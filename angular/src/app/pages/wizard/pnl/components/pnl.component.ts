@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, CurrencyPipe, DecimalPipe, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
+import { MoneyPipe } from '../../../reports/pnl/_pipes/money.pipe';
 
 import { WizardStateService } from '../../../../core/services/wizard-state.service';
 import { CalculationService } from '../../../../core/services/calculation.service';
@@ -55,7 +56,7 @@ interface ReportData {
 @Component({
   selector: 'app-pnl',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, DecimalPipe, DatePipe],
+  imports: [CommonModule, CurrencyPipe, DecimalPipe, DatePipe, MoneyPipe],
   templateUrl: './pnl.component.html',
   styleUrls: ['./pnl.component.scss'],
 })

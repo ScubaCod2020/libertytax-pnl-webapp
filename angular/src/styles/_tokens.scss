@@ -57,3 +57,19 @@
     --btn-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
     --btn-hover-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
 }
+
+:root {
+    --font-size-xs: clamp(0.75rem, 0.72rem + 0.2vw, 0.875rem);
+    --font-size-sm: clamp(0.875rem, 0.84rem + 0.3vw, 1rem);
+    --font-size-md: clamp(1rem, 0.95rem + 0.4vw, 1.125rem);
+    --font-size-lg: clamp(1.125rem, 1.05rem + 0.5vw, 1.375rem);
+    --font-size-xl: clamp(1.25rem, 1.1rem + 0.8vw, 1.75rem);
+    --line-height: 1.5;
+    --container-gap: 16px;
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --container-gap: 20px;
+    }
+}

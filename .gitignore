@@ -147,3 +147,12 @@ playwright-results.xml
 # Vercel & Codespaces
 .vercel/
 .devcontainer/
+/.restored/
+/.triage/
+/angular/.triage/
+/test-results/
+/angular/test-results/
+/.lighthouseci/
+/.artifacts/
+/.lighthouserc.json
+/lighthouserc.json

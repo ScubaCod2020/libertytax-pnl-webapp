@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MoneyPipe } from '../../../reports/pnl/_pipes/money.pipe';
 
 import { WizardAnswers } from '../../../../domain/types/wizard.types';
 
@@ -23,7 +24,7 @@ interface PerformanceData {
 @Component({
   selector: 'lt-strategic-analysis',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MoneyPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './strategic-analysis.component.html',
   styleUrls: ['./strategic-analysis.component.scss'],

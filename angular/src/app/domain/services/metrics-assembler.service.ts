@@ -6,6 +6,8 @@ import type { PerformanceMetric } from '../types/performance.types';
 import { DEFAULT_REGION_CONFIGS } from '../../core/tokens/region-configs.token';
 import { ProjectedService } from '../../services/projected.service';
 import { WizardStateService } from '../../core/services/wizard-state.service';
+import { startTrace } from '../../shared/debug/calc-trace';
+import { coerceJson } from '../_util/sanity.guard';
 
 /**
  * MetricsAssemblerService
@@ -34,8 +36,11 @@ export class MetricsAssemblerService {
     returns: PerformanceMetric[];
     cpr: PerformanceMetric[];
   } {
+    const __t = startTrace('kpi');
     const s = this.settings.settings;
     const answers = this.wizardState.answers;
+    const __in = coerceJson<typeof answers>(answers as unknown);
+    __t.log('inputs', __in);
     const thresholds = DEFAULT_REGION_CONFIGS[s.region].thresholds;
 
     // Use real wizard data instead of demo inputs
@@ -122,6 +127,8 @@ export class MetricsAssemblerService {
       },
     ];
 
-    return { revenue, returns, cpr };
+    const __out = { revenue, returns, cpr };
+    __t.log('outputs', __out);
+    return __out;
   }
 }

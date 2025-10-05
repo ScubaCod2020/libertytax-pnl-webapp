@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MoneyPipe } from '../../pages/reports/pnl/_pipes/money.pipe';
 
 import { WizardFormSectionComponent } from '../wizard-ui/wizard-form-section.component';
 import { SuggestedFormFieldComponent } from '../wizard-ui/suggested-form-field.component';
@@ -16,6 +17,7 @@ import { SuggestionEngineService } from '../../domain/services/suggestion-engine
   standalone: true,
   imports: [
     CommonModule,
+    MoneyPipe,
     WizardFormSectionComponent,
     SuggestedFormFieldComponent,
     SuggestedCurrencyInputComponent,

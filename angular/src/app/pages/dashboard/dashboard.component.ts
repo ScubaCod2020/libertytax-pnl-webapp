@@ -14,6 +14,10 @@ import { WizardStateService } from '../../core/services/wizard-state.service';
 import { KpiEvaluatorService } from '../../domain/services/kpi-evaluator.service';
 import { SharedExpenseTextService } from '../../shared/expenses/expense-text.service';
 import { map } from 'rxjs/operators';
+import { DashboardFacade } from './_facade/dashboard.facade';
+import { WizardCompletionService } from './_gate/wizard-completion.service';
+import { DashboardGateComponent } from './_gate/dashboard-gate.component';
+import { AppMetaService } from '../../core/meta/app-meta.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,6 +30,7 @@ import { map } from 'rxjs/operators';
     AnalysisBlockComponent,
     PerformanceCardComponent,
     MonthlyForecastCardComponent,
+    DashboardGateComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -37,6 +42,18 @@ export class DashboardComponent {
   private readonly wizard = inject(WizardStateService);
   private readonly evaluator = inject(KpiEvaluatorService);
   readonly text = inject(SharedExpenseTextService);
+  private readonly facade = inject(DashboardFacade);
+  private readonly gate = inject(WizardCompletionService);
+  private readonly meta = inject(AppMetaService);
+
+  constructor() {
+    this.meta.setTitle('Dashboard');
+    this.meta.setDesc('Compare YTD vs forecast.');
+  }
+
+  get complete() {
+    return this.gate.isComplete();
+  }
 
   get showAnalysis(): boolean {
     return this.flags.showAnalysisBlock === true;
@@ -61,4 +78,15 @@ export class DashboardComponent {
     map((a) => a.projectedAvgNetFee ?? a.avgNetFee ?? null)
   );
   readonly anfStatus$ = this.wizard.answers$.pipe(map((a) => this.evaluator.getAnfStatus(a)));
+
+  // Facade getters for template mappings if needed
+  get facadeFlags() {
+    return this.facade.flags;
+  }
+  get facadeAnfValue() {
+    return this.facade.anfValue;
+  }
+  get facadeAnfStatus() {
+    return this.facade.anfStatus();
+  }
 }

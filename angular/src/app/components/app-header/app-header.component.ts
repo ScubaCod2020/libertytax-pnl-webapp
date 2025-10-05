@@ -6,6 +6,7 @@ import { BrandLogoComponent } from '../brand-logo/brand-logo.component';
 import { APP_VERSION } from '../../version';
 import { DebugPanelService } from '../debug-panel/debug-panel.service';
 import { WizardStateService } from '../../core/services/wizard-state.service';
+import { buildActionStyleMap } from './_util/action-style-map';
 
 export interface HeaderAction {
   label: string;
@@ -55,6 +56,9 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   // Get region from WizardStateService for reactive updates
   readonly region$ = this.wizardState.answers$.pipe(map((answers) => answers.region || 'US'));
 
+  // Cached styles per variant to avoid per-item function calls in *ngFor
+  actionStyleMap: Record<string, Record<string, string | number>> = {};
+
   ngOnInit(): void {
     const derive = (url: string): 'income' | 'expenses' | 'reports' | 'dashboard' => {
       if (url.includes('/wizard/income-drivers')) return 'income';
@@ -69,6 +73,9 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
       .subscribe((e) => {
         this.currentPage = derive(e.urlAfterRedirects || e.url);
       });
+
+    // Build style map once when actions are available (zero-cost if undefined)
+    this.actionStyleMap = buildActionStyleMap(this.actions?.map((a) => a.variant || '') || []);
   }
 
   ngOnDestroy(): void {

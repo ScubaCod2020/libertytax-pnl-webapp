@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { map, filter, startWith, takeUntil } from 'rxjs/operators';
 import { AppConfigService } from '../../services/app-config.service';
 import { WizardStateService } from '../../core/services/wizard-state.service';
+import { AppMetaService } from '../../core/meta/app-meta.service';
 
 @Component({
   selector: 'app-quick-start-wizard',
@@ -23,6 +24,7 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
   private wizardState = inject(WizardStateService);
   private router = inject(Router);
   private destroy$ = new Subject<void>();
+  private meta = inject(AppMetaService);
 
   readonly settings$ = this.wizardState.answers$.pipe(
     map((answers) => ({
@@ -41,6 +43,8 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
   );
 
   ngOnInit(): void {
+    this.meta.setTitle('Quick Wizard • Liberty P&L');
+    this.meta.setDesc('Configure forecast inputs.');
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe((evt) => {
       if (evt instanceof NavigationStart) {
         const isLeavingIncome = !evt.url.includes('/wizard/income-drivers');

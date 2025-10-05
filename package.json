@@ -53,6 +53,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.15.1",
     "@mermaid-js/mermaid-cli": "^11.10.1",
     "@playwright/test": "^1.40.0",
     "@stoplight/spectral-cli": "^6.15.0",
@@ -71,6 +72,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
+    "http-server": "^14.1.1",
     "husky": "^9.0.0",
     "jsdom": "^23.0.1",
     "lint-staged": "^15.5.2",
