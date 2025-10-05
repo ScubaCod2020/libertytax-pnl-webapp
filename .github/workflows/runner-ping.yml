@@ -1,0 +1,13 @@
+name: runner-ping
+on:
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: [self-hosted, unraid, citadel]
+    steps:
+      - name: Hello from Unraid
+        run: |
+          echo "Repo: $GITHUB_REPOSITORY"
+          echo "Runner: $RUNNER_NAME"
+          uname -a
