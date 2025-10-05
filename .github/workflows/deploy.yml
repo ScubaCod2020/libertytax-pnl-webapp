@@ -93,12 +93,19 @@ jobs:
           echo "Using OUTDIR=$CANDIDATE"
 
       - name: Trigger Vercel deploy (optional & currently off)
-        if: ${{ secrets.VERCEL_DEPLOY_HOOK_URL != '' && vars.SKIP_VERCEL != 'true' }}
-        run: |
-          echo "POST ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"
-          curl -fsSL -X POST -H "Content-Type: application/json" \
-            -d "{\"branch\":\"${GITHUB_REF_NAME}\",\"repo\":\"${GITHUB_REPOSITORY}\"}" \
-            "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"
+  if: ${{ vars.SKIP_VERCEL != 'true' }}   # gate only on your variable
+  env:
+    HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}  # safe to read; may be empty
+  run: |
+    if [ -n "$HOOK" ]; then
+      echo "POST $HOOK"
+      curl -fsSL -X POST -H "Content-Type: application/json" \
+        -d "{\"branch\":\"${GITHUB_REF_NAME}\",\"repo\":\"${GITHUB_REPOSITORY}\"}" \
+        "$HOOK"
+    else
+      echo "No Vercel hook configured. Skipping."
+    fi
+
 
       - name: Compute Unraid deploy path
         id: target
