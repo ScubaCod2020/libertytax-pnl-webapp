@@ -92,13 +92,12 @@ jobs:
           echo "outdir=$CANDIDATE" >> "$GITHUB_OUTPUT"
           echo "Using OUTDIR=$CANDIDATE"
 
-           - name: Trigger Vercel deploy (optional & currently off)
+             - name: Trigger Vercel deploy (optional & currently off)
         if: ${{ vars.SKIP_VERCEL != 'true' }}
         env:
           HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
           BRANCH: ${{ github.ref_name }}
           REPO: ${{ github.repository }}
-        shell: bash
         run: |
           if [ -n "$HOOK" ]; then
             echo "POST $HOOK"
@@ -111,7 +110,6 @@ jobs:
 
       - name: Compute Unraid deploy path
         id: target
-        shell: bash
         env:
           ENV_NGINX_DEPLOY_PATH: ${{ vars.NGINX_DEPLOY_PATH }}
           ENV_NGINX_ROOT: ${{ vars.NGINX_ROOT }}
@@ -124,6 +122,7 @@ jobs:
             echo "path=$ENV_NGINX_ROOT/$ENV_APP_ENV/$ENV_APP_NAME" >> "$GITHUB_OUTPUT"
           fi
           echo "Computed deploy path: $(grep '^path=' $GITHUB_OUTPUT | cut -d= -f2)"
+
 
 
       - name: Copy build to Unraid Nginx
