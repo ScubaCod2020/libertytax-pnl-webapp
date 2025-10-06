@@ -1,3 +1,5 @@
+@use 'styles/type';
+
 @use 'styles/tokens';
 @use 'styles/base';
 @use 'styles/layout';
@@ -75,5 +77,4 @@ body {
     }
 }
 
-/* Additive responsive type and layout helpers */
-@use 'styles/type';
+/* Additive responsive type and layout helpers */
