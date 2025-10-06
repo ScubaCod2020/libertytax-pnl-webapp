@@ -23,7 +23,10 @@ import { WizardStateService } from '../../../core/services/wizard-state.service'
 export class IncomeDriversComponent {
   // Get store type and other settings from WizardStateService
   readonly storeType$ = this.wizardState.answers$.pipe(
-    map((answers) => answers.storeType || 'new')
+    map((answers) => {
+      console.log('📊 [Income Drivers] storeType$ emitted:', answers.storeType);
+      return answers.storeType || 'new';
+    })
   );
 
   readonly storeTypeInfo$ = this.wizardState.answers$.pipe(

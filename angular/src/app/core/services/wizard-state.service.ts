@@ -68,6 +68,66 @@ export class WizardStateService {
     });
   }
 
+  /**
+   * Only run calculations if we have meaningful data to work with
+   * Prevents premature expensive calculations before income drivers are set
+   */
+  private shouldCalculate(answers: WizardAnswers): boolean {
+    // Don't calculate anything if no store type is selected
+    if (!answers.storeType) {
+      if (this.debugEnabled) {
+        console.log('🚫 No store type selected yet');
+      }
+      return false;
+    }
+
+    // For NEW stores: need projected income data
+    if (answers.storeType === 'new') {
+      const hasProjectedData = !!(answers.projectedTaxPrepReturns && answers.avgNetFee);
+      if (!hasProjectedData && this.debugEnabled) {
+        console.log('🚫 NEW STORE: Waiting for projected returns & avg net fee');
+      }
+      return hasProjectedData;
+    }
+
+    // For EXISTING stores: need prior year data
+    if (answers.storeType === 'existing') {
+      const hasPriorYearData = !!(answers.pyTaxPrepReturns && answers.pyAvgNetFee);
+      if (!hasPriorYearData && this.debugEnabled) {
+        console.log('🚫 EXISTING STORE: Waiting for prior year returns & avg net fee');
+      }
+      return hasPriorYearData;
+    }
+
+    return false;
+  }
+
+  private isConfigurationChange(updates: Partial<WizardAnswers>): boolean {
+    // These fields change the UI/configuration but don't need calculations
+    const configFields = ['region', 'storeType', 'handlesTaxRush', 'hasOtherIncome'];
+    return Object.keys(updates).some((key) => configFields.includes(key));
+  }
+
+  private isDataChange(updates: Partial<WizardAnswers>): boolean {
+    // These fields contain actual financial data that needs calculations
+    const dataFields = [
+      'projectedTaxPrepReturns',
+      'avgNetFee',
+      'pyTaxPrepReturns',
+      'pyAvgNetFee',
+      'discountsPct',
+      'discountsAmt',
+      'otherIncome',
+      'taxRushReturns',
+      'taxRushAvgNetFee',
+      'projectedTaxRushReturns',
+      'projectedTaxRushAvgNetFee',
+      'projectedOtherIncome',
+      'projectedExpenses',
+    ];
+    return Object.keys(updates).some((key) => dataFields.includes(key));
+  }
+
   get answers(): WizardAnswers {
     return this._answers$.getValue();
   }
@@ -80,7 +140,25 @@ export class WizardStateService {
   // of different store types, regions, and other wizard settings.
 
   // Performance optimization: disable heavy debugging in production
-  private debugEnabled = false; // Changed from true to false for better performance
+  private debugEnabled = true; // Re-enable debug to see if state is updating
+
+  // Robust logging that won't stop on errors
+  private safeLog(message: string, data?: any) {
+    try {
+      if (data !== undefined) {
+        console.log(message, data);
+      } else {
+        console.log(message);
+      }
+    } catch (error) {
+      // Fallback logging if console.log fails
+      try {
+        console.error('Logging failed:', error);
+      } catch (e) {
+        // Last resort - do nothing to prevent cascading errors
+      }
+    }
+  }
 
   private debugComputedProperty(methodName: string, result: any, context: any = {}) {
     if (!this.debugEnabled) return;
@@ -414,19 +492,27 @@ export class WizardStateService {
       matchedRule = 'default';
     }
 
-    console.log('🎯 [COMPUTED] getValue():', {
-      matchedRule,
-      result,
-      config: Object.keys(config),
-      wizardState: {
-        isExisting: this.isExistingStore(),
-        isNewStore: this.isNewStore(),
-        isUS: this.isUSRegion(),
-        isCanada: this.isCanadaRegion(),
-        hasOtherIncome: this.hasOtherIncome(),
-        hasTaxRush: this.hasTaxRush(),
-      },
-    });
+    // Cache wizard state for performance during debug logging
+    const wizardStateCache = this.debugEnabled
+      ? {
+          isExisting: this.isExistingStore(),
+          isNewStore: this.isNewStore(),
+          isUS: this.isUSRegion(),
+          isCanada: this.isCanadaRegion(),
+          hasOtherIncome: this.hasOtherIncome(),
+          hasTaxRush: this.hasTaxRush(),
+        }
+      : {};
+
+    // Temporarily disable all computed logging for performance test
+    if (false) {
+      console.log('🎯 [COMPUTED] getValue():', {
+        matchedRule,
+        result,
+        config: Object.keys(config),
+        wizardState: wizardStateCache,
+      });
+    }
 
     return result;
   }
@@ -475,10 +561,13 @@ export class WizardStateService {
   }
 
   updateAnswers(updates: Partial<WizardAnswers>): void {
+    // Heartbeat log to ensure logging is working
+    this.safeLog('💓 [HEARTBEAT] updateAnswers called at', new Date().toLocaleTimeString());
+
     // Performance optimization: reduce console logging
     if (this.debugEnabled) {
-      console.group('🔄 WizardState.updateAnswers()');
-      console.log('📥 Input updates:', updates);
+      this.safeLog('🔄 WizardState.updateAnswers()');
+      this.safeLog('📥 Input updates:', updates);
     }
 
     const current = this.answers;
@@ -537,10 +626,26 @@ export class WizardStateService {
     // Update state immediately for UI responsiveness
     this._answers$.next(next);
 
-    // Schedule heavy calculations to run asynchronously
-    setTimeout(() => {
-      this._recalculationTrigger$.next(next);
-    }, 0);
+    // CRITICAL FIX: Only trigger calculations for actual data changes
+    const isConfigChange = this.isConfigurationChange(updates);
+    const isDataChange = this.isDataChange(updates);
+
+    if (isDataChange && this.shouldCalculate(next)) {
+      if (this.debugEnabled) {
+        console.log('✅ Triggering calculations - data change with prerequisites met');
+      }
+      setTimeout(() => {
+        this._recalculationTrigger$.next(next);
+      }, 0);
+    } else if (isConfigChange) {
+      if (this.debugEnabled) {
+        console.log('⚙️ Configuration change only - no calculations needed');
+      }
+    } else {
+      if (this.debugEnabled) {
+        console.log('⏸️ Prerequisites not met - calculations deferred');
+      }
+    }
 
     if (this.debugEnabled) {
       console.groupEnd();
@@ -1219,6 +1324,13 @@ export class WizardStateService {
 
   private loadFromStorage(): WizardAnswers {
     try {
+      // DEVELOPMENT: Always start fresh - don't load from storage
+      if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+        console.log('🧹 [DEV] Starting with fresh state - localStorage ignored');
+        localStorage.removeItem(STORAGE_KEY);
+        return this.createInitialAnswers();
+      }
+
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         return JSON.parse(stored);

@@ -44,8 +44,12 @@ export class AppComponent implements OnInit, OnDestroy {
   private a11yObserver?: MutationObserver;
   private onFocusIn?: (ev: FocusEvent) => void;
 
-  // Show overlay when navigating or recalculating
-  readonly showExpensesLoading = computed(() => this.pendingRoutes().size > 0);
+  // Show overlay only for critical operations that truly need to block UI
+  readonly showExpensesLoading = computed(() => {
+    // Only show loading overlay for actual navigation between major sections
+    // Never block user interaction for background calculations
+    return false; // Calculations should always be non-blocking
+  });
 
   // Streams used by template
   recalculating$ = this.projected.recalculating$;
@@ -73,7 +77,24 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private wizardState: WizardStateService,
     private projected: ProjectedService
-  ) {}
+  ) {
+    // Global error handler to prevent logging from stopping
+    if (typeof window !== 'undefined') {
+      window.addEventListener('error', (event) => {
+        console.error('💥 [GLOBAL ERROR HANDLER] Uncaught error:', event.error);
+        console.error('💥 [GLOBAL ERROR HANDLER] Error details:', {
+          message: event.message,
+          filename: event.filename,
+          lineno: event.lineno,
+          colno: event.colno,
+        });
+      });
+
+      window.addEventListener('unhandledrejection', (event) => {
+        console.error('💥 [GLOBAL ERROR HANDLER] Unhandled promise rejection:', event.reason);
+      });
+    }
+  }
 
   ngOnInit(): void {
     const derive = (url: string) => {

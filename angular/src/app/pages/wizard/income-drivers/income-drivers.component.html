@@ -4,12 +4,23 @@
     <p class="page-subtitle">{{ storeInfo.description }}</p>
   </div>
   <div class="step-body">
+    <!-- MINIMAL DEBUG: Just show what template sees -->
+    <div style="background: yellow; padding: 5px; font-size: 12px;">
+      DEBUG: storeType = {{ storeType$ | async }}
+    </div>
+    
     <!-- Existing store shows PY + Projected; New store shows Target -->
     <ng-container *ngIf="(storeType$ | async) === 'existing'; else newStore">
+      <div style="background: lightgreen; padding: 5px; font-size: 12px;">
+        DEBUG: Showing EXISTING components
+      </div>
       <app-py-income-drivers></app-py-income-drivers>
       <app-projected-income-drivers></app-projected-income-drivers>
     </ng-container>
     <ng-template #newStore>
+      <div style="background: lightblue; padding: 5px; font-size: 12px;">
+        DEBUG: Showing NEW component
+      </div>
       <app-target-income-drivers></app-target-income-drivers>
     </ng-template>
   </div>
