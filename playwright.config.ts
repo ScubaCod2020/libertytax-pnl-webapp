@@ -1,10 +1,11 @@
-import { defineConfig, devices } from '@playwright/test'
+import { defineConfig, devices } from '@playwright/test';
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
+// React E2E config (uses Vite preview on 4173)
 export default defineConfig({
-  testDir: './tests',
+  testDir: './test/e2e',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -15,20 +16,24 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ['html'],
+    ['list'],
+    ['html', { outputFolder: 'playwright-report-react' }],
     ['json', { outputFile: 'playwright-results.json' }],
-    ['junit', { outputFile: 'playwright-results.xml' }]
+    ['junit', { outputFile: 'playwright-results.xml' }],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:4173',
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    baseURL: (process.env['PW_BASEURL'] as string) || 'http://localhost:3000',
+    /* Collect trace for failures and retries */
+    trace: process.env.CI ? 'retain-on-failure' : 'on-first-retry',
     /* Take screenshot on failure */
     screenshot: 'only-on-failure',
     /* Record video on retry */
     video: 'retain-on-failure',
+    launchOptions: {
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    },
   },
 
   /* Configure projects for major browsers */
@@ -71,9 +76,9 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run preview',
-    url: 'http://localhost:4173',
+    command: 'npm run dev:dual',
+    url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
-    timeout: 120000,
+    timeout: 240000,
   },
-})
+});

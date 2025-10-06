@@ -1,0 +1,8 @@
+<div class="loading-overlay" role="alert" aria-live="polite">
+    <img class="loading-overlay__watermark" [src]="watermarkSrc" alt="" aria-hidden="true" />
+    <div class="loading-overlay__content">
+        <div class="loading-overlay__spinner" aria-hidden="true"></div>
+        <h2 class="loading-overlay__message">{{ message }}</h2>
+        <p *ngIf="subMessage" class="loading-overlay__sub">{{ subMessage }}</p>
+    </div>
+</div>

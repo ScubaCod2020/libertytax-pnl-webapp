@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+# Husky v9+ simple pre-commit hook
+# 1) Run lint-staged
+npx --yes lint-staged || exit 1
+
+# 2) Validate progress log presence when milestones changed
+node scripts/validate-progress-log.js || exit 1

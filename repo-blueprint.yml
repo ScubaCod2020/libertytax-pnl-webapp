@@ -1,0 +1,118 @@
+meta:
+  name: 'Liberty Tax — P&L Budget & Forecast Webapp'
+  owner: 'ScubaCod2020'
+  purpose: 'Source-of-truth for repository structure, docs, and quality gates'
+
+conventions:
+  languages: ['TypeScript', 'React', 'Angular (planned)']
+  packageManager: 'npm'
+  nodeVersion: '>=18'
+  formatting:
+    prettier: true
+    eslint: true
+  ci:
+    provider: 'GitHub Actions'
+    environments:
+      - name: staging
+        requiresApproval: true
+      - name: preview
+        requiresApproval: false
+  deployment:
+    provider: 'Vercel'
+    secrets: ['VERCEL_TOKEN', 'VERCEL_ORG_ID', 'VERCEL_PROJECT_ID']
+
+structure:
+  root:
+    - README.md
+    - MASTER_INDEX.md
+    - ARCHITECTURE.md
+    - CHANGELOG.md
+    - repo-blueprint.yml
+  docs:
+    - INDEX.md
+    - LESSONS_LEARNED.md
+    - COMPONENTS_TREE.md
+    - MAPPING.md
+    - SCOPE.md
+    - AUTOMATED_TESTING_STRATEGY.md
+  ops:
+    - README.md
+    - workflows: .github/workflows/ci.yml
+  app:
+    angular:
+      src/app/:
+        - app.component.{ts,html,scss}
+        - app.routes.ts
+        - domain/calculations/**
+        - domain/types/**
+        - components/** # shared-only (app-header, app-footer, form-toolbar, kpi-card)
+        - core/contracts/**
+        - core/services/**
+        - core/tokens/**
+        - pages/dashboard/dashboard.component.{ts,html,scss}
+        - pages/wizard/income-drivers/income-drivers.component.{ts,html,scss}
+        - pages/wizard/expenses/expenses.component.{ts,html,scss}
+        - pages/wizard/pnl/pnl.component.{ts,html,scss}
+      src/styles.scss: imports styles/_tokens.scss, _base.scss, _layout.scss, _kpi.scss
+      src/styles/: [_tokens.scss, _base.scss, _layout.scss, _kpi.scss]
+  tests:
+    - unit: 'react-app-reference/react-app-reference/src/**/*.test.ts{,x}'
+    - e2e: 'test/e2e/**/*.{ts,js}'
+
+devServers:
+  react:
+    path: '/' # Vite root set to apps/react in vite.config.ts
+    command: 'npm run dev:react'
+    port: 3000
+  angular:
+    path: '/angular' # keep stable for automation
+    command: 'npm run dev:angular'
+    port: 4200
+  dual:
+    command: 'npm run dev:dual'
+    description: 'Run React (Vite:3000) and Angular (ng:4200) concurrently'
+
+qualityGates:
+  requiredChecks:
+    - lint
+    - type-check
+    - test
+  codeOwners:
+    - path: 'react-app-reference/react-app-reference/src/**'
+      owners: ['@ScubaCod2020']
+  reviewPolicy:
+    requireCodeOwners: true
+    minApprovals: 1
+
+workflows:
+  ci:
+    detectsFramework: ['angular.json', 'nx.json']
+    steps:
+      - install: 'npm ci'
+      - lint:
+          angular: 'npx ng lint || npm run lint --if-present'
+          react: 'npm run lint'
+      - typecheck: 'npm run type-check --if-present'
+      - test:
+          angular: 'npx ng test --watch=false --browsers=ChromeHeadless || npm run test --if-present'
+          react: 'npm run test --if-present'
+      - build:
+          angular: 'npx ng build --configuration=production || npx ng build'
+          react: 'npm run build'
+      - approval: { environment: staging }
+      - deployPreview: { environment: preview }
+
+notes:
+  - Keep runtime workflows in .github/workflows; keep design notes in ops/
+  - Update this blueprint when adding new directories or changing gates
+  - Repo blueprint has precedence over app-level blueprints for local dev servers and shared tooling (ports, scripts)
+
+transition:
+  coexistence:
+    description: 'Interim period running React (reference) and Angular (target) side by side'
+    react_port: 3000
+    angular_port: 4200
+    archive_plan:
+      - condition: 'Angular feature parity achieved and tests passing'
+      - action: 'Archive React app code, retain docs and artifacts'
+      - action: 'Update CI to Angular-only'

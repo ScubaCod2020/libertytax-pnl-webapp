@@ -1,0 +1,106 @@
+<div class="demo-container">
+  <!-- Input Fields Section -->
+  <lt-wizard-form-section title="💡 Income Drivers (With Suggestions)" icon="💰"
+    subtitle="Dynamic suggestions based on region and business profile">
+    <!-- Tax Prep Returns -->
+    <lt-suggested-form-field label="Tax Prep Returns" helpText="Number of individual tax returns processed"
+      fieldId="taxPrepReturns" [suggestions]="suggestions">
+      <lt-suggested-number-input [value]="answers.taxPrepReturns || 0" [suggestions]="suggestions.taxPrepReturns"
+        (valueChange)="updateField('taxPrepReturns', $event)" placeholder="1600" [min]="0" [max]="10000" />
+    </lt-suggested-form-field>
+
+    <!-- Average Net Fee -->
+    <lt-suggested-form-field label="Average Net Fee per Return" helpText="Average fee after discounts per tax return"
+      fieldId="avgNetFee" [suggestions]="suggestions">
+      <lt-suggested-currency-input [value]="answers.avgNetFee || 0" [suggestions]="suggestions.avgNetFee"
+        (valueChange)="updateField('avgNetFee', $event)" placeholder="125" [min]="0" [max]="1000" />
+    </lt-suggested-form-field>
+
+    <!-- Discount Percentage -->
+    <lt-suggested-form-field label="Customer Discounts" helpText="Percentage discount given to customers"
+      fieldId="discountsPct" [suggestions]="suggestions">
+      <lt-suggested-percentage-input [value]="answers.discountsPct || 0" [suggestions]="suggestions.discountsPct"
+        (valueChange)="updateField('discountsPct', $event)" placeholder="3.0" [min]="0" [max]="50"
+        [decimalPlaces]="1" />
+    </lt-suggested-form-field>
+
+    <!-- TaxRush Returns (Canada only) -->
+    <lt-suggested-form-field *ngIf="answers.region === 'CA'" label="TaxRush Returns"
+      helpText="Number of same-day refund returns (Canada only)" fieldId="taxRushReturns" [suggestions]="suggestions">
+      <lt-suggested-number-input [value]="answers.taxRushReturns || 0" [suggestions]="suggestions.taxRushReturns"
+        (valueChange)="updateField('taxRushReturns', $event)" placeholder="150" [min]="0" [max]="1000" />
+    </lt-suggested-form-field>
+
+    <!-- Other Income -->
+    <lt-suggested-form-field *ngIf="answers.hasOtherIncome" label="Other Income"
+      helpText="Additional revenue streams (bookkeeping, notary, etc.)" fieldId="otherIncome"
+      [suggestions]="suggestions">
+      <lt-suggested-currency-input [value]="answers.otherIncome || 0" [suggestions]="suggestions.otherIncome"
+        (valueChange)="updateField('otherIncome', $event)" placeholder="5000" [min]="0" [max]="100000" />
+    </lt-suggested-form-field>
+  </lt-wizard-form-section>
+
+  <!-- Calculated Values Display -->
+  <div class="calculated-section">
+    <h3>📊 Calculated Results</h3>
+
+    <div class="calculated-grid">
+      <lt-suggested-form-field label="Gross Fees" helpText="Total fees before discounts" fieldId="grossFees"
+        [suggestions]="suggestions" [isCalculated]="true">
+        <div class="calculated-value gross-fees">
+          {{ suggestions.grossFees | money }}
+        </div>
+      </lt-suggested-form-field>
+
+      <lt-suggested-form-field label="Customer Discounts" helpText="Total discount amount" fieldId="discountAmount"
+        [suggestions]="suggestions" [isCalculated]="true">
+        <div class="calculated-value discount-amount">
+          -{{ suggestions.discountAmount | money }}
+        </div>
+      </lt-suggested-form-field>
+
+      <lt-suggested-form-field label="Tax Prep Income" helpText="Net income after discounts" fieldId="taxPrepIncome"
+        [suggestions]="suggestions" [isCalculated]="true">
+        <div class="calculated-value tax-prep-income">
+          {{ suggestions.taxPrepIncome | money }}
+        </div>
+      </lt-suggested-form-field>
+
+      <lt-suggested-form-field *ngIf="answers.region === 'CA' && suggestions.taxRushIncome > 0" label="TaxRush Income"
+        helpText="Revenue from same-day refunds" fieldId="taxRushIncome" [suggestions]="suggestions"
+        [isCalculated]="true">
+        <div class="calculated-value taxrush-income">
+          {{ suggestions.taxRushIncome | money }}
+        </div>
+      </lt-suggested-form-field>
+
+      <lt-suggested-form-field *ngIf="answers.hasOtherIncome && suggestions.otherIncome > 0" label="Other Income"
+        helpText="Additional revenue streams" fieldId="otherIncomeCalculated" [suggestions]="suggestions"
+        [isCalculated]="true">
+        <div class="calculated-value other-income">
+          {{ suggestions.otherIncome | money }}
+        </div>
+      </lt-suggested-form-field>
+
+      <lt-suggested-form-field label="Total Revenue" helpText="All revenue streams combined" fieldId="totalRevenue"
+        [suggestions]="suggestions" [isCalculated]="true">
+        <div class="calculated-value total-revenue">
+          {{ suggestions.totalRevenue | money }}
+        </div>
+      </lt-suggested-form-field>
+    </div>
+  </div>
+
+  <!-- Educational Summary -->
+  <div class="educational-summary">
+    <h4 class="summary-title">💡 How These Numbers Work Together</h4>
+    <div class="summary-content">
+      <p><strong>Revenue Formula:</strong> (Returns × Avg Fee) - Discounts + Other Income = Total Revenue</p>
+      <p><strong>Your Calculation:</strong> ({{ answers.taxPrepReturns || 0 }} × {{ (answers.avgNetFee || 0) | money }})
+        - {{ suggestions.discountAmount | money }} + {{ suggestions.otherIncome | money }} = <strong>{{
+          suggestions.totalRevenue | money }}</strong></p>
+      <p><strong>Business Insight:</strong> Small changes in any input can significantly impact your total revenue. The
+        suggestions help you see industry benchmarks for your region and business type.</p>
+    </div>
+  </div>
+</div>

@@ -1,10 +1,23 @@
-name: "01 → Code Quality & Analysis"
+name: '01 → Code Quality & Analysis'
 
 on:
   push:
-    branches: [ main, develop, 'feat/*', 'fix/*' ]
+    branches: [main, develop, 'feat/*', 'fix/*']
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - 'wiki/**'
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - 'wiki/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   NODE_VERSION: '20.x'
@@ -15,110 +28,142 @@ jobs:
     outputs:
       should_deploy: ${{ steps.analysis.outputs.should_deploy }}
       quality_score: ${{ steps.analysis.outputs.quality_score }}
-      
+
     steps:
-    - name: 🔄 Checkout code
-      uses: actions/checkout@v4
-      
-    - name: 📋 Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        
-    - name: 📦 Install dependencies (quality check only)
-      run: npm ci --only=dev
-      
-    - name: 🔍 TypeScript check
-      run: npx tsc --noEmit
-      
-    - name: ⚠️ Console.log analysis
-      id: console-check
-      run: |
-        CONSOLE_LOGS=$(grep -r "console\." src/ --exclude-dir=node_modules || true)
-        COUNT=$(echo "$CONSOLE_LOGS" | grep -c "console\." || echo "0")
-        
-        echo "console_count=$COUNT" >> $GITHUB_OUTPUT
-        
-        if [ $COUNT -gt 0 ]; then
-          echo "⚠️ Found $COUNT console statements"
-          echo "console_logs<<EOF" >> $GITHUB_OUTPUT
-          echo "$CONSOLE_LOGS" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-        else
-          echo "✅ No console statements found"
-        fi
-        
-    - name: 🔒 Security audit
-      run: |
-        npm audit --audit-level high || echo "⚠️ Security warnings found - review recommended"
-        
-    - name: 🎯 Quality analysis
-      id: analysis
-      run: |
-        CONSOLE_COUNT=${{ steps.console-check.outputs.console_count }}
-        
-        # Calculate quality score (0-100)
-        QUALITY_SCORE=100
-        
-        if [ $CONSOLE_COUNT -gt 10 ]; then
-          QUALITY_SCORE=$((QUALITY_SCORE - 20))
-          echo "⚠️ High console.log usage detected"
-        elif [ $CONSOLE_COUNT -gt 5 ]; then
-          QUALITY_SCORE=$((QUALITY_SCORE - 10))
-        fi
-        
-        echo "quality_score=$QUALITY_SCORE" >> $GITHUB_OUTPUT
-        
-        # Deployment decision
-        SHOULD_DEPLOY="true"
-        if [ $QUALITY_SCORE -lt 70 ]; then
-          SHOULD_DEPLOY="false"
-        fi
-        echo "should_deploy=$SHOULD_DEPLOY" >> $GITHUB_OUTPUT
-        
-        # Summary
-        echo "## 🎯 Code Quality Analysis" >> $GITHUB_STEP_SUMMARY
-        echo "| Metric | Value | Status |" >> $GITHUB_STEP_SUMMARY
-        echo "|--------|-------|--------|" >> $GITHUB_STEP_SUMMARY
-        echo "| Quality Score | $QUALITY_SCORE/100 | $([ $QUALITY_SCORE -ge 80 ] && echo '✅ Good' || echo '⚠️ Review Needed') |" >> $GITHUB_STEP_SUMMARY
-        echo "| Console Statements | $CONSOLE_COUNT | $([ $CONSOLE_COUNT -le 5 ] && echo '✅ Acceptable' || echo '⚠️ High') |" >> $GITHUB_STEP_SUMMARY
-        echo "| TypeScript | ✅ Valid | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
-        echo "| Security | ✅ Audited | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
-        echo "| **Ready for Build** | **$SHOULD_DEPLOY** | **$([ "$SHOULD_DEPLOY" = "true" ] && echo '✅ Proceed' || echo '❌ Fix Issues')** |" >> $GITHUB_STEP_SUMMARY
-        
-    - name: 📊 Upload quality report
-      uses: actions/upload-artifact@v4
-      with:
-        name: quality-report-${{ github.sha }}
-        path: |
-          tsconfig.json
-          package-lock.json
-        retention-days: 1
-        
+      - name: 🔄 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📋 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies (quality check only)
+        run: npm ci --only=dev
+
+      - name: 🔍 TypeScript check
+        run: npx tsc --noEmit
+
+      - name: ⚠️ Console.log analysis
+        id: console-check
+        run: |
+          # Avoid exiting on non-zero grep; handle counts explicitly
+          set +e
+          # Determine enforcement policy based on branch
+          BRANCH_NAME="${GITHUB_REF_NAME}"
+          ENFORCE=false
+          if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "develop" ]; then
+            ENFORCE=true
+          fi
+
+          # Search only application sources for console usage
+          PATTERN='console\\\.(log|debug)\\\('
+          CONSOLE_LOGS=$(grep -R -nE "$PATTERN" \
+            angular/src \
+            --exclude-dir=node_modules \
+            --exclude-dir=.git \
+            --exclude-dir=__tests__ \
+            --exclude-dir=__mocks__ \
+            --exclude-dir=e2e \
+            --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
+            --exclude="*.spec.*" --exclude="*.test.*" )
+          # Exclude logger wrapper implementation files from counting
+          CONSOLE_LOGS=$(printf "%s\n" "$CONSOLE_LOGS" | grep -v "angular/src/app/core/logger\.ts")
+          # Count matches robustly regardless of grep exit status
+          COUNT=$(printf "%s\n" "$CONSOLE_LOGS" | grep -E "$PATTERN" | wc -l | tr -d ' \r')
+          if [ -z "$COUNT" ]; then COUNT=0; fi
+
+          echo "console_count=$COUNT" >> "$GITHUB_OUTPUT"
+
+          if [ "$COUNT" -gt 0 ] 2>/dev/null; then
+            echo "⚠️ Found $COUNT console statements"
+            {
+              echo "console_logs<<EOF"
+              printf "%s\n" "$CONSOLE_LOGS"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+            # Hard fail on excessive console usage
+            if [ "$ENFORCE" = true ] && [ "$COUNT" -gt 10 ]; then
+              echo "❌ Excessive console statements detected (>10) on '$BRANCH_NAME'. Failing quality check."
+              exit 1
+            else
+              echo "ℹ️ Console usage threshold exceeded but not enforced on branch '$BRANCH_NAME'."
+            fi
+          else
+            echo "✅ No console statements found"
+          fi
+
+      - name: 🔒 Security audit
+        run: |
+          npm audit --audit-level high
+
+      - name: 🎯 Quality analysis
+        id: analysis
+        run: |
+          CONSOLE_COUNT=${{ steps.console-check.outputs.console_count }}
+
+          # Calculate quality score (0-100)
+          QUALITY_SCORE=100
+
+          if [ $CONSOLE_COUNT -gt 10 ]; then
+            QUALITY_SCORE=$((QUALITY_SCORE - 20))
+            echo "⚠️ High console.log usage detected"
+          elif [ $CONSOLE_COUNT -gt 5 ]; then
+            QUALITY_SCORE=$((QUALITY_SCORE - 10))
+          fi
+
+          echo "quality_score=$QUALITY_SCORE" >> $GITHUB_OUTPUT
+
+          # Deployment decision
+          SHOULD_DEPLOY="true"
+          if [ $QUALITY_SCORE -lt 70 ]; then
+            SHOULD_DEPLOY="false"
+          fi
+          echo "should_deploy=$SHOULD_DEPLOY" >> $GITHUB_OUTPUT
+
+          # Summary
+          echo "## 🎯 Code Quality Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Quality Score | $QUALITY_SCORE/100 | $([ $QUALITY_SCORE -ge 80 ] && echo '✅ Good' || echo '⚠️ Review Needed') |" >> $GITHUB_STEP_SUMMARY
+          echo "| Console Statements | $CONSOLE_COUNT | $([ $CONSOLE_COUNT -le 5 ] && echo '✅ Acceptable' || echo '⚠️ High') |" >> $GITHUB_STEP_SUMMARY
+          echo "| TypeScript | ✅ Valid | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security | ✅ Audited | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Ready for Build** | **$SHOULD_DEPLOY** | **$([ "$SHOULD_DEPLOY" = "true" ] && echo '✅ Proceed' || echo '❌ Fix Issues')** |" >> $GITHUB_STEP_SUMMARY
+
+      - name: 📊 Upload quality report
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-report-${{ github.sha }}
+          path: |
+            tsconfig.json
+            package-lock.json
+          retention-days: 1
+
   ai-code-review:
     runs-on: ubuntu-latest
     needs: code-analysis
     if: github.event_name == 'pull_request'
-    
+
     steps:
-    - name: 🤖 AI Code Review Analysis  
-      run: |
-        echo "## 🤖 AI Code Review" >> $GITHUB_STEP_SUMMARY
-        echo "Quality Score: ${{ needs.code-analysis.outputs.quality_score }}/100" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        
-        QUALITY_SCORE=${{ needs.code-analysis.outputs.quality_score }}
-        
-        if [ $QUALITY_SCORE -ge 90 ]; then
-          echo "🌟 **Excellent code quality!** Ready for merge." >> $GITHUB_STEP_SUMMARY
-        elif [ $QUALITY_SCORE -ge 80 ]; then
-          echo "✅ **Good code quality.** Minor improvements suggested." >> $GITHUB_STEP_SUMMARY
-        elif [ $QUALITY_SCORE -ge 70 ]; then
-          echo "⚠️ **Code quality concerns.** Review before merge." >> $GITHUB_STEP_SUMMARY
-        else
-          echo "❌ **Significant issues found.** Fix before proceeding." >> $GITHUB_STEP_SUMMARY
-        fi
-        
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "**Next Step**: If quality is acceptable, workflow will trigger build & test phase." >> $GITHUB_STEP_SUMMARY
+      - name: 🤖 AI Code Review Analysis
+        run: |
+          echo "## 🤖 AI Code Review" >> $GITHUB_STEP_SUMMARY
+          echo "Quality Score: ${{ needs.code-analysis.outputs.quality_score }}/100" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          QUALITY_SCORE=${{ needs.code-analysis.outputs.quality_score }}
+
+          if [ $QUALITY_SCORE -ge 90 ]; then
+            echo "🌟 **Excellent code quality!** Ready for merge." >> $GITHUB_STEP_SUMMARY
+          elif [ $QUALITY_SCORE -ge 80 ]; then
+            echo "✅ **Good code quality.** Minor improvements suggested." >> $GITHUB_STEP_SUMMARY
+          elif [ $QUALITY_SCORE -ge 70 ]; then
+            echo "⚠️ **Code quality concerns.** Review before merge." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Significant issues found.** Fix before proceeding." >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Next Step**: If quality is acceptable, workflow will trigger build & test phase." >> $GITHUB_STEP_SUMMARY

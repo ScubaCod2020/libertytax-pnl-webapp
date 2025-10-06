@@ -1,0 +1,132 @@
+<div data-view="reports"></div>
+<div data-wizard-step="monthly-breakdown" class="monthly-breakdown-wrap" *ngIf="reportData$ | async as report">
+  <div class="card-title">📅 Monthly P&L Breakdown</div>
+  <p class="small"><strong>12-month forecast with tax industry seasonality.</strong> This breakdown shows how your
+    annual projections distribute across the tax year based on industry patterns.</p>
+
+  <!-- Summary Cards -->
+  <div class="summary-cards">
+    <div class="summary-card">
+      <div class="card-label">Annual Returns</div>
+      <div class="card-value">{{ report.returns | number:'1.0-0' }}</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-label">Annual Revenue</div>
+      <div class="card-value">{{ report.totalRevenue | money }}</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-label">Annual Net Income</div>
+      <div class="card-value" [ngClass]="report.netIncome > 0 ? 'positive' : 'negative'">{{ report.netIncome |
+        currency:'USD':'symbol':'1.0-0' }}</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-label">Annual Margin</div>
+      <div class="card-value"
+        [ngClass]="report.netMarginPct > 20 ? 'excellent' : (report.netMarginPct > 15 ? 'good' : 'needs-improvement')">
+        {{ report.netMarginPct | number:'1.1-1' }}%</div>
+    </div>
+  </div>
+
+  <!-- Monthly Breakdown Table -->
+  <div class="monthly-table-container">
+    <h3>MONTHLY FINANCIAL BREAKDOWN</h3>
+    <div class="table-scroll">
+      <table class="monthly-table">
+        <thead>
+          <tr>
+            <th class="month-col">Month</th>
+            <th class="number-col">Returns</th>
+            <th class="percent-col">% of Year</th>
+            <th class="currency-col">Revenue</th>
+            <th class="currency-col">Expenses</th>
+            <th class="currency-col">Net Income</th>
+            <th class="percent-col">Margin %</th>
+            <th class="season-col">Season</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let month of report.monthlyData; let i = index" [ngClass]="getSeasonClass(month.monthNumber)"
+            class="month-row">
+            <td class="month-name">
+              <strong>{{ month.month }}</strong>
+              <div class="month-description">{{ getMonthDescription(month.monthNumber) }}</div>
+            </td>
+            <td class="number-col">{{ month.returns | number:'1.0-0' }}</td>
+            <td class="percent-col">{{ month.returnsPercentage | number:'1.1-1' }}%</td>
+            <td class="currency-col">{{ month.netRevenue | money }}</td>
+            <td class="currency-col">{{ month.expenses | money }}</td>
+            <td class="currency-col" [ngClass]="month.netIncome > 0 ? 'positive' : 'negative'">
+              {{ month.netIncome | money }}
+            </td>
+            <td class="percent-col" [ngClass]="getMarginClass(month.netMarginPct)">
+              {{ month.netMarginPct | number:'1.1-1' }}%
+            </td>
+            <td class="season-col">
+              <span class="season-badge" [ngClass]="getSeasonBadgeClass(month.monthNumber)">
+                {{ getSeasonLabel(month.monthNumber) }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Cumulative Progress -->
+  <div class="cumulative-section">
+    <h3>CUMULATIVE PROGRESS</h3>
+    <div class="cumulative-grid">
+      <div class="cumulative-card" *ngFor="let quarter of (report.monthlyData | quarterlyData); let i = index">
+        <div class="quarter-label">{{ $any(quarter).label }}</div>
+        <div class="quarter-stats">
+          <div class="stat">
+            <span class="stat-label">Returns:</span>
+            <span class="stat-value">{{ $any(quarter).sum | money }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seasonal Analysis -->
+  <div class="seasonal-analysis">
+    <h3>SEASONAL INSIGHTS</h3>
+    <div class="insights-grid">
+      <div class="insight-card peak-season">
+        <div class="insight-header">🌟 Peak Season (Jan-Apr)</div>
+        <div class="insight-content">
+          <div class="insight-stat">{{ getPeakSeasonStats(report.monthlyData).totalReturns | number:'1.0-0' }} returns
+          </div>
+          <div class="insight-stat">{{ getPeakSeasonStats(report.monthlyData).totalRevenue |
+            currency:'USD':'symbol':'1.0-0' }} revenue</div>
+          <div class="insight-note">{{ getPeakSeasonStats(report.monthlyData).percentage | number:'1.1-1' }}% of annual
+            business</div>
+        </div>
+      </div>
+      <div class="insight-card slow-season">
+        <div class="insight-header">🌙 Slow Season (May-Dec)</div>
+        <div class="insight-content">
+          <div class="insight-stat">{{ getSlowSeasonStats(report.monthlyData).totalReturns | number:'1.0-0' }} returns
+          </div>
+          <div class="insight-stat">{{ getSlowSeasonStats(report.monthlyData).totalRevenue |
+            currency:'USD':'symbol':'1.0-0' }} revenue</div>
+          <div class="insight-note">{{ getSlowSeasonStats(report.monthlyData).percentage | number:'1.1-1' }}% of annual
+            business</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export and Navigation -->
+  <div class="action-bar">
+    <div class="export-actions">
+      <button type="button" class="btn blue" (click)="exportToPDF(report)">📄 Export PDF</button>
+      <button type="button" class="btn green" (click)="exportToExcel(report)">📊 Export Excel</button>
+    </div>
+
+    <div class="nav-actions">
+      <button type="button" class="btn gray" (click)="goBackToAnnual()">← Annual Summary</button>
+      <button type="button" class="btn blue" (click)="goToDashboard()">Dashboard</button>
+    </div>
+  </div>
+</div>

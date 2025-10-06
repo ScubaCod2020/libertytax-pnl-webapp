@@ -1,11 +1,17 @@
-name: "99 → Support Automation"
+name: '99 → Support Automation'
 
 on:
   # Triggered by main deployment workflows
   workflow_run:
-    workflows: ["01 → Code Quality & Analysis", "02 → Build & Test", "03 → Deploy to Staging", "04 → Deploy to Production"]
+    workflows:
+      [
+        '01 → Code Quality & Analysis',
+        '02 → Build & Test',
+        '03 → Deploy to Staging',
+        '04 → Deploy to Production',
+      ]
     types: [completed]
-  
+
   # Manual triggers for specific automations
   workflow_dispatch:
     inputs:
@@ -18,94 +24,228 @@ on:
           - create-issues
           - update-board
           - full-automation
-  
+      sim_workflow_name:
+        description: 'Simulated workflow name (for manual tests)'
+        required: false
+        type: string
+      sim_conclusion:
+        description: 'Simulated workflow conclusion (success|failure)'
+        required: false
+        type: string
+      sim_run_url:
+        description: 'Simulated run URL'
+        required: false
+        type: string
+      sim_sha:
+        description: 'Simulated commit SHA'
+        required: false
+        type: string
+      project_kind:
+        description: 'Project automation target (none|v2)'
+        required: false
+        default: 'none'
+        type: choice
+        options:
+          - none
+          - v2
+      project_owner:
+        description: 'Project owner login (org/user). Defaults to repo owner.'
+        required: false
+        type: string
+      project_number:
+        description: 'Project (v2) number'
+        required: false
+        type: number
+      status_field_name:
+        description: 'Project Status field name (v2). Default: Status'
+        required: false
+        type: string
+      status_value:
+        description: 'Desired Status value (e.g., In Review, Testing, Done)'
+        required: false
+        type: string
+
   # Scheduled maintenance
   schedule:
     # Weekly automation maintenance
-    - cron: '0 10 * * 1'  # Monday 10 AM UTC
+    - cron: '0 10 * * 1' # Monday 10 AM UTC
+
+permissions:
+  contents: read
+  issues: write
+  repository-projects: write
+  pull-requests: write
 
 jobs:
   # Issue creation from workflow failures
   handle-failures:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    
+    timeout-minutes: 5
+    if: ${{ github.event.workflow_run.conclusion == 'failure' || (github.event_name == 'workflow_dispatch' && inputs.action == 'create-issues') }}
+
     steps:
-    - name: 🎯 Create issue from workflow failure
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const workflowName = '${{ github.event.workflow_run.name }}';
-          const runUrl = '${{ github.event.workflow_run.html_url }}';
-          const commitSha = '${{ github.event.workflow_run.head_sha }}';
-          
-          // Create issue for failed workflow
-          const issue = await github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: `🚨 Workflow Failure: ${workflowName}`,
-            body: `
-          ## Workflow Failure Report
-          
-          **Workflow**: ${workflowName}
-          **Run URL**: ${runUrl}
-          **Commit**: ${commitSha}
-          **Failure Time**: ${new Date().toISOString()}
-          
-          ### Automated Analysis
-          This issue was automatically created due to a workflow failure.
-          
-          ### Investigation Steps
-          - [ ] Review workflow logs for specific error details
-          - [ ] Check if this is a recurring issue
-          - [ ] Identify root cause (code, infrastructure, or configuration)
-          - [ ] Implement fix and test
-          - [ ] Update workflow if needed
-          
-          ### Priority Assessment
-          ${'🚨 HIGH' if workflowName.includes('Production') else '⚠️ MEDIUM' if workflowName.includes('Staging') else '📝 LOW'}
-          
-          /label bug, workflow-failure${workflowName.includes('Production') ? ', critical' : ''}
-            `,
-            labels: ['bug', 'workflow-failure']
-          });
-          
-          console.log('Created issue #' + issue.data.number + ' for workflow failure');
+      - name: 🎯 Create issue from workflow failure
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const isManual = context.eventName === 'workflow_dispatch';
+            const inputs = context.payload?.inputs || {};
+            const wr = context.payload?.workflow_run || {};
+
+            const workflowName = isManual ? (inputs.sim_workflow_name || 'Manual') : (wr.name || 'Unknown');
+            const runUrl = isManual ? (inputs.sim_run_url || `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`) : (wr.html_url || '');
+            const commitSha = isManual ? (inputs.sim_sha || context.sha) : (wr.head_sha || context.sha);
+
+            const isProd = workflowName.includes('Production');
+            const isStaging = workflowName.includes('Staging');
+            const priority = isProd ? '🚨 HIGH' : (isStaging ? '⚠️ MEDIUM' : '📝 LOW');
+            const labels = ['bug', 'workflow-failure'];
+            if (isProd) labels.push('critical');
+
+            // Ensure labels exist (idempotent)
+            const desired = [
+              { name: 'bug', color: 'd73a4a', description: 'Something is not working' },
+              { name: 'workflow-failure', color: '5319e7', description: 'Created by automation on CI failure' },
+              { name: 'critical', color: 'b60205', description: 'Highest urgency' },
+              { name: 'automation', color: '0366d6', description: 'Automation support issue' }
+            ];
+            for (const l of desired) {
+              try {
+                await github.rest.issues.getLabel({ owner: context.repo.owner, repo: context.repo.repo, name: l.name });
+              } catch (e) {
+                if (e.status === 404) {
+                  await github.rest.issues.createLabel({ owner: context.repo.owner, repo: context.repo.repo, name: l.name, color: l.color, description: l.description });
+                  console.log(`Created label: ${l.name}`);
+                } else {
+                  console.warn(`Skipping label check for ${l.name}:`, e.message);
+                }
+              }
+            }
+
+            // Create issue for failed workflow
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Workflow Failure: ${workflowName}`,
+              body: `
+            ## Workflow Failure Report
+
+            **Workflow**: ${workflowName}
+            **Run URL**: ${runUrl}
+            **Commit**: ${commitSha}
+            **Failure Time**: ${new Date().toISOString()}
+
+            ### Automated Analysis
+            This issue was automatically created due to a workflow failure.
+
+            ### Investigation Steps
+            - [ ] Review workflow logs for specific error details
+            - [ ] Check if this is a recurring issue
+            - [ ] Identify root cause (code, infrastructure, or configuration)
+            - [ ] Implement fix and test
+            - [ ] Update workflow if needed
+
+            ### Priority Assessment
+            ${priority}
+              `,
+              labels
+            });
+
+            console.log('Created issue #' + issue.data.number + ' for workflow failure');
 
   # Project board automation
   update-project-board:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     if: >
       ${{ 
         github.event.workflow_run.conclusion == 'success' || 
         github.event_name == 'workflow_dispatch' ||
         github.event_name == 'schedule'
       }}
-    
+
     steps:
-    - name: 📊 Update project board status
-      uses: actions/github-script@v7
-      with:
-        script: |
-          console.log('🎯 Updating project board based on workflow status...');
-          
-          const workflowName = '${{ github.event.workflow_run.name || 'Manual' }}';
-          const workflowStatus = '${{ github.event.workflow_run.conclusion || 'manual' }}';
-          
-          // Simulate project board updates
-          if (workflowName.includes('Code Quality')) {
-            console.log('✅ Moving quality issues to "In Review"');
-          } else if (workflowName.includes('Build & Test')) {
-            console.log('✅ Moving build issues to "Testing"');
-          } else if (workflowName.includes('Deploy')) {
-            console.log('✅ Moving deployment issues to "Done"');
-          }
-          
-          console.log(`Project board updated for ${workflowName} (${workflowStatus})`);
+      - name: 📊 Update project board status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log('🎯 Updating project board based on workflow status...');
+            const isManual = context.eventName === 'workflow_dispatch';
+            const inputs = context.payload?.inputs || {};
+            const wr = context.payload?.workflow_run || {};
+            const workflowName = isManual ? (inputs.sim_workflow_name || 'Manual') : (wr.name || 'Manual');
+            const workflowStatus = isManual ? (inputs.sim_conclusion || 'manual') : (wr.conclusion || 'manual');
+
+            // Simulate project board updates
+            if (workflowName.includes('Code Quality')) {
+              console.log('✅ Moving quality issues to "In Review"');
+            } else if (workflowName.includes('Build & Test')) {
+              console.log('✅ Moving build issues to "Testing"');
+            } else if (workflowName.includes('Deploy')) {
+              console.log('✅ Moving deployment issues to "Done"');
+            }
+
+            console.log(`Project board updated for ${workflowName} (${workflowStatus})`);
+
+            // Optional: Real Project v2 update when manually triggered with inputs
+            if (isManual && inputs.project_kind === 'v2' && inputs.project_number && inputs.status_value) {
+              const owner = inputs.project_owner || context.repo.owner;
+              const statusFieldName = inputs.status_field_name || 'Status';
+              const projectNumber = Number(inputs.project_number);
+
+              // Find PR associated with SHA (if any)
+              const sha = inputs.sim_sha || context.sha;
+              const prs = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/pulls', {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: sha,
+                mediaType: { previews: ['groot'] }
+              });
+              if (!prs.data || prs.data.length === 0) {
+                console.log('ℹ️ No PR associated with SHA; skipping real project update');
+                return;
+              }
+              const pr = prs.data[0];
+
+              const findProjectQuery = `
+                query($owner:String!, $number:Int!) {
+                  organization(login:$owner){ projectV2(number:$number){ id title fields(first:50){ nodes{ __typename id name dataType ... on ProjectV2SingleSelectField { options { id name } } } } } }
+                  user(login:$owner){ projectV2(number:$number){ id title fields(first:50){ nodes{ __typename id name dataType ... on ProjectV2SingleSelectField { options { id name } } } } } }
+                }
+              `;
+              const projRes = await github.graphql(findProjectQuery, { owner, number: projectNumber });
+              const project = projRes.organization?.projectV2 || projRes.user?.projectV2;
+              if (!project) {
+                console.log(`❌ Project v2 #${projectNumber} not found under ${owner}`);
+                return;
+              }
+              const statusField = (project.fields.nodes || []).find(f => f.name === statusFieldName && f.dataType === 'SINGLE_SELECT');
+              if (!statusField) {
+                console.log(`❌ Field '${statusFieldName}' not found or not SINGLE_SELECT`);
+                return;
+              }
+              const option = statusField.options.find(o => o.name === inputs.status_value);
+              if (!option) {
+                console.log(`❌ Status option '${inputs.status_value}' not found`);
+                return;
+              }
+
+              // Add PR to project and set status
+              const addItemMutation = `mutation($projectId:ID!, $contentId:ID!){ addProjectV2ItemById(input:{projectId:$projectId, contentId:$contentId}){ item { id } } }`;
+              const addItemRes = await github.graphql(addItemMutation, { projectId: project.id, contentId: pr.node_id });
+              const itemId = addItemRes.addProjectV2ItemById.item.id;
+
+              const setFieldMutation = `mutation($projectId:ID!, $itemId:ID!, $fieldId:ID!, $optionId:String!){ updateProjectV2ItemFieldValue(input:{ projectId:$projectId, itemId:$itemId, fieldId:$fieldId, value:{ singleSelectOptionId:$optionId }}){ projectV2Item { id } } }`;
+              await github.graphql(setFieldMutation, { projectId: project.id, itemId, fieldId: statusField.id, optionId: option.id });
+              console.log(`✅ Updated Project #${projectNumber} status to '${inputs.status_value}' for PR #${pr.number}`);
+            }
 
   # Wiki updates
   update-wiki:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
     if: >
       ${{ 
         github.event.workflow_run.name == '04 → Deploy to Production' &&
@@ -114,42 +254,157 @@ jobs:
         inputs.action == 'update-wiki' ||
         inputs.action == 'full-automation'
       }}
-    
+
     steps:
-    - name: 📚 Update wiki documentation
-      run: |
-        echo "📚 Updating wiki with latest deployment information..."
-        
-        # Simulate wiki updates
-        echo "✅ Updated deployment history"
-        echo "✅ Updated troubleshooting guides" 
-        echo "✅ Updated workflow documentation"
-        echo "✅ Updated automation guides"
-        
-        echo "## 📚 Wiki Update Complete" >> $GITHUB_STEP_SUMMARY
-        echo "Updated sections:" >> $GITHUB_STEP_SUMMARY
-        echo "- Deployment History" >> $GITHUB_STEP_SUMMARY
-        echo "- Troubleshooting Guides" >> $GITHUB_STEP_SUMMARY
-        echo "- Workflow Documentation" >> $GITHUB_STEP_SUMMARY
-        echo "- Automation Guides" >> $GITHUB_STEP_SUMMARY
+      - name: 🔄 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: 🔄 Checkout wiki
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          path: wiki
+          fetch-depth: 0
+          persist-credentials: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🧱 Prepare wiki structure
+        run: |
+          set -e
+          mkdir -p wiki/Architecture wiki/Automation wiki/Workflows wiki/Snapshots wiki/Runbooks wiki/Testing wiki/Growth wiki/Docs
+          # Home
+          if [ -f MASTER_INDEX.md ]; then
+            cp MASTER_INDEX.md wiki/Home.md
+          elif [ -f docs/INDEX.md ]; then
+            cp docs/INDEX.md wiki/Home.md
+          else
+            if [ ! -f wiki/Home.md ]; then
+              echo "# Liberty Tax P&L Webapp Wiki" > wiki/Home.md
+              echo >> wiki/Home.md
+              echo "Welcome. See the sidebar for sections." >> wiki/Home.md
+            fi
+          fi
+          # Sidebar
+          cat > wiki/_Sidebar.md <<'EOF'
+          - [Home](Home)
+          - [Overview](Docs/_Index)
+          - [Architecture](Architecture)
+          - [Runbooks](Runbooks)
+          - [Testing](Testing)
+          - [Workflows](Workflows/Overview)
+          - [Growth](Growth)
+          - [Snapshots](Snapshots)
+          EOF
+
+      - name: 📚 Sync repository docs to wiki
+        run: |
+          set -e
+          echo "::group::Mirror docs to wiki"
+          # Architecture docs
+          if [ -d docs/architecture ]; then
+            rsync -a --delete docs/architecture/ wiki/Architecture/ || true
+          fi
+          # UI snapshots (artifacted or committed)
+          if [ -d docs/ui-snapshots ]; then
+            rsync -a docs/ui-snapshots/ wiki/Snapshots/ || true
+          fi
+          # Runbooks, Testing, Growth
+          if [ -d docs/runbooks ]; then
+            rsync -a docs/runbooks/ wiki/Runbooks/ || true
+          fi
+          if [ -d docs/testing ]; then
+            rsync -a docs/testing/ wiki/Testing/ || true
+          fi
+          if [ -d docs/growth ]; then
+            rsync -a docs/growth/ wiki/Growth/ || true
+          fi
+          # Catch-all docs to Docs/ (exclude mapped folders to avoid duplication)
+          if [ -d docs ]; then
+            rsync -a \
+              --exclude 'architecture/' \
+              --exclude 'ui-snapshots/' \
+              --exclude 'runbooks/' \
+              --exclude 'testing/' \
+              --exclude 'growth/' \
+              docs/ wiki/Docs/ || true
+          fi
+          echo "::endgroup::"
+          # Workflows overview
+          echo "# CI/CD Workflows" > wiki/Workflows/Overview.md
+          echo >> wiki/Workflows/Overview.md
+          echo "The following workflows are defined in \`.github/workflows\`:" >> wiki/Workflows/Overview.md
+          echo >> wiki/Workflows/Overview.md
+          echo "| Workflow | File |" >> wiki/Workflows/Overview.md
+          echo "|---|---|" >> wiki/Workflows/Overview.md
+          for f in .github/workflows/*.yml; do
+            name=$(grep -m1 '^name:' "$f" | sed 's/name: //') || true
+            base=$(basename "$f")
+            echo "| ${name:-(unnamed)} | $base |" >> wiki/Workflows/Overview.md
+          done
+
+          # Progress summary (last 4 weeks)
+          echo "# Progress — Last 4 Weeks" > wiki/Growth/Progress-Last-4-Weeks.md
+          echo >> wiki/Growth/Progress-Last-4-Weeks.md
+          git log --since="4 weeks ago" --pretty=format:"- %ad %h — %s" --date=short | head -n 200 >> wiki/Growth/Progress-Last-4-Weeks.md
+          # Docs index
+          echo "# Documentation Index" > wiki/Docs/_Index.md
+          echo >> wiki/Docs/_Index.md
+          find wiki/Docs -type f -name '*.md' -printf "- %P\n" | sort >> wiki/Docs/_Index.md
+
+      - name: 🔐 Configure git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+      - name: 🚀 Commit and push wiki changes
+        run: |
+          cd wiki
+          if git status --porcelain | grep .; then
+            git add .
+            git commit -m "docs(wiki): sync repository docs to wiki"
+            git push
+          else
+            echo "No wiki changes to commit"
+          fi
+
+      - name: 🔎 Debug wiki remote
+        run: |
+          cd wiki
+          git remote -v
+          git branch -vv || true
+
+      - name: 📊 Wiki update summary
+        run: |
+          echo "## 📚 Wiki Update Complete" >> $GITHUB_STEP_SUMMARY
+          echo "Updated sections:" >> $GITHUB_STEP_SUMMARY
+          echo "- Architecture" >> $GITHUB_STEP_SUMMARY
+          echo "- Workflows" >> $GITHUB_STEP_SUMMARY
+          echo "- Snapshots (if present)" >> $GITHUB_STEP_SUMMARY
+          echo "- Runbooks" >> $GITHUB_STEP_SUMMARY
+          echo "- Testing" >> $GITHUB_STEP_SUMMARY
+          echo "- Growth (includes 'Progress — Last 4 Weeks')" >> $GITHUB_STEP_SUMMARY
 
   # Comprehensive automation summary
   automation-summary:
     runs-on: ubuntu-latest
     needs: [handle-failures, update-project-board, update-wiki]
     if: always()
-    
+    timeout-minutes: 5
+
     steps:
-    - name: 📊 Automation report
-      run: |
-        echo "## 🤖 Support Automation Report" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "| Component | Status | Action Taken |" >> $GITHUB_STEP_SUMMARY
-        echo "|-----------|--------|--------------|" >> $GITHUB_STEP_SUMMARY
-        echo "| Issue Management | ${{ needs.handle-failures.result == 'success' && '✅ Active' || needs.handle-failures.result == 'skipped' && '➖ Skipped' || '❌ Failed' }} | ${{ github.event.workflow_run.conclusion == 'failure' && 'Created failure issue' || 'No issues needed' }} |" >> $GITHUB_STEP_SUMMARY  
-        echo "| Project Board | ${{ needs.update-project-board.result == 'success' && '✅ Updated' || '➖ Skipped' }} | Board status synchronized |" >> $GITHUB_STEP_SUMMARY
-        echo "| Wiki Updates | ${{ needs.update-wiki.result == 'success' && '✅ Updated' || '➖ Skipped' }} | Documentation synchronized |" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "### 🎯 Next Automation Run" >> $GITHUB_STEP_SUMMARY
-        echo "**Scheduled**: Weekly maintenance (Mondays 10 AM UTC)" >> $GITHUB_STEP_SUMMARY
-        echo "**Manual**: Use 'Support Automation' workflow dispatch" >> $GITHUB_STEP_SUMMARY
+      - name: 📊 Automation report
+        run: |
+          echo "## 🤖 Support Automation Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status | Action Taken |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|--------------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Issue Management | ${{ needs.handle-failures.result == 'success' && '✅ Active' || needs.handle-failures.result == 'skipped' && '➖ Skipped' || '❌ Failed' }} | ${{ github.event.workflow_run.conclusion == 'failure' && 'Created failure issue' || 'No issues needed' }} |" >> $GITHUB_STEP_SUMMARY  
+          echo "| Project Board | ${{ needs.update-project-board.result == 'success' && '✅ Updated' || '➖ Skipped' }} | Board status synchronized |" >> $GITHUB_STEP_SUMMARY
+          echo "| Wiki Updates | ${{ needs.update-wiki.result == 'success' && '✅ Updated' || '➖ Skipped' }} | Documentation synchronized |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🎯 Next Automation Run" >> $GITHUB_STEP_SUMMARY
+          echo "**Scheduled**: Weekly maintenance (Mondays 10 AM UTC)" >> $GITHUB_STEP_SUMMARY
+          echo "**Manual**: Use 'Support Automation' workflow dispatch" >> $GITHUB_STEP_SUMMARY

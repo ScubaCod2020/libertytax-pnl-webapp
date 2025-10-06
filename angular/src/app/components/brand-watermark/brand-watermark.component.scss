@@ -1,0 +1,36 @@
+.brand-watermark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    user-select: none;
+}
+.brand-watermark img {
+    width: 800px;
+    height: auto;
+    max-width: 70vw;
+    max-height: 70vh;
+    min-width: 320px;
+    object-fit: contain;
+    filter: grayscale(20%);
+}
+.brand-watermark-text {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.03;
+    user-select: none;
+    font-size: 8rem;
+    font-weight: 800;
+    color: #1e40af;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+    font-family: 'Proxima Nova', Arial, sans-serif;
+    text-transform: uppercase;
+}

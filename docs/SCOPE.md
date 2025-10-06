@@ -1,19 +1,23 @@
 # SCOPE — Liberty Tax P&L Budget & Forecast Tool
 
 ## Purpose
+
 Enable Liberty Tax franchisees to budget/forecast and explore scenarios for returns, pricing, and expenses, with instant KPIs and coaching.
 
 ## Primary Users
+
 - Franchise owners/managers (beginner-friendly)
 - Trainers/field support (facilitation)
 
 ## Core Outcomes
+
 - Understand profitability (Net Income), Net Margin %, and Cost per Return
 - Scenario planning (Custom, Good/Better/Best)
 - Region-aware behavior (U.S./Canada; TaxRush for Canada only)
 - Guided training via Practice Prompts + visual progress
 
 ## In-Scope Features (v0.5)
+
 1. **Welcome Wizard**
    - Region (U.S./Canada)
    - Planned returns (2026), Average Net Fee (ANF), Discounts %
@@ -47,16 +51,19 @@ Enable Liberty Tax franchisees to budget/forecast and explore scenarios for retu
    - Macro‑free, formula‑driven
 
 ## Out-of-Scope (v0.5)
+
 - Multi‑location consolidation
 - Multi‑tab actuals import
 - Advanced what‑if drivers (marketing → volume elasticities), to be considered later
 
 ## KPI Stop‑Light Rules (defaults)
+
 - **Cost/Return**: Green ≤ CPr_Green; Yellow ≤ CPr_Yellow; Red > CPr_Yellow
 - **Net Margin %**: Green ≥ NIM_Green; Yellow ≥ NIM_Yellow; Red < NIM_Yellow
 - **Net Income ($)**: Red ≤ NI_Red (warning)
 
 ## Data Model (High Level)
+
 - Inputs (drivers & %)
 - Presets (Good/Better/Best)
 - Outputs (KPI calculations)

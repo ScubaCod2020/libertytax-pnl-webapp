@@ -1,0 +1,80 @@
+@use 'styles/type';
+
+@use 'styles/tokens';
+@use 'styles/base';
+@use 'styles/layout';
+@use 'styles/kpi';
+
+/* You can add global styles to this file, and also import other style files */
+
+html {
+    font-size: 16px;
+}
+
+body {
+    line-height: var(--line-height);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* A11y quick utility */
+.u-min-contrast {
+    filter: contrast(1.1);
+}
+
+/* Dashboard grid hardening */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--container-gap);
+}
+
+@media (min-width:1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        align-items: start;
+    }
+}
+
+.dashboard-panel {
+    min-height: 1px;
+}
+
+/* Mobile-friendly hit targets and inputs */
+@media (max-width: 480px) {
+
+    input[type='number'],
+    input[type='text'],
+    select,
+    button {
+        min-height: 44px;
+        line-height: 44px;
+    }
+
+    .btn,
+    .button,
+    [role='button'] {
+        min-height: 44px;
+        line-height: 44px;
+    }
+
+    /* Prevent horizontal scroll */
+    html,
+    body,
+    app-root,
+    .app,
+    main {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+}
+
+/* Additive responsive type and layout helpers */

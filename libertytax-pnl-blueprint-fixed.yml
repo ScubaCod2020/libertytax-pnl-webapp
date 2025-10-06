@@ -1,0 +1,457 @@
+meta:
+  project: 'Liberty Tax — Interactive P&L Budget & Forecast (Excel → React → Angular)'
+  owner: 'Steven Codling <steven.codling@libtax.com>'
+  originator: 'Charles (Excel oracle & original model)'
+  assistants: ['Bishop (GPT-5 Thinking)']
+  objective: >
+    Rebuild the React/Vite prototype in Angular while preserving Excel parity and UI parity,
+    then layer improvements (rent guard, bi-directional inputs, Good/Better/Best presets,
+    reports/snapshots, KPI bands) with clean naming and structure.
+
+  non_goals_for_now:
+    - No automatic push to production; manual merge only.
+    - No theme overhaul; keep minimal, Angular-first structure and match React visuals.
+
+  environment:
+    os: 'Windows (PowerShell)'
+    dev_port: 4200
+    stack:
+      frontend: 'Angular 20 standalone'
+      data: 'Local storage/snapshot (no DB yet)'
+      exports: 'CSV now; Excel via openpyxl later'
+    repo_policy:
+      manual_production_merge: true
+      reuse_existing_pr: true
+      prefer_single_active_feature_branch: true
+
+pages:
+  - id: wizard_step_1
+    path: '/wizard/step-1'
+    title: 'Interview + Performance'
+    blocks:
+      - interview:
+          {
+            region: ['US', 'CA'],
+            storeType: ['new', 'existing'],
+            flags: ['handlesTaxRush', 'hasOtherIncome'],
+            localAvgRent?: number,
+            sqft?: number,
+          }
+      - prior_year: { visible_when: "storeType == 'existing'", prefix: 'py_' }
+      - performance_projected:
+          component: 'IncomeDrivers'
+          context_alias:
+            new: 'Target Performance'
+            existing: 'Projected Performance'
+            generic: 'Income Drivers'
+          presets: ['good', 'better', 'best', 'custom']
+          scopes: ['returns', 'avgNetFee']
+          slider_range: [-10.0, 20.0] # tenths
+          taxrush_gating: "region==='CA' && handlesTaxRush"
+
+  - id: wizard_step_2
+    path: '/wizard/step-2'
+    title: 'Expense Management'
+    header_recap: 'read-only banner of interview + PY + projected'
+    grid:
+      target_total_pct: 0.76
+      line_items:
+        - key: personnel # example baseline; see expenses.rules below
+        - key: facility
+        - key: marketing
+        - key: utilities
+        - key: royalties
+        - key: misc
+      dual_entry: '$↔%'
+      rent_guard:
+        enabled: true
+        strategy: 'raiseToLocalIfBelow'
+        anchored_reset_preserves_rent_choice: true
+
+  - id: wizard_step_3
+    path: '/wizard/step-3'
+    alias: '/reports' # canonical
+    title: 'Reports & Snapshot'
+    sections:
+      - header_meta: ['Region', 'Store Type', 'Scenario', 'Timestamp']
+      - prior_year_mini: ['PY returns', 'PY ANF', 'PY revenue', 'PY expenses', 'PY net', 'PY net%']
+      - projected_pnl:
+          [
+            'Returns',
+            'ANF',
+            'Gross',
+            'Discounts',
+            'Net Tax-Prep Fees',
+            'Other Income',
+            'Total Revenue',
+            'Total Expenses',
+            'Net',
+            'Net%',
+            'CPR',
+          ]
+      - expense_mix_table: ['category', '$', '% of total revenue']
+      - kpi_stoplights: ['Net%', 'CPR', 'Expenses%']
+    actions:
+      - label: 'Print / Save as PDF'
+        note: 'window.print + print.css'
+      - label: 'Export CSV'
+        note: 'client-side'
+      - label: 'Export Excel'
+        note: 'map to openpyxl template'
+      - label: 'Create Dashboard'
+        note: 'snapshot baseline'
+
+  - id: dashboard
+    path: '/dashboard'
+    title: 'Dashboard'
+    layout: 'Tri-column'
+    columns:
+      left: 'Projected snapshot (read-only) + deep links to wizard'
+      center: 'YTD inputs (returns, ANF, discounts, other income) + pacing'
+      right: 'Differentials vs projected + KPI stoplights + PY mini'
+
+components:
+  IncomeDrivers:
+    role: 'Single engine for performance inputs'
+    inputs:
+      - context: ['new', 'existing', 'generic']
+      - region: ['US', 'CA']
+      - handlesTaxRush: boolean
+      - baseline?: 'PerformanceBaseline (PY)'
+    fields:
+      - returns: { type: 'count', required: true, eg_by_region: { US: 1200, CA: 900 } }
+      - avgNetFee: { type: 'currency', required: true, eg_by_region: { US: 275, CA: 195 } }
+      - discountsPct: { type: 'percent', default: 3.0 }
+      - discountsAmt: { type: 'currency', mode: 'auto|manual (bi-dir)' }
+      - otherIncome?: { type: 'currency', gated_by: 'hasOtherIncome' }
+      - tr_returns?: { type: 'count', gated_by: "region==='CA' && handlesTaxRush" }
+      - tr_avgNetFee?: { type: 'currency', gated_by: "region==='CA' && handlesTaxRush" }
+    behaviors:
+      - alias_by_context:
+          {
+            new: 'Target Performance',
+            existing: 'Projected Performance',
+            generic: 'Income Drivers',
+          }
+      - placeholders_until_first_input: true
+      - presets:
+          good: { delta: 0.02 }
+          better: { delta: 0.05 }
+          best: { delta: 0.10 }
+          custom_slider: [-10.0, 20.0] # tenths
+          scope_toggles: ['returns', 'avgNetFee']
+      - bi_directional:
+          rule: 'amount <-> percent; lastEdited wins; consistent rounding'
+      - visual_contract:
+          required_manual: 'white'
+          auto_calculated: 'blue'
+          reset_auto_control: true
+      - gating:
+          "region==='US'": 'hide taxrush fields; zero them'
+          "region==='CA' && !handlesTaxRush": 'hide taxrush fields; zero them'
+
+  PriorYear:
+    role: 'Mirror of IncomeDrivers with py_ prefix'
+    inputs: ['region', 'handlesTaxRush']
+    outputs: ['baselineChange (py_*)']
+    same_fields_as_income_drivers: true
+    auto_vs_manual: 'same bi-directional rules'
+
+  Expenses:
+    role: 'Line items with dual-entry and rebalance to target'
+    inputs: ['totalRevenue', 'localAvgRent?', 'anchors']
+    anchors: { rentLocked: boolean, rentLocalAvg?: number }
+    math:
+      - computeBaselineItems: 'amount = revenue * baselinePct'
+      - recompute_from_amount / recompute_from_pct
+      - rebalance_except: 'pro-rata over non-except items to hit targetTotalPct'
+    rent_guard:
+      suggestion: 'If auto rent < localAvgRent → suggest using localAvg'
+      anchored_reset: 'preserve rent when toggled on; others reset to baseline then rebalance'
+    kpi_eval: 'see kpi.bands'
+
+  Reports:
+    role: 'One-page executive P&L + export + snapshot'
+    source: 'ReportAssembler service'
+    kpi: ['Net%', 'CPR', 'Expenses%']
+    cpr:
+      formula: 'totalExpenses / totalReturns (round dollars)'
+      target_hint: '0.76 * revenuePerReturn (displayed as target only; stoplight uses actual CPR via expenses%)'
+
+  DashboardTriColumn:
+    role: 'Projected (left), YTD (center), Diff+KPIs (right)'
+    ytd_goals:
+      near_goal_pct: 0.18 # yellow band if within 18% of goal
+    pacing_example:
+      # TODO: confirm final monthly shares
+      Jan: 0.10
+      Feb: 0.18
+      Mar: 0.28
+      Apr: 0.40
+      May: 0.52
+      Jun: 0.60
+      Jul: 0.66
+      Aug: 0.72
+      Sep: 0.78
+      Oct: 0.84
+      Nov: 0.92
+      Dec: 1.00
+
+state_model:
+  namespaces: ['py', 'proj', 'cy']
+  drivers:
+    returns: number
+    avgNetFee: number
+    discountsAmt?: number
+    discountsPct?: number
+    otherIncome?: number
+    taxRush?: { returns: number, avgNetFee: number }
+  totals:
+    totalRevenue: number
+    totalExpenses: number
+    net: number
+    netPct: number
+    cpr: number
+  snapshot:
+    scenario: ['good', 'better', 'best', 'custom']
+    createdAt: string
+  persistence:
+    keys:
+      wizard_step1: 'LT_W1_V1'
+      wizard_step2: 'LT_W2_V1'
+      reports_snapshot: 'LT_SNAP_V1'
+      dashboard_snapshot: 'LT_DASH_V1'
+    policy:
+      debounce_ms: 200
+      section_resets_preserve_others: true
+
+fields_dictionary_contract:
+  rule: 'dictionary-first labeling; no template math'
+  metadata:
+    type: ['currency', 'percent', 'count']
+    step?: 'currency→1, percent→0.1, count→1'
+    eg?: 'region-specific example'
+    auto?: boolean
+    validators?: ['required', 'min', 'max']
+  format:
+    currency: 'leading $, thousands separators, no fixed cents by default'
+    percent: 'trailing %, step=0.1'
+    required_vs_auto_color: { manual: 'white', auto: 'blue' }
+
+gating_matrix:
+  - when: { region: 'US', storeType: 'new' }
+    visible: ["IncomeDrivers (context='new')"]
+    hidden: ['PriorYear', 'TaxRush']
+  - when: { region: 'US', storeType: 'existing' }
+    visible: ['PriorYear', "IncomeDrivers (context='existing')"]
+    hidden: ['TaxRush']
+  - when: { region: 'CA', storeType: 'new' }
+    visible: ["IncomeDrivers (context='new')", 'TaxRush (if handlesTaxRush)']
+  - when: { region: 'CA', storeType: 'existing' }
+    visible: ['PriorYear', 'IncomeDrivers (existing)', 'TaxRush (if handlesTaxRush)']
+
+presets:
+  good: { delta: 0.02, scopes: ['returns', 'avgNetFee'] }
+  better: { delta: 0.05, scopes: ['returns', 'avgNetFee'] }
+  best: { delta: 0.10, scopes: ['returns', 'avgNetFee'] }
+  custom:
+    slider: { min: -10.0, max: 20.0, step: 0.1 }
+    scopes: ['returns', 'avgNetFee']
+
+kpi:
+  bands:
+    expensesPct:
+      green: [0.745, 0.775]
+      yellow_margin: 0.03 # ± 3.0% from green edges
+      red_margin: 0.035 # ± 3.5% from green edges
+    netPct:
+      mirror_of_expenses: true # netPct = 1 - expensesPct
+    cpr:
+      guidance: 'Display actual CPR; color from expensesPct color to avoid contradiction'
+  rounding:
+    currency: 'round to whole dollars'
+    percent: 'one decimal where shown'
+
+expenses_rules:
+  target_total: 0.76
+  categories:
+    - { key: 'personnel', label: 'Personnel', baselinePct: 0.34, minPct: 0.25, maxPct: 0.40 }
+    - { key: 'facility', label: 'Facility (Rent)', baselinePct: 0.18, minPct: 0.12, maxPct: 0.24 }
+    - { key: 'marketing', label: 'Marketing', baselinePct: 0.06, minPct: 0.02, maxPct: 0.10 }
+    - { key: 'utilities', label: 'Utilities', baselinePct: 0.02, minPct: 0.01, maxPct: 0.04 }
+    - {
+        key: 'royalties',
+        label: 'Royalties & Ad Fund',
+        baselinePct: 0.10,
+        minPct: 0.08,
+        maxPct: 0.12,
+      }
+    - { key: 'misc', label: 'Miscellaneous', baselinePct: 0.06, minPct: 0.02, maxPct: 0.10 }
+  region_validations_examples:
+    us:
+      officeSupplies_pct_of_net_revenue: 0.035
+      postage_pct_of_net_revenue: 0.01
+      penalty_interest_pct_of_net_revenue: 0.002 # first-year offices: budget $0
+      refunds_pct_of_net_fees: 0.01
+      send_a_friend: { per_return_pct: 0.05, per_return_amount: 50 } # 5% of returns * $50
+      royalties: { royalty_pct: 0.14, ad_royalty_pct: 0.05, min_rules: 'apply mins if applicable' }
+      payroll_taxes_pct_of_wages: 0.12
+      rent_guides:
+        max_of_total_income: 0.30
+        new_office_max_usd_per_month: 1500
+        year3_taxprep_rule: 'rent ≤ 10% of gross volume'
+    ca:
+      # keep placeholders; finalize with local rules as needed
+      cpr_focus: true
+  rent_guard:
+    enabled: true
+    strategy: 'raiseToLocalIfBelow'
+    ux_copy: 'Local average rent is higher than default; use this value?'
+    anchored_reset_preserves_rent: true
+
+pro_tips:
+  minimal_engine:
+    when:
+      - 'net_income <= 0': 'Review pricing and staffing; validate volume assumptions.'
+      - 'net_margin < green_min': 'Target salaries/rent mix; check royalties/discount leakage.'
+      - 'cpr > yellow_upper': 'Reduce rework/supplies; inspect vendor costs and utilization.'
+      - 'expensesPct outside green': 'Adjust line items; rent guard can anchor to local average.'
+    visibility: 'debug or support panel; later end-user lite tips'
+
+reset_policy:
+  levels:
+    - section: 'Within a block (PY only, Projected only, Expenses only)'
+    - page: 'Whole wizard page (e.g., Expenses)'
+    - app: 'Everything including snapshots'
+  rules:
+    - 'Section reset rewrites only its scope; preserves others'
+    - 'Step-2 reset preserves rent anchor unless Full Reset chosen'
+    - 'App reset clears snapshots and local storage keys'
+
+naming_and_structure_guardrails:
+  - 'Angular standalone components; pages/<page>/components per-page; shared in app/components'
+  - 'Dictionary-first labels; no template math (all in services/utils)'
+  - 'Reactive forms; bi-directional conversions in code, not templates'
+  - 'Consistent keys: returns, avgNetFee, discountsPct/Amount, otherIncome, tr_returns, tr_avgNetFee, py_* for prior year'
+  - 'No random renaming—prefer aliasing via context'
+  - 'Blue (auto) vs White (manual) field backgrounds'
+  - "Search 'archive/' before suggesting new files; reuse where reasonable"
+
+folder_structure:
+  src/app/:
+    - 'app.component.{ts,html,scss}'
+    - 'app.routes.ts'
+    - 'components/: *shared reusable components only (header, footer, toolbar, kpi-card)*'
+    - 'core/:'
+    - '  contracts/:'
+    - '  services/:'
+    - 'pages/:'
+    - '  dashboard/:'
+    - '    dashboard.component.{ts,html,scss}'
+    - '  wizard/:'
+    - '    income-drivers/:'
+    - '      income-drivers.component.{ts,html,scss}'
+    - '    expenses/:'
+    - '      expenses.component.{ts,html,scss}'
+    - '    pnl/:'
+    - '      pnl.component.{ts,html,scss}'
+
+progress:
+  last_updated: '2025-09-21'
+  milestones:
+    - id: app_boot
+      label: Angular app boots and routes load
+      state: done
+    - id: global_styles
+      label: Global styles consolidated + partials
+      state: done
+    - id: header_footer
+      label: Header + Footer (nav, version, layout)
+      state: done
+    - id: debug_panel
+      label: Debug panel placeholder (push-layout, desktop/mobile)
+      state: done
+    - id: brands_assets
+      label: Brand assets wired (logo/watermark)
+      state: done
+    - id: wizard_income
+      label: 'Wizard: Income Drivers page scaffolded'
+      state: in_progress
+    - id: wizard_expenses
+      label: 'Wizard: Expenses page scaffolded'
+      state: in_progress
+    - id: wizard_pnl
+      label: 'Wizard: P&L page scaffolded'
+      state: in_progress
+    - id: calc_port
+      label: Port calculations from React reference
+      state: planned
+    - id: reports_export
+      label: Reports + Export flows
+      state: planned
+
+testing_focus:
+  invariants:
+    - 'Data flows Wizard→Expenses→Reports→Dashboard without drift'
+    - 'Projected values override PY when building Dashboard snapshot'
+    - 'Expenses start green when Step-1 inputs are green; not caution by default'
+    - 'Bi-directional $↔% works deterministically (lastEdited wins)'
+    - 'Gating hides/shows TaxRush & Other Income correctly by region/storeType'
+    - 'Presets apply by scope; custom slider in tenths'
+    - 'Rent anchor behavior preserved on anchored reset'
+  quick_vectors:
+    - 'returns=1600, avgFee=275 → gross=440,000; 3% discounts→$13,200; income=426,800'
+    - 'good +2% both scopes updates returns and avgFee by 2%'
+    - 'US hides TaxRush; CA+handlesTaxRush shows tr_* and updates totals'
+    - 'CPR = totalExpenses/totalReturns (rounded); color derived from expenses% color'
+  policy:
+    n_minus_3_attempts: 'For each failing spec, attempt up to 3 targeted fixes per session before moving on; log each pass'
+    logging:
+      harness_logs_dir: '.logs'
+      wizard_harness_logs:
+        ['wizard-tests-pass1.log', 'wizard-tests-pass2.log', 'wizard-tests-pass3.log']
+      build_logs: ['react-build.log', 'angular-build.log']
+      yaml_checks: ['yaml-prettier-check.log']
+
+acceptance_checklist:
+  - 'UI parity: Angular matches React layout and labels'
+  - 'Wizard p1 gating, aliases, presets working'
+  - 'Wizard p2 expenses grid dual-entry + rent guard anchored reset'
+  - 'Wizard p3 reports show P&L, CPR prominent, export CSV, print CSS ok'
+  - 'Dashboard tri-column shows projected, YTD, diffs, KPIs'
+  - "Snapshots: 'Create Dashboard' freezes baseline; dashboard prefers snapshot"
+  - 'KPI bands: expenses 74.5–77.5 green; net% complements; CPR displayed and consistent'
+  - 'No auto prod deploy; manual merge to main only'
+
+blueprint_delta_2025_09_23:
+  summary:
+    - 'Angular upgraded/confirmed at v20; standalone components pattern enforced'
+    - 'BrandingService enhanced: sets favicon/title; richer typography vars applied'
+    - 'REGION_CONFIGS token present with DEFAULT_REGION_CONFIGS and thresholds; injected via services'
+    - 'Dashboard page split: results panel composed of kpi-stoplights, income-summary-card, expense-breakdown-card, pro-tips-card'
+    - 'Roadmap scaffolds added: monthly-forecast-card, multi-store-summary-card (visible placeholders)'
+    - 'Debug tools: Baseline Manager (formerly Suggestion Manager) integrated under debug panel; baseline engine/types added as pure TS'
+    - 'Expenses taxonomy aligned to 6 categories (personnel, facility, marketing, utilities, franchise, misc); Salaries→Payroll label; Dues moved to misc; franchise listed last'
+  files:
+    - 'angular/src/app/services/branding.service.ts'
+    - 'angular/src/app/core/tokens/region-configs.token.ts'
+    - 'angular/src/app/pages/dashboard/components/*'
+    - 'angular/src/app/components/debug-system/baseline-manager/*'
+    - 'angular/src/app/devtools/baselines/*'
+  notes:
+    - 'No business logic changes to calculations; domain functions remain pure TS in domain/calculations'
+    - 'If roadmap cards remain unfinished prior to main merge, gate visibility behind a debug flag or query parameter'
+
+blueprint_delta_2025_09_24:
+  summary:
+    - 'Ported React AnalysisBlock model into Angular: types + standalone component shell'
+    - 'Added FEATURE_FLAGS token with showAnalysisBlock; demo route at /dev/analysis-demo'
+    - 'No business logic wired; planned AnalysisData assembler service for later'
+  files:
+    - 'angular/src/app/domain/types/analysis.types.ts'
+    - 'angular/src/app/components/analysis-block/analysis-block.component.ts'
+    - 'angular/src/app/components/analysis-block/analysis-block-demo.component.ts'
+    - 'angular/src/app/core/tokens/feature-flags.token.ts'
+    - 'angular/src/app/app.routes.ts'
+  notes:
+    - 'Component is presentational; feature gated for dev until complete'

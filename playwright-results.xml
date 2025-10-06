@@ -1,2 +1,90 @@
-<testsuites id="" name="" tests="0" failures="0" skipped="0" errors="0" time="1.4881720000000003">
+<testsuites id="" name="" tests="2" failures="2" skipped="0" errors="0" time="69.36926600000001">
+<testsuite name="test-header-updates.spec.js" timestamp="2025-09-25T14:25:54.137Z" hostname="chromium" tests="2" failures="2" skipped="0" time="48.523" errors="0">
+<testcase name="Header Updates from Quick Start Wizard › should update header when Quick Start Wizard values change" classname="test-header-updates.spec.js" time="30.519">
+<failure message="test-header-updates.spec.js:5:3 should update header when Quick Start Wizard values change" type="FAILURE">
+<![CDATA[  [chromium] › test-header-updates.spec.js:5:3 › Header Updates from Quick Start Wizard › should update header when Quick Start Wizard values change 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.textContent: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('.small.text-xs').nth(1)
+
+
+      14 |     
+      15 |     // Check initial header values
+    > 16 |     const headerText = await page.locator('.small.text-xs').nth(1).textContent();
+         |                                                                    ^
+      17 |     console.log('📊 Initial header text:', headerText);
+      18 |     
+      19 |     // Change Quick Start Wizard selections
+        at E:\dev\libertytax-pnl-webapp\test\e2e\test-header-updates.spec.js:16:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\test-header-updates-Header-6a9b7--Start-Wizard-values-change-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\test-header-updates-Header-6a9b7--Start-Wizard-values-change-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\test-header-updates-Header-6a9b7--Start-Wizard-values-change-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🔍 Starting header update test...
+
+[[ATTACHMENT|test-results\test-header-updates-Header-6a9b7--Start-Wizard-values-change-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\test-header-updates-Header-6a9b7--Start-Wizard-values-change-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\test-header-updates-Header-6a9b7--Start-Wizard-values-change-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Header Updates from Quick Start Wizard › should navigate correctly between pages" classname="test-header-updates.spec.js" time="18.004">
+<failure message="test-header-updates.spec.js:53:3 should navigate correctly between pages" type="FAILURE">
+<![CDATA[  [chromium] › test-header-updates.spec.js:53:3 › Header Updates from Quick Start Wizard › should navigate correctly between pages 
+
+    Error: locator.click: Error: strict mode violation: locator('button:has-text("Expenses")') resolved to 2 elements:
+        1) <button title="Expenses" class="btn btn--nav" _ngcontent-ng-c1660371727="">Expenses</button> aka getByTitle('Expenses', { exact: true })
+        2) <button class="btn btn--nav" _ngcontent-ng-c3182879400="">Expenses</button> aka getByRole('contentinfo').getByRole('button', { name: 'Expenses' })
+
+    Call log:
+      - waiting for locator('button:has-text("Expenses")')
+
+
+      59 |     // Test expenses navigation
+      60 |     console.log('🔄 Clicking Expenses button...');
+    > 61 |     await page.locator('button:has-text("Expenses")').click();
+         |                                                       ^
+      62 |     await page.waitForTimeout(2000);
+      63 |     
+      64 |     const expensesUrl = page.url();
+        at E:\dev\libertytax-pnl-webapp\test\e2e\test-header-updates.spec.js:61:55
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🔍 Starting navigation test...
+🔄 Clicking Expenses button...
+
+[[ATTACHMENT|test-results\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
 </testsuites>

@@ -1,0 +1,50 @@
+<header class="header">
+  <div class="header-grid">
+    <div class="header-logo-section">
+      <app-brand-logo [region]="(region$ | async) || 'US'" variant="wide" size="large"></app-brand-logo>
+    </div>
+    <div class="header-center-section">
+      <!-- Breadcrumb (optional) -->
+      <div *ngIf="hasBreadcrumb" class="header-breadcrumb">
+        <ng-container *ngFor="let item of breadcrumb!; let last = last">
+          <button *ngIf="item.onClick; else crumbText" (click)="item.onClick()" class="breadcrumb-button">{{ item.label
+            }}</button>
+          <ng-template #crumbText><span>{{ item.label }}</span></ng-template>
+          <span *ngIf="!last" class="breadcrumb-separator">→</span>
+        </ng-container>
+      </div>
+
+      <div class="h2 brand header-title">Liberty Tax • P&L Budget & Forecast</div>
+      <span class="small text-xs header-version">v{{ appVersion }} preview</span>
+      <div class="small text-xs" data-testid="app-header-summary">
+        Region: {{ (region$ | async) || 'US' }}
+      </div>
+    </div>
+    <div class="header-actions-section">
+      <div class="header-nav-row">
+        <button class="btn btn--secondary" (click)="goIncome()">Income</button>
+        <button class="btn btn--secondary" (click)="goExpenses()">Expenses</button>
+        <button class="btn btn--secondary" (click)="goReports()">Reports</button>
+      </div>
+      <div class="header-controls-row">
+        <!-- Optional store pill -->
+        <span *ngIf="storeInfo" class="store-pill"
+          [ngClass]="storeInfo.type === 'multi' ? 'store-pill--multi' : 'store-pill--single'">
+          {{ storeInfo.type === 'multi' ? ('🏢 ' + (storeInfo.count || 1) + ' Stores') : ('🏪 ' + (storeInfo.name ||
+          'Single Store')) }}
+        </span>
+        <button class="btn btn--secondary" (click)="goDashboard()">Dashboard</button>
+        <button class="btn btn--danger" (click)="resetWizard()">Reset App</button>
+        <button class="btn btn--primary" (click)="toggleDebug()">Debug</button>
+        <!-- Optional actions -->
+        <ng-container *ngIf="actions?.length">
+          <button *ngFor="let a of actions" (click)="a.onClick()" [ngStyle]="actionStyle(a.variant)"
+            class="action-button">
+            <span *ngIf="a.icon">{{ a.icon }}</span>
+            {{ a.label }}
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</header>

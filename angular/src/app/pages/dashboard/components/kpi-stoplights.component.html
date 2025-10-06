@@ -1,0 +1,28 @@
+<div class="kpi-vertical" style="margin-bottom: 1rem;">
+  <div class="kpi" data-testid="kpi-net-income" [ngClass]="netIncomeStatus"
+    style="min-height: 60px; display: flex; align-items: center; gap: 12px;">
+    <div>
+      <div>Net Income</div>
+      <div class="value">{{ results.netIncome | currency }}</div>
+      <div class="small">Income − Expenses</div>
+    </div>
+  </div>
+
+  <div class="kpi" data-testid="kpi-net-margin" [ngClass]="marginStatus"
+    style="min-height: 60px; display: flex; align-items: center; gap: 12px;">
+    <div>
+      <div>Net Margin</div>
+      <div class="value">{{ results.netMarginPct | number:'1.0-1' }}%</div>
+      <div class="small">Net Income ÷ Tax-Prep Income</div>
+    </div>
+  </div>
+
+  <div class="kpi" data-testid="kpi-cpr" [ngClass]="cprStatus"
+    style="min-height: 60px; display: flex; align-items: center; gap: 12px;">
+    <div>
+      <div>Cost / Return</div>
+      <div class="value">{{ results.costPerReturn | currency }}</div>
+      <div class="small">Total Expenses ÷ Returns</div>
+    </div>
+  </div>
+</div>
