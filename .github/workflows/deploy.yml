@@ -1,18 +1,10 @@
 name: deploy
 
 on:
-  
   push:
-    branches:
-      - main
-      - staging
-      - 'feature/*'
-      - 'fix/*'
-      - 'chore/*'
+    branches: [main, staging, 'feature/*', 'fix/*', 'chore/*']
   pull_request:
-    branches:
-      - main
-      - staging
+    branches: [main, staging]
   workflow_dispatch:
     inputs:
       target_env:
@@ -44,20 +36,16 @@ jobs:
           REF_NAME="${GITHUB_REF_NAME:-}"
           EVENT="${GITHUB_EVENT_NAME:-}"
 
-          # If manually dispatched, honor the dropdown input
           if [[ "$EVENT" == "workflow_dispatch" ]]; then
-            case "${{ inputs.target_env }}" in
-              Dev|dev|Preview|preview)   ENV_NAME="Preview" ;;
-              Staging|staging)           ENV_NAME="Staging" ;;
-              Production|production|Prod|prod) ENV_NAME="Production" ;;
-              *)                         ENV_NAME="Preview" ;;
+            INPUT="${{ github.event.inputs.target_env || '' }}"
+            case "$INPUT" in
+              Dev|dev|Preview|preview)           ENV_NAME="Preview" ;;
+              Staging|staging)                   ENV_NAME="Staging" ;;
+              Production|production|Prod|prod)   ENV_NAME="Production" ;;
+              *)                                 ENV_NAME="Preview" ;;
             esac
-
-          # PRs go to Preview (your DEV on Unraid)
           elif [[ "$EVENT" == "pull_request" ]]; then
             ENV_NAME="Preview"
-
-          # Branch mapping
           elif [[ "$REF_NAME" == "staging" ]]; then
             ENV_NAME="Staging"
           elif [[ "$REF_NAME" == "main" || "$REF_NAME" == "master" ]]; then
@@ -69,38 +57,37 @@ jobs:
           echo "env_name=$ENV_NAME" >> "$GITHUB_OUTPUT"
           echo "Selected environment: $ENV_NAME"
 
-
-
   build:
     name: Build & Deploy
     needs: map-env
     runs-on: [self-hosted, unraid]
     environment:
       name: ${{ needs.map-env.outputs.env_name }}
-
     steps:
-    - uses: actions/setup-node@v4
-  with:
-    node-version: 20
-    cache: 'npm' # let setup-node handle it
-    # If monorepo, list all lockfiles so the key is correct:
-    cache-dependency-path: |
-      package-lock.json
-      **/package-lock.json
-        - run: npm ci
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            angular/package-lock.json
 
       - name: Install (Angular)
-        working-directory: angular                           # <— NEW
+        working-directory: angular
         run: npm ci
 
       - name: Build (Angular)
-        working-directory: angular                           # <— NEW
+        working-directory: angular
         run: npx ng build --configuration "${{ vars.BUILD_CONFIGURATION || 'production' }}"
 
       - name: Resolve build output directory
         id: outdir
         run: |
-          PATTERN="${{ vars.DIST_DIR || 'angular/dist/*/browser' }}"   # <— UPDATED DEFAULT
+          PATTERN="${{ vars.DIST_DIR || 'angular/dist/*/browser' }}"
           CANDIDATE="$(ls -d ${PATTERN} 2>/dev/null | head -n1 || true)"
           if [ -z "$CANDIDATE" ]; then
             echo "❌ Could not find build output. Set repo variable DIST_DIR to your dist path." >&2
@@ -110,7 +97,6 @@ jobs:
           fi
           echo "outdir=$CANDIDATE" >> "$GITHUB_OUTPUT"
           echo "Using OUTDIR=$CANDIDATE"
-
 
       - name: Trigger Vercel deploy (optional; gated off by var)
         if: ${{ vars.SKIP_VERCEL != 'true' }}
@@ -137,11 +123,12 @@ jobs:
           ENV_APP_NAME: ${{ vars.APP_NAME || 'libertytax-pnl-webapp' }}
         run: |
           if [ -n "$ENV_NGINX_DEPLOY_PATH" ]; then
-            echo "path=$ENV_NGINX_DEPLOY_PATH" >> "$GITHUB_OUTPUT"
+            path="$ENV_NGINX_DEPLOY_PATH"
           else
-            echo "path=$ENV_NGINX_ROOT/$ENV_APP_ENV/$ENV_APP_NAME" >> "$GITHUB_OUTPUT"
+            path="$ENV_NGINX_ROOT/$ENV_APP_ENV/$ENV_APP_NAME"
           fi
-          echo "Computed deploy path: $(grep '^path=' "$GITHUB_OUTPUT" | cut -d= -f2)"
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+          echo "Computed deploy path: $path"
 
       - name: Copy build to Unraid Nginx
         run: |
