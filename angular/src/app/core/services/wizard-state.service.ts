@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import type { RegionCode } from '../tokens/region-configs.token';
 import type { WizardAnswers } from '../../domain/types/wizard.types';
 import { BiDirService } from './bidir/bidir.service';
@@ -26,6 +27,10 @@ export class WizardStateService {
   private readonly quickWizardLock$ = new BehaviorSubject<boolean>(false);
   readonly quickWizardLockChanges$ = this.quickWizardLock$.asObservable();
 
+  // Performance optimization: debounce heavy calculations
+  private readonly _recalculationTrigger$ = new BehaviorSubject<WizardAnswers | null>(null);
+  private isCalculating = false;
+
   private selections: WizardSelections = {
     region: 'US',
     storeType: 'new',
@@ -37,17 +42,29 @@ export class WizardStateService {
     private readonly bidir: BiDirService,
     private readonly projectedService: ProjectedService
   ) {
-    // Subscribe to ProjectedService changes to trigger recalculation
-    this.projectedService.targets$.subscribe(() => {
-      logger.debug('🚀 [PROJECTED] Targets changed, recalculating...');
-      this.calculateDerivedValues(this.answers);
-      this.saveToStorage(this.answers);
+    // Performance optimization: debounce heavy recalculations
+    this._recalculationTrigger$
+      .pipe(
+        debounceTime(100) // Wait 100ms before recalculating
+      )
+      .subscribe((answers) => {
+        if (answers && !this.isCalculating) {
+          this.isCalculating = true;
+          this.calculateDerivedValues(answers);
+          this.saveToStorage(answers);
+          this.isCalculating = false;
+        }
+      });
+
+    // Subscribe to ProjectedService changes with debouncing
+    this.projectedService.targets$.pipe(debounceTime(50)).subscribe(() => {
+      logger.debug('🚀 [PROJECTED] Targets changed, scheduling recalculation...');
+      this._recalculationTrigger$.next(this.answers);
     });
 
-    this.projectedService.growthPct$.subscribe(() => {
-      logger.debug('🚀 [PROJECTED] Growth percentage changed, recalculating...');
-      this.calculateDerivedValues(this.answers);
-      this.saveToStorage(this.answers);
+    this.projectedService.growthPct$.pipe(debounceTime(50)).subscribe(() => {
+      logger.debug('🚀 [PROJECTED] Growth percentage changed, scheduling recalculation...');
+      this._recalculationTrigger$.next(this.answers);
     });
   }
 
@@ -62,7 +79,8 @@ export class WizardStateService {
   // Quick Start Wizard configuration. This abstracts away all the complexity
   // of different store types, regions, and other wizard settings.
 
-  private debugEnabled = true; // Set to false to disable debugging in production
+  // Performance optimization: disable heavy debugging in production
+  private debugEnabled = false; // Changed from true to false for better performance
 
   private debugComputedProperty(methodName: string, result: any, context: any = {}) {
     if (!this.debugEnabled) return;
@@ -457,26 +475,14 @@ export class WizardStateService {
   }
 
   updateAnswers(updates: Partial<WizardAnswers>): void {
-    console.group('🔄 WizardState.updateAnswers()');
-    console.log('📥 Input updates:', updates);
+    // Performance optimization: reduce console logging
+    if (this.debugEnabled) {
+      console.group('🔄 WizardState.updateAnswers()');
+      console.log('📥 Input updates:', updates);
+    }
 
     const current = this.answers;
-    console.log('📊 Current state before:', {
-      region: current.region,
-      storeType: current.storeType,
-      projectedTaxPrepReturns: current.projectedTaxPrepReturns,
-      avgNetFee: current.avgNetFee,
-      projectedGrossFees: current.projectedGrossFees,
-      discountsPct: current.discountsPct,
-      discountsAmt: current.discountsAmt,
-      projectedTaxPrepIncome: current.projectedTaxPrepIncome,
-      taxRushReturns: current.taxRushReturns,
-      taxRushAvgNetFee: current.taxRushAvgNetFee,
-      taxRushGrossFees: current.taxRushGrossFees,
-    });
-
     let next = { ...current, ...updates };
-    console.log('🔄 After applying updates:', Object.keys(updates));
 
     const wasConfigComplete = this.isWizardConfigComplete(current);
     const isConfigComplete = this.isWizardConfigComplete(next);
@@ -488,18 +494,24 @@ export class WizardStateService {
 
     // Apply regional defaults when region changes
     if ('region' in updates && updates.region !== current.region) {
-      console.log('🌍 Region changed from', current.region, 'to', updates.region);
+      if (this.debugEnabled) {
+        console.log('🌍 Region changed from', current.region, 'to', updates.region);
+      }
       next = this.applyRegionalDefaults(next);
     }
 
     if (current._isExampleData && ((isConfigComplete && !wasConfigComplete) || hasUserInput)) {
-      console.log('🧹 Clearing example data after wizard completion/user input');
+      if (this.debugEnabled) {
+        console.log('🧹 Clearing example data after wizard completion/user input');
+      }
       next = this.clearExampleData(next);
     }
 
     // Handle bidirectional discount calculation
     if ('discountsAmt' in updates && current.projectedGrossFees) {
-      console.log('💰 Bidirectional: Amount changed, recalculating percentage');
+      if (this.debugEnabled) {
+        console.log('💰 Bidirectional: Amount changed, recalculating percentage');
+      }
       const resolved = this.bidir.resolveLastEdited(
         'amount',
         current.projectedGrossFees,
@@ -508,9 +520,10 @@ export class WizardStateService {
       );
       next.discountsAmt = resolved.amount;
       next.discountsPct = resolved.pct * 100; // Convert to percentage
-      console.log('💰 Result:', { amount: resolved.amount, pct: resolved.pct * 100 });
     } else if ('discountsPct' in updates && current.projectedGrossFees) {
-      console.log('📊 Bidirectional: Percentage changed, recalculating amount');
+      if (this.debugEnabled) {
+        console.log('📊 Bidirectional: Percentage changed, recalculating amount');
+      }
       const resolved = this.bidir.resolveLastEdited(
         'pct',
         current.projectedGrossFees,
@@ -519,30 +532,19 @@ export class WizardStateService {
       );
       next.discountsAmt = resolved.amount;
       next.discountsPct = resolved.pct * 100;
-      console.log('📊 Result:', { amount: resolved.amount, pct: resolved.pct * 100 });
     }
 
-    // Auto-calculate derived values
-    console.log('🧮 Starting auto-calculations...');
-    this.calculateDerivedValues(next);
-
-    console.log('✅ Final state after:', {
-      region: next.region,
-      storeType: next.storeType,
-      projectedTaxPrepReturns: next.projectedTaxPrepReturns,
-      avgNetFee: next.avgNetFee,
-      projectedGrossFees: next.projectedGrossFees,
-      discountsPct: next.discountsPct,
-      discountsAmt: next.discountsAmt,
-      projectedTaxPrepIncome: next.projectedTaxPrepIncome,
-      taxRushReturns: next.taxRushReturns,
-      taxRushAvgNetFee: next.taxRushAvgNetFee,
-      taxRushGrossFees: next.taxRushGrossFees,
-    });
-
+    // Update state immediately for UI responsiveness
     this._answers$.next(next);
-    this.saveToStorage(next);
-    console.groupEnd();
+
+    // Schedule heavy calculations to run asynchronously
+    setTimeout(() => {
+      this._recalculationTrigger$.next(next);
+    }, 0);
+
+    if (this.debugEnabled) {
+      console.groupEnd();
+    }
   }
 
   private hasMeaningfulUserInput(updates: Partial<WizardAnswers>, current: WizardAnswers): boolean {
@@ -636,18 +638,22 @@ export class WizardStateService {
   }
 
   private calculateDerivedValues(answers: WizardAnswers): void {
-    console.group('🧮 calculateDerivedValues()');
+    if (this.debugEnabled) {
+      console.group('🧮 calculateDerivedValues()');
+    }
 
     // Calculate projected gross fees
     if (answers.projectedTaxPrepReturns && answers.avgNetFee) {
       const oldGrossFees = answers.projectedGrossFees;
       answers.projectedGrossFees =
         Math.round(answers.projectedTaxPrepReturns * answers.avgNetFee * 100) / 100;
-      console.log(
-        '💰 Gross Fees:',
-        `${answers.projectedTaxPrepReturns} × $${answers.avgNetFee} = $${answers.projectedGrossFees}`,
-        oldGrossFees !== answers.projectedGrossFees ? '(CHANGED)' : '(same)'
-      );
+      if (this.debugEnabled) {
+        console.log(
+          '💰 Gross Fees:',
+          `${answers.projectedTaxPrepReturns} × $${answers.avgNetFee} = $${answers.projectedGrossFees}`,
+          oldGrossFees !== answers.projectedGrossFees ? '(CHANGED)' : '(same)'
+        );
+      }
     }
 
     // Ensure regional discount default is set if not already present
@@ -939,11 +945,15 @@ export class WizardStateService {
     // Projected Performance calculations
     this.calculateProjectedPerformance(answers);
 
-    console.groupEnd();
+    if (this.debugEnabled) {
+      console.groupEnd();
+    }
   }
 
   private calculateProjectedPerformance(answers: WizardAnswers): void {
-    console.log('🚀 [PROJECTED] Starting projected calculations...');
+    if (this.debugEnabled) {
+      console.log('🚀 [PROJECTED] Starting projected calculations...');
+    }
 
     // Get projected values from PY + growth %
     const projectedTaxPrepReturns = this.getProjectedTaxPrepReturns(answers);
@@ -964,11 +974,13 @@ export class WizardStateService {
       answers.projectedGrossFees = projectedGrossFees;
     }
 
-    console.log('🚀 [PROJECTED] Base calculations:', {
-      projectedTaxPrepReturns,
-      projectedAvgNetFee,
-      projectedGrossFees,
-    });
+    if (this.debugEnabled) {
+      console.log('🚀 [PROJECTED] Base calculations:', {
+        projectedTaxPrepReturns,
+        projectedAvgNetFee,
+        projectedGrossFees,
+      });
+    }
 
     // Apply regional discount defaults if not manually set
     if (!answers.manualProjectedDiscountsPct && !answers.projectedDiscountsPct) {
@@ -1096,7 +1108,9 @@ export class WizardStateService {
       }
     }
 
-    console.log('🚀 [PROJECTED] Completed projected calculations');
+    if (this.debugEnabled) {
+      console.log('🚀 [PROJECTED] Completed projected calculations');
+    }
   }
 
   private getProjectedTaxPrepReturns(answers: WizardAnswers): number | null {
