@@ -58,6 +58,10 @@ export class WizardStateService {
           this.isCalculating = true;
           this.calculateDerivedValues(answers);
           this.saveToStorage(answers);
+
+          // CRITICAL FIX: Mark wizard as complete when all required data is present
+          this.checkAndMarkWizardComplete(answers);
+
           this.isCalculating = false;
         }
       });
@@ -72,6 +76,43 @@ export class WizardStateService {
       logger.debug('🚀 [PROJECTED] Growth percentage changed, scheduling recalculation...');
       this._recalculationTrigger$.next(this.answers);
     });
+  }
+
+  /**
+   * CRITICAL FIX: Check if wizard has meaningful data and mark as complete
+   * This fixes the dashboard access issue
+   */
+  private checkAndMarkWizardComplete(answers: WizardAnswers): void {
+    // Check if we have the minimum required data for a complete wizard
+    const hasBasicConfig = this.isWizardConfigComplete(answers);
+    const hasIncomeData =
+      (answers.storeType === 'new' && answers.avgNetFee && answers.projectedTaxPrepReturns) ||
+      (answers.storeType === 'existing' && answers.projectedAvgNetFee && answers.pyTaxPrepReturns);
+    const hasExpenseData = answers.payrollPct !== undefined && answers.rentPct !== undefined;
+
+    const isComplete = hasBasicConfig && hasIncomeData && hasExpenseData;
+
+    if (isComplete) {
+      // Use dynamic import to avoid circular dependency
+      import('../../../pages/dashboard/_gate/wizard-completion.service')
+        .then(({ WizardCompletionService }) => {
+          // This is a bit hacky but necessary to avoid circular deps
+          const completionService = new WizardCompletionService();
+          if (!completionService.isComplete()) {
+            completionService.markComplete();
+            console.log('✅ [WIZARD] Marked as complete - dashboard access granted');
+          }
+        })
+        .catch(() => {
+          // Fallback: set localStorage directly
+          try {
+            localStorage.setItem('forecast.complete', 'true');
+            console.log('✅ [WIZARD] Marked as complete (fallback) - dashboard access granted');
+          } catch (e) {
+            console.warn('Failed to mark wizard complete:', e);
+          }
+        });
+    }
   }
 
   /**
