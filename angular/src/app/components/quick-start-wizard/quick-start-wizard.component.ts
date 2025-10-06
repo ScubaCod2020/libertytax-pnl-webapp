@@ -27,13 +27,18 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
   private meta = inject(AppMetaService);
 
   readonly settings$ = this.wizardState.answers$.pipe(
-    map((answers) => ({
-      region: answers.region || 'US',
-      storeType: answers.storeType || 'new',
-      taxYear: new Date().getFullYear(),
-      taxRush: answers.handlesTaxRush || false,
-      otherIncome: answers.hasOtherIncome || false,
-    }))
+    map((answers) => {
+      const settings = {
+        region: answers.region || 'US',
+        storeType: answers.storeType || 'new',
+        taxYear: new Date().getFullYear(),
+        taxRush: answers.handlesTaxRush === true, // Ensure boolean
+        otherIncome: answers.hasOtherIncome === true, // Ensure boolean
+      };
+      console.log('🔍 [Quick Start Wizard] Settings computed:', settings);
+      console.log('🔍 [Quick Start Wizard] Raw answers:', answers);
+      return settings;
+    })
   );
 
   readonly currentPage$ = this.router.events.pipe(
@@ -82,6 +87,13 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
     this.wizardState.updateAnswers({ region });
   }
 
+  onRegionLabelClick(value: string, event: Event) {
+    console.log('🔍 [Debug] Region label clicked:', value);
+    event.preventDefault();
+    event.stopPropagation();
+    this.onRegionChange(value);
+  }
+
   onStoreTypeChange(v: string) {
     const storeType = v === 'new' ? 'new' : 'existing';
     console.log('🏪 [Wizard] Store Type changed to:', storeType);
@@ -91,13 +103,42 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
   onTaxRushChange(v: string | boolean) {
     const boolValue = v === true || v === 'true';
     console.log('🚀 [Wizard] TaxRush changed to:', boolValue, '(from:', v, ')');
+    console.log(
+      '🚀 [Wizard] Current handlesTaxRush before update:',
+      this.wizardState.answers.handlesTaxRush
+    );
     this.wizardState.updateAnswers({ handlesTaxRush: boolValue });
+    console.log(
+      '🚀 [Wizard] Current handlesTaxRush after update:',
+      this.wizardState.answers.handlesTaxRush
+    );
+  }
+
+  onTaxRushLabelClick(value: boolean, event: Event) {
+    console.log('🔍 [Debug] TaxRush label clicked:', value);
+    event.preventDefault();
+    event.stopPropagation();
+    this.onTaxRushChange(value);
   }
 
   onOtherIncomeChange(v: string | boolean) {
     const boolValue = v === true || v === 'true';
     console.log('💼 [Wizard] Other Income changed to:', boolValue, '(from:', v, ')');
     this.wizardState.updateAnswers({ hasOtherIncome: boolValue });
+  }
+
+  onOtherIncomeLabelClick(value: boolean, event: Event) {
+    console.log('🔍 [Debug] Other Income label clicked:', value);
+    event.preventDefault();
+    event.stopPropagation();
+    this.onOtherIncomeChange(value);
+  }
+
+  onStoreTypeLabelClick(value: string, event: Event) {
+    console.log('🔍 [Debug] Store Type label clicked:', value);
+    event.preventDefault();
+    event.stopPropagation();
+    this.onStoreTypeChange(value);
   }
 
   resetWizard() {

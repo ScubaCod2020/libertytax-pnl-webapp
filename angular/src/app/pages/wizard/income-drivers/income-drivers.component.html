@@ -1,34 +1,39 @@
 <section class="wizard-step wizard-step--wide">
-  <div class="page-header" *ngIf="storeTypeInfo$ | async as storeInfo">
-    <h1>{{ storeInfo.title }}</h1>
-    <p class="page-subtitle">{{ storeInfo.description }}</p>
-  </div>
-  <div class="step-body">
-    <!-- ENHANCED DEBUG: Show multiple state sources -->
-    <div style="background: yellow; padding: 5px; font-size: 12px; margin-bottom: 5px;">
-      DEBUG: storeType = {{ storeType$ | async }}
-    </div>
-    <div style="background: orange; padding: 5px; font-size: 12px; margin-bottom: 5px;">
-      DEBUG: Direct wizard state = {{ currentStoreType }}
-    </div>
-    <div style="background: pink; padding: 5px; font-size: 12px; margin-bottom: 5px;">
-      DEBUG: Condition check = {{ (storeType$ | async) === 'existing' }}
-    </div>
-    
-    <!-- Existing store shows PY + Projected; New store shows Target -->
-    <ng-container *ngIf="(storeType$ | async) === 'existing'; else newStore">
-      <div style="background: lightgreen; padding: 5px; font-size: 12px;">
-        DEBUG: Showing EXISTING components
+  <!-- Use single subscription with template variables to avoid multiple async pipes -->
+  <ng-container *ngIf="storeType$ | async as storeType">
+    <ng-container *ngIf="storeTypeInfo$ | async as storeInfo">
+      <div class="page-header">
+        <h1>{{ storeInfo.title }}</h1>
+        <p class="page-subtitle">{{ storeInfo.description }}</p>
       </div>
-      <app-py-income-drivers></app-py-income-drivers>
-      <app-projected-income-drivers></app-projected-income-drivers>
+      <div class="step-body">
+        <!-- ENHANCED DEBUG: Show multiple state sources -->
+        <div style="background: yellow; padding: 5px; font-size: 12px; margin-bottom: 5px;">
+          DEBUG: storeType = {{ storeType }}
+        </div>
+        <div style="background: orange; padding: 5px; font-size: 12px; margin-bottom: 5px;">
+          DEBUG: Direct wizard state = {{ currentStoreType }}
+        </div>
+        <div style="background: pink; padding: 5px; font-size: 12px; margin-bottom: 5px;">
+          DEBUG: Condition check = {{ storeType === 'existing' }}
+        </div>
+        
+        <!-- Existing store shows PY + Projected; New store shows Target -->
+        <ng-container *ngIf="storeType === 'existing'; else newStore">
+          <div style="background: lightgreen; padding: 5px; font-size: 12px;">
+            DEBUG: Showing EXISTING components
+          </div>
+          <app-py-income-drivers></app-py-income-drivers>
+          <app-projected-income-drivers></app-projected-income-drivers>
+        </ng-container>
+        <ng-template #newStore>
+          <div style="background: lightblue; padding: 5px; font-size: 12px;">
+            DEBUG: Showing NEW component
+          </div>
+          <app-target-income-drivers></app-target-income-drivers>
+        </ng-template>
+      </div>
+      <footer class="step-footer"><a routerLink="/wizard/expenses">Next: Expenses</a></footer>
     </ng-container>
-    <ng-template #newStore>
-      <div style="background: lightblue; padding: 5px; font-size: 12px;">
-        DEBUG: Showing NEW component
-      </div>
-      <app-target-income-drivers></app-target-income-drivers>
-    </ng-template>
-  </div>
-  <footer class="step-footer"><a routerLink="/wizard/expenses">Next: Expenses</a></footer>
+  </ng-container>
 </section>

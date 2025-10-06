@@ -22,15 +22,13 @@
           <div class="step-content">
             <h3 class="step-question">What region is your store in?</h3>
             <div class="step-options">
-              <label class="option-card" [class.option-card--selected]="settings.region === 'US'">
-                <input type="radio" name="region" value="US" aria-label="Region" data-testid="region-select-us"
-                  [ngModel]="settings.region" (ngModelChange)="onRegionChange($event)" />
+              <label class="option-card" [class.option-card--selected]="settings.region === 'US'"
+                (click)="onRegionLabelClick('US', $event)">
                 <div class="option-title">United States</div>
               </label>
               <label class="option-card" data-testid="region-option-ca"
-                [class.option-card--selected]="settings.region === 'CA'">
-                <input type="radio" name="region" value="CA" aria-label="Region" data-testid="region-select-ca"
-                  [ngModel]="settings.region" (ngModelChange)="onRegionChange($event)" />
+                [class.option-card--selected]="settings.region === 'CA'"
+                (click)="onRegionLabelClick('CA', $event)">
                 <div class="option-title">Canada</div>
               </label>
             </div>
@@ -44,15 +42,13 @@
           <div class="step-content">
             <h3 class="step-question">Is this a new store or existing store?</h3>
             <div class="step-options">
-              <label class="option-card" [class.option-card--selected]="settings.storeType === 'new'">
-                <input type="radio" name="storeType" value="new" [ngModel]="settings.storeType"
-                  (ngModelChange)="onStoreTypeChange($event)" />
+              <label class="option-card" [class.option-card--selected]="settings.storeType === 'new'"
+                (click)="onStoreTypeLabelClick('new', $event)">
                 <div class="option-title">🏪 New Store</div>
                 <div class="option-desc">First year </div>
               </label>
-              <label class="option-card" [class.option-card--selected]="settings.storeType === 'existing'">
-                <input type="radio" name="storeType" value="existing" [ngModel]="settings.storeType"
-                  (ngModelChange)="onStoreTypeChange($event)" />
+              <label class="option-card" [class.option-card--selected]="settings.storeType === 'existing'"
+                (click)="onStoreTypeLabelClick('existing', $event)">
                 <div class="option-title">🏢 Existing Store</div>
                 <div class="option-desc">Use your Prior year performance data</div>
               </label>
@@ -69,15 +65,13 @@
             <h3 class="step-question">Do you handle TaxRush returns?</h3>
             <div class="step-help">TaxRush is Liberty Tax's same-day refund service</div>
             <div class="step-options">
-              <label class="option-card" [class.option-card--selected]="settings.taxRush === true">
-                <input type="radio" name="taxRush" value="true" [ngModel]="settings.taxRush"
-                  (ngModelChange)="onTaxRushChange($event)" />
+              <label class="option-card" [class.option-card--selected]="settings.taxRush === true"
+                (click)="onTaxRushLabelClick(true, $event)">
                 <div class="option-title">✅ Yes</div>
                 <div class="option-desc">Include TaxRush Returns in your Budget and P & L</div>
               </label>
-              <label class="option-card" [class.option-card--selected]="settings.taxRush === false">
-                <input type="radio" name="taxRush" value="false" [ngModel]="settings.taxRush"
-                  (ngModelChange)="onTaxRushChange($event)" />
+              <label class="option-card" [class.option-card--selected]="settings.taxRush === false"
+                (click)="onTaxRushLabelClick(false, $event)">
                 <div class="option-title">❌ No TaxRush</div>
                 <div class="option-desc">Tax prep only</div>
               </label>
@@ -94,16 +88,14 @@
             <h3 class="step-question">Do you have other revenue streams?</h3>
             <div class="step-help">Bookkeeping, notary, business consulting, etc.</div>
             <div class="step-options">
-              <label class="option-card" [class.option-card--selected]="settings.otherIncome === true">
-                <input type="radio" name="otherIncome" value="true" [ngModel]="settings.otherIncome"
-                  (ngModelChange)="onOtherIncomeChange($event)" />
+              <label class="option-card" [class.option-card--selected]="settings.otherIncome === true"
+                (click)="onOtherIncomeLabelClick(true, $event)">
                 <div class="option-title">💼 Yes</div>
                 <div class="option-desc">Include additional revenue streams (bookkeeping, notary, business consulting,
                   etc.)</div>
               </label>
-              <label class="option-card" [class.option-card--selected]="settings.otherIncome === false">
-                <input type="radio" name="otherIncome" value="false" [ngModel]="settings.otherIncome"
-                  (ngModelChange)="onOtherIncomeChange($event)" />
+              <label class="option-card" [class.option-card--selected]="settings.otherIncome === false"
+                (click)="onOtherIncomeLabelClick(false, $event)">
                 <div class="option-title">📋 Tax prep only</div>
                 <div class="option-desc">Focused on tax preparation</div>
               </label>

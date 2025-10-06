@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { PyIncomeDriversComponent } from './components/py-income-drivers.component';
 import { ProjectedIncomeDriversComponent } from './components/projected-income-drivers.component';
 import { TargetIncomeDriversComponent } from './components/target-income-drivers.component';
@@ -21,13 +21,14 @@ import { WizardStateService } from '../../../core/services/wizard-state.service'
   styleUrls: ['./income-drivers.component.scss'],
 })
 export class IncomeDriversComponent {
-  // Get store type and other settings from WizardStateService
+  // Get store type and other settings from WizardStateService - use shareReplay to avoid multiple subscriptions
   readonly storeType$ = this.wizardState.answers$.pipe(
     map((answers) => {
       console.log('📊 [Income Drivers] storeType$ emitted:', answers.storeType);
       console.log('📊 [Income Drivers] FULL ANSWERS:', answers);
       return answers.storeType || 'new';
-    })
+    }),
+    shareReplay(1)
   );
 
   readonly storeTypeInfo$ = this.wizardState.answers$.pipe(
@@ -40,7 +41,8 @@ export class IncomeDriversComponent {
           default: 'Configure your store settings',
         }),
       };
-    })
+    }),
+    shareReplay(1)
   );
 
   constructor(public wizardState: WizardStateService) {

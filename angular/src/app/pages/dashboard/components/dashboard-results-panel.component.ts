@@ -42,7 +42,7 @@ export class DashboardResultsPanelComponent {
   @Input() results: CalculationResults | null = null;
   @Input() hasOtherIncome: boolean = false;
 
-  private readonly region = signal<Region>(this.settings.settings.region);
+  private readonly region = signal<Region>('US'); // Will be updated from wizard state
   readonly thresholds = computed<Thresholds>(() => {
     const cfg = DEFAULT_REGION_CONFIGS[this.region()];
     return cfg.thresholds;
@@ -59,6 +59,10 @@ export class DashboardResultsPanelComponent {
     this.wizardState.answers$
       .pipe(debounceTime(200)) // Wait 200ms before recalculating
       .subscribe((answers) => {
+        // Update region from wizard state
+        const wizardRegion = (answers.region || 'US') as Region;
+        this.region.set(wizardRegion);
+
         // When explicit results provided, use them; otherwise compute a minimal demo
         if (this.results) {
           this.viewResults.set(this.results);
@@ -73,9 +77,11 @@ export class DashboardResultsPanelComponent {
           scenario: 'Custom',
           avgNetFee: this.wizardState.getAvgNetFee() || 125,
           taxPrepReturns: this.wizardState.getTaxPrepReturns() || 1600,
-          taxRushReturns: this.wizardState.getTaxRushReturns() || (r === 'CA' ? 150 : 0),
+          taxRushReturns:
+            this.wizardState.getTaxRushReturns() ||
+            (answers.handlesTaxRush && r === 'CA' ? 150 : 0),
           discountsPct: this.wizardState.getDiscountsPct() || 3,
-          otherIncome: this.wizardState.getOtherIncome() || (this.hasOtherIncome ? 5000 : 0),
+          otherIncome: this.wizardState.getOtherIncome() || (answers.hasOtherIncome ? 5000 : 0),
           calculatedTotalExpenses: answers.calculatedTotalExpenses,
           salariesPct: answers.payrollPct || 25,
           empDeductionsPct: answers.empDeductionsPct || 10,
@@ -92,7 +98,8 @@ export class DashboardResultsPanelComponent {
           travelEntAmt: answers.travelEntAmt || 0.8,
           royaltiesPct: answers.royaltiesPct || 14,
           advRoyaltiesPct: answers.advRoyaltiesPct || 5,
-          taxRushRoyaltiesPct: answers.taxRushRoyaltiesPct || (r === 'CA' ? 6 : 0),
+          taxRushRoyaltiesPct:
+            answers.taxRushRoyaltiesPct || (answers.handlesTaxRush && r === 'CA' ? 6 : 0),
           miscPct: answers.miscPct || 1.0,
           thresholds: t,
         };

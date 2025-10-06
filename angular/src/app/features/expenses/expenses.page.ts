@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { take } from 'rxjs/operators';
 import { ExpensesService } from '../../shared/expenses/expenses.service';
 import { SharedExpenseTextService } from '../../shared/expenses/expense-text.service';
 import type { ExpenseKey } from '../../shared/expenses/expenses.types';
@@ -42,6 +43,7 @@ interface ExpenseRowCfg {
               class="info-btn"
               [attr.aria-label]="label + ' guidance'"
               [attr.title]="tooltip$ | async"
+              (click)="showInfo(key, label)"
             >
               ℹ️
             </button>
@@ -250,5 +252,18 @@ export class ExpensesPageComponent {
 
   onNote(key: ExpenseKey, v: string) {
     this.expenses.updateNote(key, v ?? '');
+  }
+
+  showInfo(key: ExpenseKey, label: string) {
+    // Get the tooltip text from the service
+    this.text
+      .tooltip$(key)
+      .pipe(
+        take(1) // Only take the first emission
+      )
+      .subscribe((tooltip) => {
+        const message = tooltip || `${label}: No additional guidance available.`;
+        alert(`💡 ${label} Information\n\n${message}`);
+      });
   }
 }

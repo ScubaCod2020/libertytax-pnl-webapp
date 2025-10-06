@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AppConfigService } from '../../../../services/app-config.service';
 import { SettingsService } from '../../../../services/settings.service';
 import { WizardStateService } from '../../../../core/services/wizard-state.service';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-target-income-drivers',
@@ -20,26 +20,24 @@ export class TargetIncomeDriversComponent {
     public wizardState: WizardStateService
   ) {}
 
+  // Create shared subscription first to avoid multiple subscriptions
+  readonly answers$ = this.wizardState.answers$.pipe(shareReplay(1));
+
   // Show TaxRush section only for Canada AND if TaxRush is enabled
-  readonly showTaxRush$ = this.wizardState.answers$.pipe(
+  readonly showTaxRush$ = this.answers$.pipe(
     map((answers) => answers.region === 'CA' && answers.handlesTaxRush === true)
   );
 
   // Show Other Income section only if enabled in Quick Start Wizard
-  readonly showOtherIncome$ = this.wizardState.answers$.pipe(
-    map((answers) => answers.hasOtherIncome === true)
-  );
+  readonly showOtherIncome$ = this.answers$.pipe(map((answers) => answers.hasOtherIncome === true));
 
   // Regional discount default for placeholder
-  readonly regionalDiscountDefault$ = this.wizardState.answers$.pipe(
+  readonly regionalDiscountDefault$ = this.answers$.pipe(
     map((answers) => {
       const region = answers.region || 'US';
       return region === 'CA' ? '3.0' : '1.0';
     })
   );
-
-  // Reactive getters for form fields
-  readonly answers$ = this.wizardState.answers$;
 
   // Target fields (for new stores, these are goals/targets, not projections)
   readonly taxPrepReturns$ = this.answers$.pipe(map((a) => a.projectedTaxPrepReturns || null));
