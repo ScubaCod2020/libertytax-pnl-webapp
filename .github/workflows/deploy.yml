@@ -2,9 +2,16 @@ name: deploy
 
 on:
   push:
-    branches: [main, staging, 'feature/*', 'fix/*', 'chore/*']
+    branches:
+      - main
+      - staging
+      - 'feature/*'
+      - 'fix/*'
+      - 'chore/*'
   pull_request:
-    branches: [main, staging]
+    branches:
+      - main
+      - staging
   workflow_dispatch:
     inputs:
       target_env:
@@ -37,12 +44,11 @@ jobs:
           EVENT="${GITHUB_EVENT_NAME:-}"
 
           if [[ "$EVENT" == "workflow_dispatch" ]]; then
-            INPUT="${{ github.event.inputs.target_env || '' }}"
-            case "$INPUT" in
-              Dev|dev|Preview|preview)           ENV_NAME="Preview" ;;
-              Staging|staging)                   ENV_NAME="Staging" ;;
-              Production|production|Prod|prod)   ENV_NAME="Production" ;;
-              *)                                 ENV_NAME="Preview" ;;
+            case "${{ inputs.target_env }}" in
+              Dev|dev|Preview|preview)         ENV_NAME="Preview" ;;
+              Staging|staging)                 ENV_NAME="Staging" ;;
+              Production|production|Prod|prod) ENV_NAME="Production" ;;
+              *)                               ENV_NAME="Preview" ;;
             esac
           elif [[ "$EVENT" == "pull_request" ]]; then
             ENV_NAME="Preview"
@@ -63,49 +69,117 @@ jobs:
     runs-on: [self-hosted, unraid]
     environment:
       name: ${{ needs.map-env.outputs.env_name }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup Node
+      # Find lockfiles so setup-node caching won't error when none exist
+      - name: Find lockfiles (for caching)
+        id: lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Collect existing npm lockfiles
+          paths="$(git ls-files -- '**/package-lock.json' || true)"
+          if [[ -n "$paths" ]]; then
+            {
+              echo "paths<<'EOF'"
+              echo "$paths"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+            echo "Found lockfiles:"
+            echo "$paths"
+          else
+            echo "No package-lock.json files found. Will setup Node without cache-dependency-path."
+          fi
+
+      # Use caching only if we actually found lockfiles
+      - name: Setup Node (cached)
+        if: ${{ steps.lock.outputs.paths != '' }}
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: |
-            package-lock.json
-            angular/package-lock.json
+          cache-dependency-path: ${{ steps.lock.outputs.paths }}
 
+      - name: Setup Node (no cache)
+        if: ${{ steps.lock.outputs.paths == '' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Detect Angular workspace folder (robust)
+      - name: Locate Angular workspace
+        id: ngdir
+        shell: bash
+        run: |
+          set -euo pipefail
+          for d in angular apps/web client ClientApp frontend ui .; do
+            if [[ -f "$d/angular.json" ]]; then
+              echo "dir=$d" >> "$GITHUB_OUTPUT"
+              echo "Found Angular workspace at: $d"
+              exit 0
+            fi
+          done
+          echo "❌ Could not find angular.json at common locations." >&2
+          echo "Repo tree (level 2) for debugging:"
+          find . -maxdepth 2 -type f -name 'angular.json' -o -name 'package.json' | sed 's|^\./||'
+          exit 1
+
+      # Install Angular workspace deps
       - name: Install (Angular)
-        working-directory: angular
+        working-directory: ${{ steps.ngdir.outputs.dir }}
         run: npm ci
 
+      # Build Angular (uses default project unless BUILD_CONFIGURATION is set)
       - name: Build (Angular)
-        working-directory: angular
+        working-directory: ${{ steps.ngdir.outputs.dir }}
         run: npx ng build --configuration "${{ vars.BUILD_CONFIGURATION || 'production' }}"
 
+      # Resolve build output directory from detected workspace
       - name: Resolve build output directory
         id: outdir
+        shell: bash
         run: |
-          PATTERN="${{ vars.DIST_DIR || 'angular/dist/*/browser' }}"
+          set -euo pipefail
+          WD="${{ steps.ngdir.outputs.dir }}"
+          if [[ -n "${{ vars.DIST_DIR }}" ]]; then
+            PATTERN="${{ vars.DIST_DIR }}"
+          else
+            # Default Angular 17+: dist/<project>/browser
+            if [[ "$WD" == "." ]]; then
+              PATTERN="dist/*/browser"
+            else
+              PATTERN="$WD/dist/*/browser"
+            fi
+          fi
           CANDIDATE="$(ls -d ${PATTERN} 2>/dev/null | head -n1 || true)"
-          if [ -z "$CANDIDATE" ]; then
+          if [[ -z "$CANDIDATE" ]]; then
             echo "❌ Could not find build output. Set repo variable DIST_DIR to your dist path." >&2
+            echo "Tried pattern: $PATTERN" >&2
             echo "Dist tree (3 levels):"
-            find angular/dist -maxdepth 3 -type d -print 2>/dev/null || true
+            if [[ "$WD" == "." ]]; then
+              find dist -maxdepth 3 -type d -print 2>/dev/null || true
+            else
+              find "$WD/dist" -maxdepth 3 -type d -print 2>/dev/null || true
+            fi
             exit 1
           fi
           echo "outdir=$CANDIDATE" >> "$GITHUB_OUTPUT"
           echo "Using OUTDIR=$CANDIDATE"
 
-      - name: Trigger Vercel deploy (optional; gated off by var)
+      # Optional Vercel trigger (guarded by repo var SKIP_VERCEL)
+      - name: Trigger Vercel deploy (optional; gated by var)
         if: ${{ vars.SKIP_VERCEL != 'true' }}
         env:
           HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
           BRANCH: ${{ github.ref_name }}
           REPO: ${{ github.repository }}
         run: |
-          if [ -n "$HOOK" ]; then
+          if [[ -n "$HOOK" ]]; then
             echo "POST $HOOK"
             curl -fsSL -X POST -H "Content-Type: application/json" \
               -d "{\"branch\":\"$BRANCH\",\"repo\":\"$REPO\"}" \
@@ -114,24 +188,48 @@ jobs:
             echo "No Vercel hook configured. Skipping."
           fi
 
+      # Compute Unraid deploy path (honors NGINX_DEPLOY_PATH if explicitly set)
       - name: Compute Unraid deploy path
         id: target
         env:
           ENV_NGINX_DEPLOY_PATH: ${{ vars.NGINX_DEPLOY_PATH }}
           ENV_NGINX_ROOT: ${{ vars.NGINX_ROOT }}
           ENV_APP_ENV: ${{ vars.APP_ENV }}
+          JOB_ENV_NAME: ${{ needs.map-env.outputs.env_name }}
           ENV_APP_NAME: ${{ vars.APP_NAME || 'libertytax-pnl-webapp' }}
+        shell: bash
         run: |
-          if [ -n "$ENV_NGINX_DEPLOY_PATH" ]; then
-            path="$ENV_NGINX_DEPLOY_PATH"
-          else
-            path="$ENV_NGINX_ROOT/$ENV_APP_ENV/$ENV_APP_NAME"
+          set -euo pipefail
+
+          if [[ -z "${ENV_NGINX_ROOT:-}" && -z "${ENV_NGINX_DEPLOY_PATH:-}" ]]; then
+            echo "❌ NGINX_ROOT or NGINX_DEPLOY_PATH must be set as an Environment/Repo var." >&2
+            exit 1
           fi
-          echo "path=$path" >> "$GITHUB_OUTPUT"
-          echo "Computed deploy path: $path"
+
+          # Derive APP_ENV if not explicitly set in environment vars
+          APP_ENV="${ENV_APP_ENV:-}"
+          if [[ -z "$APP_ENV" ]]; then
+            case "${JOB_ENV_NAME}" in
+              Preview)    APP_ENV="dev" ;;
+              Staging)    APP_ENV="staging" ;;
+              Production) APP_ENV="prod" ;;
+              *)          APP_ENV="dev" ;;
+            esac
+          fi
+
+          if [[ -n "${ENV_NGINX_DEPLOY_PATH:-}" ]]; then
+            PATH_OUT="$ENV_NGINX_DEPLOY_PATH"
+          else
+            PATH_OUT="$ENV_NGINX_ROOT/$APP_ENV/$ENV_APP_NAME"
+          fi
+
+          echo "path=$PATH_OUT" >> "$GITHUB_OUTPUT"
+          echo "Computed deploy path: $PATH_OUT"
+          echo "Resolved APP_ENV: $APP_ENV (from JOB_ENV_NAME=${JOB_ENV_NAME})"
 
       - name: Copy build to Unraid Nginx
         run: |
+          set -euo pipefail
           DEST="${{ steps.target.outputs.path }}"
           SRC="${{ steps.outdir.outputs.outdir }}"
           echo "Deploy path: $DEST"
