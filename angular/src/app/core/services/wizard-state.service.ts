@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import type { RegionCode } from '../tokens/region-configs.token';
 import type { WizardAnswers } from '../../domain/types/wizard.types';
 import { BiDirService } from './bidir/bidir.service';
@@ -23,7 +23,13 @@ const STORAGE_KEY = 'wizard_state_v1';
 @Injectable({ providedIn: 'root' })
 export class WizardStateService {
   private readonly _answers$ = new BehaviorSubject<WizardAnswers>(this.loadFromStorage());
-  readonly answers$ = this._answers$.asObservable();
+
+  // CRITICAL FIX: Add debounced version of answers$ to prevent UI freezes
+  readonly answers$ = this._answers$.asObservable().pipe(
+    debounceTime(150), // Debounce all state changes to prevent cascade reactions
+    distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)) // Only emit if actually changed
+  );
+
   private readonly quickWizardLock$ = new BehaviorSubject<boolean>(false);
   readonly quickWizardLockChanges$ = this.quickWizardLock$.asObservable();
 
