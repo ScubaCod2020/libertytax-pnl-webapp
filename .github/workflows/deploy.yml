@@ -122,7 +122,7 @@ jobs:
         run: |
           set -euo pipefail
           ROOT="${{ steps.find_ng.outputs.dir }}"
-          DEFAULT_PATTERN="$ROOT/dist/*/browser"
+          DEFAULT_PATTERN="$ROOT/dist/angular/browser"
           PATTERN="${{ vars.DIST_DIR }}"
           if [ -z "${PATTERN:-}" ]; then PATTERN="$DEFAULT_PATTERN"; fi
 
