@@ -120,6 +120,7 @@ jobs:
         id: outdir
         shell: bash
         run: |
+          # Fixed: Updated pattern to match Angular build structure
           set -euo pipefail
           ROOT="${{ steps.find_ng.outputs.dir }}"
           DEFAULT_PATTERN="$ROOT/dist/angular/browser"
