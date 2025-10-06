@@ -70,6 +70,7 @@ jobs:
           echo "Selected environment: $ENV_NAME"
 
 
+
   build:
     name: Build & Deploy
     needs: map-env
@@ -84,31 +85,30 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: angular/package-lock.json   # <— NEW
 
-      - name: Install
+      - name: Install (Angular)
+        working-directory: angular                           # <— NEW
         run: npm ci
 
-      - name: Build
-        run: |
-          if npm run | grep -q "^  build"; then
-            npm run build
-          else
-            npx ng build --configuration "${{ vars.BUILD_CONFIGURATION || 'production' }}"
-          fi
+      - name: Build (Angular)
+        working-directory: angular                           # <— NEW
+        run: npx ng build --configuration "${{ vars.BUILD_CONFIGURATION || 'production' }}"
 
       - name: Resolve build output directory
         id: outdir
         run: |
-          PATTERN="${{ vars.DIST_DIR || 'dist/*/browser' }}"
+          PATTERN="${{ vars.DIST_DIR || 'angular/dist/*/browser' }}"   # <— UPDATED DEFAULT
           CANDIDATE="$(ls -d ${PATTERN} 2>/dev/null | head -n1 || true)"
           if [ -z "$CANDIDATE" ]; then
             echo "❌ Could not find build output. Set repo variable DIST_DIR to your dist path." >&2
             echo "Dist tree (3 levels):"
-            find dist -maxdepth 3 -type d -print 2>/dev/null || true
+            find angular/dist -maxdepth 3 -type d -print 2>/dev/null || true
             exit 1
           fi
           echo "outdir=$CANDIDATE" >> "$GITHUB_OUTPUT"
           echo "Using OUTDIR=$CANDIDATE"
+
 
       - name: Trigger Vercel deploy (optional; gated off by var)
         if: ${{ vars.SKIP_VERCEL != 'true' }}
