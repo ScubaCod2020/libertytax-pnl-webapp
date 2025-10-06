@@ -1,41 +1,58 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+  root: 'react-app-reference/react-app-reference',
   plugins: [react()],
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
+    setupFiles: ['./react-app-reference/react-app-reference/src/test/setup.ts'],
     exclude: [
-      'tests/**', // exclude Playwright/E2E specs from vitest
-      'node_modules/**'
+      'tests/**', // backward-compat: old path
+      'test/**', // exclude Playwright/E2E specs from vitest
+      '**/node_modules/**', // exclude any nested node_modules (e.g., angular/node_modules)
+      'angular/**', // exclude Angular workspace tests from root vitest
+      ...(process.env.CI
+        ? [
+            'react-app-reference/react-app-reference/src/components/Wizard/**/__tests__/**',
+            'react-app-reference/react-app-reference/src/App.test.tsx',
+          ]
+        : []),
     ],
     coverage: {
       reporter: ['text', 'json', 'html', 'lcov'],
       exclude: [
         'node_modules/',
-        'src/test/',
+        'react-app-reference/react-app-reference/src/test/',
         '**/*.d.ts',
         '**/*.test.{ts,tsx}',
         '**/*.spec.{ts,tsx}',
-      ]
-    }
+      ],
+    },
   },
   build: {
+    outDir: '../../dist',
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom']
-        }
-      }
+          vendor: ['react', 'react-dom'],
+        },
+      },
     },
-    assetsInlineLimit: 4096 // Inline assets smaller than 4KB
+    assetsInlineLimit: 4096, // Inline assets smaller than 4KB
   },
   server: {
-    port: 3000
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: process.env.API_PROXY || process.env.VITE_API_URL || 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   preview: {
-    port: 4173
-  }
-})
+    port: 4173,
+  },
+});

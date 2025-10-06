@@ -1,0 +1,49 @@
+<div class="card">
+  <div class="card-title" style="display: flex; align-items: center; gap: 0.5rem;">
+    💰 Expense Breakdown
+    <span class="small" style="font-weight: 400; margin-left: 8px;">(Total: {{ results.totalExpenses | currency }})</span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 12px; max-width: 100%;">
+    <div class="expense-category">
+      <div class="section-title" style="font-size: 14px; margin-bottom: 8px;">👥 Personnel</div>
+      <div class="small" style="margin-left: 16px;">
+        <div>Payroll: {{ results.salaries | currency }}</div>
+        <div>Emp. Deductions: {{ results.empDeductions | currency }}</div>
+      </div>
+    </div>
+
+    <div class="expense-category">
+      <div class="section-title" style="font-size: 14px; margin-bottom: 8px;">🏢 Facility</div>
+      <div class="small" style="margin-left: 16px;">
+        <div>Rent: {{ results.rent | currency }}</div>
+        <div>Telephone: {{ results.telephone | currency }}</div>
+        <div>Utilities: {{ results.utilities | currency }}</div>
+      </div>
+    </div>
+
+    <div class="expense-category">
+      <div class="section-title" style="font-size: 14px; margin-bottom: 8px;">⚙️ Operations</div>
+      <div class="small" style="margin-left: 16px;">
+        <div>Local Advertising: {{ results.localAdv | currency }}</div>
+        <div>Insurance: {{ results.insurance | currency }}</div>
+        <div>Office Supplies: {{ results.supplies | currency }}</div>
+        <div>Other Ops: {{ (results.postage + results.dues + results.bankFees + results.maintenance + results.travelEnt) | currency }}</div>
+      </div>
+    </div>
+
+    <div class="expense-category">
+      <div class="section-title" style="font-size: 14px; margin-bottom: 8px;">🏪 Franchise</div>
+      <div class="small" style="margin-left: 16px;">
+        <div>Tax Prep Royalties: {{ results.royalties | currency }}</div>
+        <div>Adv. Royalties: {{ results.advRoyalties | currency }}</div>
+        <div *ngIf="results.taxRushRoyalties > 0">TaxRush Royalties: {{ results.taxRushRoyalties | currency }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="results.misc > 0" style="margin-top: 12px;">
+    <div class="section-title" style="font-size: 14px;">📝 Miscellaneous: {{ results.misc | currency }}</div>
+  </div>
+</div>
+

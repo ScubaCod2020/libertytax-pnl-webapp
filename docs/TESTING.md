@@ -1,6 +1,22 @@
+## React → Angular test mapping (Wizard)
+
+- Branding.test.tsx → Unit (branding service/header rendering)
+- Calculations.test.tsx → Unit (domain calc functions in `domain/calculations`)
+- Expenses.test.tsx → E2E (wizard step-2 interactions and visibility)
+- Navigation.test.tsx → E2E (routes and next/previous flow)
+- WizardInputs.test.tsx → E2E (step-1 inputs, gating by region/store type)
+- WizardFlowMatrix.test.tsx → E2E (happy-path multi-scenario flow; Angular approximation added)
+- wizard.test.tsx → E2E (smoke/bootstrapping of wizard pages)
+
+Notes
+
+- Value assertions that depend on unfinished wiring are marked for future enablement.
+- Prefer Playwright E2E for full-page flows; keep domain math in unit tests.
+
 # Testing Strategy for Liberty Tax P&L Webapp
 
 ## Overview
+
 Comprehensive testing approach to ensure calculation accuracy, data flow integrity, and user experience quality across the multi-step wizard and dual-entry expense system.
 
 ## 1. 🧮 Calculation Accuracy Testing
@@ -8,6 +24,7 @@ Comprehensive testing approach to ensure calculation accuracy, data flow integri
 ### 1.1 Wizard Step-by-Step Calculation Verification
 
 #### **Page 1 (Welcome) → Page 2 (Inputs) Data Flow**
+
 ```
 Test Case: Performance Data Carryover
 1. Enter Last Year Performance:
@@ -32,6 +49,7 @@ Test Case: Performance Data Carryover
 ```
 
 #### **Dual-Entry Expense System Verification**
+
 ```
 Test Case: Percentage ↔ Dollar Auto-Sync
 1. For each expense field, test:
@@ -54,6 +72,7 @@ Test Case: Percentage ↔ Dollar Auto-Sync
 ### 1.2 Dashboard Calculation Verification
 
 #### **KPI Calculations**
+
 ```
 Test Case: Net Income Calculation
 Given:
@@ -71,6 +90,7 @@ Expected:
 ```
 
 #### **KPI Color Thresholds**
+
 ```
 Test Case: Stoplight Status
 1. Set thresholds via debug panel:
@@ -88,6 +108,7 @@ Test Case: Stoplight Status
 ## 2. 🔄 Data Flow Integration Testing
 
 ### 2.1 Wizard Flow Testing
+
 ```
 Test Suite: Complete Wizard Journey
 1. Welcome Page:
@@ -115,6 +136,7 @@ Test Suite: Complete Wizard Journey
 ```
 
 ### 2.2 Debug Panel Integration
+
 ```
 Test Suite: Advanced Controls
 1. Thresholds Tab:
@@ -133,6 +155,7 @@ Test Suite: Advanced Controls
 ## 3. 🌍 Regional Testing
 
 ### 3.1 US vs Canada Differences
+
 ```
 Test Cases: Regional Variations
 1. US Region:
@@ -150,6 +173,7 @@ Test Cases: Regional Variations
 ## 4. 🎯 User Experience Testing
 
 ### 4.1 UI/UX Validation
+
 ```
 Test Suite: Interface Quality
 1. Responsive Design:
@@ -171,6 +195,7 @@ Test Suite: Interface Quality
 ```
 
 ### 4.2 Performance Testing
+
 ```
 Test Suite: Performance Metrics
 1. Load Times:
@@ -192,6 +217,7 @@ Test Suite: Performance Metrics
 ## 5. 🔧 Technical Testing
 
 ### 5.1 State Management
+
 ```
 Test Suite: State Integrity
 1. Persistence:
@@ -211,6 +237,7 @@ Test Suite: State Integrity
 ```
 
 ### 5.2 Error Handling
+
 ```
 Test Suite: Error Scenarios
 1. Invalid Inputs:
@@ -231,6 +258,7 @@ Test Suite: Error Scenarios
 ## 6. 🚀 Pre-Deployment Checklist
 
 ### 6.1 Automated Testing
+
 ```bash
 # Run these before every deployment:
 npm run build          # Verify build succeeds
@@ -239,6 +267,7 @@ npm audit             # Check for security vulnerabilities
 ```
 
 ### 6.2 Manual Testing Checklist
+
 ```
 Pre-Deployment Verification:
 □ Complete wizard flow (US and CA)
@@ -257,6 +286,7 @@ Pre-Deployment Verification:
 ## 7. 🧪 Test Data Sets
 
 ### 7.1 Standard Test Scenarios
+
 ```javascript
 // Conservative Store
 const conservativeStore = {
@@ -265,8 +295,8 @@ const conservativeStore = {
   taxRushReturns: 200, // CA only
   salariesPct: 28,
   rentPct: 20,
-  expectedGrowth: 5
-}
+  expectedGrowth: 5,
+};
 
 // Aggressive Store
 const aggressiveStore = {
@@ -275,8 +305,8 @@ const aggressiveStore = {
   taxRushReturns: 600, // CA only
   salariesPct: 22,
   rentPct: 15,
-  expectedGrowth: 20
-}
+  expectedGrowth: 20,
+};
 
 // Struggling Store
 const strugglingStore = {
@@ -285,26 +315,28 @@ const strugglingStore = {
   taxRushReturns: 100, // CA only
   salariesPct: 35,
   rentPct: 25,
-  expectedGrowth: -10
-}
+  expectedGrowth: -10,
+};
 ```
 
 ### 7.2 Edge Case Test Data
+
 ```javascript
 // Extreme Values
 const edgeCases = [
-  { avgNetFee: 1, taxPrepReturns: 1 },      // Minimum values
+  { avgNetFee: 1, taxPrepReturns: 1 }, // Minimum values
   { avgNetFee: 999, taxPrepReturns: 9999 }, // Large values
-  { salariesPct: 0 },                       // Zero percentage
-  { salariesPct: 100 },                     // Maximum percentage
-  { expectedGrowth: -50 },                  // Large decline
-  { expectedGrowth: 100 }                   // Extreme growth
-]
+  { salariesPct: 0 }, // Zero percentage
+  { salariesPct: 100 }, // Maximum percentage
+  { expectedGrowth: -50 }, // Large decline
+  { expectedGrowth: 100 }, // Extreme growth
+];
 ```
 
 ## 8. 🔍 Comprehensive UI & Regression Testing
 
 ### 8.1 Complete Button Testing Matrix
+
 ```
 Every Button Must Be Tested:
 □ Wizard "Next" buttons (Welcome → Inputs → Review)
@@ -324,6 +356,7 @@ Every Button Must Be Tested:
 ```
 
 ### 8.2 Complete Field Testing Matrix
+
 ```
 Every Input Field Must Be Tested:
 WIZARD PAGE 1:
@@ -354,6 +387,7 @@ DEBUG PANEL:
 ```
 
 ### 8.3 Regression Testing Protocol
+
 ```
 Data Flow Consistency Tests:
 1. Enter value in Page 1 → Verify appears in Page 2
@@ -367,6 +401,7 @@ Data Flow Consistency Tests:
 ```
 
 ### 8.4 Cross-Step Data Integrity Testing
+
 ```
 Test Case: Full Data Journey
 1. Page 1: Enter complete performance data
@@ -384,50 +419,52 @@ Test Case: Full Data Journey
 ## 9. 📊 Testing Tools & Automation
 
 ### 9.1 Recommended Testing Framework
+
 ```javascript
 // Future implementation with Jest + React Testing Library
 describe('Complete UI Testing Suite', () => {
   describe('Button Functionality', () => {
     test('wizard navigation buttons', () => {
       // Test all Next/Back/Cancel buttons
-    })
-    
+    });
+
     test('debug panel buttons', () => {
       // Test all debug panel interactions
-    })
-    
+    });
+
     test('preset buttons', () => {
       // Test Good/Better/Best preset application
-    })
-  })
-  
+    });
+  });
+
   describe('Field Validation', () => {
     test('all numeric inputs accept valid values', () => {
       // Test every numeric field
-    })
-    
+    });
+
     test('all dropdowns function correctly', () => {
       // Test every dropdown
-    })
-    
+    });
+
     test('dual-entry synchronization', () => {
       // Test all 17 expense field pairs
-    })
-  })
-  
+    });
+  });
+
   describe('Data Flow Regression', () => {
     test('wizard to dashboard data flow', () => {
       // Test complete data journey
-    })
-    
+    });
+
     test('cross-step data consistency', () => {
       // Test data changes propagate correctly
-    })
-  })
-})
+    });
+  });
+});
 ```
 
 ### 8.2 Manual Testing Tools
+
 ```
 Browser Developer Tools:
 - Console: Check for errors/warnings
@@ -445,17 +482,20 @@ Debug Panel Tabs:
 ## 9. 🎯 Testing Schedule
 
 ### 9.1 Pre-Commit Testing
+
 - [ ] Build verification
 - [ ] Core calculation spot-checks
 - [ ] No console errors
 
 ### 9.2 Pre-Deployment Testing
+
 - [ ] Full wizard flow (both regions)
 - [ ] All dual-entry calculations
 - [ ] Debug panel functionality
 - [ ] Performance verification
 
 ### 9.3 Post-Deployment Testing
+
 - [ ] Production environment verification
 - [ ] Cross-browser compatibility
 - [ ] Mobile device testing

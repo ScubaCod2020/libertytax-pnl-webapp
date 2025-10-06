@@ -1,0 +1,3 @@
+# Ensure Git treats Husky hook scripts as LF on all platforms
+.husky/* text eol=lf
+

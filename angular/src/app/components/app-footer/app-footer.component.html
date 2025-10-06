@@ -1,0 +1,57 @@
+<footer class="site-footer" style="border-top:1px solid #e5e7eb;background:#f9fafb;padding: 16px 24px;">
+  <div class="footer" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1.5fr;gap:1.5rem;font-size:0.875rem;align-items:start;">
+    <div>
+      <h3 style="font-size:1rem;font-weight:600;color:#1f2937;margin-bottom:1rem">Navigation</h3>
+      <div style="display:flex;flex-direction:column;gap:0.5rem">
+        <button (click)="goIncome()" class="btn {{ currentPage==='income' ? 'btn--active' : 'btn--nav' }}" style="width:max-content">Income</button>
+        <button (click)="goExpenses()" class="btn {{ currentPage==='expenses' ? 'btn--active' : 'btn--nav' }}" style="width:max-content">Expenses</button>
+        <button (click)="goReports()" class="btn {{ currentPage==='reports' ? 'btn--active' : 'btn--nav' }}" style="width:max-content">Reports</button>
+        <button (click)="goDashboard()" class="btn {{ currentPage==='dashboard' ? 'btn--active' : 'btn--nav' }}" style="width:max-content">Dashboard</button>
+        <button (click)="toggleDebug()" class="btn {{ (debugSvc.open$|async) ? 'btn--active' : 'btn--nav' }}" title="Toggle Debug Panel">Debug</button>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="font-size:1rem;font-weight:600;color:#1f2937;margin-bottom:1rem">Quick Links</h3>
+      <div style="display:flex;flex-direction:column;gap:0.5rem">
+        <button class="btn-link" style="text-align:left;width:max-content">💡 Pro-Tips <span style="color:#d1d5db;font-size:0.75rem">*</span></button>
+        <button class="btn-link" style="text-align:left;width:max-content">🎯 Practice Problems <span style="color:#d1d5db;font-size:0.75rem">*</span></button>
+        <button class="btn-link" style="text-align:left;width:max-content">📄 Export (PDF/Excel) <span style="color:#d1d5db;font-size:0.75rem">*</span></button>
+        <button class="btn-link" style="text-align:left;width:max-content" (click)="debugSvc.toggle()">🧰 Debug</button>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="font-size:1rem;font-weight:600;color:#1f2937;margin-bottom:1rem">Resources</h3>
+      <div style="display:flex;flex-direction:column;gap:0.5rem">
+        <button class="btn-link" style="text-align:left;width:max-content;color:#9ca3af;cursor:not-allowed">⚙️ Settings <span style="color:#d1d5db;font-size:0.75rem">*</span></button>
+        <button class="btn-link" style="text-align:left;width:max-content;color:#9ca3af;cursor:not-allowed">📚 Training Materials <span style="color:#d1d5db;font-size:0.75rem">*</span></button>
+        <button class="btn-link" style="text-align:left;width:max-content;color:#9ca3af;cursor:not-allowed">📞 Support Center <span style="color:#d1d5db;font-size:0.75rem">*</span></button>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="font-size:1rem;font-weight:600;color:#1f2937;margin-bottom:1rem">About & Status</h3>
+      <div class="small" style="line-height:1.5">
+        <div style="margin-bottom:0.5rem"><strong style="color:#374151">P&L Budget & Forecast</strong></div>
+        <div style="margin-bottom:0.5rem">Version v0.6 preview</div>
+        <div style="margin-bottom:1rem">Liberty Tax Service</div>
+        <div *ngIf="showMilestones" style="font-size:0.625rem;color:#059669;margin-bottom:0.75rem">
+          <div style="font-weight:500;color:#374151;margin-bottom:0.25rem">🚀 Current Milestones:</div>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.15rem">
+            <li *ngFor="let m of milestones">
+              <span *ngIf="m.state==='done'">✅</span>
+              <span *ngIf="m.state==='in_progress'">🟡</span>
+              <span *ngIf="m.state==='planned'">⭕</span>
+              {{ m.label }}
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="showMilestones" style="font-size:0.625rem;color:#9ca3af;border-top:1px solid #e5e7eb;padding-top:0.5rem">
+          Data persisted locally • Regional features active<br />
+          <span style="color:#d1d5db">* Feature in development</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,10 @@
+<ng-container *ngIf="!imgError && logoUrl; else textFallback">
+  <img [src]="logoUrl" [alt]="altText" [style.height.px]="heightPx" style="object-fit: contain;" (error)="onError()" />
+</ng-container>
+
+<ng-template #textFallback>
+  <div style="font-family: 'Proxima Nova', Arial, sans-serif; text-transform: uppercase; font-weight: 800; color: #1e40af; display: inline-block;"
+       [style.fontSize]="size === 'small' ? '0.9rem' : size === 'large' ? '1.3rem' : '1.1rem'">
+    {{ altText }}
+  </div>
+</ng-template>

@@ -1,0 +1,87 @@
+name: Docs UI Snapshots
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+  pull_request:
+    branches: ['**']
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Run snapshots (artifact-only on PR)
+        env:
+          SNAP_DATE: ${{ github.event.release.published_at || github.run_id }}
+        run: |
+          npm run graph:components || true
+          npx playwright install --with-deps
+          # Ensure preview server reachable
+          npm run preview &
+          npx wait-on http://localhost:4173
+          # Capture snapshots to docs/ui-snapshots/${SNAP_DATE}
+          SNAP_DIR=docs/ui-snapshots/${SNAP_DATE} npx playwright test test/e2e/snapshots.spec.ts --reporter=list
+
+      - name: Upload UI snapshots artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-snapshots-${{ github.run_id }}
+          path: docs/ui-snapshots/**
+
+  autopublish:
+    needs: capture
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Download snapshots artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ui-snapshots-${{ github.run_id }}
+          path: ./
+
+      - name: Commit snapshots and open PR
+        env:
+          GIT_AUTHOR_NAME: github-actions
+          GIT_AUTHOR_EMAIL: actions@github.com
+          GIT_COMMITTER_NAME: github-actions
+          GIT_COMMITTER_EMAIL: actions@github.com
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SNAP_DATE=${{ github.event.release.published_at || github.run_id }}
+          git checkout -b chore/docs-snapshots-${SNAP_DATE}
+          git add docs/ui-snapshots
+          if git diff --cached --quiet; then
+            echo "No snapshot changes to commit"
+          else
+            git commit -m "docs: add UI snapshots ${SNAP_DATE}"
+            git push --set-upstream origin chore/docs-snapshots-${SNAP_DATE} || true
+            gh pr create --title "docs: UI snapshots ${SNAP_DATE}" --body "Automated UI snapshots update." || true
+          fi

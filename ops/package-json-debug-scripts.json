@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "debug:validate-tools": "node scripts/automated-debug-sync/validate-debugging-tools.js",
+    "debug:test-integration": "node scripts/automated-debug-sync/debugging-tool-integration-tester.js",
+    "debug:status": "node scripts/automated-debug-sync/dev-workflow-integration.js status",
+    "debug:setup": "node scripts/automated-debug-sync/dev-workflow-integration.js setup",
+    "debug:daily": "node scripts/automated-debug-sync/dev-workflow-integration.js daily",
+    "debug:pre-release": "node scripts/automated-debug-sync/dev-workflow-integration.js pre-release",
+    "debug:emergency": "node scripts/automated-debug-sync/dev-workflow-integration.js emergency",
+    "debug:health": "node scripts/automated-debug-sync/debug-tool-registry.js --health",
+    "debug:update": "node scripts/automated-debug-sync/update-all-tools.js",
+    "debug:demo": "node scripts/automated-debug-sync/demo-meta-debugging.js"
+  }
+}

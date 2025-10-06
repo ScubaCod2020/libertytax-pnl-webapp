@@ -1,0 +1,7 @@
+<div class="brand-watermark" *ngIf="!imgError && watermarkUrl; else textFallback">
+  <img [src]="watermarkUrl" [alt]="region === 'US' ? 'Liberty Tax watermark' : 'Liberty Tax Canada watermark'" (error)="onError()" />
+</div>
+
+<ng-template #textFallback>
+  <div class="brand-watermark-text">{{ brandName }}</div>
+</ng-template>

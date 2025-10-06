@@ -19,7 +19,7 @@ pids
 lib-cov
 
 # Coverage directory used by tools like istanbul
-coverage
+coverage/
 *.lcov
 
 # nyc test coverage
@@ -138,6 +138,21 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+# Playwright artifacts
+playwright-report/
+playwright-report-mobile/
+playwright-results.json
+playwright-results.xml
+
 # Vercel & Codespaces
 .vercel/
 .devcontainer/
+/.restored/
+/.triage/
+/angular/.triage/
+/test-results/
+/angular/test-results/
+/.lighthouseci/
+/.artifacts/
+/.lighthouserc.json
+/lighthouserc.json

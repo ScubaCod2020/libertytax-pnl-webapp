@@ -1,6 +1,7 @@
 # Edge Case & Support-Ready Testing Strategy
 
 ## 🎯 Overview
+
 This document covers the "fringe" testing scenarios that support agents encounter and real users experience. These tests go beyond basic functionality to ensure robustness across all edge cases, device configurations, and user behaviors.
 
 ---
@@ -8,6 +9,7 @@ This document covers the "fringe" testing scenarios that support agents encounte
 ## 📱 PART 1: Device & Browser Configuration Testing
 
 ### 1.1 Mobile Browser Configurations
+
 ```
 REQUIRED TEST DEVICES/SIZES:
 □ iPhone SE (375x667) - Smallest common mobile
@@ -32,6 +34,7 @@ BROWSER MATRIX:
 ```
 
 ### 1.2 Responsive Design Critical Tests
+
 ```
 MOBILE LAYOUT TESTS:
 □ Debug panel doesn't break mobile layout
@@ -63,6 +66,7 @@ DESKTOP SCALING TESTS:
 ### 2.1 Every Dropdown Option Must Be Tested
 
 #### Region Dropdown (2 options)
+
 ```
 □ "United States" → Verify TaxRush fields hide
 □ "Canada" → Verify TaxRush fields show
@@ -71,6 +75,7 @@ DESKTOP SCALING TESTS:
 ```
 
 #### Store Type Dropdown (3 states)
+
 ```
 □ Default empty state → "Select store type..."
 □ "New Store (First year)" → Verify messaging changes
@@ -80,9 +85,10 @@ DESKTOP SCALING TESTS:
 ```
 
 #### Growth Percentage Dropdown (9 options)
+
 ```
 □ "-20% (Decline)" → Verify calculations
-□ "-10% (Slight decline)" → Verify calculations  
+□ "-10% (Slight decline)" → Verify calculations
 □ "0% (Same as last year)" → Verify calculations
 □ "+5% (Conservative growth)" → Verify calculations
 □ "+10% (Moderate growth)" → Verify calculations
@@ -95,6 +101,7 @@ DESKTOP SCALING TESTS:
 ```
 
 #### Scenario Selector Dropdown (4 options)
+
 ```
 □ "Custom" → Verify no preset applied
 □ "Good" → Verify all preset values applied correctly
@@ -105,6 +112,7 @@ DESKTOP SCALING TESTS:
 ```
 
 ### 2.2 Dropdown Edge Cases
+
 ```
 INTERACTION EDGE CASES:
 □ Click dropdown then click elsewhere → Verify closes properly
@@ -123,6 +131,7 @@ INTERACTION EDGE CASES:
 ### 3.1 Every Override Field Must Be Tested
 
 #### Wizard Page 1 Override Fields (5 fields)
+
 ```
 PROJECTED TAX PREP INCOME:
 □ Default calculated value displays correctly
@@ -158,6 +167,7 @@ PROJECTED TOTAL EXPENSES:
 ```
 
 #### Dual-Entry Override Testing (34 field pairs)
+
 ```
 FOR EACH OF 17 EXPENSE CATEGORIES:
 □ Enter percentage → Dollar calculates correctly
@@ -174,6 +184,7 @@ FOR EACH OF 17 EXPENSE CATEGORIES:
 ```
 
 ### 3.2 Field Validation Thresholds
+
 ```
 NUMERIC FIELD LIMITS:
 □ Percentage fields: 0% to 100% (reject >100%)
@@ -198,10 +209,11 @@ ERROR MESSAGE TESTING:
 ## 📊 PART 4: Data Threshold & Risk Assessment
 
 ### 4.1 Business Logic Risk Scenarios
+
 ```
 HIGH-RISK DATA COMBINATIONS:
 □ Salaries >40% of gross fees → Should trigger warning
-□ Rent >30% of gross fees → Should trigger warning  
+□ Rent >30% of gross fees → Should trigger warning
 □ Total expenses >90% of gross fees → Should trigger warning
 □ Net margin <5% → Should trigger warning
 □ Cost per return >$150 → Should trigger warning
@@ -211,7 +223,7 @@ HIGH-RISK DATA COMBINATIONS:
 
 EXTREME VALUE TESTING:
 □ $1 ANF, 999,999 returns → Very low fee, high volume
-□ $999 ANF, 1 return → Very high fee, low volume  
+□ $999 ANF, 1 return → Very high fee, low volume
 □ -50% growth → Severe business decline
 □ +500% growth → Unrealistic but possible expansion
 □ All expenses at 100% → Total business loss scenario
@@ -226,6 +238,7 @@ CALCULATION EDGE CASES:
 ```
 
 ### 4.2 Data Consistency Risk Assessment
+
 ```
 CROSS-PAGE DATA INTEGRITY:
 □ Change Page 1 data → Go to Page 2 → Verify updates
@@ -249,6 +262,7 @@ PERSISTENCE RISK SCENARIOS:
 ## 🌐 PART 5: Support Agent Diagnostic Scenarios
 
 ### 5.1 Common User Issues
+
 ```
 "MY CALCULATIONS ARE WRONG":
 □ Debug panel → Calculations tab → Show intermediate values
@@ -276,6 +290,7 @@ PERSISTENCE RISK SCENARIOS:
 ```
 
 ### 5.2 Diagnostic Information Collection
+
 ```
 AUTOMATIC DIAGNOSTIC DATA:
 □ Browser version and user agent
@@ -300,6 +315,7 @@ SUPPORT-FRIENDLY FEATURES:
 ## 📱 PART 6: Mobile-Specific Testing
 
 ### 6.1 Mobile Interaction Patterns
+
 ```
 TOUCH INTERACTIONS:
 □ Tap targets minimum 44px (Apple guidelines)
@@ -326,6 +342,7 @@ MOBILE PERFORMANCE:
 ```
 
 ### 6.2 Mobile Layout Edge Cases
+
 ```
 ORIENTATION CHANGES:
 □ Portrait → Landscape → All elements visible
@@ -346,6 +363,7 @@ MOBILE BROWSER QUIRKS:
 ## 🔍 PART 7: Accessibility & Edge User Testing
 
 ### 7.1 Accessibility Requirements
+
 ```
 SCREEN READER COMPATIBILITY:
 □ All form fields have proper labels
@@ -370,6 +388,7 @@ VISUAL ACCESSIBILITY:
 ```
 
 ### 7.2 Edge User Scenarios
+
 ```
 POWER USERS:
 □ Keyboard shortcuts work properly
@@ -398,6 +417,7 @@ INTERNATIONAL USERS:
 ## 🚨 PART 8: Failure Mode Testing
 
 ### 8.1 Graceful Degradation
+
 ```
 JAVASCRIPT DISABLED:
 □ Basic functionality still available
@@ -418,6 +438,7 @@ BROWSER LIMITATIONS:
 ```
 
 ### 8.2 Error Recovery Testing
+
 ```
 CALCULATION ERRORS:
 □ Division by zero → Display "N/A" or handle gracefully
@@ -437,18 +458,20 @@ USER ERROR RECOVERY:
 ## ✅ TESTING EXECUTION CHECKLIST
 
 ### Phase 1: Automated Edge Case Testing
+
 ```bash
 # Run existing automated tests
 node scripts/regression-test.js
 
 # Add edge case tests to script:
-□ Test all dropdown options programmatically  
+□ Test all dropdown options programmatically
 □ Test field validation boundaries
 □ Test calculation edge cases
 □ Test data persistence scenarios
 ```
 
 ### Phase 2: Manual Device Testing (2-3 hours)
+
 ```
 □ Test on 3+ mobile devices (iOS/Android)
 □ Test on 2+ tablet sizes
@@ -459,6 +482,7 @@ node scripts/regression-test.js
 ```
 
 ### Phase 3: Support Scenario Testing (1 hour)
+
 ```
 □ Simulate common user issues
 □ Test diagnostic information collection
@@ -468,6 +492,7 @@ node scripts/regression-test.js
 ```
 
 ### Phase 4: Performance & Load Testing (30 minutes)
+
 ```
 □ Test with maximum realistic data
 □ Test rapid user interactions
@@ -481,6 +506,7 @@ node scripts/regression-test.js
 ## 🎯 CRITICAL SUCCESS METRICS
 
 **Deploy Only When:**
+
 - All automated tests pass ✅
 - App works on mobile devices ✅
 - All dropdown options tested ✅
@@ -491,6 +517,7 @@ node scripts/regression-test.js
 - No console errors ✅
 
 **Red Flags (Stop Deployment):**
+
 - App broken on mobile
 - Any dropdown option causes errors
 - Field validation allows invalid data

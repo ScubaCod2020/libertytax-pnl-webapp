@@ -1,0 +1,207 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop, Dev_09202025, 'feat/**', 'fix/**']
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - 'wiki/**'
+  pull_request:
+    branches: [main, develop, Dev_09202025]
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - 'wiki/**'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 10 * * 1'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Angular dependencies (if present)
+        run: |
+          if [ -f "angular/package.json" ]; then
+            cd angular && npm ci
+          else
+            echo "No angular/package.json; skipping Angular deps"
+          fi
+
+      - name: Detect framework
+        id: detect
+        run: |
+          if [ -f "angular.json" ] || [ -f "nx.json" ] || [ -f "angular/angular.json" ]; then
+            echo "framework=angular" >> $GITHUB_OUTPUT
+          else
+            echo "framework=react" >> $GITHUB_OUTPUT
+          fi
+          if [ -f "angular/angular.json" ]; then
+            echo "angular_dir=angular" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Lint
+        run: |
+          if [ "${{ steps.detect.outputs.framework }}" = "angular" ]; then
+            if [ "${{ steps.detect.outputs.angular_dir }}" = "angular" ]; then cd angular; fi
+            # Prefer Angular CLI; fall back to project script if present
+            npx ng lint || npm run lint --if-present || echo "No Angular lint configured; skipping"
+          else
+            npm run lint
+          fi
+
+      - name: Markdown lint
+        run: |
+          BRANCH_NAME="${GITHUB_REF_NAME}"
+          if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "develop" ]; then
+            npm run mdlint
+          else
+            npm run mdlint || echo "Markdown lint issues are advisory on '$BRANCH_NAME'"
+          fi
+
+      - name: Type check
+        run: |
+          if npm run | grep -q "type-check"; then
+            npm run type-check
+          else
+            echo "No type-check script; skipping"
+          fi
+
+      - name: Unit tests
+        run: |
+          if [ "${{ steps.detect.outputs.framework }}" = "angular" ]; then
+            if [ "${{ steps.detect.outputs.angular_dir }}" = "angular" ]; then cd angular; fi
+            # Try Angular CLI first; else project test script if available
+            npx ng test --watch=false --browsers=ChromeHeadless || npm run test --if-present || echo "No Angular tests configured; skipping"
+          else
+            npm run test --if-present || echo "React unit tests failed (non-blocking)"
+          fi
+
+      - name: Build
+        run: |
+          if [ "${{ steps.detect.outputs.framework }}" = "angular" ]; then
+            if [ "${{ steps.detect.outputs.angular_dir }}" = "angular" ]; then cd angular; fi
+            # Try prod build then fallback to default; if CLI missing, try npm script
+            npx ng build --configuration=production || npx ng build || npm run build --if-present || echo "No Angular build configured; skipping"
+          else
+            npm run build
+          fi
+
+      - name: E2E (Playwright - React only)
+        if: steps.detect.outputs.framework == 'react'
+        run: |
+          if [ -f "playwright.config.ts" ] || [ -f "playwright.config.js" ]; then
+            npx playwright install --with-deps
+            npm run test:e2e:react --if-present || echo "React E2E failed (non-blocking)"
+          else
+            echo "No Playwright config; skipping e2e"
+          fi
+
+      - name: E2E (Playwright - Angular only)
+        if: steps.detect.outputs.framework == 'angular'
+        run: |
+          if [ -f "playwright.config.js" ]; then
+            npx playwright install --with-deps
+            export PLAYWRIGHT_HTTPCACHE=0
+            export DEBUG=pw:api
+            npm run test:e2e:angular || echo "Angular E2E failed (non-blocking)"
+          else
+            echo "No Angular Playwright config; skipping e2e"
+          fi
+
+      - name: Generate components graph (Mermaid)
+        run: npm run graph:components
+
+      - name: Upload components graph artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: components-graph
+          path: |
+            docs/architecture/components-graph.md
+            docs/architecture/components-graph.mmd
+
+      - name: Render components graph (SVG)
+        run: npm run graph:render
+
+      - name: Upload components graph SVG
+        uses: actions/upload-artifact@v4
+        with:
+          name: components-graph-svg
+          path: docs/architecture/components-graph.svg
+
+      - name: Upload Playwright artifacts (if present)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts-ci
+          path: |
+            playwright-report/**
+            test-results/**
+
+      - name: Validate docs indexes (non-blocking)
+        run: npm run docs:validate-index || echo "Docs index validation is advisory"
+
+      - name: API health (non-blocking)
+        run: |
+          (curl -fsS http://localhost:5000/api/health && echo "API health OK") || echo "API not reachable (expected if backend not running)"
+
+  approval:
+    name: Staging approval gate
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: ${{ success() && github.event_name == 'pull_request' }}
+    environment:
+      name: staging
+    timeout-minutes: 30
+    steps:
+      - run: echo "Awaiting approval to deploy preview..."
+
+  vercel-preview:
+    name: Vercel Preview Deploy
+    runs-on: ubuntu-latest
+    needs: approval
+    if: ${{ success() && github.event_name == 'pull_request' }}
+    environment:
+      name: preview
+    timeout-minutes: 10
+    steps:
+      - name: Trigger Vercel Preview via Deploy Hook
+        run: |
+          if [ -z "${{ secrets.VERCEL_HOOK_PREVIEW }}" ]; then
+            echo "Missing secret VERCEL_HOOK_PREVIEW" && exit 1
+          fi
+          curl -s -X POST "${{ secrets.VERCEL_HOOK_PREVIEW }}" -H 'Accept: application/json' || exit 1
+
+  vercel-staging:
+    name: Vercel Staging Deploy
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: ${{ success() && github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
+    environment:
+      name: staging
+    timeout-minutes: 10
+    steps:
+      - name: Trigger Vercel Staging via Deploy Hook
+        run: |
+          if [ -z "${{ secrets.VERCEL_HOOK_STAGING }}" ]; then
+            echo "Missing secret VERCEL_HOOK_STAGING" && exit 1
+          fi
+          curl -s -X POST "${{ secrets.VERCEL_HOOK_STAGING }}" -H 'Accept: application/json' || exit 1

@@ -1,7 +1,7 @@
 {
   "config": {
-    "configFile": "C:\\Dev\\libertytax-pnl-webapp\\playwright.config.ts",
-    "rootDir": "C:/Dev/libertytax-pnl-webapp/tests",
+    "configFile": "E:\\dev\\libertytax-pnl-webapp\\playwright.config.ts",
+    "rootDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
     "forbidOnly": false,
     "fullyParallel": true,
     "globalSetup": null,
@@ -10,7 +10,9 @@
     "grep": {},
     "grepInvert": null,
     "maxFailures": 0,
-    "metadata": {},
+    "metadata": {
+      "actualWorkers": 2
+    },
     "preserveOutput": "always",
     "reporter": [
       [
@@ -37,13 +39,15 @@
     "quiet": false,
     "projects": [
       {
-        "outputDir": "C:/Dev/libertytax-pnl-webapp/test-results",
+        "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 2
+        },
         "id": "chromium",
         "name": "chromium",
-        "testDir": "C:/Dev/libertytax-pnl-webapp/tests",
+        "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -51,13 +55,15 @@
         "timeout": 30000
       },
       {
-        "outputDir": "C:/Dev/libertytax-pnl-webapp/test-results",
+        "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 2
+        },
         "id": "firefox",
         "name": "firefox",
-        "testDir": "C:/Dev/libertytax-pnl-webapp/tests",
+        "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -65,13 +71,15 @@
         "timeout": 30000
       },
       {
-        "outputDir": "C:/Dev/libertytax-pnl-webapp/test-results",
+        "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 2
+        },
         "id": "webkit",
         "name": "webkit",
-        "testDir": "C:/Dev/libertytax-pnl-webapp/tests",
+        "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -79,13 +87,15 @@
         "timeout": 30000
       },
       {
-        "outputDir": "C:/Dev/libertytax-pnl-webapp/test-results",
+        "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 2
+        },
         "id": "Mobile Chrome",
         "name": "Mobile Chrome",
-        "testDir": "C:/Dev/libertytax-pnl-webapp/tests",
+        "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -93,13 +103,15 @@
         "timeout": 30000
       },
       {
-        "outputDir": "C:/Dev/libertytax-pnl-webapp/test-results",
+        "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 2
+        },
         "id": "Mobile Safari",
         "name": "Mobile Safari",
-        "testDir": "C:/Dev/libertytax-pnl-webapp/tests",
+        "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -107,13 +119,15 @@
         "timeout": 30000
       },
       {
-        "outputDir": "C:/Dev/libertytax-pnl-webapp/test-results",
+        "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 2
+        },
         "id": "Microsoft Edge",
         "name": "Microsoft Edge",
-        "testDir": "C:/Dev/libertytax-pnl-webapp/tests",
+        "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -121,13 +135,15 @@
         "timeout": 30000
       },
       {
-        "outputDir": "C:/Dev/libertytax-pnl-webapp/test-results",
+        "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 2
+        },
         "id": "Google Chrome",
         "name": "Google Chrome",
-        "testDir": "C:/Dev/libertytax-pnl-webapp/tests",
+        "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -144,22 +160,186 @@
       "command": "npm run preview",
       "url": "http://localhost:4173",
       "reuseExistingServer": true,
-      "timeout": 30000
+      "timeout": 120000
     }
   },
-  "suites": [],
-  "errors": [
+  "suites": [
     {
-      "message": "Error: Process from config.webServer was not able to start. Exit code: 1",
-      "stack": "Error: Process from config.webServer was not able to start. Exit code: 1"
+      "title": "test-header-updates.spec.js",
+      "file": "test-header-updates.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Header Updates from Quick Start Wizard",
+          "file": "test-header-updates.spec.js",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should update header when Quick Start Wizard values change",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30519,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "E:\\dev\\libertytax-pnl-webapp\\test\\e2e\\test-header-updates.spec.js",
+                            "column": 68,
+                            "line": 16
+                          },
+                          "message": "Error: locator.textContent: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.small.text-xs').nth(1)\u001b[22m\n\n\n\u001b[0m \u001b[90m 14 |\u001b[39m     \n \u001b[90m 15 |\u001b[39m     \u001b[90m// Check initial header values\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 16 |\u001b[39m     \u001b[36mconst\u001b[39m headerText \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'.small.text-xs'\u001b[39m)\u001b[33m.\u001b[39mnth(\u001b[35m1\u001b[39m)\u001b[33m.\u001b[39mtextContent()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 17 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'📊 Initial header text:'\u001b[39m\u001b[33m,\u001b[39m headerText)\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m     \n \u001b[90m 19 |\u001b[39m     \u001b[90m// Change Quick Start Wizard selections\u001b[39m\u001b[0m\n\u001b[2m    at E:\\dev\\libertytax-pnl-webapp\\test\\e2e\\test-header-updates.spec.js:16:68\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting header update test...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-25T14:25:56.871Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "E:\\dev\\libertytax-pnl-webapp\\test-results\\test-header-updates-Header-6a9b7--Start-Wizard-values-change-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "E:\\dev\\libertytax-pnl-webapp\\test-results\\test-header-updates-Header-6a9b7--Start-Wizard-values-change-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "E:\\dev\\libertytax-pnl-webapp\\test-results\\test-header-updates-Header-6a9b7--Start-Wizard-values-change-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "2c3dbe3ac11bbb04efd5-358dc72ab17ffafa9d07",
+              "file": "test-header-updates.spec.js",
+              "line": 5,
+              "column": 3
+            },
+            {
+              "title": "should navigate correctly between pages",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 18004,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: locator('button:has-text(\"Expenses\")') resolved to 2 elements:\n    1) <button title=\"Expenses\" class=\"btn btn--nav\" _ngcontent-ng-c1660371727=\"\">Expenses</button> aka getByTitle('Expenses', { exact: true })\n    2) <button class=\"btn btn--nav\" _ngcontent-ng-c3182879400=\"\">Expenses</button> aka getByRole('contentinfo').getByRole('button', { name: 'Expenses' })\n\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Expenses\")')\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: locator('button:has-text(\"Expenses\")') resolved to 2 elements:\n    1) <button title=\"Expenses\" class=\"btn btn--nav\" _ngcontent-ng-c1660371727=\"\">Expenses</button> aka getByTitle('Expenses', { exact: true })\n    2) <button class=\"btn btn--nav\" _ngcontent-ng-c3182879400=\"\">Expenses</button> aka getByRole('contentinfo').getByRole('button', { name: 'Expenses' })\n\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Expenses\")')\u001b[22m\n\n    at E:\\dev\\libertytax-pnl-webapp\\test\\e2e\\test-header-updates.spec.js:61:55",
+                        "location": {
+                          "file": "E:\\dev\\libertytax-pnl-webapp\\test\\e2e\\test-header-updates.spec.js",
+                          "column": 55,
+                          "line": 61
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 59 |\u001b[39m     \u001b[90m// Test expenses navigation\u001b[39m\n \u001b[90m 60 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🔄 Clicking Expenses button...'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 61 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Expenses\")'\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 62 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m2000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 63 |\u001b[39m     \n \u001b[90m 64 |\u001b[39m     \u001b[36mconst\u001b[39m expensesUrl \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39murl()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "E:\\dev\\libertytax-pnl-webapp\\test\\e2e\\test-header-updates.spec.js",
+                            "column": 55,
+                            "line": 61
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: locator('button:has-text(\"Expenses\")') resolved to 2 elements:\n    1) <button title=\"Expenses\" class=\"btn btn--nav\" _ngcontent-ng-c1660371727=\"\">Expenses</button> aka getByTitle('Expenses', { exact: true })\n    2) <button class=\"btn btn--nav\" _ngcontent-ng-c3182879400=\"\">Expenses</button> aka getByRole('contentinfo').getByRole('button', { name: 'Expenses' })\n\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Expenses\")')\u001b[22m\n\n\n\u001b[0m \u001b[90m 59 |\u001b[39m     \u001b[90m// Test expenses navigation\u001b[39m\n \u001b[90m 60 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🔄 Clicking Expenses button...'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 61 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Expenses\")'\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 62 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m2000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 63 |\u001b[39m     \n \u001b[90m 64 |\u001b[39m     \u001b[36mconst\u001b[39m expensesUrl \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39murl()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at E:\\dev\\libertytax-pnl-webapp\\test\\e2e\\test-header-updates.spec.js:61:55\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting navigation test...\n"
+                        },
+                        {
+                          "text": "🔄 Clicking Expenses button...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-25T14:25:56.697Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "E:\\dev\\libertytax-pnl-webapp\\test-results\\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "E:\\dev\\libertytax-pnl-webapp\\test-results\\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "E:\\dev\\libertytax-pnl-webapp\\test-results\\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "E:\\dev\\libertytax-pnl-webapp\\test\\e2e\\test-header-updates.spec.js",
+                        "column": 55,
+                        "line": 61
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "2c3dbe3ac11bbb04efd5-01e70c72afb1b5aabf77",
+              "file": "test-header-updates.spec.js",
+              "line": 53,
+              "column": 3
+            }
+          ]
+        }
+      ]
     }
   ],
+  "errors": [],
   "stats": {
-    "startTime": "2025-09-08T05:47:50.216Z",
-    "duration": 1488.1720000000003,
+    "startTime": "2025-09-25T14:25:46.017Z",
+    "duration": 69369.266,
     "expected": 0,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 2,
     "flaky": 0
   }
 }

@@ -1,0 +1,34 @@
+# KPI Rules V2 Defaults (stub)
+# TODO: Populate with real threshold bands once confirmed with product team.
+
+features:
+  kpiRulesV2: true
+
+bands:
+  rent:
+    us:
+      hard_cap_monthly: 1500
+    ca:
+      revenue_pct_max: 0.18
+      owner_occupied_suppression: true
+  payroll:
+    min_pct: 0.35
+    max_pct: 0.45
+  marketing:
+    min_pct: 0.08
+    max_pct: 0.12
+  tech:
+    min_pct: 0.02
+    max_pct: 0.05
+  misc:
+    warning_pct: 0.05
+
+lifecycle:
+  new:
+    year_band: 'Year 1'
+  existing:
+    year_band: 'Year 2+'
+
+# Placeholder notes for future enrichment.
+notes:
+  - TODO: Align with blueprint lifecycle fine segmentation once inputs exist.

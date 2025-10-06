@@ -5,10 +5,10 @@
       "name": "Launch Chrome against localhost",
       "request": "launch",
       "type": "chrome",
-      "url": "http://localhost:3001",
+      "url": "http://localhost:4200",
       "webRoot": "${workspaceFolder}/src",
       "sourceMaps": true,
-      "trace": "verbose"
+      "trace": true
     },
     {
       "name": "Attach to Chrome",

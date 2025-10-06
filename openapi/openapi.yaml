@@ -1,0 +1,48 @@
+openapi: 3.0.3
+info:
+  title: Liberty Tax P&L API (Stub)
+  version: 0.1.0
+servers:
+  - url: http://localhost:5000
+paths:
+  /api/health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+  /api/reports/summary:
+    get:
+      summary: Get P&L summary
+      parameters:
+        - in: query
+          name: region
+          schema:
+            type: string
+            enum: [US, CA]
+        - in: query
+          name: year
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Summary report
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  netIncome:
+                    type: number
+                  netMargin:
+                    type: number
+                  totalRevenue:
+                    type: number

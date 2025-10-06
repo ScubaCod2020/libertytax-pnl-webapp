@@ -1,0 +1,242 @@
+.expense-section {
+  margin-bottom: 1.5rem;
+  border: 1px solid #6b7280;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background: #f8fafc;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 1.1rem;
+  border-bottom: 2px solid #6b7280;
+  padding-bottom: 0.25rem;
+}
+
+.title-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grid-row {
+  margin-bottom: 0.75rem;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.25rem 0.75rem;
+  align-items: center;
+}
+
+.grid-field {
+  grid-area: 1 / 2;
+}
+
+label {
+  font-weight: 500;
+  grid-area: 1 / 1;
+  overflow-wrap: break-word;
+}
+
+.req {
+  color: #dc2626;
+  margin-left: 0.25rem;
+}
+
+.inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.inline-gap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.prefix,
+.suffix {
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.input {
+  width: 140px;
+  text-align: right;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 0.5rem;
+}
+
+.input.sm {
+  width: 140px;
+}
+
+.input.xs {
+  width: 80px;
+}
+
+.input.readonly {
+  background: #f9fafb;
+}
+
+.eq {
+  color: #6b7280;
+}
+
+.small.note {
+  opacity: 0.7;
+  grid-area: 2 / 2;
+}
+
+.help {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.net-banner {
+  padding: 1rem;
+  background: #f0fdf4;
+  border: 2px solid #16a34a;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #15803d;
+  margin-top: 1rem;
+}
+
+.muted {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.py {
+  padding: 12px;
+}
+
+.row {
+  margin-bottom: 12px;
+}
+
+.row.compact {
+  margin-bottom: 8px;
+}
+
+label {
+  font-weight: 600;
+  color: #374151;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.req {
+  color: #dc2626;
+  margin-left: 4px;
+}
+
+.field {
+  display: block;
+}
+
+.note {
+  color: #6b7280;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.note.italic {
+  font-style: italic;
+}
+
+.currency,
+.percent {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prefix,
+.suffix {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.input {
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: #fff;
+  width: 180px;
+}
+
+.input.small {
+  width: 90px;
+  text-align: right;
+}
+
+.dual {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.eq {
+  color: #6b7280;
+}
+
+.box {
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: #f8fafc;
+  margin: 8px 0;
+}
+
+.box.info {
+  border-color: #0ea5e9;
+  background: #f0f9ff;
+}
+
+.box-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.summary {
+  margin-top: 12px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 2px solid #16a34a;
+  background: #f0fdf4;
+  color: #15803d;
+  font-weight: 600;
+}
+
+.card {
+  margin-bottom: 16px;
+}
+
+.card-title {
+  margin-bottom: 8px;
+}
+
+.py-income-drivers {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

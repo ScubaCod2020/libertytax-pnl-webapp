@@ -1,0 +1,30 @@
+name: OpenAPI Lint
+
+on:
+  push:
+    paths:
+      - 'openapi/**'
+      - '.github/workflows/openapi-lint.yml'
+  pull_request:
+    paths:
+      - 'openapi/**'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps (Spectral)
+        run: npm ci
+
+      - name: Lint OpenAPI schema
+        run: npm run api:lint

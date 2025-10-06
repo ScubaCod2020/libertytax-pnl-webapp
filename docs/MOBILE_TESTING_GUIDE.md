@@ -3,12 +3,13 @@
 ## 📱 Quick Mobile Testing Protocol
 
 ### Step 1: Browser Dev Tools Testing (5 minutes)
+
 ```
 Chrome DevTools Device Emulation:
 1. Press F12 → Click device icon
 2. Test these specific sizes:
    □ iPhone SE (375x667) - Smallest target
-   □ iPhone 12 Pro (390x844) - Standard mobile  
+   □ iPhone 12 Pro (390x844) - Standard mobile
    □ iPad (768x1024) - Tablet size
 3. For each size, verify:
    □ All buttons tappable (not too small)
@@ -19,6 +20,7 @@ Chrome DevTools Device Emulation:
 ```
 
 ### Step 2: Actual Device Testing (10 minutes)
+
 ```
 Test on Real Devices:
 □ iPhone (any model) - Safari & Chrome
@@ -38,6 +40,7 @@ Critical Mobile Tests:
 ## 🔍 Support Agent Diagnostic Tools
 
 ### Built-in Diagnostic Features
+
 ```
 Debug Panel → Storage Tab:
 □ Shows localStorage size and contents
@@ -61,6 +64,7 @@ Debug Panel → Performance Tab:
 ```
 
 ### Support Troubleshooting Workflow
+
 ```
 When User Reports Issue:
 1. Ask user to open Debug Panel (footer button)
@@ -79,6 +83,7 @@ When User Reports Issue:
 ## ⚠️ Common Mobile Issues & Solutions
 
 ### Issue: "App doesn't work on my phone"
+
 ```
 Diagnostic Steps:
 □ Check browser version (need modern browser)
@@ -95,6 +100,7 @@ Common Fixes:
 ```
 
 ### Issue: "Buttons are too small to tap"
+
 ```
 Diagnostic Steps:
 □ Check device screen size and resolution
@@ -110,6 +116,7 @@ Common Fixes:
 ```
 
 ### Issue: "Keyboard covers input fields"
+
 ```
 Diagnostic Steps:
 □ Test different mobile browsers
@@ -125,6 +132,7 @@ Common Fixes:
 ```
 
 ### Issue: "Calculations seem wrong"
+
 ```
 Diagnostic Steps:
 □ Open Debug Panel → Calculations tab
@@ -144,14 +152,16 @@ Common Fixes:
 ## 🌐 Browser Compatibility Matrix
 
 ### Fully Supported (Primary Targets)
+
 ```
 □ Chrome 90+ (Desktop/Mobile)
-□ Safari 14+ (Desktop/Mobile) 
+□ Safari 14+ (Desktop/Mobile)
 □ Firefox 88+ (Desktop/Mobile)
 □ Edge 90+ (Desktop)
 ```
 
 ### Limited Support (Secondary Targets)
+
 ```
 □ Samsung Internet 14+
 □ Chrome Mobile (older versions)
@@ -159,6 +169,7 @@ Common Fixes:
 ```
 
 ### Not Supported (Known Issues)
+
 ```
 ❌ Internet Explorer (all versions)
 ❌ Chrome < 80
@@ -171,6 +182,7 @@ Common Fixes:
 ## 📊 Performance Benchmarks
 
 ### Acceptable Performance Targets
+
 ```
 Mobile Devices:
 □ Initial load: < 5 seconds on 3G
@@ -188,6 +200,7 @@ Desktop/Tablet:
 ```
 
 ### Performance Red Flags
+
 ```
 ❌ Any interaction > 1 second
 ❌ Visible layout shifts during load
@@ -201,6 +214,7 @@ Desktop/Tablet:
 ## 🧪 Quick Validation Tests
 
 ### 30-Second Mobile Check
+
 ```
 1. Open app on mobile device
 2. Tap "Start Wizard" button
@@ -218,6 +232,7 @@ Desktop/Tablet:
 ```
 
 ### 60-Second Support Readiness Check
+
 ```
 1. Open debug panel
 2. Click each tab (Storage, Calc, State, Perf, Thresholds)
@@ -239,6 +254,7 @@ Desktop/Tablet:
 ## 🚨 Pre-Deployment Mobile Checklist
 
 ### Critical Mobile Tests (Must Pass)
+
 ```
 □ App loads on iPhone Safari
 □ App loads on Android Chrome
@@ -251,6 +267,7 @@ Desktop/Tablet:
 ```
 
 ### Support Readiness Tests (Must Pass)
+
 ```
 □ Debug panel provides useful diagnostic info
 □ "Copy JSON" button works for support tickets
@@ -261,6 +278,7 @@ Desktop/Tablet:
 ```
 
 ### Nice-to-Have Tests
+
 ```
 □ Works in landscape orientation
 □ Supports browser zoom 75%-150%
@@ -275,6 +293,7 @@ Desktop/Tablet:
 ## 📞 Support Script Templates
 
 ### "App Not Working" Support Script
+
 ```
 Hi! I can help troubleshoot that. Let's gather some diagnostic info:
 
@@ -288,6 +307,7 @@ Based on the diagnostic info, I can help identify the specific issue.
 ```
 
 ### "Calculations Wrong" Support Script
+
 ```
 Let's verify your calculations together:
 

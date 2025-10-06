@@ -1,0 +1,16 @@
+<div class="card" *ngIf="viewResults() as r" data-dashboard>
+  <div class="card-title">Dashboard</div>
+
+  <app-kpi-stoplights [results]="r" [thresholds]="thresholds()"></app-kpi-stoplights>
+
+  <div style="margin-top: 20px; gap: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); max-width: 100%;">
+    <app-pro-tips-card style="order:2;" [results]="r" [thresholds]="thresholds()"></app-pro-tips-card>
+    <app-income-summary-card style="order:1;" [results]="r" [hasOtherIncome]="hasOtherIncome"></app-income-summary-card>
+  </div>
+
+  <div style="margin-top: 16px;">
+    <app-expense-breakdown-card [results]="r"></app-expense-breakdown-card>
+  </div>
+</div>
+
+

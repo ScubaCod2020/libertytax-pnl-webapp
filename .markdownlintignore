@@ -1,0 +1,11 @@
+**/node_modules/**
+**/dist/**
+**/build/**
+coverage/**
+test-results/**
+playwright-report/**
+angular/dist/**
+react-app-reference/**/dist/**
+.vercel/**
+**/.next/**
+
