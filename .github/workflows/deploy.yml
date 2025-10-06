@@ -34,21 +34,41 @@ jobs:
     name: Select environment
     runs-on: ubuntu-latest
     outputs:
-      env_name: ${{ steps.set.outputs.env_name }}
+      env_name: ${{ steps.detect.outputs.env_name }}
     steps:
-      - id: set
+      - id: detect
+        name: Compute environment
+        shell: bash
         run: |
-          ref="${GITHUB_REF_NAME}"
-# pseudo-diff of your map-env step
-  if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-    echo "env_name=${{ inputs.target_env }}" >> "$GITHUB_OUTPUT"
-  elif [ "${GITHUB_EVENT_NAME}" = "pull_request" ]; then
-    echo "env_name=Dev" >> "$GITHUB_OUTPUT"
-  elif [ "${GITHUB_REF_NAME}" = "staging" ]; then
-    echo "env_name=Staging" >> "$GITHUB_OUTPUT"
-  else
-    echo "env_name=Production" >> "$GITHUB_OUTPUT"
-  fi
+          set -euo pipefail
+          REF_NAME="${GITHUB_REF_NAME:-}"
+          EVENT="${GITHUB_EVENT_NAME:-}"
+
+          # If manually dispatched, honor the dropdown input
+          if [[ "$EVENT" == "workflow_dispatch" ]]; then
+            case "${{ inputs.target_env }}" in
+              Dev|dev|Preview|preview)   ENV_NAME="Preview" ;;
+              Staging|staging)           ENV_NAME="Staging" ;;
+              Production|production|Prod|prod) ENV_NAME="Production" ;;
+              *)                         ENV_NAME="Preview" ;;
+            esac
+
+          # PRs go to Preview (your DEV on Unraid)
+          elif [[ "$EVENT" == "pull_request" ]]; then
+            ENV_NAME="Preview"
+
+          # Branch mapping
+          elif [[ "$REF_NAME" == "staging" ]]; then
+            ENV_NAME="Staging"
+          elif [[ "$REF_NAME" == "main" || "$REF_NAME" == "master" ]]; then
+            ENV_NAME="Production"
+          else
+            ENV_NAME="Preview"
+          fi
+
+          echo "env_name=$ENV_NAME" >> "$GITHUB_OUTPUT"
+          echo "Selected environment: $ENV_NAME"
+
 
   build:
     name: Build & Deploy
