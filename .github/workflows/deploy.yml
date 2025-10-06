@@ -121,19 +121,11 @@ jobs:
         shell: bash
         run: |
           # Fixed: Updated pattern to match Angular build structure
-          # Test deployment after DIST_DIR variable fix - 2025-10-06
           set -euo pipefail
           ROOT="${{ steps.find_ng.outputs.dir }}"
           DEFAULT_PATTERN="$ROOT/dist/angular/browser"
-
-          # Use repository variable DIST_DIR if set, otherwise use our corrected default
           PATTERN="${{ vars.DIST_DIR }}"
-          if [ -z "${PATTERN:-}" ]; then 
-            PATTERN="$DEFAULT_PATTERN"
-            echo "Using default pattern: $PATTERN"
-          else
-            echo "Using repository variable DIST_DIR: $PATTERN"
-          fi
+          if [ -z "${PATTERN:-}" ]; then PATTERN="$DEFAULT_PATTERN"; fi
 
           CANDIDATE="$(ls -d ${PATTERN} 2>/dev/null | head -n1 || true)"
           if [ -z "$CANDIDATE" ]; then
