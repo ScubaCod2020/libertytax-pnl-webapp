@@ -113,8 +113,16 @@ export class ExpensesService {
     );
   }
 
-  // ANF KPI streams (Average Net Fee)
-  anfValue$ = this.wizard.answers$.pipe(map((a) => a.projectedAvgNetFee ?? a.avgNetFee ?? null));
+  // ANF KPI streams (Average Net Fee) - FIXED: Use consistent logic
+  anfValue$ = this.wizard.answers$.pipe(
+    map((a) => {
+      // Use same logic as KpiEvaluatorService.getEffectiveAvgNetFee()
+      if (a.storeType === 'existing') {
+        return a.projectedAvgNetFee ?? a.avgNetFee ?? null;
+      }
+      return a.avgNetFee ?? a.projectedAvgNetFee ?? null;
+    })
+  );
 
   anfStatus$ = this.wizard.answers$.pipe(map((a) => this.evaluator.getAnfStatus(a) as StatusClass));
 

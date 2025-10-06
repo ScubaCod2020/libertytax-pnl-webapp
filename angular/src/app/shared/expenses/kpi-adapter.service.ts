@@ -75,8 +75,11 @@ export class KpiAdapterService {
     payload['rentPct'] =
       rentMonthly != null && gross > 0 ? (rentMonthly / gross) * 100 : (a.rentPct ?? null);
 
-    // Average Net Fee passthrough for v2 engines
-    payload['averageNetFee'] = __safe.projectedAvgNetFee ?? __safe.avgNetFee ?? null;
+    // Average Net Fee passthrough for v2 engines - FIXED: Use consistent logic
+    payload['averageNetFee'] =
+      __safe.storeType === 'existing'
+        ? (__safe.projectedAvgNetFee ?? __safe.avgNetFee ?? null)
+        : (__safe.avgNetFee ?? __safe.projectedAvgNetFee ?? null);
 
     __trace.log('outputs', payload);
     return payload;

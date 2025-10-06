@@ -25,6 +25,7 @@ export class IncomeDriversComponent {
   readonly storeType$ = this.wizardState.answers$.pipe(
     map((answers) => {
       console.log('📊 [Income Drivers] storeType$ emitted:', answers.storeType);
+      console.log('📊 [Income Drivers] FULL ANSWERS:', answers);
       return answers.storeType || 'new';
     })
   );
@@ -42,7 +43,13 @@ export class IncomeDriversComponent {
     })
   );
 
-  constructor(private wizardState: WizardStateService) {
+  constructor(public wizardState: WizardStateService) {
     console.log('💰 [Income Drivers Component] Loading...');
+    console.log('💰 [Income Drivers Component] Current wizard state:', this.wizardState.answers);
+  }
+
+  // Getter for template access
+  get currentStoreType() {
+    return this.wizardState.answers.storeType;
   }
 }

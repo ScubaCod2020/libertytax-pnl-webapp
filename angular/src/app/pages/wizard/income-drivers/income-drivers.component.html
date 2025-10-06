@@ -4,9 +4,15 @@
     <p class="page-subtitle">{{ storeInfo.description }}</p>
   </div>
   <div class="step-body">
-    <!-- MINIMAL DEBUG: Just show what template sees -->
-    <div style="background: yellow; padding: 5px; font-size: 12px;">
+    <!-- ENHANCED DEBUG: Show multiple state sources -->
+    <div style="background: yellow; padding: 5px; font-size: 12px; margin-bottom: 5px;">
       DEBUG: storeType = {{ storeType$ | async }}
+    </div>
+    <div style="background: orange; padding: 5px; font-size: 12px; margin-bottom: 5px;">
+      DEBUG: Direct wizard state = {{ currentStoreType }}
+    </div>
+    <div style="background: pink; padding: 5px; font-size: 12px; margin-bottom: 5px;">
+      DEBUG: Condition check = {{ (storeType$ | async) === 'existing' }}
     </div>
     
     <!-- Existing store shows PY + Projected; New store shows Target -->
