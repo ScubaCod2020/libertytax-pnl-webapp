@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationStart, Router, NavigationEnd } from '@angular/router';
@@ -25,6 +25,7 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private destroy$ = new Subject<void>();
   private meta = inject(AppMetaService);
+  private cdr = inject(ChangeDetectorRef);
 
   // Local state for visual feedback - not reactive to global state
   localSettings = {
@@ -109,6 +110,18 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
   onRegionChange(v: string) {
     const region = v === 'US' ? 'US' : 'CA';
     console.log('🌍 [Wizard] Region changed to:', region);
+
+    // Update local state for immediate visual feedback - create new object to trigger change detection
+    this.localSettings = {
+      ...this.localSettings,
+      region: region,
+    };
+    console.log('🌍 [Wizard] Local state updated:', this.localSettings);
+
+    // Force change detection to update the UI
+    this.cdr.detectChanges();
+
+    // Update global state for other components
     this.wizardState.updateAnswers({ region });
   }
 
@@ -129,6 +142,9 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
       storeType: storeType,
     };
     console.log('🏪 [Wizard] Local state updated:', this.localSettings);
+
+    // Force change detection to update the UI
+    this.cdr.detectChanges();
 
     // Update global state for other components
     this.wizardState.updateAnswers({ storeType });

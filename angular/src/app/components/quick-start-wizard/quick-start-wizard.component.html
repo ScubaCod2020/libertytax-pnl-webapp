@@ -2,6 +2,7 @@
   <!-- Different views based on current page -->
   <ng-container *ngIf="currentPage$ | async as currentPage">
     <ng-container *ngIf="settings$ | async as settings">
+      <!-- DEBUG: settings object = {{ settings | json }} -->
 
       <!-- Full Interview View - Only when wizard is incomplete -->
       @if (currentPage === 'income-drivers' && editable && !isComplete()) {
@@ -42,16 +43,16 @@
           <div class="step-content">
             <h3 class="step-question">Is this a new store or existing store?</h3>
             <div class="step-options">
-              <label class="option-card" [class.option-card--selected]="localSettings.storeType === 'new'"
+              <label class="option-card" [class.option-card--selected]="settings.storeType === 'new'"
                 (click)="onStoreTypeLabelClick('new', $event)">
                 <div class="option-title">🏪 New Store</div>
                 <div class="option-desc">First year </div>
               </label>
-              <label class="option-card" [class.option-card--selected]="localSettings.storeType === 'existing'"
+              <label class="option-card" [class.option-card--selected]="settings.storeType === 'existing'"
                 (click)="onStoreTypeLabelClick('existing', $event)">
                 <div class="option-title">🏢 Existing Store</div>
                 <div class="option-desc">Use your Prior year performance data</div>
-                <!-- DEBUG: localSettings.storeType = {{ localSettings.storeType }} -->
+                <!-- DEBUG: settings.storeType = {{ settings.storeType }} -->
               </label>
             </div>
           </div>
