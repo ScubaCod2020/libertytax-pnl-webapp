@@ -18,15 +18,15 @@ describe('SharedExpenseTextService', () => {
       expect(typeof str).toBe('string');
       done();
     });
+  });
 
-    it('ANF tooltip/note return strings and reflect region', (done) => {
-      const wizard = TestBed.inject(WizardStateService);
-      wizard.updateAnswers({ region: 'CA', avgNetFee: 130 });
-      svc.anfTooltip$().subscribe((tooltip) => {
-        expect(typeof tooltip).toBe('string');
-        expect(tooltip).toContain('CA');
-        done();
-      });
+  it('ANF tooltip/note return strings and reflect region', (done) => {
+    const wizard = TestBed.inject(WizardStateService);
+    wizard.updateAnswers({ region: 'CA', avgNetFee: 130 });
+    svc.anfTooltip$().subscribe((tooltip) => {
+      expect(typeof tooltip).toBe('string');
+      expect(tooltip).toContain('CA');
+      done();
     });
   });
 });

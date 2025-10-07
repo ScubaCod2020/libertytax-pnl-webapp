@@ -70,7 +70,8 @@ const originalConsole = { ...console };
 
 const isDev = (() => {
   try {
-    return (process && process.env && process.env['NODE_ENV'] === 'development') || false;
+    // Check if we're in a browser environment (Karma) vs Node (Vitest)
+    return typeof window !== 'undefined' && window.location.hostname === 'localhost';
   } catch {
     return false;
   }

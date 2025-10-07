@@ -94,7 +94,7 @@ export class WizardStateService {
 
     if (isComplete) {
       // Use dynamic import to avoid circular dependency
-      import('../../../pages/dashboard/_gate/wizard-completion.service')
+      import('../../pages/dashboard/_gate/wizard-completion.service')
         .then(({ WizardCompletionService }) => {
           // This is a bit hacky but necessary to avoid circular deps
           const completionService = new WizardCompletionService();

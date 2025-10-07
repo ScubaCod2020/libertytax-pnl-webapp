@@ -9,26 +9,29 @@
       <div class="step-body">
         <!-- ENHANCED DEBUG: Show multiple state sources -->
         <div style="background: yellow; padding: 5px; font-size: 12px; margin-bottom: 5px;">
-          DEBUG: storeType = {{ storeType }}
+          DEBUG: storeType = {{ storeType }} (type: {{ typeof storeType }})
         </div>
         <div style="background: orange; padding: 5px; font-size: 12px; margin-bottom: 5px;">
-          DEBUG: Direct wizard state = {{ currentStoreType }}
+          DEBUG: Direct wizard state = {{ currentStoreType }} (type: {{ typeof currentStoreType }})
         </div>
         <div style="background: pink; padding: 5px; font-size: 12px; margin-bottom: 5px;">
-          DEBUG: Condition check = {{ storeType === 'existing' }}
+          DEBUG: Condition check = {{ storeType === 'existing' }} (strict: {{ storeType === 'existing' }})
+        </div>
+        <div style="background: lightcoral; padding: 5px; font-size: 12px; margin-bottom: 5px;">
+          DEBUG: Raw comparison = "{{ storeType }}" === "existing" = {{ storeType === 'existing' }}
         </div>
         
         <!-- Existing store shows PY + Projected; New store shows Target -->
         <ng-container *ngIf="storeType === 'existing'; else newStore">
           <div style="background: lightgreen; padding: 5px; font-size: 12px;">
-            DEBUG: Showing EXISTING components
+            DEBUG: Showing EXISTING components (storeType: {{ storeType }})
           </div>
           <app-py-income-drivers></app-py-income-drivers>
           <app-projected-income-drivers></app-projected-income-drivers>
         </ng-container>
         <ng-template #newStore>
           <div style="background: lightblue; padding: 5px; font-size: 12px;">
-            DEBUG: Showing NEW component
+            DEBUG: Showing NEW component (storeType: {{ storeType }})
           </div>
           <app-target-income-drivers></app-target-income-drivers>
         </ng-template>

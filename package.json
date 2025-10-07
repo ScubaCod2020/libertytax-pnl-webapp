@@ -46,6 +46,12 @@
     "api:lint": "spectral lint openapi/openapi.yaml",
     "mdlint": "markdownlint \"**/*.md\" --ignore node_modules",
     "mdlint:fix": "markdownlint \"**/*.md\" --fix --ignore node_modules",
+    "log:dev": "node tools/logging/append.cjs dev",
+    "log:maint": "node tools/logging/append.cjs maint",
+    "log:audit": "node tools/logging/append.cjs audit",
+    "log:process": "node tools/logging/append.cjs process",
+    "log:handoff": "node tools/logging/append.cjs handoff",
+    "log:ops": "node tools/logging/append.cjs ops",
     "prepare": "husky"
   },
   "dependencies": {

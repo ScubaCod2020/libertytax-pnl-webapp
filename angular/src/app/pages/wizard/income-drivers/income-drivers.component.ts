@@ -21,14 +21,14 @@ import { WizardStateService } from '../../../core/services/wizard-state.service'
   styleUrls: ['./income-drivers.component.scss'],
 })
 export class IncomeDriversComponent {
-  // Get store type and other settings from WizardStateService - use shareReplay to avoid multiple subscriptions
+  // Get store type and other settings from WizardStateService
   readonly storeType$ = this.wizardState.answers$.pipe(
     map((answers) => {
       console.log('📊 [Income Drivers] storeType$ emitted:', answers.storeType);
       console.log('📊 [Income Drivers] FULL ANSWERS:', answers);
+      console.log('🔄 [Income Drivers] Reactive stream updated - storeType:', answers.storeType);
       return answers.storeType || 'new';
-    }),
-    shareReplay(1)
+    })
   );
 
   readonly storeTypeInfo$ = this.wizardState.answers$.pipe(
@@ -41,8 +41,7 @@ export class IncomeDriversComponent {
           default: 'Configure your store settings',
         }),
       };
-    }),
-    shareReplay(1)
+    })
   );
 
   constructor(public wizardState: WizardStateService) {
