@@ -6,11 +6,13 @@
     </div>
     
     <div class="step-body">
-      @if (currentStoreType === 'existing') {
-        <app-py-income-drivers></app-py-income-drivers>
-        <app-projected-income-drivers></app-projected-income-drivers>
-      } @else {
-        <app-target-income-drivers></app-target-income-drivers>
+      @if (storeType$ | async; as storeType) {
+        @if (storeType === 'existing') {
+          <app-py-income-drivers></app-py-income-drivers>
+          <app-projected-income-drivers></app-projected-income-drivers>
+        } @else {
+          <app-target-income-drivers></app-target-income-drivers>
+        }
       }
     </div>
     
