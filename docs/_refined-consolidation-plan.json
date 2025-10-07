@@ -1,0 +1,151 @@
+{
+  "timestamp": "2025-10-07T15:35:32.538Z",
+  "appFocused": {
+    "app-testing": {
+      "canonical": "docs/TESTING.md",
+      "reason": "Main testing strategy for the app",
+      "files": [
+        "docs/TESTING.md",
+        "docs/TESTING_SETUP.md",
+        "docs/COMPREHENSIVE_TESTING_CHECKLIST.md",
+        "docs/EDGE_CASE_TESTING.md",
+        "docs/MANUAL_CALCULATION_TEST_CHECKLIST.md",
+        "docs/MOBILE_TESTING_GUIDE.md",
+        "docs/PRE_DEPLOYMENT_CHECKLIST.md",
+        "docs/parity-checklist.md",
+        "docs/development-checklists/currency-input-checklist.md"
+      ],
+      "estimatedReduction": 8
+    },
+    "app-architecture": {
+      "canonical": "docs/ARCHITECTURE.md",
+      "reason": "Core app architecture and design patterns",
+      "files": [
+        "docs/ARCHITECTURE.md",
+        "docs/COMPONENTS_TREE.md",
+        "docs/architecture/components-graph.md",
+        "docs/DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+        "docs/SPEC_ANALYSIS.md"
+      ],
+      "estimatedReduction": 4
+    },
+    "app-development": {
+      "canonical": "docs/DEVELOPMENT.md",
+      "reason": "Development guide for the app",
+      "files": [
+        "docs/DEVELOPMENT.md",
+        "docs/ENV_SETUP.md",
+        "docs/NODEJS_SETUP_GUIDE.md",
+        "docs/STYLE_GUIDE.md",
+        "docs/FEATURE_GUIDE_Branding.md"
+      ],
+      "estimatedReduction": 4
+    },
+    "app-kpi": {
+      "canonical": "docs/kpi/README.md",
+      "reason": "KPI calculations and business logic",
+      "files": [
+        "docs/kpi/README.md",
+        "docs/kpi/rules-v2.md",
+        "docs/CORRECTED_CALCULATION_ANALYSIS.md",
+        "docs/MANUAL_CALCULATION_TEST_CHECKLIST.md"
+      ],
+      "estimatedReduction": 3
+    },
+    "app-issues": {
+      "canonical": "docs/KNOWN_ISSUES.md",
+      "reason": "Current known issues and status",
+      "files": [
+        "docs/KNOWN_ISSUES.md",
+        "docs/CALCULATION_BUG_REPORT.md",
+        "docs/CRITICAL_QA_ISSUES.md"
+      ],
+      "estimatedReduction": 2
+    }
+  },
+  "repoFocused": {
+    "repo-testing-meta": {
+      "canonical": "docs/AUTOMATED_TESTING_STRATEGY.md",
+      "reason": "AI-powered testing methodology and insights",
+      "files": [
+        "docs/AUTOMATED_TESTING_STRATEGY.md",
+        "docs/PRO_TIPS_TESTING_FRAMEWORK.md",
+        "docs/DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+        "docs/render-audit.md",
+        "docs/testing/strategy.md"
+      ],
+      "estimatedReduction": 4
+    },
+    "repo-debugging-meta": {
+      "canonical": "docs/AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+      "reason": "Debugging methodology and tooling insights",
+      "files": [
+        "docs/AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+        "docs/COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+        "docs/KPI-DEBUGGING-SUMMARY.md",
+        "docs/FIXES-IMPLEMENTATION-SUMMARY.md",
+        "docs/debug-notes.md"
+      ],
+      "estimatedReduction": 4
+    },
+    "repo-session-meta": {
+      "canonical": "docs/SESSION_LOG.md",
+      "reason": "Session logs and learning journey",
+      "files": [
+        "docs/SESSION_LOG.md",
+        "docs/SESSION-SUMMARY-2025-09-25.md",
+        "docs/session-summary-2025-10-06.md",
+        "docs/session-3-summary.md",
+        "docs/TONIGHT-ACCOMPLISHMENTS.md",
+        "docs/DEVELOPMENT_PROGRESS_LOG.md",
+        "docs/LESSONS_LEARNED.md",
+        "docs/teaching-notes.md",
+        "docs/UI-UX-TUNING_NOTES.md"
+      ],
+      "estimatedReduction": 8
+    },
+    "repo-analysis-meta": {
+      "canonical": "docs/COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+      "reason": "Comprehensive analysis and insights",
+      "files": [
+        "docs/COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+        "docs/CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+        "docs/MIGRATION_COMPLETENESS_REPORT.md",
+        "docs/OVERNIGHT_QA_REPORT.md",
+        "docs/QA_ANALYSIS_REPORT.md",
+        "docs/QA_SUMMARY_REPORT.md"
+      ],
+      "estimatedReduction": 5
+    },
+    "repo-process-meta": {
+      "canonical": "docs/AI_INTEGRATION_GUIDE.md",
+      "reason": "AI integration and process methodology",
+      "files": [
+        "docs/AI_INTEGRATION_GUIDE.md",
+        "docs/VIRTUAL_TEAM_GUIDE.md",
+        "docs/WIKI_GUIDE.md",
+        "docs/INTEGRATION_STRATEGY.md",
+        "docs/INFRASTRUCTURE_EXTRACTION_PLAN.md",
+        "docs/SEQUENTIAL_WORKFLOW_STRATEGY.md",
+        "docs/PRO_TIPS_RESEARCH_BACKLOG.md"
+      ],
+      "estimatedReduction": 6
+    },
+    "repo-growth-meta": {
+      "canonical": "docs/growth/2025-09-27.md",
+      "reason": "Growth tracking and learning progression",
+      "files": [
+        "docs/growth/2025-09-06.md",
+        "docs/growth/2025-09-13.md",
+        "docs/growth/2025-09-20.md",
+        "docs/growth/2025-09-27.md"
+      ],
+      "estimatedReduction": 3
+    }
+  },
+  "summary": {
+    "appFiles": 26,
+    "repoFiles": 36,
+    "totalReduction": 51
+  }
+}
