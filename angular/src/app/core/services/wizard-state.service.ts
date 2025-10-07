@@ -24,10 +24,13 @@ const STORAGE_KEY = 'wizard_state_v1';
 export class WizardStateService {
   private readonly _answers$ = new BehaviorSubject<WizardAnswers>(this.loadFromStorage());
 
-  // CRITICAL FIX: Add debounced version of answers$ to prevent UI freezes
-  readonly answers$ = this._answers$.asObservable().pipe(
-    debounceTime(150), // Debounce all state changes to prevent cascade reactions
-    distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)) // Only emit if actually changed
+  // Main answers stream - immediate updates for UI responsiveness
+  readonly answers$ = this._answers$.asObservable();
+
+  // Debounced version for heavy calculations only
+  readonly answersDebounced$ = this._answers$.asObservable().pipe(
+    debounceTime(150), // Debounce only for heavy calculations
+    distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
   );
 
   private readonly quickWizardLock$ = new BehaviorSubject<boolean>(false);

@@ -55,57 +55,54 @@ export class DashboardResultsPanelComponent {
     private readonly settings: SettingsService,
     private readonly wizardState: WizardStateService
   ) {
-    // PERFORMANCE FIX: Replace effect() with debounced observable to prevent excessive calculations
-    this.wizardState.answers$
-      .pipe(debounceTime(200)) // Wait 200ms before recalculating
-      .subscribe((answers) => {
-        // Update region from wizard state
-        const wizardRegion = (answers.region || 'US') as Region;
-        this.region.set(wizardRegion);
+    // PERFORMANCE FIX: Use debounced stream for heavy calculations
+    this.wizardState.answersDebounced$.subscribe((answers) => {
+      // Update region from wizard state
+      const wizardRegion = (answers.region || 'US') as Region;
+      this.region.set(wizardRegion);
 
-        // When explicit results provided, use them; otherwise compute a minimal demo
-        if (this.results) {
-          this.viewResults.set(this.results);
-          return;
-        }
-        const r = this.region();
-        const t = this.thresholds();
+      // When explicit results provided, use them; otherwise compute a minimal demo
+      if (this.results) {
+        this.viewResults.set(this.results);
+        return;
+      }
+      const r = this.region();
+      const t = this.thresholds();
 
-        // Use real wizard data with computed properties
-        const realInputs: CalculationInputs = {
-          region: r,
-          scenario: 'Custom',
-          avgNetFee: this.wizardState.getAvgNetFee() || 125,
-          taxPrepReturns: this.wizardState.getTaxPrepReturns() || 1600,
-          taxRushReturns:
-            this.wizardState.getTaxRushReturns() ||
-            (answers.handlesTaxRush && r === 'CA' ? 150 : 0),
-          discountsPct: this.wizardState.getDiscountsPct() || 3,
-          otherIncome: this.wizardState.getOtherIncome() || (answers.hasOtherIncome ? 5000 : 0),
-          calculatedTotalExpenses: answers.calculatedTotalExpenses,
-          salariesPct: answers.payrollPct || 25,
-          empDeductionsPct: answers.empDeductionsPct || 10,
-          rentPct: answers.rentPct || 18,
-          telephoneAmt: answers.telephoneAmt || 0.5,
-          utilitiesAmt: answers.utilitiesAmt || 1.2,
-          localAdvAmt: answers.localAdvAmt || 2.0,
-          insuranceAmt: answers.insuranceAmt || 0.6,
-          postageAmt: answers.postageAmt || 0.4,
-          suppliesPct: answers.suppliesPct || 3.5,
-          duesAmt: answers.duesAmt || 0.8,
-          bankFeesAmt: answers.bankFeesAmt || 0.4,
-          maintenanceAmt: answers.maintenanceAmt || 0.6,
-          travelEntAmt: answers.travelEntAmt || 0.8,
-          royaltiesPct: answers.royaltiesPct || 14,
-          advRoyaltiesPct: answers.advRoyaltiesPct || 5,
-          taxRushRoyaltiesPct:
-            answers.taxRushRoyaltiesPct || (answers.handlesTaxRush && r === 'CA' ? 6 : 0),
-          miscPct: answers.miscPct || 1.0,
-          thresholds: t,
-        };
-        const computedResults = this.calc.calculate(realInputs);
-        this.viewResults.set(computedResults);
-      });
+      // Use real wizard data with computed properties
+      const realInputs: CalculationInputs = {
+        region: r,
+        scenario: 'Custom',
+        avgNetFee: this.wizardState.getAvgNetFee() || 125,
+        taxPrepReturns: this.wizardState.getTaxPrepReturns() || 1600,
+        taxRushReturns:
+          this.wizardState.getTaxRushReturns() || (answers.handlesTaxRush && r === 'CA' ? 150 : 0),
+        discountsPct: this.wizardState.getDiscountsPct() || 3,
+        otherIncome: this.wizardState.getOtherIncome() || (answers.hasOtherIncome ? 5000 : 0),
+        calculatedTotalExpenses: answers.calculatedTotalExpenses,
+        salariesPct: answers.payrollPct || 25,
+        empDeductionsPct: answers.empDeductionsPct || 10,
+        rentPct: answers.rentPct || 18,
+        telephoneAmt: answers.telephoneAmt || 0.5,
+        utilitiesAmt: answers.utilitiesAmt || 1.2,
+        localAdvAmt: answers.localAdvAmt || 2.0,
+        insuranceAmt: answers.insuranceAmt || 0.6,
+        postageAmt: answers.postageAmt || 0.4,
+        suppliesPct: answers.suppliesPct || 3.5,
+        duesAmt: answers.duesAmt || 0.8,
+        bankFeesAmt: answers.bankFeesAmt || 0.4,
+        maintenanceAmt: answers.maintenanceAmt || 0.6,
+        travelEntAmt: answers.travelEntAmt || 0.8,
+        royaltiesPct: answers.royaltiesPct || 14,
+        advRoyaltiesPct: answers.advRoyaltiesPct || 5,
+        taxRushRoyaltiesPct:
+          answers.taxRushRoyaltiesPct || (answers.handlesTaxRush && r === 'CA' ? 6 : 0),
+        miscPct: answers.miscPct || 1.0,
+        thresholds: t,
+      };
+      const computedResults = this.calc.calculate(realInputs);
+      this.viewResults.set(computedResults);
+    });
 
     // React to runtime region changes
     this.settings.settings$.subscribe((s) => this.region.set(s.region));

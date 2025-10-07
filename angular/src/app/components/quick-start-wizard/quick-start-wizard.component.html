@@ -42,15 +42,16 @@
           <div class="step-content">
             <h3 class="step-question">Is this a new store or existing store?</h3>
             <div class="step-options">
-              <label class="option-card" [class.option-card--selected]="settings.storeType === 'new'"
+              <label class="option-card" [class.option-card--selected]="localSettings.storeType === 'new'"
                 (click)="onStoreTypeLabelClick('new', $event)">
                 <div class="option-title">🏪 New Store</div>
                 <div class="option-desc">First year </div>
               </label>
-              <label class="option-card" [class.option-card--selected]="settings.storeType === 'existing'"
+              <label class="option-card" [class.option-card--selected]="localSettings.storeType === 'existing'"
                 (click)="onStoreTypeLabelClick('existing', $event)">
                 <div class="option-title">🏢 Existing Store</div>
                 <div class="option-desc">Use your Prior year performance data</div>
+                <!-- DEBUG: localSettings.storeType = {{ localSettings.storeType }} -->
               </label>
             </div>
           </div>

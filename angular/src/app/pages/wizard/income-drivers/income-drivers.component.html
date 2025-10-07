@@ -1,18 +1,23 @@
 <section class="wizard-step wizard-step--wide">
-  @if (storeTypeInfo$ | async; as storeInfo) {
+  @if (storeType$ | async; as storeType) {
+    <!-- DEBUG: storeType = {{ storeType }} -->
     <div class="page-header">
-      <h1>{{ storeInfo.title }}</h1>
-      <p class="page-subtitle">{{ storeInfo.description }}</p>
+      <h1>{{ storeType === 'existing' ? 'Existing Store Performance' : 'Target Performance Goals' }}</h1>
+      <p class="page-subtitle">{{ storeType === 'existing' ? 'Use your historical data' : 'First year - use regional benchmarks' }}</p>
     </div>
     
     <div class="step-body">
-      @if (storeType$ | async; as storeType) {
-        @if (storeType === 'existing') {
-          <app-py-income-drivers></app-py-income-drivers>
-          <app-projected-income-drivers></app-projected-income-drivers>
-        } @else {
-          <app-target-income-drivers></app-target-income-drivers>
-        }
+      @if (storeType === 'existing') {
+        <div style="background: lightgreen; padding: 10px; margin: 10px 0;">
+          <strong>EXISTING STORE COMPONENTS LOADING:</strong>
+        </div>
+        <app-py-income-drivers></app-py-income-drivers>
+        <app-projected-income-drivers></app-projected-income-drivers>
+      } @else {
+        <div style="background: lightblue; padding: 10px; margin: 10px 0;">
+          <strong>NEW STORE COMPONENTS LOADING:</strong>
+        </div>
+        <app-target-income-drivers></app-target-income-drivers>
       }
     </div>
     

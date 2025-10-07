@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { PyIncomeDriversComponent } from './components/py-income-drivers.component';
 import { ProjectedIncomeDriversComponent } from './components/projected-income-drivers.component';
 import { TargetIncomeDriversComponent } from './components/target-income-drivers.component';
 import { CommonModule } from '@angular/common';
 import { WizardStateService } from '../../../core/services/wizard-state.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-income-drivers',
@@ -20,32 +21,46 @@ import { WizardStateService } from '../../../core/services/wizard-state.service'
   templateUrl: './income-drivers.component.html',
   styleUrls: ['./income-drivers.component.scss'],
 })
-export class IncomeDriversComponent {
+export class IncomeDriversComponent implements OnDestroy {
+  private subscription = new Subscription();
+
   // Get store type and other settings from WizardStateService
-  readonly storeType$ = this.wizardState.answers$.pipe(
-    map((answers) => answers.storeType || 'new')
+  // Use the raw BehaviorSubject to avoid debouncing issues
+  readonly storeType$ = this.wizardState['_answers$'].pipe(
+    map((answers) => {
+      console.log('🔄 [Income Drivers] storeType$ stream updated:', answers.storeType);
+      console.log('🔄 [Income Drivers] Full answers object:', answers);
+      return answers.storeType || 'new';
+    }),
+    distinctUntilChanged(), // Only emit when storeType actually changes
+    startWith(this.wizardState.answers.storeType || 'new') // Ensure immediate emission
   );
 
-  readonly storeTypeInfo$ = this.wizardState.answers$.pipe(
-    map(() => {
+  readonly storeTypeInfo$ = this.wizardState['_answers$'].pipe(
+    map((answers) => {
       return {
-        title: this.wizardState.getDisplayLabel('storeTypeName'),
-        description: this.wizardState.getValue({
-          existingStore: 'Use your historical data',
-          newStore: 'First year - use regional benchmarks',
-          default: 'Configure your store settings',
-        }),
+        title:
+          answers.storeType === 'existing'
+            ? 'Existing Store Performance'
+            : 'Target Performance Goals',
+        description:
+          answers.storeType === 'existing'
+            ? 'Use your historical data'
+            : 'First year - use regional benchmarks',
       };
-    })
+    }),
+    distinctUntilChanged((a, b) => a.title === b.title && a.description === b.description)
   );
 
-  constructor(public wizardState: WizardStateService) {
+  constructor(
+    public wizardState: WizardStateService,
+    private cdr: ChangeDetectorRef
+  ) {
     console.log('💰 [Income Drivers Component] Loading...');
     console.log('💰 [Income Drivers Component] Current wizard state:', this.wizardState.answers);
   }
 
-  // Getter for template access
-  get currentStoreType() {
-    return this.wizardState.answers.storeType;
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

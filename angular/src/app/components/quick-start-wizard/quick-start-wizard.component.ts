@@ -26,7 +26,17 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private meta = inject(AppMetaService);
 
-  readonly settings$ = this.wizardState.answers$.pipe(
+  // Local state for visual feedback - not reactive to global state
+  localSettings = {
+    region: 'US',
+    storeType: 'new',
+    taxYear: new Date().getFullYear(),
+    taxRush: false,
+    otherIncome: false,
+  };
+
+  // For other components to read - this is the global state
+  readonly settings$ = this.wizardState['_answers$'].pipe(
     map((answers) => {
       const settings = {
         region: answers.region || 'US',
@@ -48,6 +58,9 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
   );
 
   ngOnInit(): void {
+    // Initialize local state from global state
+    this.initializeLocalState();
+
     this.meta.setTitle('Quick Wizard • Liberty P&L');
     this.meta.setDesc('Configure forecast inputs.');
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe((evt) => {
@@ -58,6 +71,18 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  private initializeLocalState(): void {
+    const answers = this.wizardState.answers;
+    this.localSettings = {
+      region: answers.region || 'US',
+      storeType: answers.storeType || 'new',
+      taxYear: new Date().getFullYear(),
+      taxRush: answers.handlesTaxRush === true,
+      otherIncome: answers.hasOtherIncome === true,
+    };
+    console.log('🔄 [Quick Start Wizard] Local state initialized:', this.localSettings);
   }
 
   ngOnDestroy(): void {
@@ -97,6 +122,15 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
   onStoreTypeChange(v: string) {
     const storeType = v === 'new' ? 'new' : 'existing';
     console.log('🏪 [Wizard] Store Type changed to:', storeType);
+
+    // Update local state for immediate visual feedback - create new object to trigger change detection
+    this.localSettings = {
+      ...this.localSettings,
+      storeType: storeType,
+    };
+    console.log('🏪 [Wizard] Local state updated:', this.localSettings);
+
+    // Update global state for other components
     this.wizardState.updateAnswers({ storeType });
   }
 
@@ -146,6 +180,9 @@ export class QuickStartWizardComponent implements OnInit, OnDestroy {
     console.log('🔄 [QUICK START RESET] Current URL:', window.location.href);
 
     this.wizardState.resetQuickStartConfig();
+
+    // Reset local state to defaults
+    this.initializeLocalState();
 
     console.log('🔄 [QUICK START RESET] Quick Start Wizard reset to defaults');
   }
