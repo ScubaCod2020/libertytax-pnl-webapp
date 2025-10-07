@@ -1,8 +1,23 @@
+## React → Angular test mapping (Wizard)
+
+- Branding.test.tsx → Unit (branding service/header rendering)
+- Calculations.test.tsx → Unit (domain calc functions in `domain/calculations`)
+- Expenses.test.tsx → E2E (wizard step-2 interactions and visibility)
+- Navigation.test.tsx → E2E (routes and next/previous flow)
+- WizardInputs.test.tsx → E2E (step-1 inputs, gating by region/store type)
+- WizardFlowMatrix.test.tsx → E2E (happy-path multi-scenario flow; Angular approximation added)
+- wizard.test.tsx → E2E (smoke/bootstrapping of wizard pages)
+
+Notes
+
+- Value assertions that depend on unfinished wiring are marked for future enablement.
+- Prefer Playwright E2E for full-page flows; keep domain math in unit tests.
+
 # Testing Strategy for Liberty Tax P&L Webapp
 
 ## Overview
 
-Comprehensive testing approach to ensure calculation accuracy, data flow integrity, and user experience quality across the multi-step wizard and dual-entry expense system. This document consolidates all testing strategies for corporate handoff.
+Comprehensive testing approach to ensure calculation accuracy, data flow integrity, and user experience quality across the multi-step wizard and dual-entry expense system.
 
 ## 1. 🧮 Calculation Accuracy Testing
 
@@ -199,78 +214,9 @@ Test Suite: Performance Metrics
    - Cleanup on component unmount
 ```
 
-## 5. 📱 Mobile & Cross-Device Testing
+## 5. 🔧 Technical Testing
 
-### 5.1 Device Configuration Testing
-
-```
-REQUIRED TEST DEVICES/SIZES:
-□ iPhone SE (375x667) - Smallest common mobile
-□ iPhone 12 Pro (390x844) - Standard mobile
-□ iPhone 12 Pro Max (428x926) - Large mobile
-□ Samsung Galaxy S21 (360x800) - Android standard
-□ iPad (768x1024) - Tablet portrait
-□ iPad Pro (1024x1366) - Large tablet
-□ Desktop 1920x1080 - Standard desktop
-□ Desktop 4K (3840x2160) - High-res desktop
-□ Ultrawide (3440x1440) - Wide desktop
-
-BROWSER MATRIX:
-□ Chrome Mobile (iOS/Android)
-□ Safari Mobile (iOS)
-□ Firefox Mobile (Android)
-□ Samsung Internet (Android)
-□ Chrome Desktop (Windows/Mac/Linux)
-□ Firefox Desktop (Windows/Mac/Linux)
-□ Safari Desktop (Mac)
-□ Edge Desktop (Windows)
-```
-
-### 5.2 Mobile-Specific Testing
-
-```
-MOBILE LAYOUT TESTS:
-□ Debug panel doesn't break mobile layout
-□ Wizard forms remain usable on small screens
-□ Dual-entry fields stack properly on mobile
-□ All buttons remain tappable (min 44px touch targets)
-□ Dropdown menus don't extend off-screen
-□ Keyboard doesn't obscure input fields
-□ Horizontal scrolling never required
-□ Text remains readable at mobile zoom levels
-
-TABLET LAYOUT TESTS:
-□ Dashboard layout adapts properly to tablet width
-□ Debug panel remains accessible on tablet
-□ Touch interactions work smoothly
-□ Orientation changes handled gracefully
-```
-
-### 5.3 Quick Mobile Testing Protocol
-
-```
-Chrome DevTools Device Emulation (5 minutes):
-1. Press F12 → Click device icon
-2. Test these specific sizes:
-   □ iPhone SE (375x667) - Smallest target
-   □ iPhone 12 Pro (390x844) - Standard mobile
-   □ iPad (768x1024) - Tablet size
-3. For each size, verify:
-   □ All buttons tappable (not too small)
-   □ Debug panel doesn't break layout
-   □ Wizard forms remain usable
-   □ Dual-entry fields stack properly
-   □ No horizontal scrolling needed
-
-Actual Device Testing (10 minutes):
-□ iPhone (any model) - Safari & Chrome
-□ Android phone - Chrome & Samsung Internet
-□ iPad - Safari
-```
-
-## 6. 🔧 Technical Testing
-
-### 6.1 State Management
+### 5.1 State Management
 
 ```
 Test Suite: State Integrity
@@ -290,7 +236,7 @@ Test Suite: State Integrity
    - usePersistence handles save/load properly
 ```
 
-### 6.2 Error Handling
+### 5.2 Error Handling
 
 ```
 Test Suite: Error Scenarios
@@ -309,76 +255,9 @@ Test Suite: Error Scenarios
    - Local functionality remains intact
 ```
 
-## 7. 🧪 Comprehensive Testing Checklist
+## 6. 🚀 Pre-Deployment Checklist
 
-### 7.1 Complete Button Testing Matrix
-
-```
-Every Button Must Be Tested:
-□ Wizard "Next" buttons (Welcome → Inputs → Review)
-□ Wizard "Back" buttons (Review → Inputs → Welcome)
-□ Wizard "Cancel" button
-□ Wizard "Confirm & Create Dashboard" button
-□ Region selector dropdown (US/CA)
-□ Store type dropdown (New/Existing)
-□ Growth percentage dropdown (all options + custom)
-□ Debug panel toggle button
-□ Debug panel close (X) button
-□ Debug tab buttons (Storage, Calc, State, Perf, Thresholds)
-□ Debug section expand/collapse buttons (KPI, Presets, Expenses)
-□ Scenario preset buttons (Good, Better, Best)
-□ Factory reset button
-□ All debug action buttons (Save Now, Dump Storage, etc.)
-```
-
-### 7.2 Complete Field Testing Matrix
-
-```
-Every Input Field Must Be Tested:
-WIZARD PAGE 1:
-□ Region dropdown (US → CA → US)
-□ Store Type dropdown (empty → new → existing → new)
-□ Last Year Tax Prep Income (valid/invalid/edge cases)
-□ Last Year Average Net Fee (valid/invalid/edge cases)
-□ Last Year Tax Prep Returns (valid/invalid/edge cases)
-□ Last Year TaxRush Returns (CA only, show/hide)
-□ Last Year Total Expenses (valid/invalid/edge cases)
-□ Growth percentage dropdown (all 9 options)
-□ Custom growth percentage input (when selected)
-□ Projected performance overrides (5 fields, editable)
-
-WIZARD PAGE 2:
-□ All income driver fields (ANF, Returns, TaxRush, Other Income)
-□ All 17 dual-entry expense fields (% and $ for each)
-□ Discounts percentage field
-
-MAIN DASHBOARD:
-□ All input fields when not in wizard mode
-□ Scenario selector dropdown
-□ All expense fields in main interface
-
-DEBUG PANEL:
-□ All KPI threshold inputs (5 numeric fields)
-□ All debug panel buttons and controls
-```
-
-### 7.3 Regression Testing Protocol
-
-```
-Data Flow Consistency Tests:
-1. Enter value in Page 1 → Verify appears in Page 2
-2. Change value in Page 2 → Verify calculations update
-3. Go back to Page 1 → Change value → Return to Page 2 → Verify update
-4. Complete wizard → Verify all data in dashboard
-5. Change dashboard values → Verify calculations update
-6. Use debug presets → Verify all fields update
-7. Change thresholds → Verify colors update immediately
-8. Reset to defaults → Verify everything resets properly
-```
-
-## 8. 🚀 Pre-Deployment Checklist
-
-### 8.1 Automated Testing
+### 6.1 Automated Testing
 
 ```bash
 # Run these before every deployment:
@@ -387,7 +266,7 @@ npm run test          # Run test suite (when implemented)
 npm audit             # Check for security vulnerabilities
 ```
 
-### 8.2 Manual Testing Checklist
+### 6.2 Manual Testing Checklist
 
 ```
 Pre-Deployment Verification:
@@ -404,9 +283,9 @@ Pre-Deployment Verification:
 □ Performance acceptable
 ```
 
-## 9. 🧪 Test Data Sets
+## 7. 🧪 Test Data Sets
 
-### 9.1 Standard Test Scenarios
+### 7.1 Standard Test Scenarios
 
 ```javascript
 // Conservative Store
@@ -440,7 +319,7 @@ const strugglingStore = {
 };
 ```
 
-### 9.2 Edge Case Test Data
+### 7.2 Edge Case Test Data
 
 ```javascript
 // Extreme Values
@@ -454,9 +333,92 @@ const edgeCases = [
 ];
 ```
 
-## 10. 🎯 Testing Tools & Automation
+## 8. 🔍 Comprehensive UI & Regression Testing
 
-### 10.1 Recommended Testing Framework
+### 8.1 Complete Button Testing Matrix
+
+```
+Every Button Must Be Tested:
+□ Wizard "Next" buttons (Welcome → Inputs → Review)
+□ Wizard "Back" buttons (Review → Inputs → Welcome)
+□ Wizard "Cancel" button
+□ Wizard "Confirm & Create Dashboard" button
+□ Region selector dropdown (US/CA)
+□ Store type dropdown (New/Existing)
+□ Growth percentage dropdown (all options + custom)
+□ Debug panel toggle button
+□ Debug panel close (X) button
+□ Debug tab buttons (Storage, Calc, State, Perf, Thresholds)
+□ Debug section expand/collapse buttons (KPI, Presets, Expenses)
+□ Scenario preset buttons (Good, Better, Best)
+□ Factory reset button
+□ All debug action buttons (Save Now, Dump Storage, etc.)
+```
+
+### 8.2 Complete Field Testing Matrix
+
+```
+Every Input Field Must Be Tested:
+WIZARD PAGE 1:
+□ Region dropdown (US → CA → US)
+□ Store Type dropdown (empty → new → existing → new)
+□ Last Year Tax Prep Income (valid/invalid/edge cases)
+□ Last Year Average Net Fee (valid/invalid/edge cases)
+□ Last Year Tax Prep Returns (valid/invalid/edge cases)
+□ Last Year TaxRush Returns (CA only, show/hide)
+□ Last Year Total Expenses (valid/invalid/edge cases)
+□ Growth percentage dropdown (all 9 options)
+□ Custom growth percentage input (when selected)
+□ Projected performance overrides (5 fields, editable)
+
+WIZARD PAGE 2:
+□ All income driver fields (ANF, Returns, TaxRush, Other Income)
+□ All 17 dual-entry expense fields (% and $ for each)
+□ Discounts percentage field
+
+MAIN DASHBOARD:
+□ All input fields when not in wizard mode
+□ Scenario selector dropdown
+□ All expense fields in main interface
+
+DEBUG PANEL:
+□ All KPI threshold inputs (5 numeric fields)
+□ All debug panel buttons and controls
+```
+
+### 8.3 Regression Testing Protocol
+
+```
+Data Flow Consistency Tests:
+1. Enter value in Page 1 → Verify appears in Page 2
+2. Change value in Page 2 → Verify calculations update
+3. Go back to Page 1 → Change value → Return to Page 2 → Verify update
+4. Complete wizard → Verify all data in dashboard
+5. Change dashboard values → Verify calculations update
+6. Use debug presets → Verify all fields update
+7. Change thresholds → Verify colors update immediately
+8. Reset to defaults → Verify everything resets properly
+```
+
+### 8.4 Cross-Step Data Integrity Testing
+
+```
+Test Case: Full Data Journey
+1. Page 1: Enter complete performance data
+2. Page 2: Verify all carried-forward values
+3. Page 2: Modify some expense values
+4. Review: Verify all changes reflected
+5. Dashboard: Verify final calculations correct
+6. Debug: Change thresholds, verify colors update
+7. Debug: Apply preset, verify all fields change
+8. Back to inputs: Verify preset values applied
+9. Modify inputs: Verify calculations update everywhere
+10. Refresh page: Verify persistence works
+```
+
+## 9. 📊 Testing Tools & Automation
+
+### 9.1 Recommended Testing Framework
 
 ```javascript
 // Future implementation with Jest + React Testing Library
@@ -501,7 +463,7 @@ describe('Complete UI Testing Suite', () => {
 });
 ```
 
-### 10.2 Manual Testing Tools
+### 8.2 Manual Testing Tools
 
 ```
 Browser Developer Tools:
@@ -517,61 +479,27 @@ Debug Panel Tabs:
 - Performance: Monitor metrics
 ```
 
-## 11. 🎯 Testing Schedule
+## 9. 🎯 Testing Schedule
 
-### 11.1 Pre-Commit Testing
+### 9.1 Pre-Commit Testing
 
 - [ ] Build verification
 - [ ] Core calculation spot-checks
 - [ ] No console errors
 
-### 11.2 Pre-Deployment Testing
+### 9.2 Pre-Deployment Testing
 
 - [ ] Full wizard flow (both regions)
 - [ ] All dual-entry calculations
 - [ ] Debug panel functionality
 - [ ] Performance verification
 
-### 11.3 Post-Deployment Testing
+### 9.3 Post-Deployment Testing
 
 - [ ] Production environment verification
 - [ ] Cross-browser compatibility
 - [ ] Mobile device testing
 - [ ] Performance monitoring
-
-## 12. 🚨 Critical Failure Criteria
-
-**Stop Deployment If:**
-
-- Any automated test fails
-- Mobile layout broken
-- Major browser compatibility issues
-- Performance below acceptable thresholds
-- Security vulnerabilities detected
-- Data loss or corruption possible
-
-## 13. 🎯 Pass/Fail Criteria
-
-### ✅ PASS Requirements:
-
-- All buttons function as expected
-- All fields accept valid input and reject invalid input
-- Data flows correctly between all steps
-- Calculations are mathematically correct
-- Regional differences work properly
-- Debug panel fully functional
-- No console errors
-- Performance is acceptable
-
-### ❌ FAIL Conditions:
-
-- Any button doesn't work
-- Any field accepts invalid data
-- Data doesn't flow between steps correctly
-- Calculations are wrong
-- Console shows errors
-- App crashes or becomes unresponsive
-- Major UI elements broken
 
 ---
 
@@ -581,10 +509,4 @@ Debug Panel Tabs:
 2. **Medium Priority**: UI/UX validation, performance testing
 3. **Low Priority**: Edge case handling, automated test setup
 
-This comprehensive testing strategy ensures our dual-entry system and enhanced wizard provide accurate, reliable business planning capabilities for corporate deployment.
-
----
-
-**Time Required**: 45-60 minutes for complete testing  
-**Critical for**: Major releases and before production deployment  
-**Ready for deployment when**: ALL checklist items pass!
+This comprehensive testing strategy ensures our dual-entry system and enhanced wizard provide accurate, reliable business planning capabilities.
