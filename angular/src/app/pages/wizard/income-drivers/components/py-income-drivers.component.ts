@@ -84,7 +84,9 @@ export class PyIncomeDriversComponent {
   constructor(
     public appCfg: AppConfigService,
     private wizardState: WizardStateService
-  ) {}
+  ) {
+    console.log('📈 [PY Income Drivers] Component instantiated');
+  }
 
   // Form field update methods
   updateTaxPrepReturns(value: number): void {

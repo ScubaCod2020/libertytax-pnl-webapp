@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+// Using Jasmine APIs (Angular default) instead of Vitest
 import { statusForCPR, statusForMargin, statusForNetIncome } from './kpi';
 
 const thresholds = {

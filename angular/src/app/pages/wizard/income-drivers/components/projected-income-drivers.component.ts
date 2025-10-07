@@ -162,7 +162,16 @@ export class ProjectedIncomeDriversComponent {
   readonly avgNetFee$ = this.answers$.pipe(map((a) => a.avgNetFee || 0));
 
   // ANF KPI bindings
-  readonly anfValue$ = this.answers$.pipe(map((a) => a.projectedAvgNetFee ?? a.avgNetFee ?? null));
+  // FIXED: Use consistent ANF logic
+  readonly anfValue$ = this.answers$.pipe(
+    map((a) => {
+      // Use same logic as KpiEvaluatorService.getEffectiveAvgNetFee()
+      if (a.storeType === 'existing') {
+        return a.projectedAvgNetFee ?? a.avgNetFee ?? null;
+      }
+      return a.avgNetFee ?? a.projectedAvgNetFee ?? null;
+    })
+  );
   readonly anfStatus$ = this.answers$.pipe(map((a) => this.evaluator.getAnfStatus(a)));
   readonly anfTooltip$ = this.expenseText.anfTooltip$();
   readonly anfNote$ = this.expenseText.anfNote$();

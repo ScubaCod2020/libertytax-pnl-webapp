@@ -1,0 +1,696 @@
+{
+  "timestamp": "2025-10-07T14:20:11.049Z",
+  "totalFiles": 86,
+  "exactDuplicates": [],
+  "nearDuplicates": [],
+  "unique": [
+    {
+      "path": "docs\\adr\\ADR-0001-ci-quality-gates.md",
+      "size": 1402,
+      "normalizedSize": 1346,
+      "hash": "8c39acdef0ee2aa6f8395515ddacc651",
+      "shingles": {},
+      "title": "ADR-0001: CI Quality Gates and Workflow Policy"
+    },
+    {
+      "path": "docs\\AI_INTEGRATION_GUIDE.md",
+      "size": 9616,
+      "normalizedSize": 4511,
+      "hash": "1bf1dab57679396842ee86155a70ab67",
+      "shingles": {},
+      "title": "🤖 AI Integration Guide - Working with Your AI Development Team"
+    },
+    {
+      "path": "docs\\architecture\\components-graph.md",
+      "size": 4522,
+      "normalizedSize": 170,
+      "hash": "efbb61e5eff3843f35fcffd2ecccff60",
+      "shingles": {},
+      "title": "Components Dependency Graph"
+    },
+    {
+      "path": "docs\\ARCHITECTURE.md",
+      "size": 5761,
+      "normalizedSize": 3854,
+      "hash": "a9665ce1c40920aec8c3a9f193b2ece5",
+      "shingles": {},
+      "title": "🏗️ Modular Architecture Guide"
+    },
+    {
+      "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+      "size": 10314,
+      "normalizedSize": 7792,
+      "hash": "6e3164825c11ec8633c1c2bdd983f596",
+      "shingles": {},
+      "title": "🤖 AUTOMATED DEBUGGING INFRASTRUCTURE"
+    },
+    {
+      "path": "docs\\AUTOMATED_TESTING_STRATEGY.md",
+      "size": 10639,
+      "normalizedSize": 3796,
+      "hash": "91adbe6c6990b83498a439672be99c80",
+      "shingles": {},
+      "title": "🤖 AI-Powered Automated Testing Strategy"
+    },
+    {
+      "path": "docs\\blocking-questions.md",
+      "size": 2136,
+      "normalizedSize": 2060,
+      "hash": "eddcd4eab2a8c119f0e455c275383757",
+      "shingles": {},
+      "title": "Untitled"
+    },
+    {
+      "path": "docs\\BLUEPRINT_DELTA.md",
+      "size": 1005,
+      "normalizedSize": 976,
+      "hash": "04e99e365f205d642650e5b0a38619d7",
+      "shingles": {},
+      "title": "Untitled"
+    },
+    {
+      "path": "docs\\calc-inventory.md",
+      "size": 2435,
+      "normalizedSize": 2355,
+      "hash": "412008fce70a40c71f1432daf25fc315",
+      "shingles": {},
+      "title": "Untitled"
+    },
+    {
+      "path": "docs\\calc-migration-status.md",
+      "size": 9232,
+      "normalizedSize": 9063,
+      "hash": "53c57a69fba22e4e2a742e8e5be6f4e2",
+      "shingles": {},
+      "title": "Untitled"
+    },
+    {
+      "path": "docs\\CALCULATION_BUG_REPORT.md",
+      "size": 5989,
+      "normalizedSize": 3211,
+      "hash": "283a52670ef73f02e7cc172070919196",
+      "shingles": {},
+      "title": "🚨 CRITICAL CALCULATION BUG REPORT"
+    },
+    {
+      "path": "docs\\CHANGELOG.md",
+      "size": 1621,
+      "normalizedSize": 1586,
+      "hash": "2c6773d3990b637bd31cea09060c8f33",
+      "shingles": {},
+      "title": "CHANGELOG"
+    },
+    {
+      "path": "docs\\COMPONENTS_TREE.md",
+      "size": 4937,
+      "normalizedSize": 4629,
+      "hash": "bd9c7e42b78c753311e0a23c8230199f",
+      "shingles": {},
+      "title": "Components Tree — Developer Guide"
+    },
+    {
+      "path": "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+      "size": 9445,
+      "normalizedSize": 7132,
+      "hash": "8af4cc08617573948a17ebd2b0cef8b2",
+      "shingles": {},
+      "title": "🔍 COMPREHENSIVE INPUT DEBUGGING SUITE - COMPLETE"
+    },
+    {
+      "path": "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+      "size": 9086,
+      "normalizedSize": 8720,
+      "hash": "5eac067a14520e2d0a51b5c829025dda",
+      "shingles": {},
+      "title": "📋 Comprehensive App Analysis Summary"
+    },
+    {
+      "path": "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+      "size": 11741,
+      "normalizedSize": 11155,
+      "hash": "56452c4793b6bb4fa7f45418f44a65dc",
+      "shingles": {},
+      "title": "Comprehensive Testing Checklist"
+    },
+    {
+      "path": "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+      "size": 3584,
+      "normalizedSize": 3139,
+      "hash": "80089ab285fd2cb84902a2a49ae30d37",
+      "shingles": {},
+      "title": "Liberty Tax P&L Tool - Consolidated Dependency Analysis"
+    },
+    {
+      "path": "docs\\context-digest.md",
+      "size": 5217,
+      "normalizedSize": 5056,
+      "hash": "90194f0a77068ff9898ce633ac04b8c2",
+      "shingles": {},
+      "title": "Untitled"
+    },
+    {
+      "path": "docs\\CORRECTED_CALCULATION_ANALYSIS.md",
+      "size": 4605,
+      "normalizedSize": 1979,
+      "hash": "8e26407edb863fb9cc31f9821d66d708",
+      "shingles": {},
+      "title": "🔧 CORRECTED CALCULATION ANALYSIS"
+    },
+    {
+      "path": "docs\\CRITICAL_QA_ISSUES.md",
+      "size": 8792,
+      "normalizedSize": 4758,
+      "hash": "694f9ce5090fe6afbd757fb17bb2670d",
+      "shingles": {},
+      "title": "🚨 CRITICAL QA ISSUES - Liberty Tax P&L Webapp"
+    },
+    {
+      "path": "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+      "size": 12288,
+      "normalizedSize": 8474,
+      "hash": "900d491ec04734ae69302ad6ba5f2b2b",
+      "shingles": {},
+      "title": "🔄 DATA FLOW ARCHITECTURE ANALYSIS"
+    },
+    {
+      "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+      "size": 6957,
+      "normalizedSize": 4761,
+      "hash": "ddb7e8aa141435681ce15ea4cbcb2155",
+      "shingles": {},
+      "title": "🛡️ DEBUGGING TOOLS VALIDATION SYSTEM"
+    },
+    {
+      "path": "docs\\development-checklists\\currency-input-checklist.md",
+      "size": 3631,
+      "normalizedSize": 2643,
+      "hash": "a8d23faf22c0f2d4f9a75e06c72317e9",
+      "shingles": {},
+      "title": "Currency Input Checklist"
+    },
+    {
+      "path": "docs\\DEVELOPMENT.md",
+      "size": 6595,
+      "normalizedSize": 4117,
+      "hash": "6a33902e874af9d572075093f23b68e0",
+      "shingles": {},
+      "title": "Development Guide"
+    },
+    {
+      "path": "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+      "size": 14698,
+      "normalizedSize": 14009,
+      "hash": "cda5c43d4a856d82456d47188a8b27c8",
+      "shingles": {},
+      "title": "Development Progress Log"
+    },
+    {
+      "path": "docs\\DEV_NOTES_V5.md",
+      "size": 1108,
+      "normalizedSize": 1055,
+      "hash": "653ea39582b1292fca8eeb6902611482",
+      "shingles": {},
+      "title": "DEV_NOTES_V5"
+    },
+    {
+      "path": "docs\\EDGE_CASE_TESTING.md",
+      "size": 16170,
+      "normalizedSize": 2488,
+      "hash": "345630325f71dc73823f9df25337293f",
+      "shingles": {},
+      "title": "Edge Case & Support-Ready Testing Strategy"
+    },
+    {
+      "path": "docs\\ENV_SETUP.md",
+      "size": 882,
+      "normalizedSize": 823,
+      "hash": "d32556a2a1eb22805253a82bfa3b81ee",
+      "shingles": {},
+      "title": "Environment Setup"
+    },
+    {
+      "path": "docs\\FEATURE_GUIDE_Branding.md",
+      "size": 996,
+      "normalizedSize": 953,
+      "hash": "ee91e277e8e79c4017606f4631deef24",
+      "shingles": {},
+      "title": "Branding Feature Guide (React → Angular)"
+    },
+    {
+      "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+      "size": 9899,
+      "normalizedSize": 3746,
+      "hash": "002a20696f439d538e185fa9aa888a85",
+      "shingles": {},
+      "title": "✅ CRITICAL DATA FLOW FIXES - IMPLEMENTATION COMPLETE"
+    },
+    {
+      "path": "docs\\growth\\2025-09-06.md",
+      "size": 223,
+      "normalizedSize": 208,
+      "hash": "1fd2e0fe25e6fcb60e9ffea0f0686a35",
+      "shingles": {},
+      "title": "Growth Log — 2025-09-06"
+    },
+    {
+      "path": "docs\\growth\\2025-09-13.md",
+      "size": 234,
+      "normalizedSize": 219,
+      "hash": "e112bbe284c7fefdc28597ad8c2e9c32",
+      "shingles": {},
+      "title": "Growth Log — 2025-09-13"
+    },
+    {
+      "path": "docs\\growth\\2025-09-20.md",
+      "size": 209,
+      "normalizedSize": 194,
+      "hash": "a5c55b9bbae8d97f8b641c76d27bdf78",
+      "shingles": {},
+      "title": "Growth Log — 2025-09-20"
+    },
+    {
+      "path": "docs\\growth\\2025-09-27.md",
+      "size": 472,
+      "normalizedSize": 448,
+      "hash": "b66074ea12a5e4524156b66eaf98a09c",
+      "shingles": {},
+      "title": "Growth Log — 2025-09-27"
+    },
+    {
+      "path": "docs\\inbox.enhancements.md",
+      "size": 529,
+      "normalizedSize": 502,
+      "hash": "1736354d436924c9fa5b3a3a4cdaf27d",
+      "shingles": {},
+      "title": "Enhancement Inbox"
+    },
+    {
+      "path": "docs\\INDEX.md",
+      "size": 1395,
+      "normalizedSize": 1312,
+      "hash": "6cc325c33450e349ef9f90f186e4ea12",
+      "shingles": {},
+      "title": "Project Documentation Index"
+    },
+    {
+      "path": "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+      "size": 8765,
+      "normalizedSize": 4868,
+      "hash": "772d2073e3dbbbed0abfda871f9c217f",
+      "shingles": {},
+      "title": "Infrastructure Extraction Plan"
+    },
+    {
+      "path": "docs\\INTEGRATION_STRATEGY.md",
+      "size": 5569,
+      "normalizedSize": 5190,
+      "hash": "e5ead2cd9a087fb079c4aa91f7d2a9e5",
+      "shingles": {},
+      "title": "Angular Integration Strategy: Using React as Reference"
+    },
+    {
+      "path": "docs\\KNOWN_ISSUES.md",
+      "size": 4705,
+      "normalizedSize": 4525,
+      "hash": "4ec45a0d1889cb25d3a053b6543fde3c",
+      "shingles": {},
+      "title": "Known Issues - P&L Budget & Forecast App"
+    },
+    {
+      "path": "docs\\kpi\\README.md",
+      "size": 881,
+      "normalizedSize": 728,
+      "hash": "e0dfd0bad7d588c67e8c4343c1eb1dfd",
+      "shingles": {},
+      "title": "KPI Reference (Angular Port)"
+    },
+    {
+      "path": "docs\\kpi\\rules-v2.md",
+      "size": 661,
+      "normalizedSize": 638,
+      "hash": "52a5c079b618f819a49ff17aa755d07c",
+      "shingles": {},
+      "title": "KPI Rules V2 (Snapshot)"
+    },
+    {
+      "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+      "size": 7262,
+      "normalizedSize": 5875,
+      "hash": "35b72f57c9e1f78b62a062d4c072a21b",
+      "shingles": {},
+      "title": "🎯 KPI DEBUGGING PROJECT - COMPLETE SUCCESS SUMMARY"
+    },
+    {
+      "path": "docs\\LESSONS_LEARNED.md",
+      "size": 5493,
+      "normalizedSize": 4059,
+      "hash": "824d3602507142239d5e2742641a595d",
+      "shingles": {},
+      "title": "Maintenance & Auditing — Lessons Learned (Expedition Log)"
+    },
+    {
+      "path": "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+      "size": 5652,
+      "normalizedSize": 4899,
+      "hash": "4f8791c8df5f0b401a242c27efff978b",
+      "shingles": {},
+      "title": "📋 MANUAL CALCULATION TEST CHECKLIST"
+    },
+    {
+      "path": "docs\\MAPPING.md",
+      "size": 2079,
+      "normalizedSize": 2009,
+      "hash": "4f943d3997a75a0f65263a5a0a404022",
+      "shingles": {},
+      "title": "Mapping — Features, Files, and Tests"
+    },
+    {
+      "path": "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+      "size": 8496,
+      "normalizedSize": 8237,
+      "hash": "29de66e322b4f7f40330a34196f98a89",
+      "shingles": {},
+      "title": "Migration Completeness Report: React → Angular"
+    },
+    {
+      "path": "docs\\MOBILE_TESTING_GUIDE.md",
+      "size": 7829,
+      "normalizedSize": 1232,
+      "hash": "4de6153989bcd6e4c4ea590485eff862",
+      "shingles": {},
+      "title": "Mobile & Support-Ready Testing Guide"
+    },
+    {
+      "path": "docs\\NODEJS_SETUP_GUIDE.md",
+      "size": 5459,
+      "normalizedSize": 2772,
+      "hash": "f7df4ebf06b615f085e427d23b10910f",
+      "shingles": {},
+      "title": "🔧 Node.js Setup Guide for Windows PowerShell"
+    },
+    {
+      "path": "docs\\OVERNIGHT_QA_REPORT.md",
+      "size": 10824,
+      "normalizedSize": 9110,
+      "hash": "f15180890b2b390fe2470402b5122ff3",
+      "shingles": {},
+      "title": "🔍 OVERNIGHT QA REPORT - Liberty Tax P&L WebApp"
+    },
+    {
+      "path": "docs\\parity-checklist.md",
+      "size": 1044,
+      "normalizedSize": 989,
+      "hash": "57cfc1e5eb0c457cb6f0756802287bb5",
+      "shingles": {},
+      "title": "React → Angular Parity Checklist"
+    },
+    {
+      "path": "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+      "size": 4007,
+      "normalizedSize": 1625,
+      "hash": "0ee65ece5fd17206c69ddd0b194b271a",
+      "shingles": {},
+      "title": "Pre-Deployment Testing Checklist"
+    },
+    {
+      "path": "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+      "size": 9469,
+      "normalizedSize": 9080,
+      "hash": "1748443afab7442612c0ef0110d58544",
+      "shingles": {},
+      "title": "Pro-Tips Research Backlog"
+    },
+    {
+      "path": "docs\\PRO_TIPS_TESTING_FRAMEWORK.md",
+      "size": 9998,
+      "normalizedSize": 3121,
+      "hash": "1d59be01c0dc4e1f0034bd3ba5bc83ff",
+      "shingles": {},
+      "title": "Pro-Tips Testing & Validation Framework"
+    },
+    {
+      "path": "docs\\QA_ANALYSIS_REPORT.md",
+      "size": 6389,
+      "normalizedSize": 5775,
+      "hash": "e63f3be1d8c9e5dab613e9a60ded76c3",
+      "shingles": {},
+      "title": "Liberty Tax P&L Webapp - QA Analysis Report"
+    },
+    {
+      "path": "docs\\QA_SUMMARY_REPORT.md",
+      "size": 7617,
+      "normalizedSize": 4605,
+      "hash": "0318d0cd4a35e2e04d74023a2044fd98",
+      "shingles": {},
+      "title": "📋 QA Summary Report - Liberty Tax P&L Webapp"
+    },
+    {
+      "path": "docs\\render-audit.md",
+      "size": 22255,
+      "normalizedSize": 21356,
+      "hash": "e505c0885e4d92aeec773a92377e8c80",
+      "shingles": {},
+      "title": "Render Audit - NewStoreSection Feature"
+    },
+    {
+      "path": "docs\\run-reports\\overnight-run-20250919-0647.md",
+      "size": 451,
+      "normalizedSize": 429,
+      "hash": "d163f5aba58b2cff04e72ffd9653594b",
+      "shingles": {},
+      "title": "Overnight Run Report (20250919-0647)"
+    },
+    {
+      "path": "docs\\runbooks\\release.md",
+      "size": 792,
+      "normalizedSize": 756,
+      "hash": "95687b715e00b33d2a619ed6d0ab6e81",
+      "shingles": {},
+      "title": "Runbook: Release and Deployment"
+    },
+    {
+      "path": "docs\\SCOPE.md",
+      "size": 2551,
+      "normalizedSize": 2400,
+      "hash": "96d0e211f4d189a5136b0be96bbfbc98",
+      "shingles": {},
+      "title": "SCOPE — Liberty Tax P&L Budget & Forecast Tool"
+    },
+    {
+      "path": "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+      "size": 10950,
+      "normalizedSize": 2854,
+      "hash": "8c8b80742b7d2982628aa7e252061a70",
+      "shingles": {},
+      "title": "🎯 Sequential Workflow Execution Strategy"
+    },
+    {
+      "path": "docs\\session-3-summary.md",
+      "size": 4238,
+      "normalizedSize": 3357,
+      "hash": "c9f95faa28d8d9f68e1f8bd8e3feea98",
+      "shingles": {},
+      "title": "Session 3 Summary - Monthly P&L Breakdown System"
+    },
+    {
+      "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+      "size": 5383,
+      "normalizedSize": 4942,
+      "hash": "7a9edfa9ce5dde01a3227168e49fd848",
+      "shingles": {},
+      "title": "Development Session Summary - September 25, 2025"
+    },
+    {
+      "path": "docs\\session-summary-2025-10-06.md",
+      "size": 3450,
+      "normalizedSize": 3418,
+      "hash": "23aabb023d71d13830b6a90f20dd982f",
+      "shingles": {},
+      "title": "Session Summary - October 6, 2025"
+    },
+    {
+      "path": "docs\\SESSION_LOG.md",
+      "size": 3625,
+      "normalizedSize": 3511,
+      "hash": "898d5a294990e69922aa934bfd453b60",
+      "shingles": {},
+      "title": "Integration Session Log"
+    },
+    {
+      "path": "docs\\SPEC_ANALYSIS.md",
+      "size": 7623,
+      "normalizedSize": 5769,
+      "hash": "993fde07d59c3b0fcaa9211e7b3bfc06",
+      "shingles": {},
+      "title": "Liberty Tax P&L App - Specification Analysis & Architecture Mapping"
+    },
+    {
+      "path": "docs\\STYLE_GUIDE.md",
+      "size": 2866,
+      "normalizedSize": 2762,
+      "hash": "532d67210658b8b560496d54268b1057",
+      "shingles": {},
+      "title": "CSS / SCSS Style Guide (Angular)"
+    },
+    {
+      "path": "docs\\teaching-notes.md",
+      "size": 65687,
+      "normalizedSize": 64912,
+      "hash": "260a862d5206c20f4a442d1f2ad279cf",
+      "shingles": {},
+      "title": "Untitled"
+    },
+    {
+      "path": "docs\\testing\\strategy.md",
+      "size": 613,
+      "normalizedSize": 581,
+      "hash": "616d043ab88d74978f52e523a0dfc375",
+      "shingles": {},
+      "title": "Testing Strategy"
+    },
+    {
+      "path": "docs\\TESTING.md",
+      "size": 14290,
+      "normalizedSize": 2873,
+      "hash": "a47e001840e8e8ad651ac1f4f0176454",
+      "shingles": {},
+      "title": "Testing Strategy for Liberty Tax P&L Webapp"
+    },
+    {
+      "path": "docs\\TESTING_SETUP.md",
+      "size": 8625,
+      "normalizedSize": 7259,
+      "hash": "8d849cd2dda035f65312ca70f6b82062",
+      "shingles": {},
+      "title": "Testing Setup & GitHub Integration Guide"
+    },
+    {
+      "path": "docs\\todo\\FUTURE_ENHANCEMENTS.md",
+      "size": 1157,
+      "normalizedSize": 1044,
+      "hash": "d11373ba2d139b658c40a1e030d6d0c1",
+      "shingles": {},
+      "title": "Untitled"
+    },
+    {
+      "path": "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+      "size": 4982,
+      "normalizedSize": 4318,
+      "hash": "6e4b9a78585fb3a6c3c55de68b64d500",
+      "shingles": {},
+      "title": "🎉 Tonight's Development Accomplishments - September 25, 2025"
+    },
+    {
+      "path": "docs\\trace-plan.md",
+      "size": 1174,
+      "normalizedSize": 1124,
+      "hash": "6bdbba01e9bd5142e662e0ba7910bc6a",
+      "shingles": {},
+      "title": "Untitled"
+    },
+    {
+      "path": "docs\\UI-UX-TUNING_NOTES.md",
+      "size": 2017,
+      "normalizedSize": 1995,
+      "hash": "ea920e26494d9d107a736e6bae0c7297",
+      "shingles": {},
+      "title": "Untitled"
+    },
+    {
+      "path": "docs\\VARIABLES.md",
+      "size": 835,
+      "normalizedSize": 809,
+      "hash": "db749362a245a12243b787afc3632dbe",
+      "shingles": {},
+      "title": "Application Variables"
+    },
+    {
+      "path": "docs\\VIRTUAL_TEAM_GUIDE.md",
+      "size": 7054,
+      "normalizedSize": 6110,
+      "hash": "9db16191e5c6a208f783616339a8dc62",
+      "shingles": {},
+      "title": "🤖 Virtual Team Collaboration Guide"
+    },
+    {
+      "path": "docs\\WIKI_GUIDE.md",
+      "size": 2801,
+      "normalizedSize": 2064,
+      "hash": "ea7be517d3df701e7f92c73b58dbe87d",
+      "shingles": {},
+      "title": "Wiki Guide and Curation Template"
+    },
+    {
+      "path": "docs\\wire-up-plan.md",
+      "size": 2943,
+      "normalizedSize": 2853,
+      "hash": "52193c87d218003c1750ca303207adfb",
+      "shingles": {},
+      "title": "Wire-Up Plan (Inputs → Services → Domain)"
+    },
+    {
+      "path": "docs\\_segregation_dry_run.md",
+      "size": 7576,
+      "normalizedSize": 7391,
+      "hash": "44982d78e72c1a458299ec228afffacd",
+      "shingles": {},
+      "title": "Segregation Dry-Run Report"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "size": 12347,
+      "normalizedSize": 11720,
+      "hash": "afed7482327b715e2f4ccc84b2d98a2f",
+      "shingles": {},
+      "title": "Changelog"
+    },
+    {
+      "path": "context-digest.md",
+      "size": 789,
+      "normalizedSize": 772,
+      "hash": "38462fc5739c38eccc35fc7dcb14fb4e",
+      "shingles": {},
+      "title": "Untitled"
+    },
+    {
+      "path": "CURRENT_ISSUES.md",
+      "size": 4725,
+      "normalizedSize": 4631,
+      "hash": "f1bbcad932e9c3c20bdd297d2f9bdf90",
+      "shingles": {},
+      "title": "🚨 Current Angular App Issues - Debug Session"
+    },
+    {
+      "path": "debug-checklist.md",
+      "size": 2649,
+      "normalizedSize": 2451,
+      "hash": "e83a407adcc7fa72a51f49bfa510d331",
+      "shingles": {},
+      "title": "🐛 Debug Checklist - Liberty Tax P&L App"
+    },
+    {
+      "path": "MASTER_INDEX.md",
+      "size": 4006,
+      "normalizedSize": 3848,
+      "hash": "1f47d269fc4d93d408b54cd116d55e45",
+      "shingles": {},
+      "title": "Master Index — Liberty Tax P&L Budget & Forecast"
+    },
+    {
+      "path": "README.md",
+      "size": 1153,
+      "normalizedSize": 915,
+      "hash": "129c0d516dd3ad7f3ec2f836d0bd38d7",
+      "shingles": {},
+      "title": "Liberty Tax P&L Budget & Forecast Tool — v0.6.4 (Code Package)"
+    },
+    {
+      "path": "TESTING_PLAN.md",
+      "size": 3962,
+      "normalizedSize": 3804,
+      "hash": "4f098cd048ae0b751bd8057f6aa88e2e",
+      "shingles": {},
+      "title": "🧪 Systematic Testing Plan - Liberty Tax P&L Angular Application"
+    }
+  ]
+}

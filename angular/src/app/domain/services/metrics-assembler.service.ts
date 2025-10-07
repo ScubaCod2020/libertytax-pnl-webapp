@@ -37,21 +37,24 @@ export class MetricsAssemblerService {
     cpr: PerformanceMetric[];
   } {
     const __t = startTrace('kpi');
-    const s = this.settings.settings;
     const answers = this.wizardState.answers;
     const __in = coerceJson<typeof answers>(answers as unknown);
     __t.log('inputs', __in);
-    const thresholds = DEFAULT_REGION_CONFIGS[s.region].thresholds;
+
+    // Use wizard state region instead of settings service to avoid mismatch
+    const wizardRegion = answers.region || 'US';
+    const thresholds = DEFAULT_REGION_CONFIGS[wizardRegion].thresholds;
 
     // Use real wizard data instead of demo inputs
     const realInputs: CalculationInputs = {
-      region: s.region,
+      region: wizardRegion,
       scenario: 'Custom',
       avgNetFee: answers.avgNetFee || 125,
       taxPrepReturns: answers.projectedTaxPrepReturns || answers.taxPrepReturns || 1600,
-      taxRushReturns: answers.taxRushReturns || (s.region === 'CA' ? 150 : 0),
+      taxRushReturns:
+        answers.taxRushReturns || (answers.handlesTaxRush && wizardRegion === 'CA' ? 150 : 0),
       discountsPct: answers.discountsPct || 3,
-      otherIncome: answers.otherIncome || (s.otherIncome ? 5000 : 0),
+      otherIncome: answers.otherIncome || (answers.hasOtherIncome ? 5000 : 0),
       calculatedTotalExpenses: answers.calculatedTotalExpenses,
       salariesPct: answers.payrollPct || 25,
       empDeductionsPct: answers.empDeductionsPct || 10,
@@ -68,7 +71,8 @@ export class MetricsAssemblerService {
       travelEntAmt: answers.travelEntAmt || 0.8,
       royaltiesPct: answers.royaltiesPct || 14,
       advRoyaltiesPct: answers.advRoyaltiesPct || 5,
-      taxRushRoyaltiesPct: answers.taxRushRoyaltiesPct || (s.region === 'CA' ? 6 : 0),
+      taxRushRoyaltiesPct:
+        answers.taxRushRoyaltiesPct || (answers.handlesTaxRush && wizardRegion === 'CA' ? 6 : 0),
       miscPct: answers.miscPct || 1.0,
       thresholds,
     };

@@ -1,17 +1,29 @@
 <section class="wizard-step wizard-step--wide">
-  <div class="page-header" *ngIf="storeTypeInfo$ | async as storeInfo">
-    <h1>{{ storeInfo.title }}</h1>
-    <p class="page-subtitle">{{ storeInfo.description }}</p>
-  </div>
-  <div class="step-body">
-    <!-- Existing store shows PY + Projected; New store shows Target -->
-    <ng-container *ngIf="(storeType$ | async) === 'existing'; else newStore">
-      <app-py-income-drivers></app-py-income-drivers>
-      <app-projected-income-drivers></app-projected-income-drivers>
-    </ng-container>
-    <ng-template #newStore>
-      <app-target-income-drivers></app-target-income-drivers>
-    </ng-template>
-  </div>
-  <footer class="step-footer"><a routerLink="/wizard/expenses">Next: Expenses</a></footer>
+  @if (currentConfig) {
+    <!-- DEBUG: config = {{ currentConfig | json }} -->
+    <!-- DEBUG: trackBy = {{ trackByConfig(0, currentConfig) }} -->
+    <div class="page-header">
+      <h1>{{ currentConfig.title }}</h1>
+      <p class="page-subtitle">{{ currentConfig.description }}</p>
+    </div>
+    
+    <div class="step-body">
+      @if (currentConfig.storeType === 'existing') {
+        <div style="background: lightgreen; padding: 10px; margin: 10px 0;">
+          <strong>EXISTING STORE COMPONENTS LOADING:</strong>
+        </div>
+        <app-py-income-drivers></app-py-income-drivers>
+        <app-projected-income-drivers></app-projected-income-drivers>
+      } @else {
+        <div style="background: lightblue; padding: 10px; margin: 10px 0;">
+          <strong>NEW STORE COMPONENTS LOADING:</strong>
+        </div>
+        <app-target-income-drivers></app-target-income-drivers>
+      }
+    </div>
+    
+    <footer class="step-footer">
+      <a routerLink="/wizard/expenses">Next: Expenses</a>
+    </footer>
+  }
 </section>

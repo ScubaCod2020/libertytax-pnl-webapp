@@ -73,9 +73,15 @@ export class DashboardComponent {
     return this.metrics.buildDashboardPreviewMetrics().cpr;
   }
 
-  // ANF chip streams
+  // ANF chip streams - FIXED: Use same logic as KPI evaluator
   readonly anfValue$ = this.wizard.answers$.pipe(
-    map((a) => a.projectedAvgNetFee ?? a.avgNetFee ?? null)
+    map((a) => {
+      // Use same logic as KpiEvaluatorService.getEffectiveAvgNetFee()
+      if (a.storeType === 'existing') {
+        return a.projectedAvgNetFee ?? a.avgNetFee ?? null;
+      }
+      return a.avgNetFee ?? a.projectedAvgNetFee ?? null;
+    })
   );
   readonly anfStatus$ = this.wizard.answers$.pipe(map((a) => this.evaluator.getAnfStatus(a)));
 

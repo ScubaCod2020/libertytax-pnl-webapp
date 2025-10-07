@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+// Using Jasmine APIs (Angular default) instead of Vitest
 import { MetricsAssemblerService } from './metrics-assembler.service';
 
 // Minimal fakes for constructor deps
@@ -34,8 +34,8 @@ describe('MetricsAssemblerService (stability)', () => {
     );
     const out = svc.buildDashboardPreviewMetrics();
     expect(out).toBeDefined();
-    expect(out).toHaveProperty('revenue');
-    expect(out).toHaveProperty('returns');
-    expect(out).toHaveProperty('cpr');
+    expect(out.revenue).toBeDefined();
+    expect(out.returns).toBeDefined();
+    expect(out.cpr).toBeDefined();
   });
 });

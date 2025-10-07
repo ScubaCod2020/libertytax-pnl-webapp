@@ -9,6 +9,7 @@ import type {
 import { SettingsService, type Region } from '../../../services/settings.service';
 import { DEFAULT_REGION_CONFIGS } from '../../../core/tokens/region-configs.token';
 import { WizardStateService } from '../../../core/services/wizard-state.service';
+import { debounceTime } from 'rxjs/operators';
 
 /**
  * DashboardResultsPanelComponent
@@ -41,7 +42,7 @@ export class DashboardResultsPanelComponent {
   @Input() results: CalculationResults | null = null;
   @Input() hasOtherIncome: boolean = false;
 
-  private readonly region = signal<Region>(this.settings.settings.region);
+  private readonly region = signal<Region>('US'); // Will be updated from wizard state
   readonly thresholds = computed<Thresholds>(() => {
     const cfg = DEFAULT_REGION_CONFIGS[this.region()];
     return cfg.thresholds;
@@ -54,7 +55,12 @@ export class DashboardResultsPanelComponent {
     private readonly settings: SettingsService,
     private readonly wizardState: WizardStateService
   ) {
-    effect(() => {
+    // PERFORMANCE FIX: Use debounced stream for heavy calculations
+    this.wizardState.answersDebounced$.subscribe((answers) => {
+      // Update region from wizard state
+      const wizardRegion = (answers.region || 'US') as Region;
+      this.region.set(wizardRegion);
+
       // When explicit results provided, use them; otherwise compute a minimal demo
       if (this.results) {
         this.viewResults.set(this.results);
@@ -62,7 +68,6 @@ export class DashboardResultsPanelComponent {
       }
       const r = this.region();
       const t = this.thresholds();
-      const answers = this.wizardState.answers;
 
       // Use real wizard data with computed properties
       const realInputs: CalculationInputs = {
@@ -70,9 +75,10 @@ export class DashboardResultsPanelComponent {
         scenario: 'Custom',
         avgNetFee: this.wizardState.getAvgNetFee() || 125,
         taxPrepReturns: this.wizardState.getTaxPrepReturns() || 1600,
-        taxRushReturns: this.wizardState.getTaxRushReturns() || (r === 'CA' ? 150 : 0),
+        taxRushReturns:
+          this.wizardState.getTaxRushReturns() || (answers.handlesTaxRush && r === 'CA' ? 150 : 0),
         discountsPct: this.wizardState.getDiscountsPct() || 3,
-        otherIncome: this.wizardState.getOtherIncome() || (this.hasOtherIncome ? 5000 : 0),
+        otherIncome: this.wizardState.getOtherIncome() || (answers.hasOtherIncome ? 5000 : 0),
         calculatedTotalExpenses: answers.calculatedTotalExpenses,
         salariesPct: answers.payrollPct || 25,
         empDeductionsPct: answers.empDeductionsPct || 10,
@@ -89,7 +95,8 @@ export class DashboardResultsPanelComponent {
         travelEntAmt: answers.travelEntAmt || 0.8,
         royaltiesPct: answers.royaltiesPct || 14,
         advRoyaltiesPct: answers.advRoyaltiesPct || 5,
-        taxRushRoyaltiesPct: answers.taxRushRoyaltiesPct || (r === 'CA' ? 6 : 0),
+        taxRushRoyaltiesPct:
+          answers.taxRushRoyaltiesPct || (answers.handlesTaxRush && r === 'CA' ? 6 : 0),
         miscPct: answers.miscPct || 1.0,
         thresholds: t,
       };

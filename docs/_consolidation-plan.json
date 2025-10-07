@@ -1,0 +1,879 @@
+{
+  "timestamp": "2025-10-07T15:28:06.274Z",
+  "themes": {
+    "testing": {
+      "canonical": {
+        "path": "docs\\adr\\ADR-0001-ci-quality-gates.md",
+        "filename": "ADR-0001-ci-quality-gates.md",
+        "title": "ADR-0001: CI Quality Gates and Workflow Policy",
+        "size": 1402,
+        "priority": 0
+      },
+      "toMerge": [
+        {
+          "path": "docs\\AUTOMATED_TESTING_STRATEGY.md",
+          "filename": "AUTOMATED_TESTING_STRATEGY.md",
+          "title": "🤖 AI-Powered Automated Testing Strategy",
+          "size": 10639,
+          "priority": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "filename": "COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "title": "Comprehensive Testing Checklist",
+          "size": 11741,
+          "priority": 0
+        },
+        {
+          "path": "docs\\CRITICAL_QA_ISSUES.md",
+          "filename": "CRITICAL_QA_ISSUES.md",
+          "title": "🚨 CRITICAL QA ISSUES - Liberty Tax P&L Webapp",
+          "size": 8792,
+          "priority": 0
+        },
+        {
+          "path": "docs\\development-checklists\\currency-input-checklist.md",
+          "filename": "currency-input-checklist.md",
+          "title": "Currency Input Checklist",
+          "size": 3631,
+          "priority": 0
+        },
+        {
+          "path": "docs\\EDGE_CASE_TESTING.md",
+          "filename": "EDGE_CASE_TESTING.md",
+          "title": "Edge Case & Support-Ready Testing Strategy",
+          "size": 16170,
+          "priority": 0
+        },
+        {
+          "path": "docs\\LESSONS_LEARNED.md",
+          "filename": "LESSONS_LEARNED.md",
+          "title": "Maintenance & Auditing — Lessons Learned (Expedition Log)",
+          "size": 5493,
+          "priority": 0
+        },
+        {
+          "path": "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "filename": "MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "title": "📋 MANUAL CALCULATION TEST CHECKLIST",
+          "size": 5652,
+          "priority": 0
+        },
+        {
+          "path": "docs\\MAPPING.md",
+          "filename": "MAPPING.md",
+          "title": "Mapping — Features, Files, and Tests",
+          "size": 2079,
+          "priority": 0
+        },
+        {
+          "path": "docs\\MOBILE_TESTING_GUIDE.md",
+          "filename": "MOBILE_TESTING_GUIDE.md",
+          "title": "Mobile & Support-Ready Testing Guide",
+          "size": 7829,
+          "priority": 0
+        },
+        {
+          "path": "docs\\parity-checklist.md",
+          "filename": "parity-checklist.md",
+          "title": "React → Angular Parity Checklist",
+          "size": 1044,
+          "priority": 0
+        },
+        {
+          "path": "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+          "filename": "PRE_DEPLOYMENT_CHECKLIST.md",
+          "title": "Pre-Deployment Testing Checklist",
+          "size": 4007,
+          "priority": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_TESTING_FRAMEWORK.md",
+          "filename": "PRO_TIPS_TESTING_FRAMEWORK.md",
+          "title": "Pro-Tips Testing & Validation Framework",
+          "size": 9998,
+          "priority": 0
+        },
+        {
+          "path": "docs\\render-audit.md",
+          "filename": "render-audit.md",
+          "title": "Render Audit - NewStoreSection Feature",
+          "size": 22255,
+          "priority": 0
+        },
+        {
+          "path": "docs\\testing\\strategy.md",
+          "filename": "strategy.md",
+          "title": "Testing Strategy",
+          "size": 613,
+          "priority": 0
+        },
+        {
+          "path": "docs\\TESTING.md",
+          "filename": "TESTING.md",
+          "title": "Testing Strategy for Liberty Tax P&L Webapp",
+          "size": 14290,
+          "priority": 0
+        },
+        {
+          "path": "docs\\TESTING_SETUP.md",
+          "filename": "TESTING_SETUP.md",
+          "title": "Testing Setup & GitHub Integration Guide",
+          "size": 8625,
+          "priority": 0
+        },
+        {
+          "path": "docs\\_docs-audit.md",
+          "filename": "_docs-audit.md",
+          "title": "Documentation Audit Report",
+          "size": 6982,
+          "priority": 0
+        },
+        {
+          "path": "TESTING_PLAN.md",
+          "filename": "TESTING_PLAN.md",
+          "title": "🧪 Systematic Testing Plan - Liberty Tax P&L Angular Application",
+          "size": 3865,
+          "priority": 0
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "filename": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "title": "🛡️ DEBUGGING TOOLS VALIDATION SYSTEM",
+          "size": 6957,
+          "priority": -10
+        },
+        {
+          "path": "docs\\OVERNIGHT_QA_REPORT.md",
+          "filename": "OVERNIGHT_QA_REPORT.md",
+          "title": "🔍 OVERNIGHT QA REPORT - Liberty Tax P&L WebApp",
+          "size": 10824,
+          "priority": -15
+        },
+        {
+          "path": "docs\\QA_ANALYSIS_REPORT.md",
+          "filename": "QA_ANALYSIS_REPORT.md",
+          "title": "Liberty Tax P&L Webapp - QA Analysis Report",
+          "size": 6389,
+          "priority": -15
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "filename": "QA_SUMMARY_REPORT.md",
+          "title": "📋 QA Summary Report - Liberty Tax P&L Webapp",
+          "size": 7617,
+          "priority": -25
+        }
+      ],
+      "totalFiles": 23,
+      "estimatedReduction": 22
+    },
+    "development": {
+      "canonical": {
+        "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+        "filename": "SESSION-SUMMARY-2025-09-25.md",
+        "title": "Development Session Summary - September 25, 2025",
+        "size": 5383,
+        "priority": 10
+      },
+      "toMerge": [
+        {
+          "path": "docs\\AI_INTEGRATION_GUIDE.md",
+          "filename": "AI_INTEGRATION_GUIDE.md",
+          "title": "🤖 AI Integration Guide - Working with Your AI Development Team",
+          "size": 9616,
+          "priority": 0
+        },
+        {
+          "path": "docs\\calc-migration-status.md",
+          "filename": "calc-migration-status.md",
+          "title": "Untitled",
+          "size": 9232,
+          "priority": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "filename": "COMPONENTS_TREE.md",
+          "title": "Components Tree — Developer Guide",
+          "size": 4937,
+          "priority": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT.md",
+          "filename": "DEVELOPMENT.md",
+          "title": "Development Guide",
+          "size": 6595,
+          "priority": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+          "filename": "DEVELOPMENT_PROGRESS_LOG.md",
+          "title": "Development Progress Log",
+          "size": 14698,
+          "priority": 0
+        },
+        {
+          "path": "docs\\DEV_NOTES_V5.md",
+          "filename": "DEV_NOTES_V5.md",
+          "title": "DEV_NOTES_V5",
+          "size": 1108,
+          "priority": 0
+        },
+        {
+          "path": "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+          "filename": "TONIGHT-ACCOMPLISHMENTS.md",
+          "title": "🎉 Tonight's Development Accomplishments - September 25, 2025",
+          "size": 4982,
+          "priority": 0
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "filename": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "title": "✅ CRITICAL DATA FLOW FIXES - IMPLEMENTATION COMPLETE",
+          "size": 9899,
+          "priority": -10
+        },
+        {
+          "path": "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+          "filename": "MIGRATION_COMPLETENESS_REPORT.md",
+          "title": "Migration Completeness Report: React → Angular",
+          "size": 8496,
+          "priority": -15
+        }
+      ],
+      "totalFiles": 10,
+      "estimatedReduction": 9
+    },
+    "setup": {
+      "canonical": {
+        "path": "docs\\AI_INTEGRATION_GUIDE.md",
+        "filename": "AI_INTEGRATION_GUIDE.md",
+        "title": "🤖 AI Integration Guide - Working with Your AI Development Team",
+        "size": 9616,
+        "priority": 0
+      },
+      "toMerge": [
+        {
+          "path": "docs\\ARCHITECTURE.md",
+          "filename": "ARCHITECTURE.md",
+          "title": "🏗️ Modular Architecture Guide",
+          "size": 5761,
+          "priority": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "filename": "COMPONENTS_TREE.md",
+          "title": "Components Tree — Developer Guide",
+          "size": 4937,
+          "priority": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT.md",
+          "filename": "DEVELOPMENT.md",
+          "title": "Development Guide",
+          "size": 6595,
+          "priority": 0
+        },
+        {
+          "path": "docs\\ENV_SETUP.md",
+          "filename": "ENV_SETUP.md",
+          "title": "Environment Setup",
+          "size": 882,
+          "priority": 0
+        },
+        {
+          "path": "docs\\FEATURE_GUIDE_Branding.md",
+          "filename": "FEATURE_GUIDE_Branding.md",
+          "title": "Branding Feature Guide (React → Angular)",
+          "size": 996,
+          "priority": 0
+        },
+        {
+          "path": "docs\\MOBILE_TESTING_GUIDE.md",
+          "filename": "MOBILE_TESTING_GUIDE.md",
+          "title": "Mobile & Support-Ready Testing Guide",
+          "size": 7829,
+          "priority": 0
+        },
+        {
+          "path": "docs\\NODEJS_SETUP_GUIDE.md",
+          "filename": "NODEJS_SETUP_GUIDE.md",
+          "title": "🔧 Node.js Setup Guide for Windows PowerShell",
+          "size": 5459,
+          "priority": 0
+        },
+        {
+          "path": "docs\\STYLE_GUIDE.md",
+          "filename": "STYLE_GUIDE.md",
+          "title": "CSS / SCSS Style Guide (Angular)",
+          "size": 2866,
+          "priority": 0
+        },
+        {
+          "path": "docs\\TESTING_SETUP.md",
+          "filename": "TESTING_SETUP.md",
+          "title": "Testing Setup & GitHub Integration Guide",
+          "size": 8625,
+          "priority": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_GUIDE.md",
+          "filename": "VIRTUAL_TEAM_GUIDE.md",
+          "title": "🤖 Virtual Team Collaboration Guide",
+          "size": 7054,
+          "priority": 0
+        },
+        {
+          "path": "docs\\WIKI_GUIDE.md",
+          "filename": "WIKI_GUIDE.md",
+          "title": "Wiki Guide and Curation Template",
+          "size": 2801,
+          "priority": 0
+        }
+      ],
+      "totalFiles": 12,
+      "estimatedReduction": 11
+    },
+    "architecture": {
+      "canonical": {
+        "path": "docs\\architecture\\components-graph.md",
+        "filename": "components-graph.md",
+        "title": "Components Dependency Graph",
+        "size": 4522,
+        "priority": 0
+      },
+      "toMerge": [
+        {
+          "path": "docs\\ARCHITECTURE.md",
+          "filename": "ARCHITECTURE.md",
+          "title": "🏗️ Modular Architecture Guide",
+          "size": 5761,
+          "priority": 0
+        },
+        {
+          "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "filename": "AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "title": "🤖 AUTOMATED DEBUGGING INFRASTRUCTURE",
+          "size": 10314,
+          "priority": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "filename": "COMPONENTS_TREE.md",
+          "title": "Components Tree — Developer Guide",
+          "size": 4937,
+          "priority": 0
+        },
+        {
+          "path": "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "filename": "DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "title": "🔄 DATA FLOW ARCHITECTURE ANALYSIS",
+          "size": 12288,
+          "priority": 0
+        },
+        {
+          "path": "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "filename": "INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "title": "Infrastructure Extraction Plan",
+          "size": 8765,
+          "priority": 0
+        },
+        {
+          "path": "docs\\session-3-summary.md",
+          "filename": "session-3-summary.md",
+          "title": "Session 3 Summary - Monthly P&L Breakdown System",
+          "size": 4127,
+          "priority": 0
+        },
+        {
+          "path": "docs\\SPEC_ANALYSIS.md",
+          "filename": "SPEC_ANALYSIS.md",
+          "title": "Liberty Tax P&L App - Specification Analysis & Architecture Mapping",
+          "size": 7623,
+          "priority": 0
+        },
+        {
+          "path": "TESTING_PLAN.md",
+          "filename": "TESTING_PLAN.md",
+          "title": "🧪 Systematic Testing Plan - Liberty Tax P&L Angular Application",
+          "size": 3865,
+          "priority": 0
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "filename": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "title": "🛡️ DEBUGGING TOOLS VALIDATION SYSTEM",
+          "size": 6957,
+          "priority": -10
+        }
+      ],
+      "totalFiles": 10,
+      "estimatedReduction": 9
+    },
+    "debugging": {
+      "canonical": {
+        "path": "CURRENT_ISSUES.md",
+        "filename": "CURRENT_ISSUES.md",
+        "title": "🚨 Current Angular App Issues - Debug Session",
+        "size": 4725,
+        "priority": 30
+      },
+      "toMerge": [
+        {
+          "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "filename": "AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "title": "🤖 AUTOMATED DEBUGGING INFRASTRUCTURE",
+          "size": 10314,
+          "priority": 0
+        },
+        {
+          "path": "docs\\CRITICAL_QA_ISSUES.md",
+          "filename": "CRITICAL_QA_ISSUES.md",
+          "title": "🚨 CRITICAL QA ISSUES - Liberty Tax P&L Webapp",
+          "size": 8792,
+          "priority": 0
+        },
+        {
+          "path": "docs\\debug-notes.md",
+          "filename": "debug-notes.md",
+          "title": "Debug Notes - Liberty Tax P&L Webapp",
+          "size": 4668,
+          "priority": 0
+        },
+        {
+          "path": "docs\\KNOWN_ISSUES.md",
+          "filename": "KNOWN_ISSUES.md",
+          "title": "Known Issues - P&L Budget & Forecast App",
+          "size": 4705,
+          "priority": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "filename": "COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "title": "🔍 COMPREHENSIVE INPUT DEBUGGING SUITE - COMPLETE",
+          "size": 9445,
+          "priority": -10
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "filename": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "title": "🛡️ DEBUGGING TOOLS VALIDATION SYSTEM",
+          "size": 6957,
+          "priority": -10
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "filename": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "title": "✅ CRITICAL DATA FLOW FIXES - IMPLEMENTATION COMPLETE",
+          "size": 9899,
+          "priority": -10
+        },
+        {
+          "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+          "filename": "KPI-DEBUGGING-SUMMARY.md",
+          "title": "🎯 KPI DEBUGGING PROJECT - COMPLETE SUCCESS SUMMARY",
+          "size": 7262,
+          "priority": -10
+        },
+        {
+          "path": "docs\\CALCULATION_BUG_REPORT.md",
+          "filename": "CALCULATION_BUG_REPORT.md",
+          "title": "🚨 CRITICAL CALCULATION BUG REPORT",
+          "size": 5989,
+          "priority": -15
+        }
+      ],
+      "totalFiles": 10,
+      "estimatedReduction": 9
+    },
+    "analysis": {
+      "canonical": {
+        "path": "docs\\run-reports\\overnight-run-20250919-0647.md",
+        "filename": "overnight-run-20250919-0647.md",
+        "title": "Overnight Run Report (20250919-0647)",
+        "size": 451,
+        "priority": 20
+      },
+      "toMerge": [
+        {
+          "path": "docs\\session-summary-2025-10-06.md",
+          "filename": "session-summary-2025-10-06.md",
+          "title": "Session Summary - October 6, 2025",
+          "size": 3450,
+          "priority": 20
+        },
+        {
+          "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+          "filename": "SESSION-SUMMARY-2025-09-25.md",
+          "title": "Development Session Summary - September 25, 2025",
+          "size": 5383,
+          "priority": 10
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "filename": "COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "title": "Comprehensive Testing Checklist",
+          "size": 11741,
+          "priority": 0
+        },
+        {
+          "path": "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "filename": "CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "title": "Liberty Tax P&L Tool - Consolidated Dependency Analysis",
+          "size": 3584,
+          "priority": 0
+        },
+        {
+          "path": "docs\\CORRECTED_CALCULATION_ANALYSIS.md",
+          "filename": "CORRECTED_CALCULATION_ANALYSIS.md",
+          "title": "🔧 CORRECTED CALCULATION ANALYSIS",
+          "size": 4605,
+          "priority": 0
+        },
+        {
+          "path": "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "filename": "DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "title": "🔄 DATA FLOW ARCHITECTURE ANALYSIS",
+          "size": 12288,
+          "priority": 0
+        },
+        {
+          "path": "docs\\session-3-summary.md",
+          "filename": "session-3-summary.md",
+          "title": "Session 3 Summary - Monthly P&L Breakdown System",
+          "size": 4127,
+          "priority": 0
+        },
+        {
+          "path": "docs\\SPEC_ANALYSIS.md",
+          "filename": "SPEC_ANALYSIS.md",
+          "title": "Liberty Tax P&L App - Specification Analysis & Architecture Mapping",
+          "size": 7623,
+          "priority": 0
+        },
+        {
+          "path": "docs\\_docs-audit.md",
+          "filename": "_docs-audit.md",
+          "title": "Documentation Audit Report",
+          "size": 6982,
+          "priority": 0
+        },
+        {
+          "path": "docs\\_segregation_dry_run.md",
+          "filename": "_segregation_dry_run.md",
+          "title": "Segregation Dry-Run Report",
+          "size": 12411,
+          "priority": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "filename": "COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "title": "🔍 COMPREHENSIVE INPUT DEBUGGING SUITE - COMPLETE",
+          "size": 9445,
+          "priority": -10
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "filename": "COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "title": "📋 Comprehensive App Analysis Summary",
+          "size": 9086,
+          "priority": -10
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "filename": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "title": "🛡️ DEBUGGING TOOLS VALIDATION SYSTEM",
+          "size": 6957,
+          "priority": -10
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "filename": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "title": "✅ CRITICAL DATA FLOW FIXES - IMPLEMENTATION COMPLETE",
+          "size": 9899,
+          "priority": -10
+        },
+        {
+          "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+          "filename": "KPI-DEBUGGING-SUMMARY.md",
+          "title": "🎯 KPI DEBUGGING PROJECT - COMPLETE SUCCESS SUMMARY",
+          "size": 7262,
+          "priority": -10
+        },
+        {
+          "path": "docs\\CALCULATION_BUG_REPORT.md",
+          "filename": "CALCULATION_BUG_REPORT.md",
+          "title": "🚨 CRITICAL CALCULATION BUG REPORT",
+          "size": 5989,
+          "priority": -15
+        },
+        {
+          "path": "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+          "filename": "MIGRATION_COMPLETENESS_REPORT.md",
+          "title": "Migration Completeness Report: React → Angular",
+          "size": 8496,
+          "priority": -15
+        },
+        {
+          "path": "docs\\OVERNIGHT_QA_REPORT.md",
+          "filename": "OVERNIGHT_QA_REPORT.md",
+          "title": "🔍 OVERNIGHT QA REPORT - Liberty Tax P&L WebApp",
+          "size": 10824,
+          "priority": -15
+        },
+        {
+          "path": "docs\\QA_ANALYSIS_REPORT.md",
+          "filename": "QA_ANALYSIS_REPORT.md",
+          "title": "Liberty Tax P&L Webapp - QA Analysis Report",
+          "size": 6389,
+          "priority": -15
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "filename": "QA_SUMMARY_REPORT.md",
+          "title": "📋 QA Summary Report - Liberty Tax P&L Webapp",
+          "size": 7617,
+          "priority": -25
+        }
+      ],
+      "totalFiles": 21,
+      "estimatedReduction": 20
+    },
+    "kpi": {
+      "canonical": {
+        "path": "docs\\kpi\\README.md",
+        "filename": "README.md",
+        "title": "KPI Reference (Angular Port)",
+        "size": 881,
+        "priority": 100
+      },
+      "toMerge": [
+        {
+          "path": "docs\\CORRECTED_CALCULATION_ANALYSIS.md",
+          "filename": "CORRECTED_CALCULATION_ANALYSIS.md",
+          "title": "🔧 CORRECTED CALCULATION ANALYSIS",
+          "size": 4605,
+          "priority": 0
+        },
+        {
+          "path": "docs\\kpi\\rules-v2.md",
+          "filename": "rules-v2.md",
+          "title": "KPI Rules V2 (Snapshot)",
+          "size": 661,
+          "priority": 0
+        },
+        {
+          "path": "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "filename": "MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "title": "📋 MANUAL CALCULATION TEST CHECKLIST",
+          "size": 5652,
+          "priority": 0
+        },
+        {
+          "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+          "filename": "KPI-DEBUGGING-SUMMARY.md",
+          "title": "🎯 KPI DEBUGGING PROJECT - COMPLETE SUCCESS SUMMARY",
+          "size": 7262,
+          "priority": -10
+        },
+        {
+          "path": "docs\\CALCULATION_BUG_REPORT.md",
+          "filename": "CALCULATION_BUG_REPORT.md",
+          "title": "🚨 CRITICAL CALCULATION BUG REPORT",
+          "size": 5989,
+          "priority": -15
+        }
+      ],
+      "totalFiles": 6,
+      "estimatedReduction": 5
+    },
+    "session": {
+      "canonical": {
+        "path": "CURRENT_ISSUES.md",
+        "filename": "CURRENT_ISSUES.md",
+        "title": "🚨 Current Angular App Issues - Debug Session",
+        "size": 4725,
+        "priority": 30
+      },
+      "toMerge": [
+        {
+          "path": "docs\\growth\\2025-09-06.md",
+          "filename": "2025-09-06.md",
+          "title": "Growth Log — 2025-09-06",
+          "size": 223,
+          "priority": 20
+        },
+        {
+          "path": "docs\\growth\\2025-09-13.md",
+          "filename": "2025-09-13.md",
+          "title": "Growth Log — 2025-09-13",
+          "size": 234,
+          "priority": 20
+        },
+        {
+          "path": "docs\\growth\\2025-09-20.md",
+          "filename": "2025-09-20.md",
+          "title": "Growth Log — 2025-09-20",
+          "size": 209,
+          "priority": 20
+        },
+        {
+          "path": "docs\\growth\\2025-09-27.md",
+          "filename": "2025-09-27.md",
+          "title": "Growth Log — 2025-09-27",
+          "size": 472,
+          "priority": 20
+        },
+        {
+          "path": "docs\\session-summary-2025-10-06.md",
+          "filename": "session-summary-2025-10-06.md",
+          "title": "Session Summary - October 6, 2025",
+          "size": 3450,
+          "priority": 20
+        },
+        {
+          "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+          "filename": "SESSION-SUMMARY-2025-09-25.md",
+          "title": "Development Session Summary - September 25, 2025",
+          "size": 5383,
+          "priority": 10
+        },
+        {
+          "path": "docs\\CHANGELOG.md",
+          "filename": "CHANGELOG.md",
+          "title": "CHANGELOG",
+          "size": 1621,
+          "priority": 0
+        },
+        {
+          "path": "docs\\debug-notes.md",
+          "filename": "debug-notes.md",
+          "title": "Debug Notes - Liberty Tax P&L Webapp",
+          "size": 4668,
+          "priority": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+          "filename": "DEVELOPMENT_PROGRESS_LOG.md",
+          "title": "Development Progress Log",
+          "size": 14698,
+          "priority": 0
+        },
+        {
+          "path": "docs\\DEV_NOTES_V5.md",
+          "filename": "DEV_NOTES_V5.md",
+          "title": "DEV_NOTES_V5",
+          "size": 1108,
+          "priority": 0
+        },
+        {
+          "path": "docs\\LESSONS_LEARNED.md",
+          "filename": "LESSONS_LEARNED.md",
+          "title": "Maintenance & Auditing — Lessons Learned (Expedition Log)",
+          "size": 5493,
+          "priority": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+          "filename": "PRO_TIPS_RESEARCH_BACKLOG.md",
+          "title": "Pro-Tips Research Backlog",
+          "size": 9469,
+          "priority": 0
+        },
+        {
+          "path": "docs\\session-3-summary.md",
+          "filename": "session-3-summary.md",
+          "title": "Session 3 Summary - Monthly P&L Breakdown System",
+          "size": 4127,
+          "priority": 0
+        },
+        {
+          "path": "docs\\teaching-notes.md",
+          "filename": "teaching-notes.md",
+          "title": "Untitled",
+          "size": 65687,
+          "priority": 0
+        },
+        {
+          "path": "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+          "filename": "TONIGHT-ACCOMPLISHMENTS.md",
+          "title": "🎉 Tonight's Development Accomplishments - September 25, 2025",
+          "size": 4982,
+          "priority": 0
+        },
+        {
+          "path": "docs\\UI-UX-TUNING_NOTES.md",
+          "filename": "UI-UX-TUNING_NOTES.md",
+          "title": "Untitled",
+          "size": 2017,
+          "priority": 0
+        },
+        {
+          "path": "docs\\_edit-log.md",
+          "filename": "_edit-log.md",
+          "title": "Documentation Edit Log",
+          "size": 3293,
+          "priority": 0
+        },
+        {
+          "path": "CHANGELOG.md",
+          "filename": "CHANGELOG.md",
+          "title": "Changelog",
+          "size": 12347,
+          "priority": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "filename": "COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "title": "🔍 COMPREHENSIVE INPUT DEBUGGING SUITE - COMPLETE",
+          "size": 9445,
+          "priority": -10
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "filename": "COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "title": "📋 Comprehensive App Analysis Summary",
+          "size": 9086,
+          "priority": -10
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "filename": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "title": "🛡️ DEBUGGING TOOLS VALIDATION SYSTEM",
+          "size": 6957,
+          "priority": -10
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "filename": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "title": "✅ CRITICAL DATA FLOW FIXES - IMPLEMENTATION COMPLETE",
+          "size": 9899,
+          "priority": -10
+        },
+        {
+          "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+          "filename": "KPI-DEBUGGING-SUMMARY.md",
+          "title": "🎯 KPI DEBUGGING PROJECT - COMPLETE SUCCESS SUMMARY",
+          "size": 7262,
+          "priority": -10
+        },
+        {
+          "path": "docs\\SESSION_LOG.md",
+          "filename": "SESSION_LOG.md",
+          "title": "Integration Session Log",
+          "size": 3625,
+          "priority": -10
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "filename": "QA_SUMMARY_REPORT.md",
+          "title": "📋 QA Summary Report - Liberty Tax P&L Webapp",
+          "size": 7617,
+          "priority": -25
+        }
+      ],
+      "totalFiles": 26,
+      "estimatedReduction": 25
+    }
+  }
+}
