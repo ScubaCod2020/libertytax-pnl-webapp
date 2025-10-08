@@ -4,4 +4,6 @@ export const environment = {
   // Local dev uses Angular dev-server proxy to avoid CORS
   apiBaseUrl: '/api',
   version: 'local-dev',
+  // Enable seeding debug logs for local development
+  seedingDebug: true,
 };

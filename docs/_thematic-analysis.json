@@ -1,0 +1,4848 @@
+{
+  "timestamp": "2025-10-08T14:37:30.653Z",
+  "summary": {
+    "totalFiles": 93,
+    "themesAnalyzed": 10,
+    "themesWithContent": 10
+  },
+  "themes": {
+    "testing": {
+      "files": [
+        {
+          "path": "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "name": "COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "score": 152,
+          "contentScore": 152,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\teaching-notes.md",
+          "name": "teaching-notes.md",
+          "score": 141,
+          "contentScore": 141,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING.md",
+          "name": "TESTING.md",
+          "score": 119,
+          "contentScore": 117,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\TESTING_SETUP.md",
+          "name": "TESTING_SETUP.md",
+          "score": 105,
+          "contentScore": 105,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\EDGE_CASE_TESTING.md",
+          "name": "EDGE_CASE_TESTING.md",
+          "score": 89,
+          "contentScore": 89,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\OVERNIGHT_QA_REPORT.md",
+          "name": "OVERNIGHT_QA_REPORT.md",
+          "score": 76,
+          "contentScore": 76,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED_TESTING_STRATEGY.md",
+          "name": "AUTOMATED_TESTING_STRATEGY.md",
+          "score": 71,
+          "contentScore": 71,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_TESTING_FRAMEWORK.md",
+          "name": "PRO_TIPS_TESTING_FRAMEWORK.md",
+          "score": 57,
+          "contentScore": 57,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_GUIDE.md",
+          "name": "VIRTUAL_TEAM_GUIDE.md",
+          "score": 57,
+          "contentScore": 57,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING_PROCEDURES.md",
+          "name": "DEBUGGING_PROCEDURES.md",
+          "score": 54,
+          "contentScore": 54,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+          "name": "VIRTUAL_TEAM_TASK_MATRIX.md",
+          "score": 49,
+          "contentScore": 49,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_ANALYSIS_REPORT.md",
+          "name": "QA_ANALYSIS_REPORT.md",
+          "score": 47,
+          "contentScore": 47,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "name": "DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "score": 44,
+          "contentScore": 44,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "name": "QA_SUMMARY_REPORT.md",
+          "score": 42,
+          "contentScore": 42,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+          "name": "VIRTUAL_TEAM_ANALYSIS.md",
+          "score": 42,
+          "contentScore": 42,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "name": "DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "score": 41,
+          "contentScore": 41,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "name": "SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "score": 39,
+          "contentScore": 39,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "name": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "score": 37,
+          "contentScore": 35,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\MOBILE_TESTING_GUIDE.md",
+          "name": "MOBILE_TESTING_GUIDE.md",
+          "score": 37,
+          "contentScore": 37,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "name": "COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "score": 34,
+          "contentScore": 34,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "name": "COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "score": 33,
+          "contentScore": 33,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\render-audit.md",
+          "name": "render-audit.md",
+          "score": 33,
+          "contentScore": 33,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CRITICAL_QA_ISSUES.md",
+          "name": "CRITICAL_QA_ISSUES.md",
+          "score": 32,
+          "contentScore": 32,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "name": "INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "score": 29,
+          "contentScore": 29,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AI_INTEGRATION_GUIDE.md",
+          "name": "AI_INTEGRATION_GUIDE.md",
+          "score": 28,
+          "contentScore": 28,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "name": "MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "score": 26,
+          "contentScore": 26,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TEMPLATE_STRATEGY.md",
+          "name": "TEMPLATE_STRATEGY.md",
+          "score": 23,
+          "contentScore": 23,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SPEC_ANALYSIS.md",
+          "name": "SPEC_ANALYSIS.md",
+          "score": 22,
+          "contentScore": 22,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+          "name": "PRE_DEPLOYMENT_CHECKLIST.md",
+          "score": 21,
+          "contentScore": 21,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+          "name": "DEVELOPMENT_PROGRESS_LOG.md",
+          "score": 20,
+          "contentScore": 20,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_STRATEGY.md",
+          "name": "INTEGRATION_STRATEGY.md",
+          "score": 19,
+          "contentScore": 19,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+          "name": "MIGRATION_COMPLETENESS_REPORT.md",
+          "score": 19,
+          "contentScore": 19,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+          "name": "KPI-DEBUGGING-SUMMARY.md",
+          "score": 18,
+          "contentScore": 18,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\NODEJS_SETUP_GUIDE.md",
+          "name": "NODEJS_SETUP_GUIDE.md",
+          "score": 18,
+          "contentScore": 18,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "name": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "score": 17,
+          "contentScore": 17,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\LESSONS_LEARNED.md",
+          "name": "LESSONS_LEARNED.md",
+          "score": 16,
+          "contentScore": 16,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_STANDARDS.md",
+          "name": "TESTING_STANDARDS.md",
+          "score": 16,
+          "contentScore": 16,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\adr\\ADR-0001-ci-quality-gates.md",
+          "name": "ADR-0001-ci-quality-gates.md",
+          "score": 14,
+          "contentScore": 12,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\calc-migration-status.md",
+          "name": "calc-migration-status.md",
+          "score": 14,
+          "contentScore": 14,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_TESTS_FIXED.md",
+          "name": "INTEGRATION_TESTS_FIXED.md",
+          "score": 14,
+          "contentScore": 14,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+          "name": "PRO_TIPS_RESEARCH_BACKLOG.md",
+          "score": 12,
+          "contentScore": 12,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT.md",
+          "name": "DEVELOPMENT.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION_LOG.md",
+          "name": "SESSION_LOG.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CALCULATION_BUG_REPORT.md",
+          "name": "CALCULATION_BUG_REPORT.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\development-checklists\\currency-input-checklist.md",
+          "name": "currency-input-checklist.md",
+          "score": 9,
+          "contentScore": 7,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\MAPPING.md",
+          "name": "MAPPING.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\testing\\strategy.md",
+          "name": "strategy.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "name": "CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+          "name": "SESSION-SUMMARY-2025-09-25.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "name": "AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+          "name": "TONIGHT-ACCOMPLISHMENTS.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\WIKI_GUIDE.md",
+          "name": "WIKI_GUIDE.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\ENV_SETUP.md",
+          "name": "ENV_SETUP.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity-checklist.md",
+          "name": "parity-checklist.md",
+          "score": 6,
+          "contentScore": 4,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\_docs-audit-fresh.md",
+          "name": "_docs-audit-fresh.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\blocking-questions.md",
+          "name": "blocking-questions.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KNOWN_ISSUES.md",
+          "name": "KNOWN_ISSUES.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\runbooks\\release.md",
+          "name": "release.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "name": "COMPONENTS_TREE.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INDEX.md",
+          "name": "INDEX.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-27.md",
+          "name": "2025-09-27.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\session-3-summary.md",
+          "name": "session-3-summary.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CORRECTED_CALCULATION_ANALYSIS.md",
+          "name": "CORRECTED_CALCULATION_ANALYSIS.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-13.md",
+          "name": "2025-09-13.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\inbox.enhancements.md",
+          "name": "inbox.enhancements.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\run-reports\\overnight-run-20250919-0647.md",
+          "name": "overnight-run-20250919-0647.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\ARCHITECTURE.md",
+          "name": "ARCHITECTURE.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-06.md",
+          "name": "2025-09-06.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-20.md",
+          "name": "2025-09-20.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\60_gap_queue.md",
+          "name": "60_gap_queue.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\70_ci_notes.md",
+          "name": "70_ci_notes.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        }
+      ],
+      "totalScore": 1930
+    },
+    "development": {
+      "files": [
+        {
+          "path": "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "name": "SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "score": 60,
+          "contentScore": 60,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "name": "INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "score": 52,
+          "contentScore": 52,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "name": "AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "score": 51,
+          "contentScore": 51,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\teaching-notes.md",
+          "name": "teaching-notes.md",
+          "score": 46,
+          "contentScore": 46,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT.md",
+          "name": "DEVELOPMENT.md",
+          "score": 45,
+          "contentScore": 43,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\NODEJS_SETUP_GUIDE.md",
+          "name": "NODEJS_SETUP_GUIDE.md",
+          "score": 34,
+          "contentScore": 34,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING_PROCEDURES.md",
+          "name": "DEBUGGING_PROCEDURES.md",
+          "score": 30,
+          "contentScore": 30,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\OVERNIGHT_QA_REPORT.md",
+          "name": "OVERNIGHT_QA_REPORT.md",
+          "score": 25,
+          "contentScore": 25,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TEMPLATE_STRATEGY.md",
+          "name": "TEMPLATE_STRATEGY.md",
+          "score": 17,
+          "contentScore": 17,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_SETUP.md",
+          "name": "TESTING_SETUP.md",
+          "score": 16,
+          "contentScore": 16,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "name": "DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "score": 12,
+          "contentScore": 12,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KNOWN_ISSUES.md",
+          "name": "KNOWN_ISSUES.md",
+          "score": 12,
+          "contentScore": 12,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\LESSONS_LEARNED.md",
+          "name": "LESSONS_LEARNED.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+          "name": "SESSION-SUMMARY-2025-09-25.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION_LOG.md",
+          "name": "SESSION_LOG.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_GUIDE.md",
+          "name": "VIRTUAL_TEAM_GUIDE.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+          "name": "DEVELOPMENT_PROGRESS_LOG.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+          "name": "VIRTUAL_TEAM_ANALYSIS.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "name": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\render-audit.md",
+          "name": "render-audit.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AI_INTEGRATION_GUIDE.md",
+          "name": "AI_INTEGRATION_GUIDE.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED_TESTING_STRATEGY.md",
+          "name": "AUTOMATED_TESTING_STRATEGY.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-migration-status.md",
+          "name": "calc-migration-status.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+          "name": "VIRTUAL_TEAM_TASK_MATRIX.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_STRATEGY.md",
+          "name": "INTEGRATION_STRATEGY.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+          "name": "PRE_DEPLOYMENT_CHECKLIST.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING.md",
+          "name": "TESTING.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\adr\\ADR-0001-ci-quality-gates.md",
+          "name": "ADR-0001-ci-quality-gates.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "name": "MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\ARCHITECTURE.md",
+          "name": "ARCHITECTURE.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "name": "CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\ENV_SETUP.md",
+          "name": "ENV_SETUP.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+          "name": "PRO_TIPS_RESEARCH_BACKLOG.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_TESTING_FRAMEWORK.md",
+          "name": "PRO_TIPS_TESTING_FRAMEWORK.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "name": "QA_SUMMARY_REPORT.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\run-reports\\overnight-run-20250919-0647.md",
+          "name": "overnight-run-20250919-0647.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\runbooks\\release.md",
+          "name": "release.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_STANDARDS.md",
+          "name": "TESTING_STANDARDS.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+          "name": "TONIGHT-ACCOMPLISHMENTS.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+          "name": "MIGRATION_COMPLETENESS_REPORT.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\70_ci_notes.md",
+          "name": "70_ci_notes.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "name": "COMPONENTS_TREE.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "name": "COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+          "name": "KPI-DEBUGGING-SUMMARY.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MOBILE_TESTING_GUIDE.md",
+          "name": "MOBILE_TESTING_GUIDE.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\trace-plan.md",
+          "name": "trace-plan.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\WIKI_GUIDE.md",
+          "name": "WIKI_GUIDE.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\_docs-audit-fresh.md",
+          "name": "_docs-audit-fresh.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\blocking-questions.md",
+          "name": "blocking-questions.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-inventory.md",
+          "name": "calc-inventory.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "name": "COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "name": "COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\context-digest.md",
+          "name": "context-digest.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CRITICAL_QA_ISSUES.md",
+          "name": "CRITICAL_QA_ISSUES.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEV_NOTES_V5.md",
+          "name": "DEV_NOTES_V5.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\EDGE_CASE_TESTING.md",
+          "name": "EDGE_CASE_TESTING.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "name": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-20.md",
+          "name": "2025-09-20.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INDEX.md",
+          "name": "INDEX.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_TESTS_FIXED.md",
+          "name": "INTEGRATION_TESTS_FIXED.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\kpi\\rules-v2.md",
+          "name": "rules-v2.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MAPPING.md",
+          "name": "MAPPING.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\10_routes_pages.md",
+          "name": "10_routes_pages.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_ANALYSIS_REPORT.md",
+          "name": "QA_ANALYSIS_REPORT.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        }
+      ],
+      "totalScore": 607
+    },
+    "architecture": {
+      "files": [
+        {
+          "path": "docs\\teaching-notes.md",
+          "name": "teaching-notes.md",
+          "score": 395,
+          "contentScore": 395,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\render-audit.md",
+          "name": "render-audit.md",
+          "score": 87,
+          "contentScore": 87,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+          "name": "MIGRATION_COMPLETENESS_REPORT.md",
+          "score": 60,
+          "contentScore": 60,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-migration-status.md",
+          "name": "calc-migration-status.md",
+          "score": 54,
+          "contentScore": 54,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SPEC_ANALYSIS.md",
+          "name": "SPEC_ANALYSIS.md",
+          "score": 25,
+          "contentScore": 25,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+          "name": "DEVELOPMENT_PROGRESS_LOG.md",
+          "score": 24,
+          "contentScore": 24,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\ARCHITECTURE.md",
+          "name": "ARCHITECTURE.md",
+          "score": 20,
+          "contentScore": 18,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\AI_INTEGRATION_GUIDE.md",
+          "name": "AI_INTEGRATION_GUIDE.md",
+          "score": 16,
+          "contentScore": 16,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\LESSONS_LEARNED.md",
+          "name": "LESSONS_LEARNED.md",
+          "score": 15,
+          "contentScore": 15,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "name": "CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "score": 13,
+          "contentScore": 13,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "name": "QA_SUMMARY_REPORT.md",
+          "score": 13,
+          "contentScore": 13,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\session-3-summary.md",
+          "name": "session-3-summary.md",
+          "score": 13,
+          "contentScore": 13,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_STANDARDS.md",
+          "name": "TESTING_STANDARDS.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED_TESTING_STRATEGY.md",
+          "name": "AUTOMATED_TESTING_STRATEGY.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\context-digest.md",
+          "name": "context-digest.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT.md",
+          "name": "DEVELOPMENT.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\STYLE_GUIDE.md",
+          "name": "STYLE_GUIDE.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "name": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "name": "COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\development-checklists\\currency-input-checklist.md",
+          "name": "currency-input-checklist.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\OVERNIGHT_QA_REPORT.md",
+          "name": "OVERNIGHT_QA_REPORT.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TEMPLATE_STRATEGY.md",
+          "name": "TEMPLATE_STRATEGY.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "name": "DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "score": 7,
+          "contentScore": 5,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+          "name": "SESSION-SUMMARY-2025-09-25.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+          "name": "VIRTUAL_TEAM_TASK_MATRIX.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\WIKI_GUIDE.md",
+          "name": "WIKI_GUIDE.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INDEX.md",
+          "name": "INDEX.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_STRATEGY.md",
+          "name": "INTEGRATION_STRATEGY.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+          "name": "PRO_TIPS_RESEARCH_BACKLOG.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "name": "SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION_LOG.md",
+          "name": "SESSION_LOG.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING.md",
+          "name": "TESTING.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MAPPING.md",
+          "name": "MAPPING.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "name": "COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KNOWN_ISSUES.md",
+          "name": "KNOWN_ISSUES.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_SETUP.md",
+          "name": "TESTING_SETUP.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+          "name": "TONIGHT-ACCOMPLISHMENTS.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_GUIDE.md",
+          "name": "VIRTUAL_TEAM_GUIDE.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "name": "COMPONENTS_TREE.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CRITICAL_QA_ISSUES.md",
+          "name": "CRITICAL_QA_ISSUES.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "name": "DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\NODEJS_SETUP_GUIDE.md",
+          "name": "NODEJS_SETUP_GUIDE.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_ANALYSIS_REPORT.md",
+          "name": "QA_ANALYSIS_REPORT.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\_docs-audit-fresh.md",
+          "name": "_docs-audit-fresh.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\architecture\\components-graph.md",
+          "name": "components-graph.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "name": "AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\blocking-questions.md",
+          "name": "blocking-questions.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\BLUEPRINT_DELTA.md",
+          "name": "BLUEPRINT_DELTA.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_TESTS_FIXED.md",
+          "name": "INTEGRATION_TESTS_FIXED.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\UI-UX-TUNING_NOTES.md",
+          "name": "UI-UX-TUNING_NOTES.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CHANGELOG.md",
+          "name": "CHANGELOG.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "name": "COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING_PROCEDURES.md",
+          "name": "DEBUGGING_PROCEDURES.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\EDGE_CASE_TESTING.md",
+          "name": "EDGE_CASE_TESTING.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "name": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-13.md",
+          "name": "2025-09-13.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-27.md",
+          "name": "2025-09-27.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "name": "INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+          "name": "KPI-DEBUGGING-SUMMARY.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "name": "MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+          "name": "PRE_DEPLOYMENT_CHECKLIST.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+          "name": "VIRTUAL_TEAM_ANALYSIS.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        }
+      ],
+      "totalScore": 958
+    },
+    "debugging": {
+      "files": [
+        {
+          "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "name": "AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "score": 92,
+          "contentScore": 90,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "name": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "score": 86,
+          "contentScore": 84,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\CRITICAL_QA_ISSUES.md",
+          "name": "CRITICAL_QA_ISSUES.md",
+          "score": 42,
+          "contentScore": 42,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "name": "COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "score": 38,
+          "contentScore": 36,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\teaching-notes.md",
+          "name": "teaching-notes.md",
+          "score": 36,
+          "contentScore": 36,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING_PROCEDURES.md",
+          "name": "DEBUGGING_PROCEDURES.md",
+          "score": 35,
+          "contentScore": 35,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MOBILE_TESTING_GUIDE.md",
+          "name": "MOBILE_TESTING_GUIDE.md",
+          "score": 28,
+          "contentScore": 28,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "name": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "score": 25,
+          "contentScore": 25,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "name": "QA_SUMMARY_REPORT.md",
+          "score": 24,
+          "contentScore": 24,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "name": "DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "score": 22,
+          "contentScore": 22,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING.md",
+          "name": "TESTING.md",
+          "score": 22,
+          "contentScore": 22,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\EDGE_CASE_TESTING.md",
+          "name": "EDGE_CASE_TESTING.md",
+          "score": 21,
+          "contentScore": 21,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\OVERNIGHT_QA_REPORT.md",
+          "name": "OVERNIGHT_QA_REPORT.md",
+          "score": 21,
+          "contentScore": 21,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+          "name": "KPI-DEBUGGING-SUMMARY.md",
+          "score": 15,
+          "contentScore": 13,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+          "name": "VIRTUAL_TEAM_ANALYSIS.md",
+          "score": 15,
+          "contentScore": 15,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CALCULATION_BUG_REPORT.md",
+          "name": "CALCULATION_BUG_REPORT.md",
+          "score": 14,
+          "contentScore": 14,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "name": "COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "score": 13,
+          "contentScore": 13,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+          "name": "SESSION-SUMMARY-2025-09-25.md",
+          "score": 13,
+          "contentScore": 13,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_SETUP.md",
+          "name": "TESTING_SETUP.md",
+          "score": 13,
+          "contentScore": 13,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AI_INTEGRATION_GUIDE.md",
+          "name": "AI_INTEGRATION_GUIDE.md",
+          "score": 12,
+          "contentScore": 12,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT.md",
+          "name": "DEVELOPMENT.md",
+          "score": 12,
+          "contentScore": 12,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+          "name": "DEVELOPMENT_PROGRESS_LOG.md",
+          "score": 12,
+          "contentScore": 12,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\render-audit.md",
+          "name": "render-audit.md",
+          "score": 12,
+          "contentScore": 12,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "name": "SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "score": 12,
+          "contentScore": 12,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED_TESTING_STRATEGY.md",
+          "name": "AUTOMATED_TESTING_STRATEGY.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KNOWN_ISSUES.md",
+          "name": "KNOWN_ISSUES.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\LESSONS_LEARNED.md",
+          "name": "LESSONS_LEARNED.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+          "name": "TONIGHT-ACCOMPLISHMENTS.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_GUIDE.md",
+          "name": "VIRTUAL_TEAM_GUIDE.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+          "name": "VIRTUAL_TEAM_TASK_MATRIX.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CORRECTED_CALCULATION_ANALYSIS.md",
+          "name": "CORRECTED_CALCULATION_ANALYSIS.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-migration-status.md",
+          "name": "calc-migration-status.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "name": "COMPONENTS_TREE.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "name": "INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_ANALYSIS_REPORT.md",
+          "name": "QA_ANALYSIS_REPORT.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+          "name": "MIGRATION_COMPLETENESS_REPORT.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CHANGELOG.md",
+          "name": "CHANGELOG.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_STRATEGY.md",
+          "name": "INTEGRATION_STRATEGY.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+          "name": "PRE_DEPLOYMENT_CHECKLIST.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\_docs-audit-fresh.md",
+          "name": "_docs-audit-fresh.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\context-digest.md",
+          "name": "context-digest.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "name": "DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_TESTS_FIXED.md",
+          "name": "INTEGRATION_TESTS_FIXED.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MAPPING.md",
+          "name": "MAPPING.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\NODEJS_SETUP_GUIDE.md",
+          "name": "NODEJS_SETUP_GUIDE.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\ARCHITECTURE.md",
+          "name": "ARCHITECTURE.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\development-checklists\\currency-input-checklist.md",
+          "name": "currency-input-checklist.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\STYLE_GUIDE.md",
+          "name": "STYLE_GUIDE.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\blocking-questions.md",
+          "name": "blocking-questions.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "name": "CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "name": "MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity-checklist.md",
+          "name": "parity-checklist.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\runbooks\\release.md",
+          "name": "release.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\session-3-summary.md",
+          "name": "session-3-summary.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_STANDARDS.md",
+          "name": "TESTING_STANDARDS.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        }
+      ],
+      "totalScore": 772
+    },
+    "analysis": {
+      "files": [
+        {
+          "path": "docs\\teaching-notes.md",
+          "name": "teaching-notes.md",
+          "score": 42,
+          "contentScore": 42,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AI_INTEGRATION_GUIDE.md",
+          "name": "AI_INTEGRATION_GUIDE.md",
+          "score": 20,
+          "contentScore": 20,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED_TESTING_STRATEGY.md",
+          "name": "AUTOMATED_TESTING_STRATEGY.md",
+          "score": 20,
+          "contentScore": 20,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+          "name": "DEVELOPMENT_PROGRESS_LOG.md",
+          "score": 16,
+          "contentScore": 16,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_GUIDE.md",
+          "name": "VIRTUAL_TEAM_GUIDE.md",
+          "score": 16,
+          "contentScore": 16,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\_docs-audit-fresh.md",
+          "name": "_docs-audit-fresh.md",
+          "score": 14,
+          "contentScore": 12,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\render-audit.md",
+          "name": "render-audit.md",
+          "score": 13,
+          "contentScore": 11,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\QA_ANALYSIS_REPORT.md",
+          "name": "QA_ANALYSIS_REPORT.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+          "name": "PRO_TIPS_RESEARCH_BACKLOG.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\session-3-summary.md",
+          "name": "session-3-summary.md",
+          "score": 10,
+          "contentScore": 8,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\TESTING_SETUP.md",
+          "name": "TESTING_SETUP.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "name": "COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "name": "CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "score": 9,
+          "contentScore": 7,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "name": "SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-migration-status.md",
+          "name": "calc-migration-status.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "name": "COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "score": 8,
+          "contentScore": 6,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+          "name": "KPI-DEBUGGING-SUMMARY.md",
+          "score": 8,
+          "contentScore": 6,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+          "name": "MIGRATION_COMPLETENESS_REPORT.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "name": "QA_SUMMARY_REPORT.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+          "name": "VIRTUAL_TEAM_ANALYSIS.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "name": "DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "score": 7,
+          "contentScore": 5,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+          "name": "SESSION-SUMMARY-2025-09-25.md",
+          "score": 7,
+          "contentScore": 5,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\OVERNIGHT_QA_REPORT.md",
+          "name": "OVERNIGHT_QA_REPORT.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING.md",
+          "name": "TESTING.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+          "name": "TONIGHT-ACCOMPLISHMENTS.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\ARCHITECTURE.md",
+          "name": "ARCHITECTURE.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INDEX.md",
+          "name": "INDEX.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_TESTING_FRAMEWORK.md",
+          "name": "PRO_TIPS_TESTING_FRAMEWORK.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+          "name": "VIRTUAL_TEAM_TASK_MATRIX.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CHANGELOG.md",
+          "name": "CHANGELOG.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "name": "COMPONENTS_TREE.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING_PROCEDURES.md",
+          "name": "DEBUGGING_PROCEDURES.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "name": "INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\LESSONS_LEARNED.md",
+          "name": "LESSONS_LEARNED.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SPEC_ANALYSIS.md",
+          "name": "SPEC_ANALYSIS.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "name": "AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "name": "COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "name": "DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\EDGE_CASE_TESTING.md",
+          "name": "EDGE_CASE_TESTING.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "name": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "score": 3,
+          "contentScore": 1,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\todo\\FUTURE_ENHANCEMENTS.md",
+          "name": "FUTURE_ENHANCEMENTS.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\adr\\ADR-0001-ci-quality-gates.md",
+          "name": "ADR-0001-ci-quality-gates.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\blocking-questions.md",
+          "name": "blocking-questions.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CALCULATION_BUG_REPORT.md",
+          "name": "CALCULATION_BUG_REPORT.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\context-digest.md",
+          "name": "context-digest.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "name": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "score": 2,
+          "contentScore": 0,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\DEV_NOTES_V5.md",
+          "name": "DEV_NOTES_V5.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KNOWN_ISSUES.md",
+          "name": "KNOWN_ISSUES.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MAPPING.md",
+          "name": "MAPPING.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity-checklist.md",
+          "name": "parity-checklist.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\runbooks\\release.md",
+          "name": "release.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SCOPE.md",
+          "name": "SCOPE.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\wire-up-plan.md",
+          "name": "wire-up-plan.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CORRECTED_CALCULATION_ANALYSIS.md",
+          "name": "CORRECTED_CALCULATION_ANALYSIS.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CRITICAL_QA_ISSUES.md",
+          "name": "CRITICAL_QA_ISSUES.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\development-checklists\\currency-input-checklist.md",
+          "name": "currency-input-checklist.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT.md",
+          "name": "DEVELOPMENT.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\diagrams\\data-flow.md",
+          "name": "data-flow.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_STRATEGY.md",
+          "name": "INTEGRATION_STRATEGY.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "name": "MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\10_routes_pages.md",
+          "name": "10_routes_pages.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\30_ui_blocks.md",
+          "name": "30_ui_blocks.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\run-reports\\overnight-run-20250919-0647.md",
+          "name": "overnight-run-20250919-0647.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION_LOG.md",
+          "name": "SESSION_LOG.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_STANDARDS.md",
+          "name": "TESTING_STANDARDS.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\trace-plan.md",
+          "name": "trace-plan.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\UI-UX-TUNING_NOTES.md",
+          "name": "UI-UX-TUNING_NOTES.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VARIABLES.md",
+          "name": "VARIABLES.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        }
+      ],
+      "totalScore": 390
+    },
+    "session": {
+      "files": [
+        {
+          "path": "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+          "name": "DEVELOPMENT_PROGRESS_LOG.md",
+          "score": 37,
+          "contentScore": 37,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING_PROCEDURES.md",
+          "name": "DEBUGGING_PROCEDURES.md",
+          "score": 17,
+          "contentScore": 17,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\session-3-summary.md",
+          "name": "session-3-summary.md",
+          "score": 15,
+          "contentScore": 11,
+          "nameScore": 2
+        },
+        {
+          "path": "docs\\teaching-notes.md",
+          "name": "teaching-notes.md",
+          "score": 15,
+          "contentScore": 13,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\SESSION_LOG.md",
+          "name": "SESSION_LOG.md",
+          "score": 14,
+          "contentScore": 14,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+          "name": "TONIGHT-ACCOMPLISHMENTS.md",
+          "score": 14,
+          "contentScore": 12,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+          "name": "SESSION-SUMMARY-2025-09-25.md",
+          "score": 13,
+          "contentScore": 9,
+          "nameScore": 2
+        },
+        {
+          "path": "docs\\_docs-audit-fresh.md",
+          "name": "_docs-audit-fresh.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "name": "DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\render-audit.md",
+          "name": "render-audit.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "name": "COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "score": 6,
+          "contentScore": 4,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "name": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "score": 6,
+          "contentScore": 4,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\INTEGRATION_STRATEGY.md",
+          "name": "INTEGRATION_STRATEGY.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "name": "SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SPEC_ANALYSIS.md",
+          "name": "SPEC_ANALYSIS.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEV_NOTES_V5.md",
+          "name": "DEV_NOTES_V5.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\OVERNIGHT_QA_REPORT.md",
+          "name": "OVERNIGHT_QA_REPORT.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "name": "AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INDEX.md",
+          "name": "INDEX.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+          "name": "KPI-DEBUGGING-SUMMARY.md",
+          "score": 4,
+          "contentScore": 2,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\LESSONS_LEARNED.md",
+          "name": "LESSONS_LEARNED.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SCOPE.md",
+          "name": "SCOPE.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\UI-UX-TUNING_NOTES.md",
+          "name": "UI-UX-TUNING_NOTES.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CHANGELOG.md",
+          "name": "CHANGELOG.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\context-digest.md",
+          "name": "context-digest.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\EDGE_CASE_TESTING.md",
+          "name": "EDGE_CASE_TESTING.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+          "name": "MIGRATION_COMPLETENESS_REPORT.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MOBILE_TESTING_GUIDE.md",
+          "name": "MOBILE_TESTING_GUIDE.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_ANALYSIS_REPORT.md",
+          "name": "QA_ANALYSIS_REPORT.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\todo\\FUTURE_ENHANCEMENTS.md",
+          "name": "FUTURE_ENHANCEMENTS.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\WIKI_GUIDE.md",
+          "name": "WIKI_GUIDE.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\wire-up-plan.md",
+          "name": "wire-up-plan.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "name": "COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "name": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "score": 2,
+          "contentScore": 0,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "name": "INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity-checklist.md",
+          "name": "parity-checklist.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "name": "QA_SUMMARY_REPORT.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING.md",
+          "name": "TESTING.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_SETUP.md",
+          "name": "TESTING_SETUP.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\trace-plan.md",
+          "name": "trace-plan.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VARIABLES.md",
+          "name": "VARIABLES.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_GUIDE.md",
+          "name": "VIRTUAL_TEAM_GUIDE.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+          "name": "VIRTUAL_TEAM_TASK_MATRIX.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-migration-status.md",
+          "name": "calc-migration-status.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "name": "COMPONENTS_TREE.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "name": "CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT.md",
+          "name": "DEVELOPMENT.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\ENV_SETUP.md",
+          "name": "ENV_SETUP.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\FEATURE_GUIDE_Branding.md",
+          "name": "FEATURE_GUIDE_Branding.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-06.md",
+          "name": "2025-09-06.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-13.md",
+          "name": "2025-09-13.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-20.md",
+          "name": "2025-09-20.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-27.md",
+          "name": "2025-09-27.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KNOWN_ISSUES.md",
+          "name": "KNOWN_ISSUES.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "name": "MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MAPPING.md",
+          "name": "MAPPING.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\30_ui_blocks.md",
+          "name": "30_ui_blocks.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\70_ci_notes.md",
+          "name": "70_ci_notes.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+          "name": "PRE_DEPLOYMENT_CHECKLIST.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\runbooks\\release.md",
+          "name": "release.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\STYLE_GUIDE.md",
+          "name": "STYLE_GUIDE.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        }
+      ],
+      "totalScore": 281
+    },
+    "integration": {
+      "files": [
+        {
+          "path": "docs\\teaching-notes.md",
+          "name": "teaching-notes.md",
+          "score": 562,
+          "contentScore": 562,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+          "name": "MIGRATION_COMPLETENESS_REPORT.md",
+          "score": 103,
+          "contentScore": 103,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\render-audit.md",
+          "name": "render-audit.md",
+          "score": 97,
+          "contentScore": 97,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-migration-status.md",
+          "name": "calc-migration-status.md",
+          "score": 61,
+          "contentScore": 59,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\INTEGRATION_STRATEGY.md",
+          "name": "INTEGRATION_STRATEGY.md",
+          "score": 45,
+          "contentScore": 45,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+          "name": "DEVELOPMENT_PROGRESS_LOG.md",
+          "score": 44,
+          "contentScore": 44,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION_LOG.md",
+          "name": "SESSION_LOG.md",
+          "score": 26,
+          "contentScore": 26,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\context-digest.md",
+          "name": "context-digest.md",
+          "score": 22,
+          "contentScore": 22,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "name": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "score": 15,
+          "contentScore": 15,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "name": "INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "score": 15,
+          "contentScore": 15,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity-checklist.md",
+          "name": "parity-checklist.md",
+          "score": 15,
+          "contentScore": 13,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "name": "AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "score": 13,
+          "contentScore": 13,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\blocking-questions.md",
+          "name": "blocking-questions.md",
+          "score": 13,
+          "contentScore": 13,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\LESSONS_LEARNED.md",
+          "name": "LESSONS_LEARNED.md",
+          "score": 13,
+          "contentScore": 13,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\ENV_SETUP.md",
+          "name": "ENV_SETUP.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\FEATURE_GUIDE_Branding.md",
+          "name": "FEATURE_GUIDE_Branding.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_ANALYSIS_REPORT.md",
+          "name": "QA_ANALYSIS_REPORT.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "name": "DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_SETUP.md",
+          "name": "TESTING_SETUP.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\adr\\ADR-0001-ci-quality-gates.md",
+          "name": "ADR-0001-ci-quality-gates.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+          "name": "VIRTUAL_TEAM_TASK_MATRIX.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AI_INTEGRATION_GUIDE.md",
+          "name": "AI_INTEGRATION_GUIDE.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\session-3-summary.md",
+          "name": "session-3-summary.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_GUIDE.md",
+          "name": "VIRTUAL_TEAM_GUIDE.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\_docs-audit-fresh.md",
+          "name": "_docs-audit-fresh.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\BLUEPRINT_DELTA.md",
+          "name": "BLUEPRINT_DELTA.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-inventory.md",
+          "name": "calc-inventory.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING_PROCEDURES.md",
+          "name": "DEBUGGING_PROCEDURES.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING.md",
+          "name": "TESTING.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT.md",
+          "name": "DEVELOPMENT.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_TESTS_FIXED.md",
+          "name": "INTEGRATION_TESTS_FIXED.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+          "name": "SESSION-SUMMARY-2025-09-25.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\STYLE_GUIDE.md",
+          "name": "STYLE_GUIDE.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TEMPLATE_STRATEGY.md",
+          "name": "TEMPLATE_STRATEGY.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\testing\\strategy.md",
+          "name": "strategy.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\kpi\\README.md",
+          "name": "README.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\70_ci_notes.md",
+          "name": "70_ci_notes.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "name": "SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SPEC_ANALYSIS.md",
+          "name": "SPEC_ANALYSIS.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "name": "DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KNOWN_ISSUES.md",
+          "name": "KNOWN_ISSUES.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\run-reports\\overnight-run-20250919-0647.md",
+          "name": "overnight-run-20250919-0647.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+          "name": "VIRTUAL_TEAM_ANALYSIS.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\architecture\\components-graph.md",
+          "name": "components-graph.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "name": "COMPONENTS_TREE.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "name": "CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\development-checklists\\currency-input-checklist.md",
+          "name": "currency-input-checklist.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-13.md",
+          "name": "2025-09-13.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-27.md",
+          "name": "2025-09-27.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_TESTING_FRAMEWORK.md",
+          "name": "PRO_TIPS_TESTING_FRAMEWORK.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "name": "QA_SUMMARY_REPORT.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\UI-UX-TUNING_NOTES.md",
+          "name": "UI-UX-TUNING_NOTES.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\ARCHITECTURE.md",
+          "name": "ARCHITECTURE.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED_TESTING_STRATEGY.md",
+          "name": "AUTOMATED_TESTING_STRATEGY.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CHANGELOG.md",
+          "name": "CHANGELOG.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "name": "COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "name": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\NODEJS_SETUP_GUIDE.md",
+          "name": "NODEJS_SETUP_GUIDE.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\00_index.md",
+          "name": "00_index.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+          "name": "PRO_TIPS_RESEARCH_BACKLOG.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\runbooks\\release.md",
+          "name": "release.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        }
+      ],
+      "totalScore": 1262
+    },
+    "deployment": {
+      "files": [
+        {
+          "path": "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "name": "SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "score": 65,
+          "contentScore": 65,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "name": "DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "score": 48,
+          "contentScore": 48,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING_PROCEDURES.md",
+          "name": "DEBUGGING_PROCEDURES.md",
+          "score": 36,
+          "contentScore": 36,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+          "name": "VIRTUAL_TEAM_TASK_MATRIX.md",
+          "score": 35,
+          "contentScore": 35,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT.md",
+          "name": "DEVELOPMENT.md",
+          "score": 17,
+          "contentScore": 17,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_SETUP.md",
+          "name": "TESTING_SETUP.md",
+          "score": 16,
+          "contentScore": 16,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_GUIDE.md",
+          "name": "VIRTUAL_TEAM_GUIDE.md",
+          "score": 15,
+          "contentScore": 15,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\runbooks\\release.md",
+          "name": "release.md",
+          "score": 13,
+          "contentScore": 11,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\teaching-notes.md",
+          "name": "teaching-notes.md",
+          "score": 12,
+          "contentScore": 12,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "name": "QA_SUMMARY_REPORT.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TEMPLATE_STRATEGY.md",
+          "name": "TEMPLATE_STRATEGY.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+          "name": "VIRTUAL_TEAM_ANALYSIS.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "name": "AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\render-audit.md",
+          "name": "render-audit.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING.md",
+          "name": "TESTING.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\adr\\ADR-0001-ci-quality-gates.md",
+          "name": "ADR-0001-ci-quality-gates.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CRITICAL_QA_ISSUES.md",
+          "name": "CRITICAL_QA_ISSUES.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+          "name": "PRE_DEPLOYMENT_CHECKLIST.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED_TESTING_STRATEGY.md",
+          "name": "AUTOMATED_TESTING_STRATEGY.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\OVERNIGHT_QA_REPORT.md",
+          "name": "OVERNIGHT_QA_REPORT.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CALCULATION_BUG_REPORT.md",
+          "name": "CALCULATION_BUG_REPORT.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "name": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "name": "INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\LESSONS_LEARNED.md",
+          "name": "LESSONS_LEARNED.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "name": "COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\EDGE_CASE_TESTING.md",
+          "name": "EDGE_CASE_TESTING.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+          "name": "KPI-DEBUGGING-SUMMARY.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MOBILE_TESTING_GUIDE.md",
+          "name": "MOBILE_TESTING_GUIDE.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\70_ci_notes.md",
+          "name": "70_ci_notes.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_ANALYSIS_REPORT.md",
+          "name": "QA_ANALYSIS_REPORT.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-migration-status.md",
+          "name": "calc-migration-status.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "name": "COMPONENTS_TREE.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "name": "DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\development-checklists\\currency-input-checklist.md",
+          "name": "currency-input-checklist.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "name": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-27.md",
+          "name": "2025-09-27.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INDEX.md",
+          "name": "INDEX.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_TESTS_FIXED.md",
+          "name": "INTEGRATION_TESTS_FIXED.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "name": "MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MAPPING.md",
+          "name": "MAPPING.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_TESTING_FRAMEWORK.md",
+          "name": "PRO_TIPS_TESTING_FRAMEWORK.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\_docs-audit-fresh.md",
+          "name": "_docs-audit-fresh.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        }
+      ],
+      "totalScore": 368
+    },
+    "kpi": {
+      "files": [
+        {
+          "path": "docs\\teaching-notes.md",
+          "name": "teaching-notes.md",
+          "score": 72,
+          "contentScore": 72,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KPI-DEBUGGING-SUMMARY.md",
+          "name": "KPI-DEBUGGING-SUMMARY.md",
+          "score": 42,
+          "contentScore": 40,
+          "nameScore": 1
+        },
+        {
+          "path": "docs\\TESTING.md",
+          "name": "TESTING.md",
+          "score": 40,
+          "contentScore": 40,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+          "name": "PRO_TIPS_RESEARCH_BACKLOG.md",
+          "score": 29,
+          "contentScore": 29,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "name": "COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "score": 25,
+          "contentScore": 25,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\render-audit.md",
+          "name": "render-audit.md",
+          "score": 23,
+          "contentScore": 23,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AI_INTEGRATION_GUIDE.md",
+          "name": "AI_INTEGRATION_GUIDE.md",
+          "score": 20,
+          "contentScore": 20,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "name": "COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+          "score": 19,
+          "contentScore": 19,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+          "name": "DEVELOPMENT_PROGRESS_LOG.md",
+          "score": 19,
+          "contentScore": 19,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_SETUP.md",
+          "name": "TESTING_SETUP.md",
+          "score": 19,
+          "contentScore": 19,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-migration-status.md",
+          "name": "calc-migration-status.md",
+          "score": 18,
+          "contentScore": 18,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "name": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "score": 16,
+          "contentScore": 16,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SPEC_ANALYSIS.md",
+          "name": "SPEC_ANALYSIS.md",
+          "score": 16,
+          "contentScore": 16,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED_TESTING_STRATEGY.md",
+          "name": "AUTOMATED_TESTING_STRATEGY.md",
+          "score": 15,
+          "contentScore": 15,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "name": "COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+          "score": 15,
+          "contentScore": 15,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MOBILE_TESTING_GUIDE.md",
+          "name": "MOBILE_TESTING_GUIDE.md",
+          "score": 15,
+          "contentScore": 15,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_GUIDE.md",
+          "name": "VIRTUAL_TEAM_GUIDE.md",
+          "score": 15,
+          "contentScore": 15,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CALCULATION_BUG_REPORT.md",
+          "name": "CALCULATION_BUG_REPORT.md",
+          "score": 14,
+          "contentScore": 14,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "name": "DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "score": 14,
+          "contentScore": 14,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\EDGE_CASE_TESTING.md",
+          "name": "EDGE_CASE_TESTING.md",
+          "score": 14,
+          "contentScore": 14,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CRITICAL_QA_ISSUES.md",
+          "name": "CRITICAL_QA_ISSUES.md",
+          "score": 12,
+          "contentScore": 12,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+          "name": "MIGRATION_COMPLETENESS_REPORT.md",
+          "score": 12,
+          "contentScore": 12,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\OVERNIGHT_QA_REPORT.md",
+          "name": "OVERNIGHT_QA_REPORT.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_TESTING_FRAMEWORK.md",
+          "name": "PRO_TIPS_TESTING_FRAMEWORK.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_ANALYSIS_REPORT.md",
+          "name": "QA_ANALYSIS_REPORT.md",
+          "score": 11,
+          "contentScore": 11,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "name": "DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CORRECTED_CALCULATION_ANALYSIS.md",
+          "name": "CORRECTED_CALCULATION_ANALYSIS.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING_PROCEDURES.md",
+          "name": "DEBUGGING_PROCEDURES.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\KNOWN_ISSUES.md",
+          "name": "KNOWN_ISSUES.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "name": "QA_SUMMARY_REPORT.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "name": "CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+          "name": "PRE_DEPLOYMENT_CHECKLIST.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "name": "SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+          "name": "VIRTUAL_TEAM_ANALYSIS.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+          "name": "VIRTUAL_TEAM_TASK_MATRIX.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\wire-up-plan.md",
+          "name": "wire-up-plan.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "name": "COMPONENTS_TREE.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\context-digest.md",
+          "name": "context-digest.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_STRATEGY.md",
+          "name": "INTEGRATION_STRATEGY.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\kpi\\README.md",
+          "name": "README.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "name": "MANUAL_CALCULATION_TEST_CHECKLIST.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SCOPE.md",
+          "name": "SCOPE.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\UI-UX-TUNING_NOTES.md",
+          "name": "UI-UX-TUNING_NOTES.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "name": "INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\todo\\FUTURE_ENHANCEMENTS.md",
+          "name": "FUTURE_ENHANCEMENTS.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+          "name": "TONIGHT-ACCOMPLISHMENTS.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "name": "AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-inventory.md",
+          "name": "calc-inventory.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CHANGELOG.md",
+          "name": "CHANGELOG.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\NODEJS_SETUP_GUIDE.md",
+          "name": "NODEJS_SETUP_GUIDE.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\_docs-audit-fresh.md",
+          "name": "_docs-audit-fresh.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\BLUEPRINT_DELTA.md",
+          "name": "BLUEPRINT_DELTA.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "name": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\kpi\\rules-v2.md",
+          "name": "rules-v2.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\LESSONS_LEARNED.md",
+          "name": "LESSONS_LEARNED.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\20_components_fields.md",
+          "name": "20_components_fields.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity-checklist.md",
+          "name": "parity-checklist.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+          "name": "SESSION-SUMMARY-2025-09-25.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION_LOG.md",
+          "name": "SESSION_LOG.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\STYLE_GUIDE.md",
+          "name": "STYLE_GUIDE.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TEMPLATE_STRATEGY.md",
+          "name": "TEMPLATE_STRATEGY.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\trace-plan.md",
+          "name": "trace-plan.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\ARCHITECTURE.md",
+          "name": "ARCHITECTURE.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\blocking-questions.md",
+          "name": "blocking-questions.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT.md",
+          "name": "DEVELOPMENT.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\growth\\2025-09-27.md",
+          "name": "2025-09-27.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\30_ui_blocks.md",
+          "name": "30_ui_blocks.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\60_gap_queue.md",
+          "name": "60_gap_queue.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\session-3-summary.md",
+          "name": "session-3-summary.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_STANDARDS.md",
+          "name": "TESTING_STANDARDS.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        }
+      ],
+      "totalScore": 695
+    },
+    "ui-ux": {
+      "files": [
+        {
+          "path": "docs\\teaching-notes.md",
+          "name": "teaching-notes.md",
+          "score": 92,
+          "contentScore": 92,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\render-audit.md",
+          "name": "render-audit.md",
+          "score": 38,
+          "contentScore": 38,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_SETUP.md",
+          "name": "TESTING_SETUP.md",
+          "score": 30,
+          "contentScore": 30,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\EDGE_CASE_TESTING.md",
+          "name": "EDGE_CASE_TESTING.md",
+          "score": 27,
+          "contentScore": 27,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MOBILE_TESTING_GUIDE.md",
+          "name": "MOBILE_TESTING_GUIDE.md",
+          "score": 23,
+          "contentScore": 23,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+          "name": "DEVELOPMENT_PROGRESS_LOG.md",
+          "score": 22,
+          "contentScore": 22,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING_STANDARDS.md",
+          "name": "TESTING_STANDARDS.md",
+          "score": 20,
+          "contentScore": 20,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-migration-status.md",
+          "name": "calc-migration-status.md",
+          "score": 19,
+          "contentScore": 19,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\OVERNIGHT_QA_REPORT.md",
+          "name": "OVERNIGHT_QA_REPORT.md",
+          "score": 16,
+          "contentScore": 16,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TESTING.md",
+          "name": "TESTING.md",
+          "score": 15,
+          "contentScore": 15,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AI_INTEGRATION_GUIDE.md",
+          "name": "AI_INTEGRATION_GUIDE.md",
+          "score": 14,
+          "contentScore": 14,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+          "name": "VIRTUAL_TEAM_TASK_MATRIX.md",
+          "score": 10,
+          "contentScore": 10,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "name": "DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+          "name": "MIGRATION_COMPLETENESS_REPORT.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION-SUMMARY-2025-09-25.md",
+          "name": "SESSION-SUMMARY-2025-09-25.md",
+          "score": 9,
+          "contentScore": 9,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_GUIDE.md",
+          "name": "VIRTUAL_TEAM_GUIDE.md",
+          "score": 8,
+          "contentScore": 8,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\ARCHITECTURE.md",
+          "name": "ARCHITECTURE.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "name": "AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "name": "CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "name": "DEPLOYMENT_PIPELINE_STRATEGY.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+          "name": "FIXES-IMPLEMENTATION-SUMMARY.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "name": "INFRASTRUCTURE_EXTRACTION_PLAN.md",
+          "score": 7,
+          "contentScore": 7,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPONENTS_TREE.md",
+          "name": "COMPONENTS_TREE.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+          "name": "TONIGHT-ACCOMPLISHMENTS.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\wire-up-plan.md",
+          "name": "wire-up-plan.md",
+          "score": 6,
+          "contentScore": 6,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\AUTOMATED_TESTING_STRATEGY.md",
+          "name": "AUTOMATED_TESTING_STRATEGY.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\TEMPLATE_STRATEGY.md",
+          "name": "TEMPLATE_STRATEGY.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+          "name": "VIRTUAL_TEAM_ANALYSIS.md",
+          "score": 5,
+          "contentScore": 5,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "name": "COMPREHENSIVE_TESTING_CHECKLIST.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "name": "DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEBUGGING_PROCEDURES.md",
+          "name": "DEBUGGING_PROCEDURES.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\FEATURE_GUIDE_Branding.md",
+          "name": "FEATURE_GUIDE_Branding.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+          "name": "PRE_DEPLOYMENT_CHECKLIST.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "name": "SEQUENTIAL_WORKFLOW_STRATEGY.md",
+          "score": 4,
+          "contentScore": 4,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\UI-UX-TUNING_NOTES.md",
+          "name": "UI-UX-TUNING_NOTES.md",
+          "score": 4,
+          "contentScore": 0,
+          "nameScore": 2
+        },
+        {
+          "path": "docs\\CRITICAL_QA_ISSUES.md",
+          "name": "CRITICAL_QA_ISSUES.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INTEGRATION_STRATEGY.md",
+          "name": "INTEGRATION_STRATEGY.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_ANALYSIS_REPORT.md",
+          "name": "QA_ANALYSIS_REPORT.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\QA_SUMMARY_REPORT.md",
+          "name": "QA_SUMMARY_REPORT.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SPEC_ANALYSIS.md",
+          "name": "SPEC_ANALYSIS.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\STYLE_GUIDE.md",
+          "name": "STYLE_GUIDE.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\WIKI_GUIDE.md",
+          "name": "WIKI_GUIDE.md",
+          "score": 3,
+          "contentScore": 3,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\context-digest.md",
+          "name": "context-digest.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\DEVELOPMENT.md",
+          "name": "DEVELOPMENT.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SESSION_LOG.md",
+          "name": "SESSION_LOG.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\trace-plan.md",
+          "name": "trace-plan.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\_docs-audit-fresh.md",
+          "name": "_docs-audit-fresh.md",
+          "score": 2,
+          "contentScore": 2,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\blocking-questions.md",
+          "name": "blocking-questions.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\BLUEPRINT_DELTA.md",
+          "name": "BLUEPRINT_DELTA.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\calc-inventory.md",
+          "name": "calc-inventory.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\INDEX.md",
+          "name": "INDEX.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\LESSONS_LEARNED.md",
+          "name": "LESSONS_LEARNED.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\00_index.md",
+          "name": "00_index.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity\\30_ui_blocks.md",
+          "name": "30_ui_blocks.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\parity-checklist.md",
+          "name": "parity-checklist.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+          "name": "PRO_TIPS_RESEARCH_BACKLOG.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\SCOPE.md",
+          "name": "SCOPE.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\session-3-summary.md",
+          "name": "session-3-summary.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        },
+        {
+          "path": "docs\\todo\\FUTURE_ENHANCEMENTS.md",
+          "name": "FUTURE_ENHANCEMENTS.md",
+          "score": 1,
+          "contentScore": 1,
+          "nameScore": 0
+        }
+      ],
+      "totalScore": 507
+    }
+  },
+  "recommendations": [
+    {
+      "theme": "testing",
+      "files": [
+        "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+        "docs\\teaching-notes.md",
+        "docs\\TESTING.md",
+        "docs\\TESTING_SETUP.md",
+        "docs\\EDGE_CASE_TESTING.md",
+        "docs\\OVERNIGHT_QA_REPORT.md",
+        "docs\\AUTOMATED_TESTING_STRATEGY.md",
+        "docs\\PRO_TIPS_TESTING_FRAMEWORK.md",
+        "docs\\VIRTUAL_TEAM_GUIDE.md",
+        "docs\\DEBUGGING_PROCEDURES.md",
+        "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+        "docs\\QA_ANALYSIS_REPORT.md",
+        "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+        "docs\\QA_SUMMARY_REPORT.md",
+        "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+        "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+        "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+        "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+        "docs\\MOBILE_TESTING_GUIDE.md",
+        "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+        "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+        "docs\\render-audit.md",
+        "docs\\CRITICAL_QA_ISSUES.md",
+        "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+        "docs\\AI_INTEGRATION_GUIDE.md",
+        "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+        "docs\\TEMPLATE_STRATEGY.md",
+        "docs\\SPEC_ANALYSIS.md",
+        "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+        "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+        "docs\\INTEGRATION_STRATEGY.md",
+        "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+        "docs\\KPI-DEBUGGING-SUMMARY.md",
+        "docs\\NODEJS_SETUP_GUIDE.md",
+        "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+        "docs\\LESSONS_LEARNED.md",
+        "docs\\TESTING_STANDARDS.md",
+        "docs\\adr\\ADR-0001-ci-quality-gates.md",
+        "docs\\calc-migration-status.md",
+        "docs\\INTEGRATION_TESTS_FIXED.md",
+        "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+        "docs\\DEVELOPMENT.md",
+        "docs\\SESSION_LOG.md",
+        "docs\\CALCULATION_BUG_REPORT.md",
+        "docs\\development-checklists\\currency-input-checklist.md",
+        "docs\\MAPPING.md",
+        "docs\\testing\\strategy.md",
+        "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+        "docs\\SESSION-SUMMARY-2025-09-25.md",
+        "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+        "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+        "docs\\WIKI_GUIDE.md",
+        "docs\\ENV_SETUP.md",
+        "docs\\parity-checklist.md",
+        "docs\\_docs-audit-fresh.md",
+        "docs\\blocking-questions.md",
+        "docs\\KNOWN_ISSUES.md",
+        "docs\\runbooks\\release.md",
+        "docs\\COMPONENTS_TREE.md",
+        "docs\\INDEX.md",
+        "docs\\growth\\2025-09-27.md",
+        "docs\\session-3-summary.md"
+      ],
+      "consolidationPotential": 62,
+      "reason": "Multiple files (62) with high testing relevance scores"
+    },
+    {
+      "theme": "development",
+      "files": [
+        "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+        "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+        "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+        "docs\\teaching-notes.md",
+        "docs\\DEVELOPMENT.md",
+        "docs\\NODEJS_SETUP_GUIDE.md",
+        "docs\\DEBUGGING_PROCEDURES.md",
+        "docs\\OVERNIGHT_QA_REPORT.md",
+        "docs\\TEMPLATE_STRATEGY.md",
+        "docs\\TESTING_SETUP.md",
+        "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+        "docs\\KNOWN_ISSUES.md",
+        "docs\\LESSONS_LEARNED.md",
+        "docs\\SESSION-SUMMARY-2025-09-25.md",
+        "docs\\SESSION_LOG.md",
+        "docs\\VIRTUAL_TEAM_GUIDE.md",
+        "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+        "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+        "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+        "docs\\render-audit.md",
+        "docs\\AI_INTEGRATION_GUIDE.md",
+        "docs\\AUTOMATED_TESTING_STRATEGY.md",
+        "docs\\calc-migration-status.md",
+        "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+        "docs\\INTEGRATION_STRATEGY.md",
+        "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+        "docs\\TESTING.md",
+        "docs\\adr\\ADR-0001-ci-quality-gates.md",
+        "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+        "docs\\ARCHITECTURE.md",
+        "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+        "docs\\ENV_SETUP.md",
+        "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+        "docs\\PRO_TIPS_TESTING_FRAMEWORK.md",
+        "docs\\QA_SUMMARY_REPORT.md",
+        "docs\\run-reports\\overnight-run-20250919-0647.md",
+        "docs\\runbooks\\release.md",
+        "docs\\TESTING_STANDARDS.md",
+        "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+        "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+        "docs\\parity\\70_ci_notes.md"
+      ],
+      "consolidationPotential": 41,
+      "reason": "Multiple files (41) with high development relevance scores"
+    },
+    {
+      "theme": "architecture",
+      "files": [
+        "docs\\teaching-notes.md",
+        "docs\\render-audit.md",
+        "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+        "docs\\calc-migration-status.md",
+        "docs\\SPEC_ANALYSIS.md",
+        "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+        "docs\\ARCHITECTURE.md",
+        "docs\\AI_INTEGRATION_GUIDE.md",
+        "docs\\LESSONS_LEARNED.md",
+        "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+        "docs\\QA_SUMMARY_REPORT.md",
+        "docs\\session-3-summary.md",
+        "docs\\TESTING_STANDARDS.md",
+        "docs\\AUTOMATED_TESTING_STRATEGY.md",
+        "docs\\context-digest.md",
+        "docs\\DEVELOPMENT.md",
+        "docs\\STYLE_GUIDE.md",
+        "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+        "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+        "docs\\development-checklists\\currency-input-checklist.md",
+        "docs\\OVERNIGHT_QA_REPORT.md",
+        "docs\\TEMPLATE_STRATEGY.md",
+        "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+        "docs\\SESSION-SUMMARY-2025-09-25.md",
+        "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+        "docs\\WIKI_GUIDE.md",
+        "docs\\INDEX.md",
+        "docs\\INTEGRATION_STRATEGY.md",
+        "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+        "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+        "docs\\SESSION_LOG.md",
+        "docs\\TESTING.md",
+        "docs\\MAPPING.md",
+        "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+        "docs\\KNOWN_ISSUES.md",
+        "docs\\TESTING_SETUP.md",
+        "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+        "docs\\VIRTUAL_TEAM_GUIDE.md",
+        "docs\\COMPONENTS_TREE.md",
+        "docs\\CRITICAL_QA_ISSUES.md",
+        "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+        "docs\\NODEJS_SETUP_GUIDE.md",
+        "docs\\QA_ANALYSIS_REPORT.md",
+        "docs\\_docs-audit-fresh.md"
+      ],
+      "consolidationPotential": 44,
+      "reason": "Multiple files (44) with high architecture relevance scores"
+    },
+    {
+      "theme": "debugging",
+      "files": [
+        "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+        "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+        "docs\\CRITICAL_QA_ISSUES.md",
+        "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+        "docs\\teaching-notes.md",
+        "docs\\DEBUGGING_PROCEDURES.md",
+        "docs\\MOBILE_TESTING_GUIDE.md",
+        "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+        "docs\\QA_SUMMARY_REPORT.md",
+        "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+        "docs\\TESTING.md",
+        "docs\\EDGE_CASE_TESTING.md",
+        "docs\\OVERNIGHT_QA_REPORT.md",
+        "docs\\KPI-DEBUGGING-SUMMARY.md",
+        "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+        "docs\\CALCULATION_BUG_REPORT.md",
+        "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+        "docs\\SESSION-SUMMARY-2025-09-25.md",
+        "docs\\TESTING_SETUP.md",
+        "docs\\AI_INTEGRATION_GUIDE.md",
+        "docs\\DEVELOPMENT.md",
+        "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+        "docs\\render-audit.md",
+        "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+        "docs\\AUTOMATED_TESTING_STRATEGY.md",
+        "docs\\KNOWN_ISSUES.md",
+        "docs\\LESSONS_LEARNED.md",
+        "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+        "docs\\VIRTUAL_TEAM_GUIDE.md",
+        "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+        "docs\\CORRECTED_CALCULATION_ANALYSIS.md",
+        "docs\\calc-migration-status.md",
+        "docs\\COMPONENTS_TREE.md",
+        "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+        "docs\\QA_ANALYSIS_REPORT.md",
+        "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+        "docs\\CHANGELOG.md",
+        "docs\\INTEGRATION_STRATEGY.md",
+        "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+        "docs\\_docs-audit-fresh.md",
+        "docs\\context-digest.md",
+        "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+        "docs\\INTEGRATION_TESTS_FIXED.md",
+        "docs\\MAPPING.md",
+        "docs\\NODEJS_SETUP_GUIDE.md"
+      ],
+      "consolidationPotential": 45,
+      "reason": "Multiple files (45) with high debugging relevance scores"
+    },
+    {
+      "theme": "analysis",
+      "files": [
+        "docs\\teaching-notes.md",
+        "docs\\AI_INTEGRATION_GUIDE.md",
+        "docs\\AUTOMATED_TESTING_STRATEGY.md",
+        "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+        "docs\\VIRTUAL_TEAM_GUIDE.md",
+        "docs\\_docs-audit-fresh.md",
+        "docs\\render-audit.md",
+        "docs\\QA_ANALYSIS_REPORT.md",
+        "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+        "docs\\session-3-summary.md",
+        "docs\\TESTING_SETUP.md",
+        "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+        "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+        "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+        "docs\\calc-migration-status.md",
+        "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+        "docs\\KPI-DEBUGGING-SUMMARY.md",
+        "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+        "docs\\QA_SUMMARY_REPORT.md",
+        "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+        "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+        "docs\\SESSION-SUMMARY-2025-09-25.md",
+        "docs\\OVERNIGHT_QA_REPORT.md",
+        "docs\\TESTING.md",
+        "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+        "docs\\ARCHITECTURE.md",
+        "docs\\INDEX.md",
+        "docs\\PRO_TIPS_TESTING_FRAMEWORK.md",
+        "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+        "docs\\CHANGELOG.md",
+        "docs\\COMPONENTS_TREE.md",
+        "docs\\DEBUGGING_PROCEDURES.md",
+        "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+        "docs\\LESSONS_LEARNED.md",
+        "docs\\SPEC_ANALYSIS.md",
+        "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+        "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+        "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+        "docs\\EDGE_CASE_TESTING.md",
+        "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+        "docs\\todo\\FUTURE_ENHANCEMENTS.md"
+      ],
+      "consolidationPotential": 41,
+      "reason": "Multiple files (41) with high analysis relevance scores"
+    },
+    {
+      "theme": "session",
+      "files": [
+        "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+        "docs\\DEBUGGING_PROCEDURES.md",
+        "docs\\session-3-summary.md",
+        "docs\\teaching-notes.md",
+        "docs\\SESSION_LOG.md",
+        "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+        "docs\\SESSION-SUMMARY-2025-09-25.md",
+        "docs\\_docs-audit-fresh.md",
+        "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+        "docs\\render-audit.md",
+        "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+        "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+        "docs\\INTEGRATION_STRATEGY.md",
+        "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+        "docs\\SPEC_ANALYSIS.md",
+        "docs\\DEV_NOTES_V5.md",
+        "docs\\OVERNIGHT_QA_REPORT.md",
+        "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+        "docs\\INDEX.md",
+        "docs\\KPI-DEBUGGING-SUMMARY.md",
+        "docs\\LESSONS_LEARNED.md",
+        "docs\\SCOPE.md",
+        "docs\\UI-UX-TUNING_NOTES.md",
+        "docs\\CHANGELOG.md",
+        "docs\\context-digest.md",
+        "docs\\EDGE_CASE_TESTING.md",
+        "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+        "docs\\MOBILE_TESTING_GUIDE.md",
+        "docs\\QA_ANALYSIS_REPORT.md",
+        "docs\\todo\\FUTURE_ENHANCEMENTS.md",
+        "docs\\WIKI_GUIDE.md",
+        "docs\\wire-up-plan.md"
+      ],
+      "consolidationPotential": 32,
+      "reason": "Multiple files (32) with high session relevance scores"
+    },
+    {
+      "theme": "integration",
+      "files": [
+        "docs\\teaching-notes.md",
+        "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+        "docs\\render-audit.md",
+        "docs\\calc-migration-status.md",
+        "docs\\INTEGRATION_STRATEGY.md",
+        "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+        "docs\\SESSION_LOG.md",
+        "docs\\context-digest.md",
+        "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+        "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+        "docs\\parity-checklist.md",
+        "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+        "docs\\blocking-questions.md",
+        "docs\\LESSONS_LEARNED.md",
+        "docs\\ENV_SETUP.md",
+        "docs\\FEATURE_GUIDE_Branding.md",
+        "docs\\QA_ANALYSIS_REPORT.md",
+        "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+        "docs\\TESTING_SETUP.md",
+        "docs\\adr\\ADR-0001-ci-quality-gates.md",
+        "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+        "docs\\AI_INTEGRATION_GUIDE.md",
+        "docs\\session-3-summary.md",
+        "docs\\VIRTUAL_TEAM_GUIDE.md",
+        "docs\\_docs-audit-fresh.md",
+        "docs\\BLUEPRINT_DELTA.md",
+        "docs\\calc-inventory.md",
+        "docs\\DEBUGGING_PROCEDURES.md",
+        "docs\\TESTING.md",
+        "docs\\DEVELOPMENT.md",
+        "docs\\INTEGRATION_TESTS_FIXED.md",
+        "docs\\SESSION-SUMMARY-2025-09-25.md",
+        "docs\\STYLE_GUIDE.md",
+        "docs\\TEMPLATE_STRATEGY.md",
+        "docs\\testing\\strategy.md",
+        "docs\\kpi\\README.md",
+        "docs\\parity\\70_ci_notes.md",
+        "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+        "docs\\SPEC_ANALYSIS.md",
+        "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+        "docs\\KNOWN_ISSUES.md",
+        "docs\\run-reports\\overnight-run-20250919-0647.md",
+        "docs\\VIRTUAL_TEAM_ANALYSIS.md"
+      ],
+      "consolidationPotential": 43,
+      "reason": "Multiple files (43) with high integration relevance scores"
+    },
+    {
+      "theme": "deployment",
+      "files": [
+        "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+        "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+        "docs\\DEBUGGING_PROCEDURES.md",
+        "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+        "docs\\DEVELOPMENT.md",
+        "docs\\TESTING_SETUP.md",
+        "docs\\VIRTUAL_TEAM_GUIDE.md",
+        "docs\\runbooks\\release.md",
+        "docs\\teaching-notes.md",
+        "docs\\QA_SUMMARY_REPORT.md",
+        "docs\\TEMPLATE_STRATEGY.md",
+        "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+        "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+        "docs\\render-audit.md",
+        "docs\\TESTING.md",
+        "docs\\adr\\ADR-0001-ci-quality-gates.md",
+        "docs\\CRITICAL_QA_ISSUES.md",
+        "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+        "docs\\AUTOMATED_TESTING_STRATEGY.md",
+        "docs\\OVERNIGHT_QA_REPORT.md",
+        "docs\\CALCULATION_BUG_REPORT.md",
+        "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+        "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+        "docs\\LESSONS_LEARNED.md"
+      ],
+      "consolidationPotential": 24,
+      "reason": "Multiple files (24) with high deployment relevance scores"
+    },
+    {
+      "theme": "kpi",
+      "files": [
+        "docs\\teaching-notes.md",
+        "docs\\KPI-DEBUGGING-SUMMARY.md",
+        "docs\\TESTING.md",
+        "docs\\PRO_TIPS_RESEARCH_BACKLOG.md",
+        "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+        "docs\\render-audit.md",
+        "docs\\AI_INTEGRATION_GUIDE.md",
+        "docs\\COMPREHENSIVE-INPUT-DEBUGGING-SUMMARY.md",
+        "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+        "docs\\TESTING_SETUP.md",
+        "docs\\calc-migration-status.md",
+        "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+        "docs\\SPEC_ANALYSIS.md",
+        "docs\\AUTOMATED_TESTING_STRATEGY.md",
+        "docs\\COMPREHENSIVE_ANALYSIS_SUMMARY.md",
+        "docs\\MOBILE_TESTING_GUIDE.md",
+        "docs\\VIRTUAL_TEAM_GUIDE.md",
+        "docs\\CALCULATION_BUG_REPORT.md",
+        "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+        "docs\\EDGE_CASE_TESTING.md",
+        "docs\\CRITICAL_QA_ISSUES.md",
+        "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+        "docs\\OVERNIGHT_QA_REPORT.md",
+        "docs\\PRO_TIPS_TESTING_FRAMEWORK.md",
+        "docs\\QA_ANALYSIS_REPORT.md",
+        "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+        "docs\\CORRECTED_CALCULATION_ANALYSIS.md",
+        "docs\\DEBUGGING_PROCEDURES.md",
+        "docs\\KNOWN_ISSUES.md",
+        "docs\\QA_SUMMARY_REPORT.md",
+        "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+        "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+        "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+        "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+        "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+        "docs\\wire-up-plan.md",
+        "docs\\COMPONENTS_TREE.md",
+        "docs\\context-digest.md",
+        "docs\\INTEGRATION_STRATEGY.md",
+        "docs\\kpi\\README.md",
+        "docs\\MANUAL_CALCULATION_TEST_CHECKLIST.md",
+        "docs\\SCOPE.md",
+        "docs\\UI-UX-TUNING_NOTES.md",
+        "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+        "docs\\todo\\FUTURE_ENHANCEMENTS.md",
+        "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+        "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+        "docs\\calc-inventory.md",
+        "docs\\CHANGELOG.md",
+        "docs\\NODEJS_SETUP_GUIDE.md",
+        "docs\\_docs-audit-fresh.md"
+      ],
+      "consolidationPotential": 51,
+      "reason": "Multiple files (51) with high kpi relevance scores"
+    },
+    {
+      "theme": "ui-ux",
+      "files": [
+        "docs\\teaching-notes.md",
+        "docs\\render-audit.md",
+        "docs\\TESTING_SETUP.md",
+        "docs\\EDGE_CASE_TESTING.md",
+        "docs\\MOBILE_TESTING_GUIDE.md",
+        "docs\\DEVELOPMENT_PROGRESS_LOG.md",
+        "docs\\TESTING_STANDARDS.md",
+        "docs\\calc-migration-status.md",
+        "docs\\OVERNIGHT_QA_REPORT.md",
+        "docs\\TESTING.md",
+        "docs\\AI_INTEGRATION_GUIDE.md",
+        "docs\\VIRTUAL_TEAM_TASK_MATRIX.md",
+        "docs\\DATA-FLOW-ARCHITECTURE-ANALYSIS.md",
+        "docs\\MIGRATION_COMPLETENESS_REPORT.md",
+        "docs\\SESSION-SUMMARY-2025-09-25.md",
+        "docs\\VIRTUAL_TEAM_GUIDE.md",
+        "docs\\ARCHITECTURE.md",
+        "docs\\AUTOMATED-DEBUGGING-INFRASTRUCTURE.md",
+        "docs\\CONSOLIDATED-DEPENDENCY-ANALYSIS.md",
+        "docs\\DEPLOYMENT_PIPELINE_STRATEGY.md",
+        "docs\\FIXES-IMPLEMENTATION-SUMMARY.md",
+        "docs\\INFRASTRUCTURE_EXTRACTION_PLAN.md",
+        "docs\\COMPONENTS_TREE.md",
+        "docs\\TONIGHT-ACCOMPLISHMENTS.md",
+        "docs\\wire-up-plan.md",
+        "docs\\AUTOMATED_TESTING_STRATEGY.md",
+        "docs\\TEMPLATE_STRATEGY.md",
+        "docs\\VIRTUAL_TEAM_ANALYSIS.md",
+        "docs\\COMPREHENSIVE_TESTING_CHECKLIST.md",
+        "docs\\DEBUGGING-TOOLS-VALIDATION-SUMMARY.md",
+        "docs\\DEBUGGING_PROCEDURES.md",
+        "docs\\FEATURE_GUIDE_Branding.md",
+        "docs\\PRE_DEPLOYMENT_CHECKLIST.md",
+        "docs\\SEQUENTIAL_WORKFLOW_STRATEGY.md",
+        "docs\\UI-UX-TUNING_NOTES.md",
+        "docs\\CRITICAL_QA_ISSUES.md",
+        "docs\\INTEGRATION_STRATEGY.md",
+        "docs\\QA_ANALYSIS_REPORT.md",
+        "docs\\QA_SUMMARY_REPORT.md",
+        "docs\\SPEC_ANALYSIS.md",
+        "docs\\STYLE_GUIDE.md",
+        "docs\\WIKI_GUIDE.md"
+      ],
+      "consolidationPotential": 42,
+      "reason": "Multiple files (42) with high ui-ux relevance scores"
+    }
+  ]
+}
