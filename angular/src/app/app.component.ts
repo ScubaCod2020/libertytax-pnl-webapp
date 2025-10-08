@@ -154,7 +154,7 @@ export class AppComponent implements OnInit, OnDestroy {
           const next = new Set(this.pendingRoutes());
           next.add(e.url || '');
           this.pendingRoutes.set(next);
-          // Safety net: auto-clear after 5s to avoid stuck overlays
+          // Safety net: auto-clear after 3s to avoid stuck overlays
           setTimeout(() => {
             if (this.pendingRoutes().size > 0) {
               console.warn(
@@ -163,7 +163,7 @@ export class AppComponent implements OnInit, OnDestroy {
               );
               this.pendingRoutes.set(new Set());
             }
-          }, 5000);
+          }, 3000);
         }
         if (
           e instanceof NavigationEnd ||

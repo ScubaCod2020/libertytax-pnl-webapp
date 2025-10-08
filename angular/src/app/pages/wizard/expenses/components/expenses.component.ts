@@ -62,6 +62,13 @@ export class ExpensesFormComponent implements OnInit {
       console.log('💰 [EXPENSES FORM] No user overrides detected; applying safe defaults');
       this.wizardState.resetExpenseDefaults();
     }
+
+    // Force clear any stuck loading overlays after expenses component loads
+    setTimeout(() => {
+      console.log('💰 [EXPENSES FORM] Component fully loaded - clearing any stuck overlays');
+      // Trigger a small navigation event to clear the overlay
+      this.router.navigateByUrl(this.router.url, { skipLocationChange: true });
+    }, 1000);
   }
 
   goReview(): void {
@@ -70,7 +77,7 @@ export class ExpensesFormComponent implements OnInit {
 
   hasUserExpenseOverrides(): boolean {
     const answers = this.wizardState.answers as any;
-    return EXPENSE_METADATA.some((m) => answers[m.key] !== undefined);
+    return EXPENSE_METADATA.some(m => answers[m.key] !== undefined);
   }
 
   getExpenseNote(key: string): string {
@@ -89,13 +96,13 @@ export class ExpensesFormComponent implements OnInit {
 
   // Reactive getters for income values (read-only from Step 1)
   readonly answers$ = this.wizardState.answers$;
-  readonly avgNetFee$ = this.answers$.pipe(map((a) => a.avgNetFee || 0));
+  readonly avgNetFee$ = this.answers$.pipe(map(a => a.avgNetFee || 0));
   readonly taxPrepReturns$ = this.answers$.pipe(
-    map((a) => a.projectedTaxPrepReturns || a.taxPrepReturns || 0)
+    map(a => a.projectedTaxPrepReturns || a.taxPrepReturns || 0)
   );
-  readonly discountsPct$ = this.answers$.pipe(map((a) => a.discountsPct || 0));
+  readonly discountsPct$ = this.answers$.pipe(map(a => a.discountsPct || 0));
   readonly grossRevenue$ = this.answers$.pipe(
-    map((a) => {
+    map(a => {
       const base = a.projectedTaxPrepIncome || 0;
       const taxRush = a.region === 'CA' && a.handlesTaxRush ? a.projectedTaxRushGrossFees || 0 : 0;
       const other = a.hasOtherIncome ? a.projectedOtherIncome || 0 : 0;
@@ -118,14 +125,14 @@ export class ExpensesFormComponent implements OnInit {
   );
 
   readonly needsExpenseNotes$: Observable<boolean> = this.answers$.pipe(
-    map((answers) => {
+    map(answers => {
       const statuses = this.kpiEvaluator.evaluate(answers);
-      return Object.values(statuses).some((status) => status === 'yellow' || status === 'red');
+      return Object.values(statuses).some(status => status === 'yellow' || status === 'red');
     })
   );
 
   readonly totalExpenses$ = this.answers$.pipe(
-    map((a) => a.calculatedTotalExpenses ?? a.projectedExpenses ?? 0)
+    map(a => a.calculatedTotalExpenses ?? a.projectedExpenses ?? 0)
   );
 
   readonly totalExpensePct$ = combineLatest([this.totalExpenses$, this.grossRevenue$]).pipe(
@@ -133,7 +140,7 @@ export class ExpensesFormComponent implements OnInit {
   );
 
   readonly costPerReturn$ = this.answers$.pipe(
-    map((a) => {
+    map(a => {
       const expenses = a.calculatedTotalExpenses ?? a.projectedExpenses ?? 0;
       const totalReturns = this.wizardState.getTaxPrepReturns() + (a.taxRushReturns || 0);
       return totalReturns > 0 ? expenses / totalReturns : 0;
@@ -152,7 +159,7 @@ export class ExpensesFormComponent implements OnInit {
   );
 
   readonly expenseStatus$ = this.totalExpensePct$.pipe(
-    map((pct) => {
+    map(pct => {
       if (pct >= 60 && pct <= 80) return 'green';
       if (pct >= 55 && pct <= 90) return 'yellow';
       return 'red';
@@ -279,13 +286,13 @@ export class ExpensesFormComponent implements OnInit {
   }
 
   private getSliderBounds(key: ExpenseKey): { min: number; max: number; step: number } {
-    const row = this.rows.find((r) => r.key === key);
+    const row = this.rows.find(r => r.key === key);
     const slider = row?.slider;
     return { min: slider?.min ?? 0, max: slider?.max ?? 10, step: slider?.step ?? 0.1 };
   }
 
   onResetToBaseline(key: ExpenseKey): void {
-    const sub = this.expenses.baselineUSD$(key).subscribe((baseline) => {
+    const sub = this.expenses.baselineUSD$(key).subscribe(baseline => {
       const base = this.kpiEvaluator.getExpensesRevenueTotal(this.wizardState.answers);
       if (!base || base <= 0) return;
       const pct = (baseline / base) * 100;
@@ -294,66 +301,66 @@ export class ExpensesFormComponent implements OnInit {
     });
   }
 
-  readonly payrollPct$ = this.answers$.pipe(map((a) => a.payrollPct ?? 35));
-  readonly payrollAmount$ = this.answers$.pipe(map((a) => this.calculatePayrollAmount(a)));
+  readonly payrollPct$ = this.answers$.pipe(map(a => a.payrollPct ?? 35));
+  readonly payrollAmount$ = this.answers$.pipe(map(a => this.calculatePayrollAmount(a)));
   readonly empDeductionsPct$ = this.answers$.pipe(
-    map((a) => a.empDeductionsPct ?? this.settings.empDeductionsPct ?? 10)
+    map(a => a.empDeductionsPct ?? this.settings.empDeductionsPct ?? 10)
   );
   readonly empDeductionsAmount$ = this.answers$.pipe(
-    map((a) => this.calculateEmpDeductionsAmount(a))
+    map(a => this.calculateEmpDeductionsAmount(a))
   );
-  readonly rentPct$ = this.answers$.pipe(map((a) => a.rentPct ?? 18));
+  readonly rentPct$ = this.answers$.pipe(map(a => a.rentPct ?? 18));
   readonly rentAmount$ = this.answers$.pipe(
-    map((a) => this.calculateAmountFromPercent(a.rentPct ?? 18, a))
+    map(a => this.calculateAmountFromPercent(a.rentPct ?? 18, a))
   );
-  readonly telephoneAmt$ = this.answers$.pipe(map((a) => a.telephoneAmt ?? 0));
+  readonly telephoneAmt$ = this.answers$.pipe(map(a => a.telephoneAmt ?? 0));
   readonly telephonePct$ = this.answers$.pipe(
-    map((a) => this.calculatePercentFromAmount(a.telephoneAmt ?? 0, a, 0.5))
+    map(a => this.calculatePercentFromAmount(a.telephoneAmt ?? 0, a, 0.5))
   );
-  readonly utilitiesAmt$ = this.answers$.pipe(map((a) => a.utilitiesAmt ?? 0));
+  readonly utilitiesAmt$ = this.answers$.pipe(map(a => a.utilitiesAmt ?? 0));
   readonly utilitiesPct$ = this.answers$.pipe(
-    map((a) => this.calculatePercentFromAmount(a.utilitiesAmt ?? 0, a, 1.2))
+    map(a => this.calculatePercentFromAmount(a.utilitiesAmt ?? 0, a, 1.2))
   );
-  readonly localAdvAmt$ = this.answers$.pipe(map((a) => a.localAdvAmt ?? 0));
+  readonly localAdvAmt$ = this.answers$.pipe(map(a => a.localAdvAmt ?? 0));
   readonly localAdvPct$ = this.answers$.pipe(
-    map((a) => this.calculatePercentFromAmount(a.localAdvAmt ?? 0, a, 2.0))
+    map(a => this.calculatePercentFromAmount(a.localAdvAmt ?? 0, a, 2.0))
   );
-  readonly insuranceAmt$ = this.answers$.pipe(map((a) => a.insuranceAmt ?? 0));
+  readonly insuranceAmt$ = this.answers$.pipe(map(a => a.insuranceAmt ?? 0));
   readonly insurancePct$ = this.answers$.pipe(
-    map((a) => this.calculatePercentFromAmount(a.insuranceAmt ?? 0, a, 0.6))
+    map(a => this.calculatePercentFromAmount(a.insuranceAmt ?? 0, a, 0.6))
   );
-  readonly postageAmt$ = this.answers$.pipe(map((a) => a.postageAmt ?? 0));
+  readonly postageAmt$ = this.answers$.pipe(map(a => a.postageAmt ?? 0));
   readonly postagePct$ = this.answers$.pipe(
-    map((a) => this.calculatePercentFromAmount(a.postageAmt ?? 0, a, 0.4))
+    map(a => this.calculatePercentFromAmount(a.postageAmt ?? 0, a, 0.4))
   );
-  readonly suppliesPct$ = this.answers$.pipe(map((a) => a.suppliesPct ?? 3.5));
+  readonly suppliesPct$ = this.answers$.pipe(map(a => a.suppliesPct ?? 3.5));
   readonly suppliesAmount$ = this.answers$.pipe(
-    map((a) => this.calculateAmountFromPercent(a.suppliesPct ?? 3.5, a))
+    map(a => this.calculateAmountFromPercent(a.suppliesPct ?? 3.5, a))
   );
-  readonly duesAmt$ = this.answers$.pipe(map((a) => a.duesAmt ?? 0));
+  readonly duesAmt$ = this.answers$.pipe(map(a => a.duesAmt ?? 0));
   readonly duesPct$ = this.answers$.pipe(
-    map((a) => this.calculatePercentFromAmount(a.duesAmt ?? 0, a, 0.8))
+    map(a => this.calculatePercentFromAmount(a.duesAmt ?? 0, a, 0.8))
   );
-  readonly bankFeesAmt$ = this.answers$.pipe(map((a) => a.bankFeesAmt ?? 0));
+  readonly bankFeesAmt$ = this.answers$.pipe(map(a => a.bankFeesAmt ?? 0));
   readonly bankFeesPct$ = this.answers$.pipe(
-    map((a) => this.calculatePercentFromAmount(a.bankFeesAmt ?? 0, a, 0.5))
+    map(a => this.calculatePercentFromAmount(a.bankFeesAmt ?? 0, a, 0.5))
   );
-  readonly maintenanceAmt$ = this.answers$.pipe(map((a) => a.maintenanceAmt ?? 0));
+  readonly maintenanceAmt$ = this.answers$.pipe(map(a => a.maintenanceAmt ?? 0));
   readonly maintenancePct$ = this.answers$.pipe(
-    map((a) => this.calculatePercentFromAmount(a.maintenanceAmt ?? 0, a, 1.2))
+    map(a => this.calculatePercentFromAmount(a.maintenanceAmt ?? 0, a, 1.2))
   );
-  readonly travelAmt$ = this.answers$.pipe(map((a) => a.travelEntAmt ?? 0));
+  readonly travelAmt$ = this.answers$.pipe(map(a => a.travelEntAmt ?? 0));
   readonly travelPct$ = this.answers$.pipe(
-    map((a) => this.calculatePercentFromAmount(a.travelEntAmt ?? 0, a, 0.9))
+    map(a => this.calculatePercentFromAmount(a.travelEntAmt ?? 0, a, 0.9))
   );
-  readonly royaltiesPct$ = this.answers$.pipe(map((a) => a.royaltiesPct ?? 14));
-  readonly advRoyaltiesPct$ = this.answers$.pipe(map((a) => a.advRoyaltiesPct ?? 5));
+  readonly royaltiesPct$ = this.answers$.pipe(map(a => a.royaltiesPct ?? 14));
+  readonly advRoyaltiesPct$ = this.answers$.pipe(map(a => a.advRoyaltiesPct ?? 5));
   readonly taxRushRoyaltiesPct$ = this.answers$.pipe(
-    map((a) => a.taxRushRoyaltiesPct ?? (a.region === 'CA' ? 6 : 0))
+    map(a => a.taxRushRoyaltiesPct ?? (a.region === 'CA' ? 6 : 0))
   );
-  readonly miscPct$ = this.answers$.pipe(map((a) => a.miscPct ?? 1));
+  readonly miscPct$ = this.answers$.pipe(map(a => a.miscPct ?? 1));
   readonly miscAmount$ = this.answers$.pipe(
-    map((a) => this.calculateAmountFromPercent(a.miscPct ?? 1, a))
+    map(a => this.calculateAmountFromPercent(a.miscPct ?? 1, a))
   );
   readonly taxPrepRoyaltiesAmount$ = combineLatest([
     this.taxPrepGrossFees$,
@@ -370,7 +377,7 @@ export class ExpensesFormComponent implements OnInit {
 
   // Revenue breakdown for the yellow panel (uses clean computed properties)
   readonly revenueBreakdown$ = this.answers$.pipe(
-    map((answers) => {
+    map(answers => {
       const storeType = answers.storeType || 'new';
       const isExisting = storeType === 'existing';
 
@@ -634,7 +641,7 @@ export class ExpensesFormComponent implements OnInit {
   }
 
   private updateLineAmount(lineId: string, amount: number): void {
-    const meta = EXPENSE_METADATA.find((m) => m.id === lineId);
+    const meta = EXPENSE_METADATA.find(m => m.id === lineId);
     if (!meta) return;
     const updates: any = {};
     if (meta.key.endsWith('Amt')) {
@@ -648,7 +655,7 @@ export class ExpensesFormComponent implements OnInit {
   }
 
   private updateLinePercent(lineId: string, pct: number): void {
-    const meta = EXPENSE_METADATA.find((m) => m.id === lineId);
+    const meta = EXPENSE_METADATA.find(m => m.id === lineId);
     if (!meta) return;
     const updates: any = {};
     if (meta.key.endsWith('Pct')) {
