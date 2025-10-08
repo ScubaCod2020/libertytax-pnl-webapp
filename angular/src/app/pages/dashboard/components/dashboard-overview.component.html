@@ -1,0 +1,46 @@
+<div class="dashboard-overview">
+  <app-form-toolbar></app-form-toolbar>
+  
+  <div class="overview-grid">
+    <div class="overview-item">
+      <app-kpi-card></app-kpi-card>
+    </div>
+    
+    <div class="overview-item">
+      <section class="card">
+        <div class="card-title">Average Net Fee</div>
+        <div class="anf-chip">
+          <span class="value">{{ (anfValue$ | async) || 0 | currency:'USD':'symbol':'1.0-0' }}</span>
+          <span class="chip" [ngClass]="anfStatus$ | async" [title]="(text.anfTooltip$() | async) || ''"></span>
+        </div>
+        <div class="small" [ngClass]="anfStatus$ | async">{{ text.anfNote$() | async }}</div>
+      </section>
+    </div>
+    
+    <div class="overview-item" *ngIf="flags.showMonthlyForecastCard">
+      <app-monthly-forecast-card></app-monthly-forecast-card>
+    </div>
+    
+    <div class="overview-item" *ngIf="showAnalysis">
+      <section class="card">
+        <div class="card-title">Projected vs Preset (Preview)</div>
+        <lt-analysis-block [data]="analysisData"></lt-analysis-block>
+        <div class="small" style="color:#6b7280">Dev-only preview; will compare YTD vs Projected later</div>
+      </section>
+    </div>
+    
+    <div class="overview-item" *ngIf="flags.showPerformanceCards">
+      <section class="card">
+        <div class="card-title">Performance (Preview)</div>
+        <div style="display:grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+          <lt-performance-card 
+            *ngFor="let metric of performanceMetrics" 
+            [metric]="metric" 
+            variant="dashboard">
+          </lt-performance-card>
+        </div>
+        <div class="small" style="color:#6b7280">Dev-only preview; will show real KPIs later</div>
+      </section>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 @use "src/app/shared/styles/pnl.shell" as *;
 
-.dashboard-hub {
-  .dashboard-grid {
+.dashboard-overview {
+  .overview-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
@@ -13,5 +13,9 @@
     @media (max-width: 768px) {
       grid-template-columns: 1fr;
     }
+  }
+  
+  .overview-item {
+    // Inherits pnl-card styling from shared shell
   }
 }
