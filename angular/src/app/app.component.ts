@@ -52,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // Regional watermark image based on selected region
   readonly regionalWatermark$ = this.wizardState.answers$.pipe(
-    map((answers) => {
+    map(answers => {
       const region = answers.region || 'US';
       return region === 'CA'
         ? '/assets/brands/ca/LTCA-Leaf-ISO-Red.jpg'
@@ -61,7 +61,7 @@ export class AppComponent implements OnInit, OnDestroy {
   );
 
   readonly regionalBrand$ = this.wizardState.answers$.pipe(
-    map((answers) => {
+    map(answers => {
       const region = answers.region || 'US';
       return region === 'CA'
         ? '/assets/brands/ca/LT-Canada-Logo-RGB.jpg'
@@ -196,7 +196,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (debugEnabled) {
         document.addEventListener(
           'click',
-          (ev) => {
+          ev => {
             const target = ev.target as HTMLElement | null;
             const id = target?.id || '';
             const cls = target?.className?.toString?.() || '';
@@ -221,7 +221,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         document.addEventListener(
           'change',
-          (ev) => {
+          ev => {
             const t = ev.target as HTMLElement | null;
             if (!t) return;
             if (
@@ -237,7 +237,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         document.addEventListener(
           'input',
-          (ev) => {
+          ev => {
             const t = ev.target as HTMLElement | null;
             if (!t) return;
             if (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement) {
@@ -255,7 +255,7 @@ export class AppComponent implements OnInit, OnDestroy {
         );
 
         // Mirror recalculating$ changes for overlay diagnosis
-        this.recalculating$.subscribe((v) => {
+        this.recalculating$.subscribe((v: boolean) => {
           console.log('⏳ recalculating$ →', v);
         });
       }

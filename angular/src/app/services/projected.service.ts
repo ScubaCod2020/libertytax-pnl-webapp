@@ -5,6 +5,9 @@ export type Scenario = 'Custom' | 'Good' | 'Better' | 'Best';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectedService {
+  /** TODO: wire to real recalculation state */
+  public readonly recalculating$ = new BehaviorSubject<boolean>(false).asObservable();
+
   private readonly _scenario$ = new BehaviorSubject<Scenario>('Custom');
   readonly scenario$ = this._scenario$.asObservable();
 
