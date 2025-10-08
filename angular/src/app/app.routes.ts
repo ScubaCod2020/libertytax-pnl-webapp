@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { devBypassGuard } from './shared/guards/dev-bypass.guard';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'wizard' },
@@ -12,25 +13,25 @@ export const routes: Routes = [
         path: 'income-drivers',
         loadComponent: () =>
           import('./pages/wizard/income-drivers/income-drivers.component').then(
-            (m) => m.IncomeDriversComponent
+            m => m.IncomeDriversComponent
           ),
         data: { step: 1, title: 'Income Drivers', canProceed: true },
       },
       {
         path: 'expenses',
         loadComponent: () =>
-          import('./pages/wizard/expenses/expenses.component').then((m) => m.ExpensesComponent),
+          import('./pages/wizard/expenses/expenses.component').then(m => m.ExpensesComponent),
         data: { step: 2, title: 'Expenses', canProceed: true },
       },
       {
         path: 'pnl',
-        loadComponent: () => import('./pages/wizard/pnl/pnl.component').then((m) => m.PnlComponent),
+        loadComponent: () => import('./pages/wizard/pnl/pnl.component').then(m => m.PnlComponent),
         data: { step: 3, title: 'P&L Review', canProceed: true },
       },
       {
         path: 'reports',
         loadComponent: () =>
-          import('./pages/wizard/pnl/components/reports.component').then((m) => m.ReportsComponent),
+          import('./pages/wizard/pnl/components/reports.component').then(m => m.ReportsComponent),
         data: { step: 4, title: 'Monthly Breakdown', canProceed: true },
       },
       // Legacy step-based routes for backward compatibility
@@ -43,8 +44,9 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     loadComponent: () =>
-      import('./pages/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+      import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
     data: { title: 'Dashboard' },
+    canActivate: [devBypassGuard], // TEMP: Dev bypass for testing
   },
 
   // Practice and engagement features
@@ -52,7 +54,7 @@ export const routes: Routes = [
     path: 'practice',
     loadComponent: () =>
       import('./components/practice-prompts/practice-prompts.component').then(
-        (m) => m.PracticePromptsComponent
+        m => m.PracticePromptsComponent
       ),
     data: { title: 'Practice Prompts' },
   },
@@ -61,14 +63,14 @@ export const routes: Routes = [
   {
     path: 'debug',
     loadComponent: () =>
-      import('./components/dev/app-state-debug.component').then((m) => m.AppStateDebugComponent),
+      import('./components/dev/app-state-debug.component').then(m => m.AppStateDebugComponent),
     data: { title: 'Debug Panel' },
   },
   {
     path: 'dev/analysis-demo',
     loadComponent: () =>
       import('./components/analysis-block/analysis-block-demo.component').then(
-        (m) => m.AnalysisBlockDemoComponent
+        m => m.AnalysisBlockDemoComponent
       ),
     data: { title: 'Analysis Block Demo' },
   },
