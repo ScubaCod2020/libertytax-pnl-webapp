@@ -128,7 +128,7 @@ export function calculateMonthlyBreakdown(
   let cumulativeExpenses = 0;
   let cumulativeNetIncome = 0;
 
-  const monthlyData = MONTHLY_RETURN_DISTRIBUTION.map((month) => {
+  const monthlyData = MONTHLY_RETURN_DISTRIBUTION.map(month => {
     // Calculate monthly values based on return distribution
     const monthlyReturns = Math.round(annualReturns * (month.returnsPercentage / 100));
     const monthlyGrossFees = Math.round(annualGrossFees * (month.returnsPercentage / 100));
