@@ -6,6 +6,7 @@ import { BiDirService } from './bidir/bidir.service';
 import { logger } from '../logger';
 import { ProjectedService } from '../../services/projected.service';
 import { stableHash } from '../../shared/utils/stable-hash';
+import { logSeed } from '../../shared/utils/seed-logger';
 
 export type StoreType = 'new' | 'existing';
 
@@ -1440,9 +1441,17 @@ export class WizardStateService {
     const currentUpstream = upstream || this.getCurrentIncomeDriversState();
     const nextHash = stableHash(currentUpstream);
 
+    logSeed('shouldReseed?', {
+      expensesSeeded: this.answers.expensesSeeded,
+      lastHash: this.answers.lastExpensesSeedHash,
+      nextHash,
+      upstream: currentUpstream,
+    });
+
     // Always seed if never seeded before
     if (!this.answers.expensesSeeded) {
       logger.debug('🌱 [SEEDING] First time seeding expenses');
+      logSeed('decision: first-time-seed', { reason: 'never seeded before' });
       return true;
     }
 
@@ -1453,10 +1462,16 @@ export class WizardStateService {
         newHash: nextHash,
         upstream: currentUpstream,
       });
+      logSeed('decision: re-seed', {
+        reason: 'upstream state changed',
+        oldHash: this.answers.lastExpensesSeedHash,
+        newHash: nextHash,
+      });
       return true;
     }
 
     logger.debug('🌱 [SEEDING] Upstream state unchanged, skipping re-seed');
+    logSeed('decision: skip-seed', { reason: 'upstream state unchanged' });
     return false;
   }
 
@@ -1471,6 +1486,11 @@ export class WizardStateService {
     });
 
     logger.debug('🌱 [SEEDING] Expenses marked as seeded', {
+      hash: nextHash,
+      upstream: currentUpstream,
+    });
+
+    logSeed('seeded', {
       hash: nextHash,
       upstream: currentUpstream,
     });

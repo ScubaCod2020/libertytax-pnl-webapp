@@ -12,6 +12,7 @@ import { ExpensesService } from '../../../../shared/expenses/expenses.service';
 import { SharedExpenseTextService } from '../../../../shared/expenses/expense-text.service';
 import type { ExpenseKey } from '../../../../shared/expenses/expenses.types';
 import { DebugLogService } from '../../../../shared/debug/debug-log.service';
+import { logSeed } from '../../../../shared/utils/seed-logger';
 
 // Display config for structural template rows
 interface ExpenseRowCfg {
@@ -58,12 +59,14 @@ export class ExpensesFormComponent implements OnInit {
     // This prevents re-seeding when navigating back from P&L or Dashboard
     if (this.wizardState.shouldReseedExpenses()) {
       console.log('💰 [EXPENSES FORM] Service decision: seeding expenses → strategic defaults');
+      logSeed('resetExpenseDefaults() triggered', { reason: 'service decision to seed' });
       this.wizardState.resetExpenseDefaults(true);
       this.wizardState.markExpensesSeeded();
     } else {
       console.log(
         '💰 [EXPENSES FORM] Service decision: expenses already seeded, using existing data'
       );
+      logSeed('resetExpenseDefaults() skipped', { reason: 'service decision to skip seeding' });
     }
 
     // Force clear any stuck loading overlays after expenses component loads
