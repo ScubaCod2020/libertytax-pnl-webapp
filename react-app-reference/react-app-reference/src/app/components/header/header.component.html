@@ -1,0 +1,42 @@
+<header class="app-header">
+  <div class="header-content">
+    <div class="brand-section">
+      <img 
+        [src]="region === 'US' 
+          ? './assets/brands/us/LT-2022-Wide-RGB.png'
+          : './assets/brands/ca/LT-Canada-Wide-Red.png'"
+        [alt]="region === 'CA' ? 'Liberty Tax Canada' : 'Liberty Tax US'"
+        [title]="region === 'CA' ? 'Liberty Tax Canada - P&L Budget & Forecast Tool' : 'Liberty Tax US - P&L Budget & Forecast Tool'"
+        title="Liberty Tax - P&L Budget & Forecast Tool"
+        class="brand-logo"
+        (error)="onLogoError($event)"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <div class="title-section">
+      <h1 [class.region-us]="region === 'US'" [class.region-ca]="region === 'CA'">P&L Budget & Forecast</h1>
+      <span class="version-badge">v0.5 preview</span>
+    </div>
+    <div class="nav-section">
+      <nav class="nav-links">
+        <a routerLink="/wizard/step-1" routerLinkActive="active" class="nav-link">
+          🚀 Setup Wizard
+        </a>
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+          📊 Dashboard
+        </a>
+        <a routerLink="/reports" routerLinkActive="active" class="nav-link">
+          📋 Reports
+        </a>
+      </nav>
+    </div>
+    <div class="actions-section">
+      <button 
+        (click)="onResetClick()" 
+        class="btn btn-danger">
+        🔄 Reset
+      </button>
+    </div>
+  </div>
+</header>

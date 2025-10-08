@@ -147,3 +147,9 @@ playwright-results.xml
 # Vercel & Codespaces
 .vercel/
 .devcontainer/
+
+# React reference (do not build)
+react-reference/**/node_modules
+react-reference/**/dist
+react-reference/**/build
+

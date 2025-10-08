@@ -1,0 +1,369 @@
+/* Global Styles for Angular P&L App */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Proxima Nova', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc;
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #059669, #10b981);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(45deg, #047857, #059669);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary {
+  background: linear-gradient(45deg, #6b7280, #9ca3af);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: linear-gradient(45deg, #4b5563, #6b7280);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: linear-gradient(45deg, #dc2626, #ef4444);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: linear-gradient(45deg, #b91c1c, #dc2626);
+  transform: translateY(-1px);
+}
+
+/* Form Styles */
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.required {
+  color: #dc2626;
+}
+
+.form-help {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0 0 0.5rem 0;
+}
+
+.form-select,
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-select:focus,
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-select {
+  cursor: pointer;
+}
+
+/* Wizard-specific styles */
+.wizard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 80vh;
+}
+
+.welcome-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem 0;
+}
+
+.welcome-header h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 1rem;
+}
+
+.welcome-header p {
+  font-size: 1.1rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.wizard-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 2rem;
+}
+
+.nav-left {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ===== ALL THE STYLING WE WORKED ON ALL NIGHT ===== */
+
+/* Section Background Colors - Consistent across all regions */
+.revenue-streams-section,
+.performance-goals-section,
+.taxrush-section,
+.last-year-performance-section {
+  background-color: rgba(240, 249, 255, 0.75) !important;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Region-specific border colors */
+.region-ca .revenue-streams-section,
+.region-ca .performance-goals-section,
+.region-ca .taxrush-section,
+.region-ca .last-year-performance-section {
+  border-color: #EA0029 !important;
+}
+
+/* TaxRush group styling */
+.taxrush-group {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Form input styling - the UX we built */
+.form-input {
+  background-color: #f0f9ff !important;
+  color: #374151 !important;
+  font-style: italic !important;
+  border: 1px solid #d1d5db !important;
+}
+
+.form-input.user-interacted {
+  background-color: white !important;
+  color: #1f2937 !important;
+  font-style: normal !important;
+}
+
+.form-input.required-field {
+  background-color: white !important;
+  color: #1f2937 !important;
+  font-style: normal !important;
+  border-color: #dc2626 !important;
+}
+
+.form-input.invalid {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+}
+
+/* Button styling */
+.btn-success {
+  background: linear-gradient(45deg, #059669, #10b981);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-success:hover:not(:disabled) {
+  background: linear-gradient(45deg, #047857, #059669);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-warning {
+  background: linear-gradient(45deg, #d97706, #f59e0b);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-warning:hover:not(:disabled) {
+  background: linear-gradient(45deg, #b45309, #d97706);
+  transform: translateY(-1px);
+}
+
+/* Form grid layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: end;
+}
+
+/* Section headers */
+.section-header {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* Field groups */
+.field-group {
+  margin-bottom: 1.5rem;
+}
+
+.field-group label {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.field-group .form-help {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+/* Dual input styling (like taxRush returns + percentage) */
+.dual-input {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.dual-input .form-input:last-child {
+  text-align: right;
+}
+
+/* Status indicators */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-green {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-yellow {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-red {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .wizard-container {
+    padding: 0 1rem;
+    margin: 0.5rem;
+  }
+  
+  .wizard-navigation {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .wizard-navigation .nav-left {
+    order: 2;
+  }
+  
+  .wizard-navigation .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .dual-input {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,14 @@
+angular/src/app/components/demos/suggested-input-demo.component.html:110: ${{ formatCurrency(suggestions.grossFees) }}
+angular/src/app/components/demos/suggested-input-demo.component.html:122: -${{ formatCurrency(suggestions.discountAmount) }}
+angular/src/app/components/demos/suggested-input-demo.component.html:134: ${{ formatCurrency(suggestions.taxPrepIncome) }}
+angular/src/app/components/demos/suggested-input-demo.component.html:147: ${{ formatCurrency(suggestions.taxRushIncome) }}
+angular/src/app/components/demos/suggested-input-demo.component.html:160: ${{ formatCurrency(suggestions.otherIncome) }}
+angular/src/app/components/demos/suggested-input-demo.component.html:172: ${{ formatCurrency(suggestions.totalRevenue) }}
+angular/src/app/components/demos/suggested-input-demo.component.html:183: <p><strong>Your Calculation:</strong> ({{ answers.taxPrepReturns || 0 }} × ${{ formatCurrency(answers.avgNetFee || 0) }}) - ${{ formatCurrency(suggestions.discountAmount) }} + ${{ formatCurrency(suggestions.otherIncome) }} = <strong>${{ formatCurrency(suggestions.totalRevenue) }}</strong></p>
+angular/src/app/pages/wizard/income-drivers/components/strategic-analysis.component.html:7: <strong>Strategic Target Revenue:</strong> ${{ formatCurrency(adjustments.strategicTarget) }}
+angular/src/app/pages/wizard/income-drivers/components/strategic-analysis.component.html:21: <br />• Target: ${{ formatCurrency(performance.targetRevenue) }}
+angular/src/app/pages/wizard/income-drivers/components/strategic-analysis.component.html:22: <br />• Actual: ${{ formatCurrency(performance.actualRevenue) }}
+angular/src/app/pages/wizard/income-drivers/components/strategic-analysis.component.html:23: <br />• Variance: {{ performance.variance > 0 ? '+' : '' }}{{ round(performance.variance) }}% {{
+angular/src/app/pages/wizard/income-drivers/components/strategic-analysis.component.html:28: <br />• Strategic Target: ${{ formatCurrency(expenseTarget) }}
+angular/src/app/pages/wizard/pnl/components/reports.component.html:48: <div class="month-description">{{ getMonthDescription(month.monthNumber) }}</div>
+angular/src/app/pages/wizard/pnl/components/reports.component.html:62: {{ getSeasonLabel(month.monthNumber) }}

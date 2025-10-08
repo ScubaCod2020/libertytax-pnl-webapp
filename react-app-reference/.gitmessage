@@ -1,0 +1,48 @@
+# <type>: <short summary> (50 chars max)
+#
+# PROBLEM:
+# - What issue was this solving?
+# - What wasn't working before?
+#
+# SOLUTION:
+# - How did you fix it?
+# - What approach did you take?
+#
+# TECHNICAL DETAILS:
+# - Specific files/functions changed
+# - Key implementation details
+# - Any gotchas or edge cases handled
+#
+# FILES CHANGED:
+# - path/to/file1.ts: Brief description of changes
+# - path/to/file2.tsx: Brief description of changes
+#
+# TESTING:
+# - How to verify this works
+# - Any manual testing steps
+# - Expected behavior changes
+#
+# NOTES:
+# - Any follow-up work needed
+# - Related issues or PRs
+# - Breaking changes (if any)
+#
+# ────────────────────────────────────────────────────────────────
+# COMMIT TYPE REFERENCE:
+# feat:     New feature
+# fix:      Bug fix
+# docs:     Documentation changes
+# style:    Code style changes (formatting, etc.)
+# refactor: Code refactoring (no functional changes)
+# test:     Adding or updating tests
+# chore:    Maintenance tasks, build changes, etc.
+# perf:     Performance improvements
+# ci:       CI/CD changes
+# revert:   Reverting previous commits
+#
+# EXAMPLES:
+# feat: add comprehensive 17-category expense wizard
+# fix: resolve JSX structure errors in App.tsx
+# refactor: extract dashboard logic into separate components
+# docs: add JSX troubleshooting guide to README
+# ────────────────────────────────────────────────────────────────

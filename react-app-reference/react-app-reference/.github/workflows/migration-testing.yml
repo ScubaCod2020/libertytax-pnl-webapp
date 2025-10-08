@@ -1,0 +1,208 @@
+name: 🔄 Migration Testing (React → Angular)
+
+on:
+  push:
+    branches: [ main, develop, 'migration/**' ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of migration tests to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+        - all
+        - business-logic
+        - visual-regression
+        - change-detection
+        - angular-setup
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  # ==========================================
+  # 🧠 Business Logic Tests (Framework Agnostic)
+  # ==========================================
+  business-logic-tests:
+    name: 🧠 Business Logic Tests
+    runs-on: ubuntu-latest
+    if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'business-logic' || github.event_name == 'push'
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 🔧 Install dependencies
+        run: npm ci
+        
+      - name: 🧠 Run business logic tests
+        run: npm run test:shared
+        
+      - name: 📊 Upload business logic test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: business-logic-results
+          path: coverage/
+          retention-days: 7
+
+  # ==========================================
+  # 📸 Visual Regression Tests
+  # ==========================================
+  visual-regression-tests:
+    name: 📸 Visual Regression Tests
+    runs-on: ubuntu-latest
+    if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'visual-regression' || github.event_name == 'push'
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 🔧 Install dependencies
+        run: npm ci
+        
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps
+        
+      - name: 🏗️ Build application
+        run: npm run build
+        
+      - name: 🚀 Start preview server
+        run: npm run preview &
+        
+      - name: ⏳ Wait for server
+        run: npx wait-on http://localhost:4173 --timeout 30000
+        
+      - name: 📸 Run visual regression tests
+        run: npm run test:visual
+        
+      - name: 📊 Upload visual test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visual-regression-results
+          path: test-results/
+          retention-days: 7
+
+  # ==========================================
+  # 🔍 Change Detection Analysis
+  # ==========================================
+  change-detection:
+    name: 🔍 Change Detection Analysis
+    runs-on: ubuntu-latest
+    if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'change-detection' || github.event_name == 'push'
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Need previous commit for comparison
+          
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 🔧 Install dependencies
+        run: npm ci
+        
+      - name: 🔍 Run change detection
+        run: npm run test:change-detection
+        
+      - name: 📊 Upload change detection results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: change-detection-results
+          path: change-analysis.json
+          retention-days: 7
+
+  # ==========================================
+  # 🅰️ Angular Setup Validation
+  # ==========================================
+  angular-setup:
+    name: 🅰️ Angular Setup Validation
+    runs-on: ubuntu-latest
+    if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'angular-setup' || github.event_name == 'push'
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 🔧 Install dependencies
+        run: npm ci
+        
+      - name: 🅰️ Validate Angular test setup
+        run: |
+          echo "Checking Angular test files..."
+          if [ -f "tests/angular/angular-test-setup.ts" ]; then
+            echo "✅ Angular test setup file exists"
+          else
+            echo "❌ Angular test setup file missing"
+            exit 1
+          fi
+          
+          echo "Checking Angular test utilities..."
+          node -e "
+            const fs = require('fs');
+            const content = fs.readFileSync('tests/angular/angular-test-setup.ts', 'utf8');
+            if (content.includes('AngularTestUtils')) {
+              console.log('✅ Angular test utilities found');
+            } else {
+              console.log('❌ Angular test utilities missing');
+              process.exit(1);
+            }
+          "
+        
+      - name: 📊 Upload Angular setup validation
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: angular-setup-validation
+          path: angular-setup.log
+          retention-days: 7
+
+  # ==========================================
+  # 📊 Migration Test Summary
+  # ==========================================
+  migration-summary:
+    name: 📊 Migration Test Summary
+    runs-on: ubuntu-latest
+    needs: [business-logic-tests, visual-regression-tests, change-detection, angular-setup]
+    if: always()
+    steps:
+      - name: 📊 Generate migration test summary
+        run: |
+          echo "## 🔄 Migration Testing Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Suite | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------------|---------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🧠 Business Logic | ${{ needs.business-logic-tests.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📸 Visual Regression | ${{ needs.visual-regression-tests.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔍 Change Detection | ${{ needs.change-detection.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🅰️ Angular Setup | ${{ needs.angular-setup.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🎯 Migration Readiness" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ needs.business-logic-tests.result }}" == "success" && "${{ needs.visual-regression-tests.result }}" == "success" ]]; then
+            echo "✅ **Ready for Angular migration** - Core functionality validated" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **Migration blocked** - Fix failing tests before proceeding" >> $GITHUB_STEP_SUMMARY
+          fi

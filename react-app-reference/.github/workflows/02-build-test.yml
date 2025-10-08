@@ -1,0 +1,164 @@
+name: "02 → Build & Test"
+
+on:
+  workflow_run:
+    workflows: ["01 → Code Quality & Analysis"]
+    types: [completed]
+    branches: [ main, develop, 'feat/*', 'fix/*' ]
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  # Only run if code quality passed
+  check-prerequisites:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    outputs:
+      should_build: ${{ steps.check.outputs.should_build }}
+      
+    steps:
+    - name: 🔍 Check workflow prerequisites
+      id: check
+      run: |
+        echo "should_build=true" >> $GITHUB_OUTPUT
+        echo "✅ Code quality passed - proceeding with build"
+
+  build-and-test:
+    runs-on: ubuntu-latest
+    needs: check-prerequisites
+    if: needs.check-prerequisites.outputs.should_build == 'true'
+    
+    outputs:
+      build_success: ${{ steps.build.outputs.success }}
+      bundle_size: ${{ steps.build.outputs.bundle_size }}
+      test_results: ${{ steps.test.outputs.results }}
+      
+    steps:
+    - name: 🔄 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 📋 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📦 Install dependencies (SHARED - build once)
+      run: npm ci
+      
+    - name: 🧮 Run core calculation tests
+      id: test
+      run: |
+        echo "🧮 Testing calculation engine..."
+        node scripts/test-calculations.js
+        
+        echo "🔍 Testing edge cases..."  
+        node scripts/comprehensive-edge-case-tests.js
+        
+        echo "🔄 Testing regression scenarios..."
+        node scripts/regression-test.js
+        
+        echo "results=passed" >> $GITHUB_OUTPUT
+        echo "✅ All calculation tests passed"
+        
+    - name: 🏗️ Build application (SHARED - build once)
+      id: build
+      run: |
+        echo "🏗️ Building application..."
+        npm run build
+        
+        # Validate build artifacts
+        [ -f "dist/index.html" ] || (echo "❌ Missing index.html" && exit 1)
+        [ -f dist/assets/index-*.js ] || (echo "❌ Missing JavaScript bundle" && exit 1)
+        [ -f dist/assets/index-*.css ] || (echo "❌ Missing CSS bundle" && exit 1)
+        
+        # Calculate bundle sizes
+        MAIN_BUNDLE=$(find dist/assets -name "index-*.js" -exec stat -c%s {} \; | sort -n | tail -1)
+        VENDOR_BUNDLE=$(find dist/assets -name "vendor-*.js" -exec stat -c%s {} \; | sort -n | tail -1 || echo "0")
+        TOTAL_SIZE=$((MAIN_BUNDLE + VENDOR_BUNDLE))
+        
+        echo "bundle_size=$((TOTAL_SIZE / 1024))" >> $GITHUB_OUTPUT
+        echo "success=true" >> $GITHUB_OUTPUT
+        
+        echo "## 📊 Build Results" >> $GITHUB_STEP_SUMMARY
+        echo "| Metric | Value | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|--------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Main Bundle | $((MAIN_BUNDLE / 1024))KB | $([ $MAIN_BUNDLE -lt 200000 ] && echo '✅ Good' || echo '⚠️ Large') |" >> $GITHUB_STEP_SUMMARY
+        echo "| Vendor Bundle | $((VENDOR_BUNDLE / 1024))KB | ✅ Optimized |" >> $GITHUB_STEP_SUMMARY
+        echo "| **Total Size** | **$((TOTAL_SIZE / 1024))KB** | **$([ $TOTAL_SIZE -lt 350000 ] && echo '✅ Acceptable' || echo '❌ Too Large')** |" >> $GITHUB_STEP_SUMMARY
+        
+        if [ $TOTAL_SIZE -gt 350000 ]; then
+          echo "❌ Bundle size exceeds 350KB limit"
+          exit 1
+        fi
+        
+        echo "✅ Build completed successfully"
+        
+    - name: 🧪 Preview server test (SHARED - test once)
+      run: |
+        echo "🧪 Testing preview server..."
+        
+        # Start server in background
+        npm run preview &
+        SERVER_PID=$!
+        
+        # Wait for startup with timeout
+        for i in {1..20}; do
+          if curl -s http://localhost:4173 > /dev/null; then
+            echo "✅ Server started after ${i} seconds"
+            break
+          fi
+          if [ $i -eq 20 ]; then
+            echo "❌ Server startup timeout"
+            kill $SERVER_PID
+            exit 1
+          fi
+          sleep 1
+        done
+        
+        # Test critical functionality
+        RESPONSE=$(curl -s http://localhost:4173)
+        
+        if echo "$RESPONSE" | grep -q "Liberty Tax"; then
+          echo "✅ Liberty Tax branding found"
+        else
+          echo "❌ Liberty Tax branding missing"
+          kill $SERVER_PID
+          exit 1
+        fi
+        
+        if echo "$RESPONSE" | grep -q "script"; then
+          echo "✅ JavaScript bundle loaded"
+        else
+          echo "❌ JavaScript bundle missing"
+          kill $SERVER_PID
+          exit 1
+        fi
+        
+        # Cleanup
+        kill $SERVER_PID
+        echo "✅ Preview server tests passed"
+        
+    - name: 📦 Upload build artifacts (SHARED)
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts-${{ github.sha }}
+        path: |
+          dist/
+          package.json
+          package-lock.json
+        retention-days: 7
+        
+    - name: 📊 Test summary
+      run: |
+        echo "## ✅ Build & Test Complete" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "🎯 **Ready for deployment!**" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Artifacts Created:" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Optimized production build (${{ steps.build.outputs.bundle_size }}KB)" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Tested preview server" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Validated calculation engine" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Next Step**: Trigger staging deployment for validation" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,89 @@
+{
+  "teams": {
+    "frontend": {
+      "name": "Frontend Team",
+      "description": "UI/UX, React components, responsive design, user experience",
+      "expertise": ["typescript", "react", "css", "accessibility", "mobile", "responsive"],
+      "githubUsernames": ["@codex", "ScubaCod2020"],
+      "reviewPaths": ["src/components/**", "src/styles/**", "public/**", "src/assets/**"],
+      "testTypes": ["unit", "integration", "e2e", "mobile", "performance"],
+      "deploymentStages": ["preview", "staging", "production"],
+      "priority": "high"
+    },
+    "backend": {
+      "name": "Backend Team", 
+      "description": "Business logic, calculations, data processing, API development",
+      "expertise": ["python", "nodejs", "api", "calculations", "data", "excel"],
+      "githubUsernames": ["@codex", "ScubaCod2020"],
+      "reviewPaths": ["src/lib/**", "src/api/**", "*.py", "src/utils/**", "src/data/**"],
+      "testTypes": ["unit", "integration", "e2e"],
+      "deploymentStages": ["preview", "staging", "production"],
+      "priority": "high"
+    },
+    "qa": {
+      "name": "QA Team",
+      "description": "Testing strategy, quality assurance, test automation, bug detection",
+      "expertise": ["testing", "automation", "quality", "bug-detection", "test-frameworks"],
+      "githubUsernames": ["@codex", "ScubaCod2020"],
+      "reviewPaths": ["tests/**", "*.test.*", "*.spec.*", "test-utils/**"],
+      "testTypes": ["unit", "integration", "e2e", "mobile", "performance", "security"],
+      "deploymentStages": ["preview", "staging", "production"],
+      "priority": "critical"
+    },
+    "devops": {
+      "name": "DevOps Team",
+      "description": "CI/CD, infrastructure, deployments, monitoring, automation",
+      "expertise": ["github-actions", "deployment", "monitoring", "infrastructure", "ci-cd"],
+      "githubUsernames": ["@codex", "ScubaCod2020"],
+      "reviewPaths": [".github/**", "*.yml", "*.yaml", "Dockerfile*", "vercel.json"],
+      "testTypes": ["integration", "e2e", "performance"],
+      "deploymentStages": ["staging", "production"],
+      "priority": "high"
+    },
+    "security": {
+      "name": "Security Team",
+      "description": "Security reviews, vulnerability management, compliance, threat assessment",
+      "expertise": ["security", "vulnerability", "compliance", "threat-assessment", "auditing"],
+      "githubUsernames": ["@codex", "ScubaCod2020"],
+      "reviewPaths": ["package*.json", "requirements.txt", "*.lock", "src/auth/**"],
+      "testTypes": ["security"],
+      "deploymentStages": ["preview", "staging", "production"],
+      "priority": "medium"
+    },
+    "ai": {
+      "name": "AI Assistant (@codex)",
+      "description": "AI-powered code review, automated testing, debugging assistance, documentation generation",
+      "expertise": ["ai", "automation", "code-review", "debugging", "documentation", "testing"],
+      "githubUsernames": ["@codex"],
+      "reviewPaths": ["**/*"],
+      "testTypes": ["unit", "integration", "e2e", "mobile", "performance", "security"],
+      "deploymentStages": ["preview", "staging", "production"],
+      "priority": "high",
+      "aiCapabilities": {
+        "codeReview": true,
+        "testGeneration": true,
+        "bugDetection": true,
+        "documentation": true,
+        "debugging": true,
+        "optimization": true
+      }
+    }
+  },
+  "workflow": {
+    "preview": {
+      "teams": ["qa", "frontend", "backend", "ai"],
+      "duration": "16 minutes",
+      "parallel": true
+    },
+    "staging": {
+      "teams": ["qa", "frontend", "backend", "devops", "security", "ai"],
+      "duration": "50 minutes", 
+      "parallel": true
+    },
+    "production": {
+      "teams": ["qa", "devops", "security", "ai"],
+      "duration": "36 minutes",
+      "parallel": false
+    }
+  }
+}

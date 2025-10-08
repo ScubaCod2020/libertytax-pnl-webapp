@@ -1,0 +1,283 @@
+<!-- Debug Sidebar Template -->
+<div class="debug-sidebar" [class.open]="isOpen">
+  <!-- Header -->
+  <div class="debug-header">
+    <div class="debug-title">🐛 Debug Panel</div>
+    <button class="close-button" (click)="onClose()" title="Close Debug Panel">
+      ✕
+    </button>
+  </div>
+
+  <!-- Help Text -->
+  <div class="debug-help">
+    💡 <strong>Help:</strong> Troubleshoot issues, check data, export for support
+  </div>
+
+  <!-- Tabs -->
+  <div class="debug-tabs">
+    <button 
+      *ngFor="let view of debugViews"
+      class="debug-tab" 
+      [class.active]="activeView === view"
+      (click)="setActiveView(view)"
+      [title]="getTabTitle(view)">
+      {{ getTabLabel(view) }}
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div class="debug-content">
+    <!-- Storage View -->
+    <div *ngIf="activeView === 'storage'" class="debug-view">
+      <div class="info-block">
+        <div class="info-text">
+          📝 <strong>What is this?</strong> Your data is automatically saved to your browser's local storage. 
+          This shows the status of your saved data and lets you manage it.
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">💾 Storage Status</div>
+        <div class="info-item">
+          <div class="info-label">Storage Key:</div>
+          <div class="info-value">{{ storageKey }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">App Version:</div>
+          <div class="info-value">{{ appVersion }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">System Status:</div>
+          <div class="info-value">
+            Ready: {{ isReady ? '✅' : '❌' }} | Loading: {{ isHydrating ? '🔄' : '✅' }}
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Last Auto-Save:</div>
+          <div class="info-value" [class.error]="savedAt === '(never)'">{{ savedAt }}</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">🔧 Quick Actions</div>
+        <div class="button-grid">
+          <button class="action-button" (click)="onSaveNow()" title="Force save your current data now">
+            💾 Save Now
+          </button>
+          <button class="action-button" (click)="onDumpStorage()" title="Print all saved data to browser console for debugging">
+            🖥️ Dump to Console
+          </button>
+          <button class="action-button" (click)="onCopyJSON()" title="Copy all your data as JSON to clipboard">
+            📋 Copy JSON
+          </button>
+          <button class="action-button" (click)="onShowWizard()" title="Restart the setup wizard">
+            🧙‍♂️ Reopen Wizard
+          </button>
+          <button class="action-button danger" (click)="onClearStorage()" title="⚠️ WARNING: This will delete ALL your saved data!">
+            🗑️ Clear All Data
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculations View -->
+    <div *ngIf="activeView === 'calculations'" class="debug-view">
+      <div class="info-block">
+        <div class="info-text">
+          🧮 <strong>What is this?</strong> Shows how your P&L numbers are calculated from your inputs. 
+          Use this to verify calculations or troubleshoot unexpected results.
+        </div>
+      </div>
+
+      <!-- KPI Strategic Analysis -->
+      <div *ngIf="calculations && appState" class="kpi-analysis">
+        <div class="analysis-title">🎯 KPI Strategic Analysis</div>
+        <div class="analysis-content">
+          <div class="analysis-item">
+            <strong>Revenue per Return:</strong> ${{ getRevenuePerReturn() | number:'1.2-2' }}
+          </div>
+          <div class="analysis-item">
+            <strong>Cost/Return Strategic Range:</strong> ${{ getCprGreenMin() | number:'1.2-2' }} - ${{ getCprGreenMax() | number:'1.2-2' }} (GREEN)
+          </div>
+          <div class="analysis-item">
+            <strong>Actual Cost/Return:</strong> ${{ getCostPerReturnDisplay() }}
+            <span [style]="getStatusStyle(calculations.cprStatus)">
+              ({{ getCprStatusDisplay() }})
+            </span>
+          </div>
+          <div class="analysis-item">
+            <strong>Net Margin Strategic Range:</strong> {{ getNimGreenMin() }}% - {{ getNimGreenMax() }}% (GREEN)
+          </div>
+          <div class="analysis-item">
+            <strong>Actual Net Margin:</strong> {{ getNetMarginDisplay() }}%
+            <span [style]="getStatusStyle(calculations.nimStatus)">
+              ({{ getNimStatusDisplay() }})
+            </span>
+          </div>
+          <div class="analysis-tip">
+            💡 <strong>Expected Result:</strong> When Page 2 shows green, Dashboard should show all green KPIs
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">📊 Current Calculations</div>
+        <div *ngIf="calculations; else noCalculations">
+          <div class="calculation-summary">
+            <div class="summary-title">Key Results:</div>
+            <div>Net Income: ${{ getNetIncomeDisplay() }}</div>
+            <div>Net Margin: {{ getNetMarginPctDisplay() }}%</div>
+            <div>Cost/Return: ${{ getCostPerReturnDisplay() }}</div>
+            <div>Total Expenses: ${{ getTotalExpensesDisplay() }}</div>
+          </div>
+          
+          <details>
+            <summary class="details-summary">Show Full Calculation Data</summary>
+            <pre class="calculation-data">{{ calculations | json }}</pre>
+          </details>
+        </div>
+        <ng-template #noCalculations>
+          <div class="no-data">No calculation data available</div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- State View -->
+    <div *ngIf="activeView === 'state'" class="debug-view">
+      <div class="section">
+        <div class="section-title">App State</div>
+        <div *ngIf="appState; else noState">
+          <pre class="state-data">{{ appState | json }}</pre>
+        </div>
+        <ng-template #noState>
+          <div class="no-data">No state data available</div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Performance View -->
+    <div *ngIf="activeView === 'performance'" class="debug-view">
+      <div class="section">
+        <div class="section-title">Performance</div>
+        <div class="performance-item">Modules Loaded: {{ getModuleCount() }}</div>
+        <div class="performance-item">DOM Nodes: {{ getDOMNodeCount() }}</div>
+        <div class="performance-item">Memory: {{ getMemoryUsage() }}</div>
+        <div class="performance-actions">
+          <button class="action-button" (click)="logPerformanceTiming()">
+            Log Performance Timing
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thresholds View -->
+    <div *ngIf="activeView === 'thresholds'" class="debug-view">
+      <div class="section">
+        <div class="section-title">🎯 Advanced Controls</div>
+        <div class="info-text">
+          💡 <strong>Power User Controls:</strong> Modify thresholds, presets, and defaults to test different scenarios.
+        </div>
+
+        <!-- KPI Thresholds Section -->
+        <div class="threshold-section">
+          <div class="threshold-header" (click)="toggleSection('kpi')">
+            <span>🎯 KPI Color Thresholds</span>
+            <span>{{ expandedSection === 'kpi' ? '▼' : '▶' }}</span>
+          </div>
+          <div *ngIf="expandedSection === 'kpi' && thresholds" class="threshold-content">
+            <div class="threshold-grid">
+              <div class="threshold-item">
+                <label>Cost/Return Green ≤ $</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  [value]="thresholds.cprGreen"
+                  (input)="updateThreshold('cprGreen', $event)"
+                  placeholder="15.0"
+                  class="threshold-input">
+              </div>
+              <div class="threshold-item">
+                <label>Cost/Return Yellow ≤ $</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  [value]="thresholds.cprYellow"
+                  (input)="updateThreshold('cprYellow', $event)"
+                  placeholder="20.0"
+                  class="threshold-input">
+              </div>
+              <div class="threshold-item">
+                <label>Net Margin Green ≥ %</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  [value]="thresholds.nimGreen"
+                  (input)="updateThreshold('nimGreen', $event)"
+                  placeholder="25.0"
+                  class="threshold-input">
+              </div>
+              <div class="threshold-item">
+                <label>Net Margin Yellow ≥ %</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  [value]="thresholds.nimYellow"
+                  (input)="updateThreshold('nimYellow', $event)"
+                  placeholder="15.0"
+                  class="threshold-input">
+              </div>
+              <div class="threshold-item full-width">
+                <label>Net Income Warning ≤ $</label>
+                <input
+                  type="number"
+                  step="100"
+                  [value]="thresholds.netIncomeWarn"
+                  (input)="updateThreshold('netIncomeWarn', $event)"
+                  placeholder="-5000"
+                  class="threshold-input">
+                <div class="threshold-help">Usually negative (e.g., -5000)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Regression Testing View -->
+    <div *ngIf="activeView === 'regression'" class="debug-view">
+      <div class="section">
+        <div class="section-title">🧪 Regression Testing</div>
+        <div class="info-text">
+          💡 <strong>Compare Angular vs React:</strong> Run tests to ensure calculations match between Angular and React versions.
+        </div>
+
+        <div class="test-actions">
+          <button class="action-button" (click)="onRunRegressionTests()">
+            🧪 Run Regression Tests
+          </button>
+          <button class="action-button" (click)="onExportTestResults()">
+            📋 Export Test Results
+          </button>
+        </div>
+
+        <div *ngIf="testResults && testResults.length > 0" class="test-results">
+          <div class="results-title">Test Results</div>
+          <div *ngFor="let result of testResults" class="test-result">
+            <div class="test-header">
+              <span class="test-name">{{ result.testName }}</span>
+              <span [style]="getTestStatusStyle(result.passed)">
+                {{ result.passed ? '✅ PASS' : '❌ FAIL' }}
+              </span>
+            </div>
+            <div *ngIf="result.differences && result.differences.length > 0" class="test-differences">
+              <div *ngFor="let diff of result.differences" class="difference">{{ diff }}</div>
+            </div>
+            <div class="test-timestamp">
+              {{ result.timestamp | date:'short' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

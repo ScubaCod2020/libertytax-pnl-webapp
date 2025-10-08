@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <testsuites id="" name="" tests="2" failures="2" skipped="0" errors="0" time="69.36926600000001">
 <testsuite name="test-header-updates.spec.js" timestamp="2025-09-25T14:25:54.137Z" hostname="chromium" tests="2" failures="2" skipped="0" time="48.523" errors="0">
 <testcase name="Header Updates from Quick Start Wizard › should update header when Quick Start Wizard values change" classname="test-header-updates.spec.js" time="30.519">
@@ -83,6 +84,53 @@
 [[ATTACHMENT|test-results\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\video.webm]]
 
 [[ATTACHMENT|test-results\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\error-context.md]]
+=======
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="11.191167">
+<testsuite name="mobile\responsive.spec.js" timestamp="2025-09-13T15:38:17.130Z" hostname="chromium" tests="1" failures="1" skipped="0" time="5.762" errors="0">
+<testcase name="Mobile Responsiveness › displays correctly on mobile viewports" classname="mobile\responsive.spec.js" time="5.762">
+<failure message="responsive.spec.js:8:3 displays correctly on mobile viewports" type="FAILURE">
+<![CDATA[  [chromium] › mobile\responsive.spec.js:8:3 › Mobile Responsiveness › displays correctly on mobile viewports 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator('h1, h2, h3').filter({ hasText: 'P&L Budget & Forecast' }).first()
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('h1, h2, h3').filter({ hasText: 'P&L Budget & Forecast' }).first()
+
+
+       8 |   test('displays correctly on mobile viewports', async ({ page }) => {
+       9 |     // Test main elements are visible - use more specific selectors
+    > 10 |     await expect(page.locator('h1, h2, h3').filter({ hasText: 'P&L Budget & Forecast' }).first()).toBeVisible()
+         |                                                                                                   ^
+      11 |     await expect(page.locator('button').filter({ hasText: /setup wizard|wizard/i }).first()).toBeVisible()
+      12 |     await expect(page.locator('button').filter({ hasText: /dashboard/i }).first()).toBeVisible()
+      13 |   })
+        at D:\Dev\liberty\libertytax-pnl-webapp\tests\mobile\responsive.spec.js:10:99
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\mobile-responsive-Mobile-R-deefb-rrectly-on-mobile-viewports-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\mobile-responsive-Mobile-R-deefb-rrectly-on-mobile-viewports-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\mobile-responsive-Mobile-R-deefb-rrectly-on-mobile-viewports-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\mobile-responsive-Mobile-R-deefb-rrectly-on-mobile-viewports-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\mobile-responsive-Mobile-R-deefb-rrectly-on-mobile-viewports-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\mobile-responsive-Mobile-R-deefb-rrectly-on-mobile-viewports-chromium\error-context.md]]
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
 ]]>
 </system-out>
 </testcase>

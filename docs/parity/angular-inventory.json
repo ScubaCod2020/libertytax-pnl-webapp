@@ -1,0 +1,559 @@
+{
+  "root": "src/app",
+  "files": [
+    {
+      "rel": "app.component.ts",
+      "parts": [
+        "app.component.ts"
+      ],
+      "name": "app.component",
+      "kebab": "app.component",
+      "kind": "other"
+    },
+    {
+      "rel": "app.config.ts",
+      "parts": [
+        "app.config.ts"
+      ],
+      "name": "app.config",
+      "kebab": "app.config",
+      "kind": "other"
+    },
+    {
+      "rel": "app.html",
+      "parts": [
+        "app.html"
+      ],
+      "name": "app",
+      "kebab": "app",
+      "kind": "other"
+    },
+    {
+      "rel": "app.routes.ts",
+      "parts": [
+        "app.routes.ts"
+      ],
+      "name": "app.routes",
+      "kebab": "app.routes",
+      "kind": "other"
+    },
+    {
+      "rel": "app.scss",
+      "parts": [
+        "app.scss"
+      ],
+      "name": "app",
+      "kebab": "app",
+      "kind": "other"
+    },
+    {
+      "rel": "app.spec.ts",
+      "parts": [
+        "app.spec.ts"
+      ],
+      "name": "app.spec",
+      "kebab": "app.spec",
+      "kind": "other"
+    },
+    {
+      "rel": "app.ts",
+      "parts": [
+        "app.ts"
+      ],
+      "name": "app",
+      "kebab": "app",
+      "kind": "other"
+    },
+    {
+      "rel": "components/brand-watermark/brand-watermark.component.ts",
+      "parts": [
+        "components",
+        "brand-watermark",
+        "brand-watermark.component.ts"
+      ],
+      "name": "brand-watermark.component",
+      "kebab": "brand-watermark.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/dashboard/dashboard.component.ts",
+      "parts": [
+        "components",
+        "dashboard",
+        "dashboard.component.ts"
+      ],
+      "name": "dashboard.component",
+      "kebab": "dashboard.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/debug-system/debug-sidebar.component.html",
+      "parts": [
+        "components",
+        "debug-system",
+        "debug-sidebar.component.html"
+      ],
+      "name": "debug-sidebar.component",
+      "kebab": "debug-sidebar.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/debug-system/debug-sidebar.component.scss",
+      "parts": [
+        "components",
+        "debug-system",
+        "debug-sidebar.component.scss"
+      ],
+      "name": "debug-sidebar.component",
+      "kebab": "debug-sidebar.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/debug-system/debug-sidebar.component.ts",
+      "parts": [
+        "components",
+        "debug-system",
+        "debug-sidebar.component.ts"
+      ],
+      "name": "debug-sidebar.component",
+      "kebab": "debug-sidebar.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/debug-system/debug-system.component.ts",
+      "parts": [
+        "components",
+        "debug-system",
+        "debug-system.component.ts"
+      ],
+      "name": "debug-system.component",
+      "kebab": "debug-system.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/debug-system/debug-toggle.component.ts",
+      "parts": [
+        "components",
+        "debug-system",
+        "debug-toggle.component.ts"
+      ],
+      "name": "debug-toggle.component",
+      "kebab": "debug-toggle.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/debug-tool/debug-tool.component.ts",
+      "parts": [
+        "components",
+        "debug-tool",
+        "debug-tool.component.ts"
+      ],
+      "name": "debug-tool.component",
+      "kebab": "debug-tool.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/expenses/expenses.component.spec.ts",
+      "parts": [
+        "components",
+        "expenses",
+        "expenses.component.spec.ts"
+      ],
+      "name": "expenses.component.spec",
+      "kebab": "expenses.component.spec",
+      "kind": "component"
+    },
+    {
+      "rel": "components/expenses/expenses.component.ts",
+      "parts": [
+        "components",
+        "expenses",
+        "expenses.component.ts"
+      ],
+      "name": "expenses.component",
+      "kebab": "expenses.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/footer/footer.component.html",
+      "parts": [
+        "components",
+        "footer",
+        "footer.component.html"
+      ],
+      "name": "footer.component",
+      "kebab": "footer.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/footer/footer.component.scss",
+      "parts": [
+        "components",
+        "footer",
+        "footer.component.scss"
+      ],
+      "name": "footer.component",
+      "kebab": "footer.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/footer/footer.component.ts",
+      "parts": [
+        "components",
+        "footer",
+        "footer.component.ts"
+      ],
+      "name": "footer.component",
+      "kebab": "footer.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/header/header.component.html",
+      "parts": [
+        "components",
+        "header",
+        "header.component.html"
+      ],
+      "name": "header.component",
+      "kebab": "header.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/header/header.component.scss",
+      "parts": [
+        "components",
+        "header",
+        "header.component.scss"
+      ],
+      "name": "header.component",
+      "kebab": "header.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/header/header.component.ts",
+      "parts": [
+        "components",
+        "header",
+        "header.component.ts"
+      ],
+      "name": "header.component",
+      "kebab": "header.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/income-drivers/income-drivers.component.ts",
+      "parts": [
+        "components",
+        "income-drivers",
+        "income-drivers.component.ts"
+      ],
+      "name": "income-drivers.component",
+      "kebab": "income-drivers.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/inputs-panel/inputs-panel.component.ts",
+      "parts": [
+        "components",
+        "inputs-panel",
+        "inputs-panel.component.ts"
+      ],
+      "name": "inputs-panel.component",
+      "kebab": "inputs-panel.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/kpi-stoplight/kpi-stoplight.component.ts",
+      "parts": [
+        "components",
+        "kpi-stoplight",
+        "kpi-stoplight.component.ts"
+      ],
+      "name": "kpi-stoplight.component",
+      "kebab": "kpi-stoplight.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/prior-year-performance/prior-year-performance.component.spec.ts",
+      "parts": [
+        "components",
+        "prior-year-performance",
+        "prior-year-performance.component.spec.ts"
+      ],
+      "name": "prior-year-performance.component.spec",
+      "kebab": "prior-year-performance.component.spec",
+      "kind": "component"
+    },
+    {
+      "rel": "components/prior-year-performance/prior-year-performance.component.ts",
+      "parts": [
+        "components",
+        "prior-year-performance",
+        "prior-year-performance.component.ts"
+      ],
+      "name": "prior-year-performance.component",
+      "kebab": "prior-year-performance.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/projected-performance/projected-performance.component.ts",
+      "parts": [
+        "components",
+        "projected-performance",
+        "projected-performance.component.ts"
+      ],
+      "name": "projected-performance.component",
+      "kebab": "projected-performance.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/wizard-shell/wizard-shell.component.html",
+      "parts": [
+        "components",
+        "wizard-shell",
+        "wizard-shell.component.html"
+      ],
+      "name": "wizard-shell.component",
+      "kebab": "wizard-shell.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/wizard-shell/wizard-shell.component.scss",
+      "parts": [
+        "components",
+        "wizard-shell",
+        "wizard-shell.component.scss"
+      ],
+      "name": "wizard-shell.component",
+      "kebab": "wizard-shell.component",
+      "kind": "component"
+    },
+    {
+      "rel": "components/wizard-shell/wizard-shell.component.ts",
+      "parts": [
+        "components",
+        "wizard-shell",
+        "wizard-shell.component.ts"
+      ],
+      "name": "wizard-shell.component",
+      "kebab": "wizard-shell.component",
+      "kind": "component"
+    },
+    {
+      "rel": "core/global-error.handler.ts",
+      "parts": [
+        "core",
+        "global-error.handler.ts"
+      ],
+      "name": "global-error.handler",
+      "kebab": "global-error.handler",
+      "kind": "other"
+    },
+    {
+      "rel": "debug-tool/debug.guard.ts",
+      "parts": [
+        "debug-tool",
+        "debug.guard.ts"
+      ],
+      "name": "debug.guard",
+      "kebab": "debug.guard",
+      "kind": "other"
+    },
+    {
+      "rel": "models/calculation.models.ts",
+      "parts": [
+        "models",
+        "calculation.models.ts"
+      ],
+      "name": "calculation.models",
+      "kebab": "calculation.models",
+      "kind": "other"
+    },
+    {
+      "rel": "models/expense.models.ts",
+      "parts": [
+        "models",
+        "expense.models.ts"
+      ],
+      "name": "expense.models",
+      "kebab": "expense.models",
+      "kind": "other"
+    },
+    {
+      "rel": "models/wizard.models.ts",
+      "parts": [
+        "models",
+        "wizard.models.ts"
+      ],
+      "name": "wizard.models",
+      "kebab": "wizard.models",
+      "kind": "other"
+    },
+    {
+      "rel": "pages/dashboard/dashboard-page.component.ts",
+      "parts": [
+        "pages",
+        "dashboard",
+        "dashboard-page.component.ts"
+      ],
+      "name": "dashboard-page.component",
+      "kebab": "dashboard-page.component",
+      "kind": "page"
+    },
+    {
+      "rel": "pages/existing-store/existing-store-page.component.ts",
+      "parts": [
+        "pages",
+        "existing-store",
+        "existing-store-page.component.ts"
+      ],
+      "name": "existing-store-page.component",
+      "kebab": "existing-store-page.component",
+      "kind": "page"
+    },
+    {
+      "rel": "pages/health/health.component.ts",
+      "parts": [
+        "pages",
+        "health",
+        "health.component.ts"
+      ],
+      "name": "health.component",
+      "kebab": "health.component",
+      "kind": "page"
+    },
+    {
+      "rel": "pages/reports/reports-page.component.ts",
+      "parts": [
+        "pages",
+        "reports",
+        "reports-page.component.ts"
+      ],
+      "name": "reports-page.component",
+      "kebab": "reports-page.component",
+      "kind": "page"
+    },
+    {
+      "rel": "pages/wizard/step1-page.component.ts",
+      "parts": [
+        "pages",
+        "wizard",
+        "step1-page.component.ts"
+      ],
+      "name": "step1-page.component",
+      "kebab": "step1-page.component",
+      "kind": "page"
+    },
+    {
+      "rel": "pages/wizard/step2-page.component.ts",
+      "parts": [
+        "pages",
+        "wizard",
+        "step2-page.component.ts"
+      ],
+      "name": "step2-page.component",
+      "kebab": "step2-page.component",
+      "kind": "page"
+    },
+    {
+      "rel": "services/app-state.service.ts",
+      "parts": [
+        "services",
+        "app-state.service.ts"
+      ],
+      "name": "app-state.service",
+      "kebab": "app-state.service",
+      "kind": "other"
+    },
+    {
+      "rel": "services/branding.service.ts",
+      "parts": [
+        "services",
+        "branding.service.ts"
+      ],
+      "name": "branding.service",
+      "kebab": "branding.service",
+      "kind": "other"
+    },
+    {
+      "rel": "services/calculation.service.ts",
+      "parts": [
+        "services",
+        "calculation.service.ts"
+      ],
+      "name": "calculation.service",
+      "kebab": "calculation.service",
+      "kind": "other"
+    },
+    {
+      "rel": "services/kpi.service.ts",
+      "parts": [
+        "services",
+        "kpi.service.ts"
+      ],
+      "name": "kpi.service",
+      "kebab": "kpi.service",
+      "kind": "other"
+    },
+    {
+      "rel": "services/persistence.service.ts",
+      "parts": [
+        "services",
+        "persistence.service.ts"
+      ],
+      "name": "persistence.service",
+      "kebab": "persistence.service",
+      "kind": "other"
+    },
+    {
+      "rel": "services/storage.keys.ts",
+      "parts": [
+        "services",
+        "storage.keys.ts"
+      ],
+      "name": "storage.keys",
+      "kebab": "storage.keys",
+      "kind": "other"
+    },
+    {
+      "rel": "theme/_utilities.scss",
+      "parts": [
+        "theme",
+        "_utilities.scss"
+      ],
+      "name": "_utilities",
+      "kebab": "-utilities",
+      "kind": "other"
+    },
+    {
+      "rel": "utils/calculation.utils.ts",
+      "parts": [
+        "utils",
+        "calculation.utils.ts"
+      ],
+      "name": "calculation.utils",
+      "kebab": "calculation.utils",
+      "kind": "other"
+    },
+    {
+      "rel": "utils/debug.utils.ts",
+      "parts": [
+        "utils",
+        "debug.utils.ts"
+      ],
+      "name": "debug.utils",
+      "kebab": "debug.utils",
+      "kind": "other"
+    },
+    {
+      "rel": "utils/error-tracking.utils.ts",
+      "parts": [
+        "utils",
+        "error-tracking.utils.ts"
+      ],
+      "name": "error-tracking.utils",
+      "kebab": "error-tracking.utils",
+      "kind": "other"
+    }
+  ]
+}

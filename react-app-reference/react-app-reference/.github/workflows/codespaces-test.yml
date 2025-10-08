@@ -1,0 +1,100 @@
+name: 🧪 Codespaces Testing
+
+on:
+  # Manual trigger for testing
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of tests to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+        - all
+        - unit
+        - integration
+        - e2e
+        - mobile
+        - performance
+        - security
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: 📦 Install dependencies
+      run: npm ci
+      
+    - name: 🎭 Install Playwright browsers
+      run: npx playwright install --with-deps
+      
+    - name: 🏗️ Build application
+      run: npm run build
+      
+    - name: 🧪 Run Unit Tests
+      if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'unit' }}
+      run: npm run test:unit
+      
+    - name: 🔗 Run Integration Tests
+      if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'integration' }}
+      run: npm run test:integration
+      
+    - name: 🌐 Run E2E Tests
+      if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'e2e' }}
+      run: npm run test:e2e
+      
+    - name: 📱 Run Mobile Tests
+      if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'mobile' }}
+      run: npm run test:mobile
+      
+    - name: ⚡ Run Performance Tests
+      if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'performance' }}
+      run: npm run test:performance
+      
+    - name: 🔒 Run Security Scan
+      if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'security' }}
+      run: npm audit --audit-level=moderate
+      
+    - name: 📊 Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: |
+          playwright-results.json
+          playwright-results.xml
+          test-results/
+        retention-days: 7
+        
+    - name: 📈 Log Test Results
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const comment = `## 🧪 Test Results
+          
+          **Status**: ${context.job.status === 'success' ? '✅ Passed' : '❌ Failed'}
+          **Triggered by**: Manual workflow dispatch
+          **Test Type**: ${context.payload.inputs.test_type || 'all'}
+          
+          ### Test Summary
+          - **Unit Tests**: ${context.job.status === 'success' ? '✅' : '❌'}
+          - **Integration Tests**: ${context.job.status === 'success' ? '✅' : '❌'}
+          - **E2E Tests**: ${context.job.status === 'success' ? '✅' : '❌'}
+          - **Mobile Tests**: ${context.job.status === 'success' ? '✅' : '❌'}
+          - **Performance Tests**: ${context.job.status === 'success' ? '✅' : '❌'}
+          - **Security Scan**: ${context.job.status === 'success' ? '✅' : '❌'}
+          
+          [View detailed results](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+          `;
+          
+          console.log('Test results:', comment);

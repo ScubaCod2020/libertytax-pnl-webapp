@@ -1,0 +1,409 @@
+{
+  "mappings": [],
+  "missingInAngular": [
+    {
+      "rel": "components/BrandLogo.tsx",
+      "parts": [
+        "components",
+        "BrandLogo.tsx"
+      ],
+      "name": "BrandLogo",
+      "kebab": "brand-logo",
+      "kind": "component"
+    },
+    {
+      "rel": "components/BrandWatermark.tsx",
+      "parts": [
+        "components",
+        "BrandWatermark.tsx"
+      ],
+      "name": "BrandWatermark",
+      "kebab": "brand-watermark",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Dashboard/Dashboard.tsx",
+      "parts": [
+        "components",
+        "Dashboard",
+        "Dashboard.tsx"
+      ],
+      "name": "Dashboard",
+      "kebab": "dashboard",
+      "kind": "component"
+    },
+    {
+      "rel": "components/DebugPanel.tsx",
+      "parts": [
+        "components",
+        "DebugPanel.tsx"
+      ],
+      "name": "DebugPanel",
+      "kebab": "debug-panel",
+      "kind": "component"
+    },
+    {
+      "rel": "components/DebugSystem/DebugErrorBoundary.tsx",
+      "parts": [
+        "components",
+        "DebugSystem",
+        "DebugErrorBoundary.tsx"
+      ],
+      "name": "DebugErrorBoundary",
+      "kebab": "debug-error-boundary",
+      "kind": "component"
+    },
+    {
+      "rel": "components/DebugSystem/DebugSidebar.tsx",
+      "parts": [
+        "components",
+        "DebugSystem",
+        "DebugSidebar.tsx"
+      ],
+      "name": "DebugSidebar",
+      "kebab": "debug-sidebar",
+      "kind": "component"
+    },
+    {
+      "rel": "components/DebugSystem/DebugToggle.tsx",
+      "parts": [
+        "components",
+        "DebugSystem",
+        "DebugToggle.tsx"
+      ],
+      "name": "DebugToggle",
+      "kebab": "debug-toggle",
+      "kind": "component"
+    },
+    {
+      "rel": "components/DebugSystem/SuggestionManager.tsx",
+      "parts": [
+        "components",
+        "DebugSystem",
+        "SuggestionManager.tsx"
+      ],
+      "name": "SuggestionManager",
+      "kebab": "suggestion-manager",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Examples/ModularDemo.tsx",
+      "parts": [
+        "components",
+        "Examples",
+        "ModularDemo.tsx"
+      ],
+      "name": "ModularDemo",
+      "kebab": "modular-demo",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Footer.tsx",
+      "parts": [
+        "components",
+        "Footer.tsx"
+      ],
+      "name": "Footer",
+      "kebab": "footer",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Header.tsx",
+      "parts": [
+        "components",
+        "Header.tsx"
+      ],
+      "name": "Header",
+      "kebab": "header",
+      "kind": "component"
+    },
+    {
+      "rel": "components/InputsPanel.tsx",
+      "parts": [
+        "components",
+        "InputsPanel.tsx"
+      ],
+      "name": "InputsPanel",
+      "kebab": "inputs-panel",
+      "kind": "component"
+    },
+    {
+      "rel": "components/KPIStoplight.tsx",
+      "parts": [
+        "components",
+        "KPIStoplight.tsx"
+      ],
+      "name": "KPIStoplight",
+      "kebab": "kpistoplight",
+      "kind": "component"
+    },
+    {
+      "rel": "components/ProjectedPerformancePanel.tsx",
+      "parts": [
+        "components",
+        "ProjectedPerformancePanel.tsx"
+      ],
+      "name": "ProjectedPerformancePanel",
+      "kebab": "projected-performance-panel",
+      "kind": "component"
+    },
+    {
+      "rel": "components/ScenarioSelector.tsx",
+      "parts": [
+        "components",
+        "ScenarioSelector.tsx"
+      ],
+      "name": "ScenarioSelector",
+      "kebab": "scenario-selector",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Shared/AnalysisBlock.tsx",
+      "parts": [
+        "components",
+        "Shared",
+        "AnalysisBlock.tsx"
+      ],
+      "name": "AnalysisBlock",
+      "kebab": "analysis-block",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Shared/AppHeader.tsx",
+      "parts": [
+        "components",
+        "Shared",
+        "AppHeader.tsx"
+      ],
+      "name": "AppHeader",
+      "kebab": "app-header",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Shared/PerformanceCard.tsx",
+      "parts": [
+        "components",
+        "Shared",
+        "PerformanceCard.tsx"
+      ],
+      "name": "PerformanceCard",
+      "kebab": "performance-card",
+      "kind": "component"
+    },
+    {
+      "rel": "components/ValidatedInput.tsx",
+      "parts": [
+        "components",
+        "ValidatedInput.tsx"
+      ],
+      "name": "ValidatedInput",
+      "kebab": "validated-input",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard.tsx",
+      "parts": [
+        "components",
+        "Wizard.tsx"
+      ],
+      "name": "Wizard",
+      "kebab": "wizard",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/ExistingStoreSection.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "ExistingStoreSection.tsx"
+      ],
+      "name": "ExistingStoreSection",
+      "kebab": "existing-store-section",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/ExistingStoreSectionNew.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "ExistingStoreSectionNew.tsx"
+      ],
+      "name": "ExistingStoreSectionNew",
+      "kebab": "existing-store-section-new",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/FormField.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "FormField.tsx"
+      ],
+      "name": "FormField",
+      "kebab": "form-field",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/FormSection.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "FormSection.tsx"
+      ],
+      "name": "FormSection",
+      "kebab": "form-section",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/NewStoreSection.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "NewStoreSection.tsx"
+      ],
+      "name": "NewStoreSection",
+      "kebab": "new-store-section",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/StrategicAnalysis.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "StrategicAnalysis.tsx"
+      ],
+      "name": "StrategicAnalysis",
+      "kebab": "strategic-analysis",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/SuggestedFormField.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "SuggestedFormField.tsx"
+      ],
+      "name": "SuggestedFormField",
+      "kebab": "suggested-form-field",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/SuggestedInputDemo.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "SuggestedInputDemo.tsx"
+      ],
+      "name": "SuggestedInputDemo",
+      "kebab": "suggested-input-demo",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/ToggleQuestion.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "ToggleQuestion.tsx"
+      ],
+      "name": "ToggleQuestion",
+      "kebab": "toggle-question",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/WizardPage.tsx",
+      "parts": [
+        "components",
+        "Wizard",
+        "WizardPage.tsx"
+      ],
+      "name": "WizardPage",
+      "kebab": "wizard-page",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/calculations.ts",
+      "parts": [
+        "components",
+        "Wizard",
+        "calculations.ts"
+      ],
+      "name": "calculations",
+      "kebab": "calculations",
+      "kind": "component"
+    },
+    {
+      "rel": "components/Wizard/types.ts",
+      "parts": [
+        "components",
+        "Wizard",
+        "types.ts"
+      ],
+      "name": "types",
+      "kebab": "types",
+      "kind": "component"
+    },
+    {
+      "rel": "components/WizardInputs.tsx",
+      "parts": [
+        "components",
+        "WizardInputs.tsx"
+      ],
+      "name": "WizardInputs",
+      "kebab": "wizard-inputs",
+      "kind": "component"
+    },
+    {
+      "rel": "components/WizardReview.tsx",
+      "parts": [
+        "components",
+        "WizardReview.tsx"
+      ],
+      "name": "WizardReview",
+      "kebab": "wizard-review",
+      "kind": "component"
+    },
+    {
+      "rel": "components/WizardShell.tsx",
+      "parts": [
+        "components",
+        "WizardShell.tsx"
+      ],
+      "name": "WizardShell",
+      "kebab": "wizard-shell",
+      "kind": "component"
+    }
+  ],
+  "extraInAngular": [
+    "components/brand-watermark/brand-watermark.component.ts",
+    "components/dashboard/dashboard.component.ts",
+    "components/debug-system/debug-sidebar.component.html",
+    "components/debug-system/debug-sidebar.component.scss",
+    "components/debug-system/debug-sidebar.component.ts",
+    "components/debug-system/debug-system.component.ts",
+    "components/debug-system/debug-toggle.component.ts",
+    "components/debug-tool/debug-tool.component.ts",
+    "components/expenses/expenses.component.spec.ts",
+    "components/expenses/expenses.component.ts",
+    "components/footer/footer.component.html",
+    "components/footer/footer.component.scss",
+    "components/footer/footer.component.ts",
+    "components/header/header.component.html",
+    "components/header/header.component.scss",
+    "components/header/header.component.ts",
+    "components/income-drivers/income-drivers.component.ts",
+    "components/inputs-panel/inputs-panel.component.ts",
+    "components/kpi-stoplight/kpi-stoplight.component.ts",
+    "components/prior-year-performance/prior-year-performance.component.spec.ts",
+    "components/prior-year-performance/prior-year-performance.component.ts",
+    "components/projected-performance/projected-performance.component.ts",
+    "components/wizard-shell/wizard-shell.component.html",
+    "components/wizard-shell/wizard-shell.component.scss",
+    "components/wizard-shell/wizard-shell.component.ts",
+    "pages/dashboard/dashboard-page.component.ts",
+    "pages/existing-store/existing-store-page.component.ts",
+    "pages/health/health.component.ts",
+    "pages/reports/reports-page.component.ts",
+    "pages/wizard/step1-page.component.ts",
+    "pages/wizard/step2-page.component.ts"
+  ]
+}

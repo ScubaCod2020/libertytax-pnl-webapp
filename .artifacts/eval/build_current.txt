@@ -1,0 +1,11 @@
+npm error Missing script: "typecheck"
+npm error
+npm error Did you mean this?
+npm error   npm run type-check # run the "type-check" package script
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run
+npm error A complete log of this run can be found in: C:\Users\scodl\AppData\Local\npm-cache\_logs\2025-10-02T13_23_13_650Z-debug-0.log
+npm error No workspaces found:
+npm error   --workspace=angular
+npm error A complete log of this run can be found in: C:\Users\scodl\AppData\Local\npm-cache\_logs\2025-10-02T13_23_14_098Z-debug-0.log

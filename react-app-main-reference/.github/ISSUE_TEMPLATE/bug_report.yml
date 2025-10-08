@@ -1,0 +1,155 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! Please provide as much detail as possible.
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe what happened...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Steps to Reproduce
+      description: Clear steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Enter data '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+      placeholder: Describe what should have happened...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened
+      placeholder: Describe what actually happened...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      description: Which browser are you using?
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Mobile Chrome (iOS)
+        - Mobile Safari (iOS)
+        - Mobile Chrome (Android)
+        - Samsung Internet
+        - Other (specify in additional context)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device-type
+    attributes:
+      label: Device Type
+      description: What type of device are you using?
+      options:
+        - Desktop
+        - Tablet
+        - Mobile Phone
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: screen-resolution
+    attributes:
+      label: Screen Resolution/Device
+      description: Your screen resolution or device model
+      placeholder: "e.g., 1920x1080, iPhone 12 Pro, iPad Air"
+
+  - type: dropdown
+    id: wizard-step
+    attributes:
+      label: Wizard Step (if applicable)
+      description: Which step of the wizard were you on?
+      options:
+        - Welcome Page (Step 1)
+        - Inputs Page (Step 2)
+        - Review Page (Step 3)
+        - Dashboard (after completion)
+        - Debug Panel
+        - Not applicable
+
+  - type: dropdown
+    id: region
+    attributes:
+      label: Region Setting
+      description: Which region were you using?
+      options:
+        - United States
+        - Canada
+        - Not applicable
+
+  - type: checkboxes
+    id: calculation-issue
+    attributes:
+      label: Calculation Issues (check all that apply)
+      options:
+        - label: Dual-entry fields not syncing (% ↔ $)
+        - label: Projected values incorrect on Page 1
+        - label: KPI calculations wrong
+        - label: Preset scenarios not applying correctly
+        - label: Regional differences not working (US vs CA)
+        - label: Growth percentage calculations incorrect
+
+  - type: textarea
+    id: console-errors
+    attributes:
+      label: Console Errors
+      description: Any errors shown in browser console (F12 → Console tab)
+      placeholder: Paste any console errors here...
+
+  - type: textarea
+    id: debug-panel-data
+    attributes:
+      label: Debug Panel Data
+      description: If possible, open Debug Panel → State tab → Copy JSON and paste here
+      placeholder: Paste debug panel JSON data here (helps with troubleshooting)...
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context about the problem
+      placeholder: Add any other context, screenshots, or information...
+
+  - type: checkboxes
+    id: testing-checklist
+    attributes:
+      label: Testing Verification
+      description: Please verify you've tested these scenarios
+      options:
+        - label: I tried refreshing the page
+        - label: I tried in an incognito/private window
+        - label: I checked the browser console for errors
+        - label: I tried with different data values
