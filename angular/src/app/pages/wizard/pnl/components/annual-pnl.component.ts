@@ -53,13 +53,13 @@ interface ReportData {
 }
 
 @Component({
-  selector: 'app-pnl',
+  selector: 'app-annual-pnl',
   standalone: true,
   imports: [CommonModule, CurrencyPipe, DecimalPipe, DatePipe],
-  templateUrl: './pnl.component.html',
-  styleUrls: ['./pnl.component.scss'],
+  templateUrl: './annual-pnl.component.html',
+  styleUrls: ['./annual-pnl.component.scss'],
 })
-export class PnlComponent implements OnInit {
+export class AnnualPnlComponent implements OnInit {
   wizardState = inject(WizardStateService);
   private calculationService = inject(CalculationService);
   private pdfExport = inject(PDFExportService);
@@ -80,7 +80,7 @@ export class PnlComponent implements OnInit {
 
     // Combine wizard state and calculations for the report
     this.reportData$ = this.wizardState.answers$.pipe(
-      map((answers) => {
+      map(answers => {
         console.log('📋🔄 [P&L ANNUAL] Processing wizard answers:', answers);
 
         // Convert WizardAnswers to CalculationInputs
@@ -163,7 +163,7 @@ export class PnlComponent implements OnInit {
     this.wizardState.getComputedPropertiesSummary();
 
     // Subscribe to report data for debugging
-    this.reportData$.subscribe((reportData) => {
+    this.reportData$.subscribe(reportData => {
       console.log('📋🚀 [P&L ANNUAL] Annual report data updated:', reportData);
     });
 
@@ -306,11 +306,11 @@ export class PnlComponent implements OnInit {
 
     this.router
       .navigateByUrl('/wizard/reports')
-      .then((success) => {
+      .then(success => {
         console.log('📅🚀 [P&L ANNUAL] Navigation to monthly breakdown result:', success);
         console.log('📅🚀 [P&L ANNUAL] New route after navigation:', this.router.url);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('📅❌ [P&L ANNUAL] Navigation to monthly breakdown failed:', error);
       });
   }

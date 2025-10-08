@@ -1,1 +1,35 @@
-<app-reports></app-reports>
+<section class="pnl-hub">
+  <div class="page-header">
+    <h1>📋 P&L Reports</h1>
+    <p class="page-subtitle">Choose your report type to view detailed financial analysis</p>
+  </div>
+
+  <div class="report-navigation">
+    <div class="nav-buttons">
+      <button 
+        type="button" 
+        class="btn" 
+        [class.active]="reportType === 'annual'"
+        (click)="showAnnual()">
+        📊 Annual Summary
+      </button>
+      <button 
+        type="button" 
+        class="btn" 
+        [class.active]="reportType === 'monthly'"
+        (click)="showMonthly()">
+        📅 Monthly Breakdown
+      </button>
+    </div>
+  </div>
+
+  <div class="report-content">
+    <!-- Annual P&L Report -->
+    <app-annual-pnl *ngIf="reportType === 'annual'"></app-annual-pnl>
+    
+    <!-- Monthly P&L Report -->
+    <app-reports *ngIf="reportType === 'monthly'"></app-reports>
+  </div>
+</section>
+
+

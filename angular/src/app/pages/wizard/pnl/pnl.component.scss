@@ -1,5 +1,64 @@
-.pnl-stub {
-  padding: 16px;
+.pnl-hub {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 30px;
+
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+      font-size: 2.5rem;
+    }
+
+    .page-subtitle {
+      color: #7f8c8d;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+  }
+
+  .report-navigation {
+    margin-bottom: 30px;
+
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+
+      .btn {
+        padding: 12px 24px;
+        border: 2px solid #3498db;
+        background: white;
+        color: #3498db;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: #3498db;
+          color: white;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        &.active {
+          background: #3498db;
+          color: white;
+          box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+      }
+    }
+  }
+
+  .report-content {
+    min-height: 400px;
+  }
 }
 
 
