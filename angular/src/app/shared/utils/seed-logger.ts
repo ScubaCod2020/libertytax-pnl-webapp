@@ -1,4 +1,4 @@
-import { environment } from '../../../../../src/environments/environment';
+import { environment } from '@env/environment';
 
 export function logSeed(event: string, data?: unknown) {
   if (environment.seedingDebug) {

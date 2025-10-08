@@ -1,5 +1,5 @@
 import { CanActivateFn, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { environment } from '@env/environment';
 
 export const devBypassGuard: CanActivateFn = (
   _r: ActivatedRouteSnapshot,
