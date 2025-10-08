@@ -1,237 +1,146 @@
-name: deploy
+name: Build & Deploy
 
 on:
   push:
     branches:
-      - main
+      - chore/**
+      - feature/**
       - staging
-      - 'feature/*'
-      - 'fix/*'
-      - 'chore/*'
-  pull_request:
-    branches:
       - main
-      - staging
   workflow_dispatch:
-    inputs:
-      target_env:
-        description: Where to deploy?
-        type: choice
-        required: true
-        options: [Dev, Staging, Production]
-        default: Dev
-
-permissions:
-  contents: read
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref_name }}
-  cancel-in-progress: false
 
 jobs:
-  map-env:
-    name: Select environment
-    runs-on: ubuntu-latest
-    outputs:
-      env_name: ${{ steps.detect.outputs.env_name }}
-    steps:
-      - id: detect
-        name: Compute environment
-        shell: bash
-        run: |
-          set -euo pipefail
-          REF_NAME="${GITHUB_REF_NAME:-}"
-          EVENT="${GITHUB_EVENT_NAME:-}"
-
-          if [[ "$EVENT" == "workflow_dispatch" ]]; then
-            case "${{ inputs.target_env }}" in
-              Dev|dev|Preview|preview)         ENV_NAME="Preview" ;;
-              Staging|staging)                 ENV_NAME="Staging" ;;
-              Production|production|Prod|prod) ENV_NAME="Production" ;;
-              *)                               ENV_NAME="Preview" ;;
-            esac
-          elif [[ "$EVENT" == "pull_request" ]]; then
-            ENV_NAME="Preview"
-          elif [[ "$REF_NAME" == "staging" ]]; then
-            ENV_NAME="Staging"
-          elif [[ "$REF_NAME" == "main" || "$REF_NAME" == "master" ]]; then
-            ENV_NAME="Production"
-          else
-            ENV_NAME="Preview"
-          fi
-
-          echo "env_name=$ENV_NAME" >> "$GITHUB_OUTPUT"
-          echo "Selected environment: $ENV_NAME"
-
-  build:
+  build-and-deploy:
     name: Build & Deploy
-    needs: map-env
-    runs-on: [self-hosted, unraid]
+    runs-on: self-hosted
+    # If your runner has a custom label, add it here too:
+    # runs-on: [self-hosted, unraid-citadel-1]
+
     environment:
-      name: ${{ needs.map-env.outputs.env_name }}
+      name: preview  # <-- this pulls your Environment Variables (APP_ENV, DIST_DIR, etc.)
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      # Find lockfiles so setup-node caching won't error when none exist
-      - name: Find lockfiles (for caching)
-        id: lock
-        shell: bash
-        run: |
-          set -euo pipefail
-          # Collect existing npm lockfiles
-          paths="$(git ls-files -- '**/package-lock.json' || true)"
-          if [[ -n "$paths" ]]; then
-            {
-              echo "paths<<'EOF'"
-              echo "$paths"
-              echo "EOF"
-            } >> "$GITHUB_OUTPUT"
-            echo "Found lockfiles:"
-            echo "$paths"
-          else
-            echo "No package-lock.json files found. Will setup Node without cache-dependency-path."
-          fi
-
-      # Use caching only if we actually found lockfiles
-      - name: Setup Node (cached)
-        if: ${{ steps.lock.outputs.paths != '' }}
+      - name: Use Node 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: ${{ steps.lock.outputs.paths }}
+          cache-dependency-path: angular/package-lock.json
 
-      - name: Setup Node (no cache)
-        if: ${{ steps.lock.outputs.paths == '' }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      # Detect Angular workspace folder (robust)
-      - name: Locate Angular workspace
-        id: ngdir
+      - name: Resolve Angular workspace
+        id: ws
         shell: bash
         run: |
           set -euo pipefail
-          for d in angular apps/web client ClientApp frontend ui .; do
-            if [[ -f "$d/angular.json" ]]; then
-              echo "dir=$d" >> "$GITHUB_OUTPUT"
-              echo "Found Angular workspace at: $d"
-              exit 0
-            fi
-          done
-          echo "❌ Could not find angular.json at common locations." >&2
-          echo "Repo tree (level 2) for debugging:"
-          find . -maxdepth 2 -type f -name 'angular.json' -o -name 'package.json' | sed 's|^\./||'
-          exit 1
+          if [ -d angular ]; then DIR="angular"
+          elif [ -f angular.json ]; then DIR="."
+          else
+            CAND="$(git ls-files | grep -E '(^|/)angular\.json$' | head -n1 || true)"
+            [ -n "$CAND" ] || { echo "❌ No angular.json found"; exit 1; }
+            DIR="$(dirname "$CAND")"
+          fi
+          echo "dir=$DIR" >> "$GITHUB_OUTPUT"
+          echo "Angular workspace: $DIR"
 
-      # Install Angular workspace deps
-      - name: Install (Angular)
-        working-directory: ${{ steps.ngdir.outputs.dir }}
+      - name: Install deps
+        working-directory: ${{ steps.ws.outputs.dir }}
         run: npm ci
 
-      # Build Angular (uses default project unless BUILD_CONFIGURATION is set)
-      - name: Build (Angular)
-        working-directory: ${{ steps.ngdir.outputs.dir }}
-        run: npx ng build --configuration "${{ vars.BUILD_CONFIGURATION || 'production' }}"
+      - name: Build
+        working-directory: ${{ steps.ws.outputs.dir }}
+        env:
+          BUILD_CONFIGURATION: ${{ vars.BUILD_CONFIGURATION || 'production' }}
+        run: npx ng build --configuration "$BUILD_CONFIGURATION"
 
-      # Resolve build output directory from detected workspace
-      - name: Resolve build output directory
-        id: outdir
+      - name: Resolve OUTDIR (honor DIST_DIR, hard fail if missing)
+        id: out
         shell: bash
+        env:
+          DIST_DIR: ${{ vars.DIST_DIR }}
         run: |
           set -euo pipefail
-          WD="${{ steps.ngdir.outputs.dir }}"
-          if [[ -n "${{ vars.DIST_DIR }}" ]]; then
-            PATTERN="${{ vars.DIST_DIR }}"
-          else
-            # Default Angular 17+: dist/<project>/browser
-            if [[ "$WD" == "." ]]; then
-              PATTERN="dist/*/browser"
-            else
-              PATTERN="$WD/dist/*/browser"
-            fi
-          fi
-          CANDIDATE="$(ls -d ${PATTERN} 2>/dev/null | head -n1 || true)"
-          if [[ -z "$CANDIDATE" ]]; then
-            echo "❌ Could not find build output. Set repo variable DIST_DIR to your dist path." >&2
-            echo "Tried pattern: $PATTERN" >&2
-            echo "Dist tree (3 levels):"
-            if [[ "$WD" == "." ]]; then
-              find dist -maxdepth 3 -type d -print 2>/dev/null || true
-            else
-              find "$WD/dist" -maxdepth 3 -type d -print 2>/dev/null || true
-            fi
-            exit 1
-          fi
-          echo "outdir=$CANDIDATE" >> "$GITHUB_OUTPUT"
-          echo "Using OUTDIR=$CANDIDATE"
+          ROOT="${{ steps.ws.outputs.dir }}"
 
-      # Optional Vercel trigger (guarded by repo var SKIP_VERCEL)
-      - name: Trigger Vercel deploy (optional; gated by var)
-        if: ${{ vars.SKIP_VERCEL != 'true' }}
-        env:
-          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
-          BRANCH: ${{ github.ref_name }}
-          REPO: ${{ github.repository }}
-        run: |
-          if [[ -n "$HOOK" ]]; then
-            echo "POST $HOOK"
-            curl -fsSL -X POST -H "Content-Type: application/json" \
-              -d "{\"branch\":\"$BRANCH\",\"repo\":\"$REPO\"}" \
-              "$HOOK"
+          if [ -n "${DIST_DIR:-}" ]; then
+            OUT="$ROOT/$DIST_DIR"
           else
-            echo "No Vercel hook configured. Skipping."
+            OUT="$ROOT/dist/angular/browser"
           fi
 
-      # Compute Unraid deploy path (honors NGINX_DEPLOY_PATH if explicitly set)
-      - name: Compute Unraid deploy path
+          [ -d "$OUT" ] || { echo "❌ Build output not found at: $OUT"; find "$ROOT/dist" -maxdepth 3 -type d -print || true; exit 1; }
+
+          echo "outdir=$OUT" >> "$GITHUB_OUTPUT"
+          echo "Using OUTDIR=$OUT"
+
+      - name: Compute deploy target (ENV_NGINX_DEPLOY_PATH wins)
         id: target
+        shell: bash
         env:
-          ENV_NGINX_DEPLOY_PATH: ${{ vars.NGINX_DEPLOY_PATH }}
-          ENV_NGINX_ROOT: ${{ vars.NGINX_ROOT }}
-          ENV_APP_ENV: ${{ vars.APP_ENV }}
-          JOB_ENV_NAME: ${{ needs.map-env.outputs.env_name }}
-          ENV_APP_NAME: ${{ vars.APP_NAME || 'libertytax-pnl-webapp' }}
+          ENV_PATH: ${{ vars.ENV_NGINX_DEPLOY_PATH }}
+          FALLBACK_PATH: ${{ vars.NGINX_DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          if [ -n "${ENV_PATH:-}" ]; then
+            DEST="$ENV_PATH"
+          elif [ -n "${FALLBACK_PATH:-}" ]; then
+            DEST="$FALLBACK_PATH"
+          else
+            echo "❌ No deploy path provided. Set ENV_NGINX_DEPLOY_PATH in the environment."
+            exit 1
+          fi
+          mkdir -p "$DEST"
+          echo "path=$DEST" >> "$GITHUB_OUTPUT"
+          echo "Deploy target: $DEST"
+
+      - name: Rsync to target (with sane perms)
         shell: bash
         run: |
           set -euo pipefail
+          SRC="${{ steps.out.outputs.outdir }}"
+          DEST="${{ steps.target.outputs.path }}"
+          echo "Deploying from $SRC -> $DEST"
+          rsync -av --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r "${SRC}/" "${DEST}/"
 
-          if [[ -z "${ENV_NGINX_ROOT:-}" && -z "${ENV_NGINX_DEPLOY_PATH:-}" ]]; then
-            echo "❌ NGINX_ROOT or NGINX_DEPLOY_PATH must be set as an Environment/Repo var." >&2
-            exit 1
-          fi
-
-          # Derive APP_ENV if not explicitly set in environment vars
-          APP_ENV="${ENV_APP_ENV:-}"
-          if [[ -z "$APP_ENV" ]]; then
-            case "${JOB_ENV_NAME}" in
-              Preview)    APP_ENV="dev" ;;
-              Staging)    APP_ENV="staging" ;;
-              Production) APP_ENV="prod" ;;
-              *)          APP_ENV="dev" ;;
-            esac
-          fi
-
-          if [[ -n "${ENV_NGINX_DEPLOY_PATH:-}" ]]; then
-            PATH_OUT="$ENV_NGINX_DEPLOY_PATH"
-          else
-            PATH_OUT="$ENV_NGINX_ROOT/$APP_ENV/$ENV_APP_NAME"
-          fi
-
-          echo "path=$PATH_OUT" >> "$GITHUB_OUTPUT"
-          echo "Computed deploy path: $PATH_OUT"
-          echo "Resolved APP_ENV: $APP_ENV (from JOB_ENV_NAME=${JOB_ENV_NAME})"
-
-      - name: Copy build to Unraid Nginx
+      - name: Write deployment marker & list dest
+        shell: bash
         run: |
           set -euo pipefail
           DEST="${{ steps.target.outputs.path }}"
-          SRC="${{ steps.outdir.outputs.outdir }}"
-          echo "Deploy path: $DEST"
-          mkdir -p "$DEST"
-          rsync -av --delete "${SRC}/" "${DEST}/"
+          TS="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          {
+            echo "commit=${GITHUB_SHA}"
+            echo "timestamp=${TS}"
+            echo "runner=${RUNNER_NAME:-unknown}"
+            echo "env=${{ vars.APP_ENV || 'unknown' }}"
+          } > "${DEST}/.deployed.txt"
+
+          echo "---- .deployed.txt ----"
+          cat "${DEST}/.deployed.txt" || true
+
+          echo "---- dest listing ----"
+          ls -lah "${DEST}" | head -120 || true
+
+          echo "---- index.html head ----"
+          sed -n '1,60p' "${DEST}/index.html" || true
+
+      - name: Fix ownership (Unraid typical) — optional
+        shell: bash
+        continue-on-error: true
+        run: |
+          DEST="${{ steps.target.outputs.path }}"
+          chown -R nobody:users "$DEST" || true
+          find "$DEST" -type d -exec chmod 775 {} \; || true
+          find "$DEST" -type f -exec chmod 664 {} \; || true
+
+      - name: Reload NGINX if command provided
+        if: ${{ vars.ENV_NGINX_RELOAD_CMD != '' }}
+        shell: bash
+        env:
+          RELOAD_CMD: ${{ vars.ENV_NGINX_RELOAD_CMD }}
+        run: |
+          set -euo pipefail
+          echo "Reloading NGINX with: $RELOAD_CMD"
+          bash -lc "$RELOAD_CMD"
