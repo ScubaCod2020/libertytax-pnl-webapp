@@ -1,0 +1,18 @@
+name: runner-ping
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ping:
+    name: self-hosted runner check
+    runs-on: [self-hosted, unraid]
+    steps:
+      - name: Show runner info
+        run: |
+          echo "Runner: $RUNNER_NAME ($RUNNER_OS/$RUNNER_ARCH)"
+          echo "Repo:   $GITHUB_REPOSITORY"
+          echo "Ref:    $GITHUB_REF / $GITHUB_REF_NAME"
+          echo "Actor:  $GITHUB_ACTOR"
+          echo "WS:     $GITHUB_WORKSPACE"
+          ls -la
