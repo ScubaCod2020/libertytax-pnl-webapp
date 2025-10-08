@@ -1,11 +1,11 @@
 <section class="wizard-step wizard-step--wide">
-  <div class="page-header" *ngIf="storeTypeInfo$ | async as storeInfo">
-    <h1>{{ storeInfo.title }}</h1>
-    <p class="page-subtitle">{{ storeInfo.description }}</p>
+  <div class="page-header">
+    <h1>{{ storeTypeInfo.title }}</h1>
+    <p class="page-subtitle">{{ storeTypeInfo.description }}</p>
   </div>
   <div class="step-body">
     <!-- Existing store shows PY + Projected; New store shows Target -->
-    <ng-container *ngIf="(storeType$ | async) === 'existing'; else newStore">
+    <ng-container *ngIf="storeType === 'existing'; else newStore">
       <app-py-income-drivers></app-py-income-drivers>
       <app-projected-income-drivers></app-projected-income-drivers>
     </ng-container>
