@@ -180,3 +180,52 @@ Parameter 'v' implicitly has an 'any' type
 _Report generated: October 8, 2025_  
 _Integration method: Angular Legacy Normalization_  
 _All branches now consolidated in `dev_09202025`_
+
+---
+
+## 🚀 Wave 2 merges (2025-10-08 01:54)
+
+**Target Branches:** 4 feature branches (oldest → newest)  
+**Base Branch:** `dev_09202025`  
+**Status:** ✅ **1/4 SUCCESSFUL** + 3 handled appropriately
+
+### **Merge Results:**
+
+| Branch                       | Status         | Method              | Notes                                                          |
+| ---------------------------- | -------------- | ------------------- | -------------------------------------------------------------- |
+| `feat/Angular_test_09252025` | ❌ **SKIPPED** | N/A                 | Branch deleted from remote                                     |
+| `feature/rebuild-angular`    | ❌ **SKIPPED** | N/A                 | Branch deleted from remote                                     |
+| `feature/env-check`          | ✅ **MERGED**  | Conflict resolution | 2 conflicts resolved (CI/docs)                                 |
+| `chore/handoff-and-docs`     | 🔄 **PARKED**  | Integration branch  | 200+ conflicts → `integration/chore-handoff-and-docs-into-dev` |
+
+### **Successful Merge Details:**
+
+**`feature/env-check`** ✅
+
+- **Conflicts:** `.github/workflows/deploy.yml`, `README.md`
+- **Resolution Strategy:** Kept BASE versions (comprehensive Vercel workflow, project docs)
+- **Validation:** ✅ TypeScript clean, ✅ Angular build successful
+- **Archive Tag:** `archive/feature-env-check-20251008-0150`
+
+### **Complex Merge Parked:**
+
+**`chore/handoff-and-docs`** 🔄
+
+- **Issue:** Massive structural conflicts (200+ files affected)
+- **Conflicts:** Complete Angular app restructure, documentation reorganization, CI/workflow overhaul
+- **Action:** Parked to `integration/chore-handoff-and-docs-into-dev` per >20min guardrail
+- **Archive Tag:** `archive/chore-handoff-and-docs-20251008-0153`
+- **Note:** Described as "final authority working build" - requires careful manual resolution
+
+### **Safety Measures:**
+
+- ✅ Safety snapshot: `safety/dev_09202025-premerge-20251008-0148`
+- ✅ Archive tags created for all source branches
+- ✅ Integration branch created for complex conflicts
+- ✅ Build validation after each successful merge
+
+### **Final State:**
+
+- **dev_09202025:** ✅ Green build with 1 additional feature integrated
+- **Integration branch:** Available for complex merge resolution
+- **Missing branches:** 2 branches already deleted from remote (no action needed)
