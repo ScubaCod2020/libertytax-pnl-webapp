@@ -566,7 +566,7 @@ export class WizardStateService {
       'pyOtherIncome',
     ];
 
-    return userInputFields.some((field) => {
+    return userInputFields.some(field => {
       if (!(field in updates)) {
         return false;
       }
@@ -592,7 +592,7 @@ export class WizardStateService {
       'projectedExpenses',
     ];
 
-    return userInputFields.some((field) => field in updates);
+    return userInputFields.some(field => field in updates);
   }
 
   private applyRegionalDefaults(answers: WizardAnswers): WizardAnswers {
@@ -1394,10 +1394,11 @@ export class WizardStateService {
       taxRushRoyaltiesPct: region === 'CA' ? 6 : 0,
       shortagesPct: 2,
       miscPct: Math.round(miscSeedPct * 10) / 10,
+      expensesSeeded: true, // Mark as seeded after applying defaults
     };
 
     const updates: Partial<WizardAnswers> = {};
-    (Object.keys(defaults) as Array<keyof WizardAnswers>).forEach((key) => {
+    (Object.keys(defaults) as Array<keyof WizardAnswers>).forEach(key => {
       const value = defaults[key];
       if (value === undefined) {
         return;
@@ -1414,6 +1415,12 @@ export class WizardStateService {
     if (Object.keys(updates).length > 0) {
       this.updateAnswers(updates);
     }
+  }
+
+  // Check if upstream data has changed and expenses need to be re-seeded
+  shouldReseedExpenses(): boolean {
+    // Only re-seed if expenses haven't been seeded yet
+    return !this.answers.expensesSeeded;
   }
 
   resetEverything(): void {

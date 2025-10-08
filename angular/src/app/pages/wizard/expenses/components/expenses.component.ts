@@ -54,13 +54,13 @@ export class ExpensesFormComponent implements OnInit {
     console.log('💰 [EXPENSES FORM] Loading - triggering computed properties summary...');
     this.wizardState.getComputedPropertiesSummary();
 
-    // Ensure first-load seeding without user having to click Reset
-    if (!this.wizardState.answers.expensesSeeded) {
+    // Only seed expenses if they haven't been seeded yet (first load from income drivers)
+    // This prevents re-seeding when navigating back from P&L or Dashboard
+    if (this.wizardState.shouldReseedExpenses()) {
       console.log('💰 [EXPENSES FORM] First load seeding → strategic defaults');
       this.wizardState.resetExpenseDefaults(true);
-    } else if (!this.hasUserExpenseOverrides()) {
-      console.log('💰 [EXPENSES FORM] No user overrides detected; applying safe defaults');
-      this.wizardState.resetExpenseDefaults();
+    } else {
+      console.log('💰 [EXPENSES FORM] Expenses already seeded, using existing data');
     }
 
     // Force clear any stuck loading overlays after expenses component loads
