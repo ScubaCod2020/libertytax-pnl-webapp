@@ -118,6 +118,7 @@ export interface WizardAnswers {
   expenseBaselines?: Record<string, number>;
   expenseNotes?: Record<string, string>;
   expensesSeeded?: boolean;
+  lastExpensesSeedHash?: string; // Hash of upstream state when expenses were last seeded
   minRecommendedExpenses?: number;
   maxRecommendedExpenses?: number;
 

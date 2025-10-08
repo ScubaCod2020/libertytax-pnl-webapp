@@ -5,6 +5,7 @@ import type { WizardAnswers } from '../../domain/types/wizard.types';
 import { BiDirService } from './bidir/bidir.service';
 import { logger } from '../logger';
 import { ProjectedService } from '../../services/projected.service';
+import { stableHash } from '../../shared/utils/stable-hash';
 
 export type StoreType = 'new' | 'existing';
 
@@ -15,6 +16,24 @@ export interface WizardSelections {
   hasOtherIncome: boolean;
   localAvgRent?: number;
   sqft?: number;
+}
+
+export interface IncomeDriversState {
+  region: RegionCode;
+  storeType: StoreType;
+  projectedTaxPrepReturns?: number;
+  avgNetFee?: number;
+  projectedAvgNetFee?: number;
+  projectedGrossFees?: number;
+  projectedTaxPrepIncome?: number;
+  discountsPct?: number;
+  discountsAmt?: number;
+  otherIncome?: number;
+  taxRushReturns?: number;
+  taxRushAvgNetFee?: number;
+  taxRushGrossFees?: number;
+  handlesTaxRush?: boolean;
+  hasOtherIncome?: boolean;
 }
 
 const STORAGE_KEY = 'wizard_state_v1';
@@ -1394,7 +1413,6 @@ export class WizardStateService {
       taxRushRoyaltiesPct: region === 'CA' ? 6 : 0,
       shortagesPct: 2,
       miscPct: Math.round(miscSeedPct * 10) / 10,
-      expensesSeeded: true, // Mark as seeded after applying defaults
     };
 
     const updates: Partial<WizardAnswers> = {};
@@ -1417,10 +1435,67 @@ export class WizardStateService {
     }
   }
 
-  // Check if upstream data has changed and expenses need to be re-seeded
-  shouldReseedExpenses(): boolean {
-    // Only re-seed if expenses haven't been seeded yet
-    return !this.answers.expensesSeeded;
+  // Centralized seeding decision - single source of truth
+  shouldReseedExpenses(upstream?: IncomeDriversState): boolean {
+    const currentUpstream = upstream || this.getCurrentIncomeDriversState();
+    const nextHash = stableHash(currentUpstream);
+
+    // Always seed if never seeded before
+    if (!this.answers.expensesSeeded) {
+      logger.debug('🌱 [SEEDING] First time seeding expenses');
+      return true;
+    }
+
+    // Re-seed if upstream state has changed
+    if (this.answers.lastExpensesSeedHash !== nextHash) {
+      logger.debug('🌱 [SEEDING] Upstream state changed, re-seeding expenses', {
+        oldHash: this.answers.lastExpensesSeedHash,
+        newHash: nextHash,
+        upstream: currentUpstream,
+      });
+      return true;
+    }
+
+    logger.debug('🌱 [SEEDING] Upstream state unchanged, skipping re-seed');
+    return false;
+  }
+
+  // Mark expenses as seeded with current upstream state
+  markExpensesSeeded(upstream?: IncomeDriversState): void {
+    const currentUpstream = upstream || this.getCurrentIncomeDriversState();
+    const nextHash = stableHash(currentUpstream);
+
+    this.updateAnswers({
+      lastExpensesSeedHash: nextHash,
+      expensesSeeded: true,
+    });
+
+    logger.debug('🌱 [SEEDING] Expenses marked as seeded', {
+      hash: nextHash,
+      upstream: currentUpstream,
+    });
+  }
+
+  // Extract current income drivers state for seeding decisions
+  private getCurrentIncomeDriversState(): IncomeDriversState {
+    const answers = this.answers;
+    return {
+      region: answers.region || 'US',
+      storeType: answers.storeType || 'new',
+      projectedTaxPrepReturns: answers.projectedTaxPrepReturns,
+      avgNetFee: answers.avgNetFee,
+      projectedAvgNetFee: answers.projectedAvgNetFee,
+      projectedGrossFees: answers.projectedGrossFees,
+      projectedTaxPrepIncome: answers.projectedTaxPrepIncome,
+      discountsPct: answers.discountsPct,
+      discountsAmt: answers.discountsAmt,
+      otherIncome: answers.otherIncome,
+      taxRushReturns: answers.taxRushReturns,
+      taxRushAvgNetFee: answers.taxRushAvgNetFee,
+      taxRushGrossFees: answers.taxRushGrossFees,
+      handlesTaxRush: answers.handlesTaxRush,
+      hasOtherIncome: answers.hasOtherIncome,
+    };
   }
 
   resetEverything(): void {
