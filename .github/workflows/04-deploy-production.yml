@@ -1,12 +1,13 @@
 name: "04 → Deploy to Production"
 
 on:
-  workflow_run:
-    workflows: ["03 → Deploy to Staging"]
-    types: [completed]
-    branches: [ main ]
+  # Manual deployment only - no automatic triggers
   workflow_dispatch:
     inputs:
+      deployment_reason:
+        description: 'Reason for production deployment'
+        required: true
+        type: string
       emergency_deploy:
         description: 'Emergency deployment (skip staging validation)'
         required: false
@@ -28,23 +29,25 @@ jobs:
     - name: 🔍 Check production deployment prerequisites
       id: check
       run: |
-        STAGING_SUCCESS="${{ github.event.workflow_run.conclusion == 'success' }}"
         IS_MAIN_BRANCH="${{ github.ref == 'refs/heads/main' }}"
         EMERGENCY_DEPLOY="${{ inputs.emergency_deploy }}"
+        DEPLOYMENT_REASON="${{ inputs.deployment_reason }}"
         
-        echo "Staging Success: $STAGING_SUCCESS"
         echo "Main Branch: $IS_MAIN_BRANCH"  
         echo "Emergency Deploy: $EMERGENCY_DEPLOY"
+        echo "Deployment Reason: $DEPLOYMENT_REASON"
         
-        if [[ "$IS_MAIN_BRANCH" == "true" && ("$STAGING_SUCCESS" == "true" || "$EMERGENCY_DEPLOY" == "true") ]]; then
+        if [[ "$IS_MAIN_BRANCH" == "true" ]]; then
           echo "should_deploy=true" >> $GITHUB_OUTPUT
           
           if [[ "$EMERGENCY_DEPLOY" == "true" ]]; then
             echo "deployment_type=emergency" >> $GITHUB_OUTPUT
-            echo "🚨 EMERGENCY DEPLOYMENT - Bypassing normal validation"
+            echo "🚨 EMERGENCY DEPLOYMENT - Manual override initiated"
+            echo "🚨 Reason: $DEPLOYMENT_REASON"
           else
-            echo "deployment_type=normal" >> $GITHUB_OUTPUT
-            echo "✅ Normal production deployment - staging validation passed"
+            echo "deployment_type=manual" >> $GITHUB_OUTPUT
+            echo "✅ MANUAL production deployment initiated"
+            echo "📋 Reason: $DEPLOYMENT_REASON"
           fi
         else
           echo "should_deploy=false" >> $GITHUB_OUTPUT
@@ -88,9 +91,11 @@ jobs:
           npm ci
           npm run build
           
-          # Quick validation
-          [ -f "dist/index.html" ] || (echo "❌ Build failed" && exit 1)
-          echo "✅ Emergency build completed"
+          # Quick validation - Angular output directory
+          DIST_DIR="dist/libertytax-pnl-angular/browser"
+          INDEX_HTML="$DIST_DIR/index.html"
+          [ -f "$INDEX_HTML" ] || (echo "❌ Build failed - missing $INDEX_HTML" && exit 1)
+          echo "✅ Manual build completed"
         else
           echo "✅ Using existing build artifacts"
         fi
@@ -157,8 +162,8 @@ jobs:
           exit 1
         fi
         
-        # JavaScript bundles
-        if echo "$RESPONSE" | grep -q "assets/.*\.js"; then
+        # JavaScript bundles  
+        if echo "$RESPONSE" | grep -q "main.*\.js"; then
           echo "✅ JavaScript bundles loaded"
         else
           echo "❌ JavaScript bundles missing"
@@ -166,18 +171,18 @@ jobs:
         fi
         
         # CSS bundles
-        if echo "$RESPONSE" | grep -q "assets/.*\.css"; then
+        if echo "$RESPONSE" | grep -q "styles.*\.css"; then
           echo "✅ CSS bundles loaded"
         else
           echo "❌ CSS bundles missing"
           exit 1
         fi
         
-        # React mount point
-        if echo "$RESPONSE" | grep -q '<div id="app">'; then
-          echo "✅ React application mount point verified"
+        # Angular app root
+        if echo "$RESPONSE" | grep -E "<app-root|<title>" > /dev/null; then
+          echo "✅ Angular application mount point verified"
         else
-          echo "❌ React mount point missing"
+          echo "❌ Angular application mount point missing"
           exit 1
         fi
         

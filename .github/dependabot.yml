@@ -1,9 +1,14 @@
 version: 2
 updates:
+<<<<<<< HEAD
+=======
+  # Enable version updates for npm
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+<<<<<<< HEAD
     open-pull-requests-limit: 5
   - package-ecosystem: "npm"
     directory: "/angular"
@@ -14,3 +19,75 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+=======
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "⬆️"
+      prefix-development: "⬆️"
+      include: "scope"
+    reviewers:
+      - "devops-team"
+    assignees:
+      - "devops-team"
+    labels:
+      - "dependencies"
+      - "automated"
+    ignore:
+      # Ignore major version updates for now
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # Enable security updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "🔒"
+    reviewers:
+      - "security-team"
+      - "devops-team"
+    assignees:
+      - "security-team"
+    labels:
+      - "security"
+      - "dependencies"
+      - "priority:high"
+
+  # Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "10:00"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "🐍"
+    reviewers:
+      - "backend-team"
+    assignees:
+      - "backend-team"
+    labels:
+      - "python"
+      - "dependencies"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 2
+    commit-message:
+      prefix: "🔄"
+    reviewers:
+      - "devops-team"
+    assignees:
+      - "devops-team"
+    labels:
+      - "github-actions"
+      - "infrastructure"
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive

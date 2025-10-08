@@ -1,0 +1,14 @@
+[
+  {
+    "url": "http://localhost:3001/",
+    "isRepresentativeRun": true,
+    "htmlPath": "D:\\Dev\\liberty\\libertytax-pnl-webapp\\.triage\\lh\\localhost--2025_10_02_19_57_33.report.html",
+    "jsonPath": "D:\\Dev\\liberty\\libertytax-pnl-webapp\\.triage\\lh\\localhost--2025_10_02_19_57_33.report.json",
+    "summary": {
+      "performance": 1,
+      "accessibility": 0.9,
+      "best-practices": 0.96,
+      "seo": 0.9
+    }
+  }
+]

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Global default owners (fallback)
 *       @ScubaCod2020
 
@@ -14,6 +15,8 @@ ops/**                @ScubaCod2020
 
 # Docs & guides
 docs/**               @ScubaCod2020
+=======
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
 # Code Owners for Liberty Tax P&L Webapp
 # These users/teams will be automatically requested for review
 # when someone opens a pull request that modifies matching files.

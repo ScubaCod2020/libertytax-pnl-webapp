@@ -1,0 +1,158 @@
+<<<<<<< HEAD
+{
+  "name": "libertytax-pnl-webapp",
+  "version": "0.5.0-preview.4",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "vitest run --coverage",
+    "test:unit:watch": "vitest",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:domain": "vitest run --config vitest.domain.config.ts",
+    "test:e2e": "playwright test -c playwright.config.ts",
+    "e2e": "npx playwright test -c playwright.angular.config.ts --reporter=line",
+    "test:e2e:headed": "playwright test -c playwright.config.ts --headed",
+    "test:mobile": "playwright test --config=playwright.mobile.config.js",
+    "test:performance": "lhci autorun",
+    "test:github": "node scripts/github-test-integration.js",
+    "lint": "eslint --no-eslintrc --config .eslintrc.cjs react-app-reference/react-app-reference/src --ext .ts,.tsx",
+    "lint:fix": "eslint --no-eslintrc --config .eslintrc.cjs react-app-reference/react-app-reference/src --ext .ts,.tsx --fix",
+    "format": "prettier --write \"react-app-reference/react-app-reference/src/**/*.{ts,tsx,css,json,md}\"",
+    "format:check": "prettier --check \"react-app-reference/react-app-reference/src/**/*.{ts,tsx,css,json,md}\"",
+    "type-check": "tsc --noEmit",
+    "validate": "npm run type-check && npm run lint && npm run format:check && npm run test",
+    "ai:generate-tests": "node scripts/ai-test-generator.js",
+    "ai:audit-accessibility": "node scripts/automated-accessibility-audit.js",
+    "ai:monitor-performance": "node scripts/automated-performance-monitor.js",
+    "ai:full-audit": "npm run ai:audit-accessibility && npm run ai:monitor-performance",
+    "dev:react": "vite --port 3000 --strictPort",
+    "dev:angular": "npm run dev:angular --prefix angular",
+    "dev:dual": "concurrently -n react,angular -c blue,green \"npm run dev:react\" \"npm run dev:angular\"",
+    "graph:components": "node scripts/generate-components-graph.js",
+    "graph:render": "npx --yes @mermaid-js/mermaid-cli -i docs/architecture/components-graph.mmd -o docs/architecture/components-graph.svg",
+    "docs:validate-index": "node scripts/docs-index-validate.js",
+    "api:clients": "node scripts/generate-api-clients.js",
+    "maint:openapi": "npm run api:lint && npm run api:clients",
+    "test:wizard": "vitest run --config vitest.wizard.config.ts",
+    "test:e2e:react": "cross-env PW_BASEURL=http://localhost:3000 npx playwright test -c playwright.config.ts",
+    "test:e2e:angular": "cross-env PW_BASEURL=http://localhost:4200 npx playwright test -c playwright.config.js",
+    "api:types": "node scripts/generate-api-types.js",
+    "deploy:staging": "echo 'Use GitHub Actions workflow: Deploy to Staging'",
+    "hooks:doctor": "node -e \"console.log('Husky:', require('fs').existsSync('.husky/pre-commit') ? 'pre-commit present' : 'missing')\"",
+    "validate:progress-log": "node scripts/validate-progress-log.js",
+    "api:lint": "spectral lint openapi/openapi.yaml",
+    "mdlint": "markdownlint \"**/*.md\" --ignore node_modules",
+    "mdlint:fix": "markdownlint \"**/*.md\" --fix --ignore node_modules",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^11.10.1",
+    "@playwright/test": "^1.40.0",
+    "@stoplight/spectral-cli": "^6.15.0",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.54.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
+    "husky": "^9.0.0",
+    "jsdom": "^23.0.1",
+    "lint-staged": "^15.5.2",
+    "markdownlint-cli": "^0.45.0",
+    "openapi-typescript": "^6.7.6",
+    "prettier": "^3.1.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.6",
+    "vitest": "^3.2.4",
+    "wait-on": "^7.2.0",
+    "yaml": "^2.8.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  }
+=======
+﻿{
+    "name":  "libertytax-pnl-angular",
+    "version":  "0.0.0",
+    "scripts":  {
+                    "ng":  "ng",
+                    "start":  "ng serve",
+                    "build":  "ng build",
+                    "watch":  "ng build --watch --configuration development",
+                    "test":  "ng test",
+                    "preview":  "npx http-server dist/libertytax-pnl-angular/browser -p 4173 -s",
+                    "parity:audit":  "node tools/parity-audit.mjs",
+                "parity:inventory":  "node tools/parity-inventory.mjs",
+                "cursor:run": "pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass -File scripts/cursor-run.ps1"
+                },
+    "prettier":  {
+                     "printWidth":  100,
+                     "singleQuote":  true,
+                     "overrides":  [
+                                       {
+                                           "files":  "*.html",
+                                           "options":  {
+                                                           "parser":  "angular"
+                                                       }
+                                       }
+                                   ]
+                 },
+    "private":  true,
+    "dependencies":  {
+                         "@angular/common":  "^20.3.0",
+                         "@angular/compiler":  "^20.3.0",
+                         "@angular/core":  "^20.3.0",
+                         "@angular/forms":  "^20.3.0",
+                         "@angular/platform-browser":  "^20.3.0",
+                         "@angular/router":  "^20.3.0",
+                         "rxjs":  "~7.8.0",
+                         "tslib":  "^2.3.0",
+                         "zone.js":  "~0.15.0"
+                     },
+    "devDependencies":  {
+                            "@angular/build":  "^20.3.1",
+                            "@angular/cli":  "^20.3.1",
+                            "@angular/compiler-cli":  "^20.3.0",
+                            "@types/jasmine":  "~5.1.0",
+                            "jasmine-core":  "~5.9.0",
+                            "karma":  "~6.4.0",
+                            "karma-chrome-launcher":  "~3.2.0",
+                            "karma-coverage":  "~2.2.0",
+                            "karma-jasmine":  "~5.1.0",
+                            "karma-jasmine-html-reporter":  "~2.1.0",
+                            "typescript":  "~5.9.2"
+                        },
+    "engines":  {
+                    "node":  "\u003e=20 \u003c21"
+                },
+    "description":  "This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.1.",
+    "main":  "index.js",
+    "keywords":  [
+
+                 ],
+    "author":  "",
+    "license":  "ISC",
+    "type":  "commonjs"
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
+}

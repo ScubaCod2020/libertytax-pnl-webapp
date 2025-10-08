@@ -1,0 +1,71 @@
+{
+  "project": {
+    "name": "libertytax-pnl-webapp",
+    "type": "react-app",
+    "framework": "React",
+    "language": "TypeScript",
+    "packageManager": "npm",
+    "description": "Liberty Tax P&L Budget & Forecast Web Application"
+  },
+  "deployment": {
+    "platform": "vercel",
+    "stages": ["preview", "staging", "production"],
+    "domains": {
+      "preview": "libertytax-pnl-webapp-preview.vercel.app",
+      "staging": "libertytax-pnl-webapp-staging.vercel.app",
+      "production": "libertytax-pnl.vercel.app"
+    },
+    "ports": {
+      "preview": 3001,
+      "staging": 3002,
+      "production": 3000
+    }
+  },
+  "testing": {
+    "unit": true,
+    "integration": true,
+    "e2e": true,
+    "mobile": true,
+    "performance": true,
+    "security": true,
+    "coverage": {
+      "threshold": 80,
+      "enabled": true
+    }
+  },
+  "teams": {
+    "frontend": true,
+    "backend": true,
+    "qa": true,
+    "devops": true,
+    "security": true,
+    "ai": true
+  },
+  "notifications": {
+    "slack": {
+      "enabled": false,
+      "webhook": ""
+    },
+    "email": {
+      "enabled": false,
+      "recipients": ""
+    },
+    "github": {
+      "enabled": true,
+      "comments": true,
+      "statusChecks": true
+    }
+  },
+  "secrets": {
+    "required": [
+      "VERCEL_TOKEN",
+      "VERCEL_ORG_ID", 
+      "VERCEL_PROJECT_ID"
+    ],
+    "optional": [
+      "SLACK_WEBHOOK_URL",
+      "SNYK_TOKEN",
+      "LHCI_GITHUB_APP_TOKEN"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+Γ£à  .lighthouseci/ directory writable
+Γ£à  Configuration file found
+Γ£à  Chrome installation found
+ΓÜá∩╕Å   GitHub token not set
+Healthcheck passed!
+
+Started a web server with "npx http-server angular/dist/angular -p 3001"...
+WARNING: Timed out waiting for the server to start listening.
+         Ensure the server prints a pattern that matches /listen|ready/i when it is ready.
+Running Lighthouse 1 time(s) on http://localhost:3001/
+Run #1...done.
+Done running Lighthouse!
+
+
+Dumping 1 reports to disk at D:\Dev\liberty\libertytax-pnl-webapp\.triage\lh...
+Done writing reports to disk.
+
+Done running autorun.

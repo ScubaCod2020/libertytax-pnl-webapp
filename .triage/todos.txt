@@ -1,0 +1,11 @@
+angular/src/app/core/services/kpi/kpi-adapter.service.ts:17:       rentOwnerOccupied: false, // TODO: derive from answers when field exists
+angular/src/app/core/services/kpi/kpi-rules-v2.service.ts:57:   // TODO: Inject real config once YAML loader exists
+angular/src/app/core/services/rent-guard/rent-guard.service.ts:10:     // TODO: redistribute non-rent categories to hit TARGET_TOTAL_PCT; do not mutate input.
+angular/src/app/domain/calculations/adapters.ts:48: export function mapReactInputsToDomain(inputs: ReactCalcInputsLike): CalculationInputs {
+angular/src/app/domain/calculations/adapters.ts:53:   const domainInputs = mapReactInputsToDomain(inputs);
+angular/src/app/domain/types/wizard.types.ts:116:   // Derived expense values for export (TODO: define ExpenseValues interface if needed)
+angular/src/app/pages/dashboard/components/projected-performance-panel.component.ts:100:       TODO: FUTURE ENHANCEMENT - Projected Performance Goals Section
+angular/src/app/services/excel-export.service.ts:18:     // TODO: Install exceljs when export functionality is needed
+angular/src/app/services/excel-export.service.ts:22:   // TODO: Uncomment these methods when exceljs is installed
+angular/src/app/services/pdf-export.service.ts:11:    * TODO: Install jspdf and html2canvas packages to enable this feature
+angular/src/app/services/pdf-export.service.ts:24:    * TODO: Install jspdf package to enable this feature

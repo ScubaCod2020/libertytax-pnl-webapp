@@ -1,7 +1,12 @@
 {
   "config": {
+<<<<<<< HEAD
     "configFile": "E:\\dev\\libertytax-pnl-webapp\\playwright.config.ts",
     "rootDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
+=======
+    "configFile": "D:\\Dev\\liberty\\libertytax-pnl-webapp\\playwright.config.ts",
+    "rootDir": "D:/Dev/liberty/libertytax-pnl-webapp/tests",
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
     "forbidOnly": false,
     "fullyParallel": true,
     "globalSetup": null,
@@ -11,7 +16,11 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
+<<<<<<< HEAD
       "actualWorkers": 2
+=======
+      "actualWorkers": 1
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
     },
     "preserveOutput": "always",
     "reporter": [
@@ -39,6 +48,7 @@
     "quiet": false,
     "projects": [
       {
+<<<<<<< HEAD
         "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
@@ -48,6 +58,17 @@
         "id": "chromium",
         "name": "chromium",
         "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
+=======
+        "outputDir": "D:/Dev/liberty/libertytax-pnl-webapp/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "D:/Dev/liberty/libertytax-pnl-webapp/tests",
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -55,6 +76,7 @@
         "timeout": 30000
       },
       {
+<<<<<<< HEAD
         "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
@@ -64,6 +86,17 @@
         "id": "firefox",
         "name": "firefox",
         "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
+=======
+        "outputDir": "D:/Dev/liberty/libertytax-pnl-webapp/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "D:/Dev/liberty/libertytax-pnl-webapp/tests",
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -71,6 +104,7 @@
         "timeout": 30000
       },
       {
+<<<<<<< HEAD
         "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
@@ -80,6 +114,17 @@
         "id": "webkit",
         "name": "webkit",
         "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
+=======
+        "outputDir": "D:/Dev/liberty/libertytax-pnl-webapp/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "D:/Dev/liberty/libertytax-pnl-webapp/tests",
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -87,6 +132,7 @@
         "timeout": 30000
       },
       {
+<<<<<<< HEAD
         "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
@@ -96,6 +142,17 @@
         "id": "Mobile Chrome",
         "name": "Mobile Chrome",
         "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
+=======
+        "outputDir": "D:/Dev/liberty/libertytax-pnl-webapp/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "D:/Dev/liberty/libertytax-pnl-webapp/tests",
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -103,6 +160,7 @@
         "timeout": 30000
       },
       {
+<<<<<<< HEAD
         "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
@@ -112,6 +170,17 @@
         "id": "Mobile Safari",
         "name": "Mobile Safari",
         "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
+=======
+        "outputDir": "D:/Dev/liberty/libertytax-pnl-webapp/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "D:/Dev/liberty/libertytax-pnl-webapp/tests",
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -119,6 +188,7 @@
         "timeout": 30000
       },
       {
+<<<<<<< HEAD
         "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
@@ -128,6 +198,17 @@
         "id": "Microsoft Edge",
         "name": "Microsoft Edge",
         "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
+=======
+        "outputDir": "D:/Dev/liberty/libertytax-pnl-webapp/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "Microsoft Edge",
+        "name": "Microsoft Edge",
+        "testDir": "D:/Dev/liberty/libertytax-pnl-webapp/tests",
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -135,6 +216,7 @@
         "timeout": 30000
       },
       {
+<<<<<<< HEAD
         "outputDir": "E:/dev/libertytax-pnl-webapp/test-results",
         "repeatEach": 1,
         "retries": 0,
@@ -144,6 +226,17 @@
         "id": "Google Chrome",
         "name": "Google Chrome",
         "testDir": "E:/dev/libertytax-pnl-webapp/test/e2e",
+=======
+        "outputDir": "D:/Dev/liberty/libertytax-pnl-webapp/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "Google Chrome",
+        "name": "Google Chrome",
+        "testDir": "D:/Dev/liberty/libertytax-pnl-webapp/tests",
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -155,23 +248,29 @@
     "updateSnapshots": "missing",
     "updateSourceMethod": "patch",
     "version": "1.55.0",
-    "workers": 2,
+    "workers": 4,
     "webServer": {
-      "command": "npm run preview",
-      "url": "http://localhost:4173",
+      "command": "npm run dev",
+      "url": "http://localhost:3001",
       "reuseExistingServer": true,
       "timeout": 120000
     }
   },
   "suites": [
     {
+<<<<<<< HEAD
       "title": "test-header-updates.spec.js",
       "file": "test-header-updates.spec.js",
+=======
+      "title": "mobile\\responsive.spec.js",
+      "file": "mobile/responsive.spec.js",
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
+<<<<<<< HEAD
           "title": "Header Updates from Quick Start Wizard",
           "file": "test-header-updates.spec.js",
           "line": 4,
@@ -179,6 +278,15 @@
           "specs": [
             {
               "title": "should update header when Quick Start Wizard values change",
+=======
+          "title": "Mobile Responsiveness",
+          "file": "mobile/responsive.spec.js",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "displays correctly on mobile viewports",
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
               "ok": false,
               "tags": [],
               "tests": [
@@ -192,6 +300,7 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
+<<<<<<< HEAD
                       "status": "timedOut",
                       "duration": 30519,
                       "error": {
@@ -273,10 +382,24 @@
                           "line": 61
                         },
                         "snippet": "\u001b[0m \u001b[90m 59 |\u001b[39m     \u001b[90m// Test expenses navigation\u001b[39m\n \u001b[90m 60 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🔄 Clicking Expenses button...'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 61 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Expenses\")'\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 62 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m2000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 63 |\u001b[39m     \n \u001b[90m 64 |\u001b[39m     \u001b[36mconst\u001b[39m expensesUrl \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39murl()\u001b[33m;\u001b[39m\u001b[0m"
+=======
+                      "status": "failed",
+                      "duration": 5762,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('h1, h2, h3').filter({ hasText: 'P&L Budget & Forecast' }).first()\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1, h2, h3').filter({ hasText: 'P&L Budget & Forecast' }).first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('h1, h2, h3').filter({ hasText: 'P&L Budget & Forecast' }).first()\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1, h2, h3').filter({ hasText: 'P&L Budget & Forecast' }).first()\u001b[22m\n\n    at D:\\Dev\\liberty\\libertytax-pnl-webapp\\tests\\mobile\\responsive.spec.js:10:99",
+                        "location": {
+                          "file": "D:\\Dev\\liberty\\libertytax-pnl-webapp\\tests\\mobile\\responsive.spec.js",
+                          "column": 99,
+                          "line": 10
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  8 |\u001b[39m   test(\u001b[32m'displays correctly on mobile viewports'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m  9 |\u001b[39m     \u001b[90m// Test main elements are visible - use more specific selectors\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1, h2, h3'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[32m'P&L Budget & Forecast'\u001b[39m })\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m    |\u001b[39m                                                                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'button'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[35m/setup wizard|wizard/i\u001b[39m })\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m 12 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'button'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[35m/dashboard/i\u001b[39m })\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m 13 |\u001b[39m   })\u001b[0m"
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
                       },
                       "errors": [
                         {
                           "location": {
+<<<<<<< HEAD
                             "file": "E:\\dev\\libertytax-pnl-webapp\\test\\e2e\\test-header-updates.spec.js",
                             "column": 55,
                             "line": 61
@@ -295,21 +418,43 @@
                       "stderr": [],
                       "retry": 0,
                       "startTime": "2025-09-25T14:25:56.697Z",
+=======
+                            "file": "D:\\Dev\\liberty\\libertytax-pnl-webapp\\tests\\mobile\\responsive.spec.js",
+                            "column": 99,
+                            "line": 10
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('h1, h2, h3').filter({ hasText: 'P&L Budget & Forecast' }).first()\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1, h2, h3').filter({ hasText: 'P&L Budget & Forecast' }).first()\u001b[22m\n\n\n\u001b[0m \u001b[90m  8 |\u001b[39m   test(\u001b[32m'displays correctly on mobile viewports'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m  9 |\u001b[39m     \u001b[90m// Test main elements are visible - use more specific selectors\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1, h2, h3'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[32m'P&L Budget & Forecast'\u001b[39m })\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m    |\u001b[39m                                                                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'button'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[35m/setup wizard|wizard/i\u001b[39m })\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m 12 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'button'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[35m/dashboard/i\u001b[39m })\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m 13 |\u001b[39m   })\u001b[0m\n\u001b[2m    at D:\\Dev\\liberty\\libertytax-pnl-webapp\\tests\\mobile\\responsive.spec.js:10:99\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-13T15:38:18.112Z",
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "screenshot",
                           "contentType": "image/png",
+<<<<<<< HEAD
                           "path": "E:\\dev\\libertytax-pnl-webapp\\test-results\\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\\test-failed-1.png"
+=======
+                          "path": "D:\\Dev\\liberty\\libertytax-pnl-webapp\\test-results\\mobile-responsive-Mobile-R-deefb-rrectly-on-mobile-viewports-chromium\\test-failed-1.png"
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
                         },
                         {
                           "name": "video",
                           "contentType": "video/webm",
+<<<<<<< HEAD
                           "path": "E:\\dev\\libertytax-pnl-webapp\\test-results\\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\\video.webm"
+=======
+                          "path": "D:\\Dev\\liberty\\libertytax-pnl-webapp\\test-results\\mobile-responsive-Mobile-R-deefb-rrectly-on-mobile-viewports-chromium\\video.webm"
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
                         },
                         {
                           "name": "error-context",
                           "contentType": "text/markdown",
+<<<<<<< HEAD
                           "path": "E:\\dev\\libertytax-pnl-webapp\\test-results\\test-header-updates-Header-519d9-ate-correctly-between-pages-chromium\\error-context.md"
                         }
                       ],
@@ -317,15 +462,30 @@
                         "file": "E:\\dev\\libertytax-pnl-webapp\\test\\e2e\\test-header-updates.spec.js",
                         "column": 55,
                         "line": 61
+=======
+                          "path": "D:\\Dev\\liberty\\libertytax-pnl-webapp\\test-results\\mobile-responsive-Mobile-R-deefb-rrectly-on-mobile-viewports-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\Dev\\liberty\\libertytax-pnl-webapp\\tests\\mobile\\responsive.spec.js",
+                        "column": 99,
+                        "line": 10
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
                       }
                     }
                   ],
                   "status": "unexpected"
                 }
               ],
+<<<<<<< HEAD
               "id": "2c3dbe3ac11bbb04efd5-01e70c72afb1b5aabf77",
               "file": "test-header-updates.spec.js",
               "line": 53,
+=======
+              "id": "62f25149d1a219f4f2fe-b2db92d9fc275ce53705",
+              "file": "mobile/responsive.spec.js",
+              "line": 8,
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
               "column": 3
             }
           ]
@@ -335,11 +495,19 @@
   ],
   "errors": [],
   "stats": {
+<<<<<<< HEAD
     "startTime": "2025-09-25T14:25:46.017Z",
     "duration": 69369.266,
     "expected": 0,
     "skipped": 0,
     "unexpected": 2,
+=======
+    "startTime": "2025-09-13T15:38:12.904Z",
+    "duration": 11191.167,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+>>>>>>> origin/cursor/enhance-github-testing-and-virtual-team-4d10_archive
     "flaky": 0
   }
 }

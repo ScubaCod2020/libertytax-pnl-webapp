@@ -1,0 +1,24 @@
+{
+    "ci": {
+        "collect": {
+            "url": [
+                "http://localhost:3001/"
+            ],
+            "startServerCommand": "npx http-server angular/dist/angular -p 3001",
+            "startServerReadyPattern": "listen|ready",
+            "numberOfRuns": 1,
+            "settings": {
+                "preset": "desktop"
+            }
+        },
+        "assert": {
+            "assertions": {
+                "categories:performance": "warn"
+            }
+        },
+        "upload": {
+            "target": "filesystem",
+            "outputDir": ".triage/lh"
+        }
+    }
+}

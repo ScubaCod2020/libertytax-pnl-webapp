@@ -62,15 +62,17 @@ jobs:
         
     - name: 🔍 Verify artifacts
       run: |
-        echo "🔍 Verifying downloaded build artifacts..."
-        ls -la dist/ || echo "⚠️ No dist directory found"
-        
-        if [ ! -d "dist" ]; then
-          echo "❌ Build artifacts missing - need to rebuild"
+        echo "🔍 Verifying downloaded build artifacts..."                                               
+        DIST_DIR="dist/libertytax-pnl-angular/browser"
+        INDEX_HTML="$DIST_DIR/index.html"
+        ls -la dist/ || echo "⚠️ No dist directory found"                                               
+
+        if [ ! -f "$INDEX_HTML" ]; then
+          echo "❌ Build artifacts missing - need to rebuild"                                           
           npm ci
           npm run build
         else
-          echo "✅ Build artifacts found - skipping rebuild"
+          echo "✅ Build artifacts found - skipping rebuild"                                            
         fi
         
     - name: 🌐 Deploy to Vercel Staging
@@ -127,17 +129,17 @@ jobs:
           exit 1
         fi
         
-        if echo "$RESPONSE" | grep -q "assets/.*\.js"; then
-          echo "✅ JavaScript bundles found"
+        if echo "$RESPONSE" | grep -q "main.*\.js"; then                                             
+          echo "✅ JavaScript bundles found"        
         else
-          echo "❌ JavaScript bundles missing"
+          echo "❌ JavaScript bundles missing"      
           exit 1
         fi
-        
-        if echo "$RESPONSE" | grep -q '<div id="app">'; then
-          echo "✅ React app mount point found"
+
+        if echo "$RESPONSE" | grep -E "<app-root|<title>" > /dev/null; then                                            
+          echo "✅ Angular app root found"     
         else
-          echo "❌ React app mount point missing"
+          echo "❌ Angular app root missing"   
           exit 1
         fi
         
@@ -154,7 +156,7 @@ jobs:
         echo "|-----------|--------|---------|" >> $GITHUB_STEP_SUMMARY
         echo "| **Deployment** | ✅ **Success** | Vercel staging environment |" >> $GITHUB_STEP_SUMMARY
         echo "| **URL** | 🌐 **Active** | ${{ env.STAGING_URL }} |" >> $GITHUB_STEP_SUMMARY
-        echo "| **Content** | ✅ **Validated** | Liberty Tax branding, React app, JS bundles |" >> $GITHUB_STEP_SUMMARY
+        echo "| **Content** | ✅ **Validated** | Liberty Tax branding, Angular app, JS bundles |" >> $GITHUB_STEP_SUMMARY
         echo "| **Accessibility** | ✅ **Tested** | Site loads successfully |" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### 🎯 Manual Testing Checklist:" >> $GITHUB_STEP_SUMMARY

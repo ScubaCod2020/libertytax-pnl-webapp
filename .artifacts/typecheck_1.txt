@@ -1,0 +1,4 @@
+
+> libertytax-pnl-webapp@0.5.0-preview.4 type-check
+> tsc --noEmit
+

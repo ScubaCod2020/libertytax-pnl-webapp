@@ -1,0 +1,6 @@
+// angular/src/app/app.routes.ts
+wizard -> redirectTo income-drivers
+income-drivers -> redirectTo income-drivers
+step/2 -> redirectTo expenses
+step/3 -> redirectTo pnl
+dashboard -> redirectTo wizard

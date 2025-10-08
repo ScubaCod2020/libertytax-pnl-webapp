@@ -1,0 +1,69 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-09-12T14:27:32.327Z",
+  "tools": {
+    "bidirectional-data-flow-validator": {
+      "path": "scripts/bidirectional-data-flow-validator.js",
+      "purpose": "Validates field mappings between wizard, app state, and localStorage",
+      "dependencies": [
+        "src/hooks/useAppState.ts",
+        "src/hooks/usePersistence.ts",
+        "src/components/Wizard/types.ts"
+      ],
+      "criticalFields": [
+        "expectedGrowthPct",
+        "calculatedTotalExpenses",
+        "otherIncome"
+      ],
+      "updateTriggers": [
+        "interface-change",
+        "field-mapping-change"
+      ],
+      "automatedUpdate": true,
+      "status": "healthy"
+    },
+    "realtime-field-mapping-monitor": {
+      "path": "scripts/realtime-field-mapping-monitor.js",
+      "purpose": "Browser console tool for live data flow monitoring",
+      "dependencies": [
+        "src/hooks/useAppState.ts",
+        "src/hooks/usePersistence.ts"
+      ],
+      "criticalFields": [
+        "expectedGrowthPct",
+        "calculatedTotalExpenses"
+      ],
+      "updateTriggers": [
+        "interface-change",
+        "state-structure-change"
+      ],
+      "automatedUpdate": true,
+      "status": "outdated"
+    },
+    "comprehensive-user-choice-validation": {
+      "path": "scripts/comprehensive-user-choice-validation.js",
+      "purpose": "Tests all 192 user choice combinations for data flow issues",
+      "dependencies": [
+        "src/components/Wizard/calculations.ts",
+        "src/lib/calcs.ts"
+      ],
+      "criticalFields": [
+        "expectedGrowthPct",
+        "region",
+        "storeType"
+      ],
+      "updateTriggers": [
+        "business-logic-change",
+        "calculation-change"
+      ],
+      "automatedUpdate": true,
+      "status": "healthy"
+    }
+  },
+  "maintenance": {
+    "healthCheckInterval": "daily",
+    "autoUpdateEnabled": true,
+    "notificationThreshold": 7,
+    "maxUpdateAttempts": 3
+  }
+}

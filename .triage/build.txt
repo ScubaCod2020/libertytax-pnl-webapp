@@ -1,0 +1,39 @@
+> Building...
+ΓêÜ Building...
+Initial chunk files   | Names                         |  Raw size | Estimated transfer size
+chunk-BGWC4CKQ.js     | -                             | 144.73 kB |                42.30 kB
+chunk-URQKK4JY.js     | -                             | 114.45 kB |                27.21 kB
+main-52MUMLCC.js      | main                          |  58.82 kB |                14.44 kB
+polyfills-5CFQRCPP.js | polyfills                     |  34.59 kB |                11.33 kB
+chunk-G4TEWKTI.js     | -                             |  33.64 kB |                 9.78 kB
+chunk-6AIWCGET.js     | -                             |  31.95 kB |                 6.87 kB
+styles-GTZFOBYA.css   | styles                        |   6.70 kB |                 1.89 kB
+chunk-2BQVUZAF.js     | -                             | 766 bytes |               766 bytes
+chunk-F3JWQL6P.js     | -                             | 464 bytes |               464 bytes
+chunk-JY2AXTXZ.js     | -                             | 440 bytes |               440 bytes
+chunk-6PZGEJID.js     | -                             | 419 bytes |               419 bytes
+chunk-VV3V27JC.js     | -                             | 206 bytes |               206 bytes
+
+                      | Initial total                 | 427.17 kB |               116.11 kB
+
+Lazy chunk files      | Names                         |  Raw size | Estimated transfer size
+chunk-P32P66TB.js     | income-drivers-component      |  60.93 kB |                 9.76 kB
+chunk-5QNH6W2M.js     | expenses-component            |  48.29 kB |                10.26 kB
+chunk-FTPXGL77.js     | dashboard-component           |  28.19 kB |                 7.31 kB
+chunk-LK27JTCB.js     | pnl-component                 |  19.17 kB |                 5.17 kB
+chunk-PKWSXIIB.js     | reports-component             |  18.96 kB |                 5.20 kB
+chunk-XB4EE7HT.js     | -                             |   8.12 kB |                 2.22 kB
+chunk-5O7WAXL6.js     | practice-prompts-component    |   8.07 kB |                 2.51 kB
+chunk-UF54CUCC.js     | -                             |   6.50 kB |                 1.98 kB
+chunk-YCQHRSJM.js     | -                             |   4.37 kB |                 1.25 kB
+chunk-7SDILJH5.js     | app-state-debug-component     |   3.00 kB |                 1.07 kB
+chunk-CVSXUTN2.js     | -                             |   2.60 kB |                 1.01 kB
+chunk-WULIHSWV.js     | analysis-block-demo-component |   1.63 kB |               820 bytes
+chunk-SWO5DEFV.js     | -                             |   1.18 kB |               409 bytes
+chunk-HZ7QSNBZ.js     | -                             | 981 bytes |               981 bytes
+chunk-53NI5OA6.js     | api-client-service            | 825 bytes |               825 bytes
+
+Application bundle generation complete. [6.294 seconds] - 2025-10-03T18:23:50.024Z
+
+Output location: D:\Dev\liberty\libertytax-pnl-webapp\angular\dist\angular
+

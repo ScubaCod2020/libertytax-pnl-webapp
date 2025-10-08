@@ -1,0 +1,18 @@
+[
+  {
+    "backupRoot": "react-app-reference/src",
+    "compared": 57,
+    "identical": 23,
+    "modified": 34,
+    "missingCount": 0,
+    "missing": []
+  },
+  {
+    "backupRoot": "react-source-backup/src",
+    "compared": 57,
+    "identical": 23,
+    "modified": 34,
+    "missingCount": 0,
+    "missing": []
+  }
+]
