@@ -1,45 +1,157 @@
-.review-wrap { }
-.card-title { font-weight:600; margin: 0.5rem 0; }
-.small { font-size:0.9rem; }
-.export-bar { display:flex; gap:1rem; margin-bottom:1.5rem; padding:1rem; background:#f0f9ff; border:1px solid #0ea5e9; border-radius:6px; flex-wrap:wrap; }
-.export-actions { display:flex; gap:0.75rem; }
-.btn { color:#fff; padding:8px 16px; border-radius:6px; border:none; font-weight:600; font-size:14px; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1); }
-.btn.blue { background: linear-gradient(45deg, #1e40af, #3b82f6); }
-.btn.green { background: linear-gradient(45deg, #059669, #10b981); }
+@use "../../../../shared/styles/pnl.shell" as *;
 
-.print-report { background:#fff; border:2px solid #000; padding:2rem; margin-bottom:1.5rem; font-size:12px; line-height:1.4; }
-.print-header { text-align:center; margin-bottom:1.5rem; padding-bottom:0.75rem; border-bottom:2px solid #dc2626; }
-.generated { font-size:11px; color:#666; font-weight:400; }
-.config-summary { display:flex; justify-content:center; gap:2rem; margin-bottom:1.5rem; padding:8px; font-size:11px; border-top:1px solid #ddd; border-bottom:1px solid #ddd; flex-wrap:wrap; }
+// Reports-specific styles (monthly breakdown specific)
+.monthly-breakdown-wrap {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-.kpis h3, .pl-breakdown h3, .mgmt h3 { font-size:14px; font-weight:800; margin-bottom:1rem; border-bottom:2px solid #000; padding-bottom:4px; letter-spacing:1px; }
-.kpi-table { width:100%; border-collapse:collapse; }
-.kpi-table .label { font-weight:bold; padding:8px; border:1px solid #ddd; }
-.kpi-table .val { padding:8px; border:1px solid #ddd; text-align:right; font-weight:bold; }
-.row-gray { background:#f8f9fa; }
-.row-blue { background:#e6feff; }
-.row-green { background:#f0fdf4; }
-.green { color:#059669; }
-.amber { color:#f59e0b; }
-.red { color:#dc2626; }
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
 
-.pl-table { width:100%; border-collapse:collapse; margin-bottom:1rem; }
-.pl-table th, .pl-table td { padding:6px 8px; border:1px solid #ddd; }
-.pl-table .right { text-align:right; }
-.pl-table .center { text-align:center; }
-.head-green { background:#059669; color:#fff; }
-.head-red { background:#dc2626; color:#fff; }
-.total-rev { font-weight:bold; background:#e6f7ff; border:2px solid #059669; }
-.section td { font-weight:bold; font-size:0.9rem; color:#374151; background:#f8f9fa; }
-.indent { padding-left:20px; font-size:0.85rem; }
-.tag { font-size:0.7rem; background:#dbeafe; color:#1e40af; padding:1px 4px; border-radius:3px; margin-left:0.5rem; }
-.total-exp td { border:2px solid #dc2626; font-weight:bold; }
+.summary-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-.net-summary { text-align:center; }
-.net-box { padding:1rem; background:#f0fdf4; border:3px solid #059669; border-radius:4px; font-weight:bold; color:#059669; font-size:16px; }
+.card-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
 
-.checklist { font-size:11px; line-height:1.6; }
-.bold { font-weight:600; }
+.card-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
 
-.wizard-nav { display:flex; gap:12px; justify-content:space-between; padding:1.5rem 0; border-top:2px solid #e5e7eb; }
+.card-value.positive {
+  color: #059669;
+}
+
+.card-value.negative {
+  color: #dc2626;
+}
+
+.card-value.excellent {
+  color: #059669;
+}
+
+.card-value.good {
+  color: #f59e0b;
+}
+
+.card-value.needs-improvement {
+  color: #dc2626;
+}
+
+.monthly-table-container {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.monthly-table-container h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1f2937;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.monthly-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.monthly-table th,
+.monthly-table td {
+  padding: 0.75rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.monthly-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+}
+
+.monthly-table .number-col,
+.monthly-table .percent-col,
+.monthly-table .currency-col {
+  text-align: right;
+}
+
+.month-row.peak-season {
+  background: #fef3c7;
+}
+
+.month-row.off-season {
+  background: #f3f4f6;
+}
+
+.month-row.ramp-up {
+  background: #dbeafe;
+}
+
+.month-row.ramp-down {
+  background: #e0e7ff;
+}
+
+.month-name {
+  font-weight: 600;
+}
+
+.month-description {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.season-col {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.export-section {
+  background: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.export-section h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #0c4a6e;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
 
