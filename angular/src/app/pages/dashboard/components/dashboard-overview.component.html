@@ -11,13 +11,13 @@
         <div class="card-title">Average Net Fee</div>
         <div class="anf-chip">
           <span class="value">{{ (anfValue$ | async) || 0 | currency:'USD':'symbol':'1.0-0' }}</span>
-          <span class="chip" [ngClass]="anfStatus$ | async" [title]="(text.anfTooltip$() | async) || ''"></span>
+          <span class="chip" [ngClass]="anfStatus$ | async" [title]="(anfTooltip$ | async) || ''"></span>
         </div>
-        <div class="small" [ngClass]="anfStatus$ | async">{{ text.anfNote$() | async }}</div>
+        <div class="small" [ngClass]="anfStatus$ | async">{{ anfNote$ | async }}</div>
       </section>
     </div>
     
-    <div class="overview-item" *ngIf="flags.showMonthlyForecastCard">
+    <div class="overview-item" *ngIf="flags?.showMonthlyForecastCard">
       <app-monthly-forecast-card></app-monthly-forecast-card>
     </div>
     
@@ -29,7 +29,7 @@
       </section>
     </div>
     
-    <div class="overview-item" *ngIf="flags.showPerformanceCards">
+    <div class="overview-item" *ngIf="flags?.showPerformanceCards">
       <section class="card">
         <div class="card-title">Performance (Preview)</div>
         <div style="display:grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">

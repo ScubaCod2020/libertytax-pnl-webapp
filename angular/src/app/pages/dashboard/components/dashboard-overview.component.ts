@@ -11,7 +11,35 @@ import { MetricsAssemblerService } from '../../../domain/services/metrics-assemb
 import { WizardStateService } from '../../../core/services/wizard-state.service';
 import { KpiEvaluatorService } from '../../../domain/services/kpi-evaluator.service';
 import { SharedExpenseTextService } from '../../../shared/expenses/expense-text.service';
-import { map } from 'rxjs/operators';
+import { map, catchError, of } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+
+// Safe defaults for dashboard data
+const DEFAULT_ANSWERS = {
+  avgNetFee: 0,
+  projectedAvgNetFee: 0,
+  region: 'US',
+  storeType: 'new',
+  projectedTaxPrepReturns: 0,
+  projectedGrossFees: 0,
+  projectedTaxPrepIncome: 0,
+  discountsPct: 0,
+  discountsAmt: 0,
+  otherIncome: 0,
+  taxRushReturns: 0,
+  taxRushAvgNetFee: 0,
+  taxRushGrossFees: 0,
+  handlesTaxRush: false,
+  hasOtherIncome: false,
+};
+
+const DEFAULT_ANALYSIS_DATA = {
+  projected: { revenue: 0, expenses: 0, netIncome: 0 },
+  presets: { revenue: 0, expenses: 0, netIncome: 0 },
+  variance: { revenue: 0, expenses: 0, netIncome: 0 },
+};
+
+const DEFAULT_PERFORMANCE_METRICS = [];
 
 @Component({
   selector: 'app-dashboard-overview',
@@ -35,17 +63,71 @@ export class DashboardOverviewComponent {
   private readonly evaluator = inject(KpiEvaluatorService);
   readonly text = inject(SharedExpenseTextService);
 
-  // Observable properties for the dashboard overview
-  readonly anfValue$ = this.wizard.answers$.pipe(map(answers => answers.avgNetFee || 0));
+  // Safe observable properties with error handling and defaults
+  readonly anfValue$: Observable<number> =
+    this.wizard?.answers$?.pipe(
+      map(answers => {
+        const safeAnswers = answers ?? DEFAULT_ANSWERS;
+        return safeAnswers.avgNetFee ?? safeAnswers.projectedAvgNetFee ?? 0;
+      }),
+      catchError(() => of(0))
+    ) ?? of(0);
 
-  readonly anfStatus$ = this.wizard.answers$.pipe(
-    map(answers => this.evaluator.evaluate('avgNetFee', answers.avgNetFee || 0))
-  );
+  readonly anfStatus$: Observable<string> =
+    this.wizard?.answers$?.pipe(
+      map(answers => {
+        const safeAnswers = answers ?? DEFAULT_ANSWERS;
+        const avgNetFee = safeAnswers.avgNetFee ?? safeAnswers.projectedAvgNetFee ?? 0;
+        try {
+          return this.evaluator?.evaluate?.('avgNetFee', avgNetFee) ?? 'neutral';
+        } catch {
+          return 'neutral';
+        }
+      }),
+      catchError(() => of('neutral'))
+    ) ?? of('neutral');
 
-  readonly analysisData = this.assembler.assembleAnalysisData();
-  readonly performanceMetrics = this.metrics.assembleMetrics();
+  // Safe analysis data with error handling
+  get analysisData() {
+    try {
+      return this.assembler?.assembleAnalysisData?.() ?? DEFAULT_ANALYSIS_DATA;
+    } catch {
+      return DEFAULT_ANALYSIS_DATA;
+    }
+  }
 
+  // Safe performance metrics with error handling
+  get performanceMetrics() {
+    try {
+      return this.metrics?.assembleMetrics?.() ?? DEFAULT_PERFORMANCE_METRICS;
+    } catch {
+      return DEFAULT_PERFORMANCE_METRICS;
+    }
+  }
+
+  // Safe feature flag check
   get showAnalysis(): boolean {
-    return this.flags.showAnalysisBlock;
+    try {
+      return this.flags?.showAnalysisBlock === true;
+    } catch {
+      return false;
+    }
+  }
+
+  // Safe text service access
+  get anfTooltip$(): Observable<string> {
+    try {
+      return this.text?.anfTooltip$?.() ?? of('');
+    } catch {
+      return of('');
+    }
+  }
+
+  get anfNote$(): Observable<string> {
+    try {
+      return this.text?.anfNote$?.() ?? of('');
+    } catch {
+      return of('');
+    }
   }
 }
