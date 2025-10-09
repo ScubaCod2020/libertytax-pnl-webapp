@@ -283,17 +283,17 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
           />
         </FormField>
 
-      {/* Last Year Net Income Summary */}
-<NetIncomeSummary
-  label="Last Year"
-  gross={lyGross ?? 0}
-  discounts={answers.lastYearDiscountsAmt ?? 0}
-  otherIncome={answers.hasOtherIncome ? answers.lastYearOtherIncome ?? 0 : 0}
-  expenses={answers.lastYearExpenses ?? 0}
-  color="#15803d"
-  background="#f0fdf4"
-  border="2px solid #16a34a"
-/>
+        {/* Last Year Net Income Summary */}
+        <NetIncomeSummary
+          label="Last Year"
+          gross={lyGross ?? 0}
+          discounts={answers.lastYearDiscountsAmt ?? 0}
+          otherIncome={answers.hasOtherIncome ? answers.lastYearOtherIncome ?? 0 : 0}
+          expenses={answers.lastYearExpenses ?? 0}
+          color="#15803d"
+          background="#f0fdf4"
+          border="2px solid #16a34a"
+        />
 
       </FormSection>
 
@@ -315,8 +315,8 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
               value={
                 answers.expectedGrowthPct !== undefined
                   ? (GROWTH_OPTIONS.find(opt => opt.value === answers.expectedGrowthPct)
-                      ? answers.expectedGrowthPct.toString()
-                      : 'custom')
+                    ? answers.expectedGrowthPct.toString()
+                    : 'custom')
                   : '0'
               }
               onChange={(e) => {
@@ -530,16 +530,16 @@ export default function ExistingStoreSection({ answers, updateAnswers, region }:
         </FormField>
 
         {/* Projected Net Income Summary */}
-<NetIncomeSummary
-  label="Projected"
-  gross={projGross ?? 0}
-  discounts={answers.discountsAmt ?? 0}
-  otherIncome={answers.hasOtherIncome ? answers.otherIncome ?? 0 : 0}
-  expenses={answers.projectedExpenses ?? 0}
-  color="#15803d"
-  background="#f0fdf4"
-  border="2px solid #16a34a"
-/>
+        <NetIncomeSummary
+          label="Projected"
+          gross={projGross ?? 0}
+          discounts={answers.discountsAmt ?? 0}
+          otherIncome={answers.hasOtherIncome ? answers.otherIncome ?? 0 : 0}
+          expenses={answers.projectedExpenses ?? 0}
+          color="#15803d"
+          background="#f0fdf4"
+          border="2px solid #16a34a"
+        />
 
 
       </FormSection>

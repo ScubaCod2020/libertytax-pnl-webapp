@@ -26,8 +26,8 @@ interface WizardShellProps {
 
 export default function WizardShell({ region, setRegion, onComplete, onCancel, persistence }: WizardShellProps) {
   const [currentStep, setCurrentStep] = useState<WizardStep>('welcome')
-  const [visitedSteps, setVisitedSteps] = useState<Record<WizardStep, boolean>>({ welcome: true, inputs: false, review: false })
-  
+  // Removed visitedSteps - no more step jumping functionality
+
   // Initialize answers from saved data if available, otherwise start fresh
   const [answers, setAnswers] = useState<WizardAnswers>(() => {
     if (persistence) {
@@ -39,13 +39,13 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
       }
     }
     console.log('🧙‍♂️ Starting fresh wizard (no saved answers)')
-    return { 
+    return {
       region,
       handlesTaxRush: false, // Smart default: Most offices start without TaxRush
       hasOtherIncome: false // Default to No other income unless user opts in
     }
   })
-  
+
   // 🔄 CRITICAL DATA FLOW FIX: Sync app region with wizard region when loading saved data
   // Fixed race condition - removed 'region' from dependencies to prevent infinite update loops
   React.useEffect(() => {
@@ -55,9 +55,9 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
     }
   }, [answers.region, setRegion, persistence]) // Removed 'region' to fix race condition
 
-  console.log('🧙‍♂️ WIZARD WELCOME DEBUG:', { 
-    currentStep, 
-    answers, 
+  console.log('🧙‍♂️ WIZARD WELCOME DEBUG:', {
+    currentStep,
+    answers,
     region,
     storeType: answers.storeType,
     hasHistoricalData: !!(answers.lastYearGrossFees && answers.avgNetFee && answers.taxPrepReturns)
@@ -66,11 +66,11 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
   const updateAnswers = (updates: Partial<WizardAnswers>) => {
     setAnswers(prev => ({ ...prev, ...updates }))
   }
-  
+
   // Reset wizard data but stay in wizard (for "Reset Data" button on Page 1)
   const handleResetWizardData = () => {
     console.log('🔄 Resetting wizard data - staying in wizard')
-    setAnswers({ 
+    setAnswers({
       region,
       handlesTaxRush: false, // Maintain smart default on reset
       hasOtherIncome: false // Reset to No other income by default
@@ -79,13 +79,40 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
   }
 
   const handleNext = () => {
+    console.log('🔄 WIZARD NAVIGATION - Before Next:', {
+      currentStep,
+      answers,
+      avgNetFee: answers.avgNetFee,
+      taxPrepReturns: answers.taxPrepReturns,
+      storeType: answers.storeType
+    })
+
+    // CRITICAL FIX: For existing stores, ensure projected values are saved before navigation
+    if (currentStep === 'welcome' && answers.storeType === 'existing') {
+      const updates: Partial<WizardAnswers> = {}
+
+      // Calculate and save projected values if they don't exist but we have the base data
+      if (!answers.taxPrepReturns && answers.lastYearTaxPrepReturns && answers.expectedGrowthPct !== undefined) {
+        const projectedReturns = Math.round(answers.lastYearTaxPrepReturns * (1 + (answers.expectedGrowthPct || 0) / 100))
+        updates.taxPrepReturns = projectedReturns
+      }
+
+      if (!answers.avgNetFee && answers.manualAvgNetFee && answers.expectedGrowthPct !== undefined) {
+        const projectedAnf = Math.round(answers.manualAvgNetFee * (1 + (answers.expectedGrowthPct || 0) / 100))
+        updates.avgNetFee = projectedAnf
+      }
+
+      if (Object.keys(updates).length > 0) {
+        console.log('🔄 Saving projected values before navigation:', updates)
+        setAnswers(prev => ({ ...prev, ...updates }))
+      }
+    }
+
     switch (currentStep) {
       case 'welcome':
-        setVisitedSteps(prev => ({ ...prev, inputs: true }))
         setCurrentStep('inputs')
         break
       case 'inputs':
-        setVisitedSteps(prev => ({ ...prev, review: true }))
         setCurrentStep('review')
         break
       case 'review':
@@ -105,41 +132,6 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
     }
   }
 
-  const stepNav = (
-    <div style={{ display: 'flex', gap: '8px', padding: '0.5rem 0', marginBottom: '0.5rem' }}>
-      {([
-        { id: 'welcome', label: 'Step 1 · Welcome' },
-        { id: 'inputs', label: 'Step 2 · Inputs' },
-        { id: 'review', label: 'Step 3 · Review' },
-      ] as { id: WizardStep, label: string }[]).map(step => {
-        const isActive = currentStep === step.id
-        const isEnabled = visitedSteps[step.id] || step.id === 'welcome'
-        return (
-          <button
-            key={step.id}
-            type="button"
-            onClick={() => isEnabled && setCurrentStep(step.id)}
-            disabled={!isEnabled}
-            style={{
-              padding: '6px 10px',
-              borderRadius: '9999px',
-              border: '1px solid #d1d5db',
-              backgroundColor: isActive ? '#dbeafe' : isEnabled ? '#ffffff' : '#f3f4f6',
-              color: isActive ? '#1e40af' : '#374151',
-              fontWeight: isActive ? 700 : 500,
-              cursor: isEnabled ? 'pointer' : 'not-allowed'
-            }}
-            aria-current={isActive ? 'step' : undefined}
-            aria-disabled={!isEnabled}
-            title={isEnabled ? step.label : 'Complete previous steps first'}
-          >
-            {step.label}
-          </button>
-        )
-      })}
-    </div>
-  )
-
   const canProceed = () => {
     const hasProjectedBasics = (answers.avgNetFee ?? 0) > 0 && (answers.taxPrepReturns ?? 0) > 0
     if (answers.storeType === 'new') {
@@ -154,7 +146,7 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
   useEffect(() => {
     if (answers.storeType === 'existing' && answers.avgNetFee && answers.taxPrepReturns && answers.expectedGrowthPct !== undefined) {
       const calculated = calculateExpectedRevenue(answers)
-      
+
       console.log('🔍 EXISTING STORE Expected Revenue Calculation:', {
         inputs: {
           avgNetFee: answers.avgNetFee,
@@ -166,30 +158,30 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
         calculatedExpectedRevenue: calculated,
         willUpdate: !!calculated
       })
-      
+
       if (calculated) {
         updateAnswers({ expectedRevenue: calculated })
       }
     }
-    
+
     // For new stores, calculate expected revenue from target performance goals
     if (answers.storeType === 'new' && answers.avgNetFee && answers.taxPrepReturns) {
       // Direct calculation for new stores (no growth applied)
       const grossFees = answers.avgNetFee * answers.taxPrepReturns
-      
+
       // Apply discounts (default 3% if not specified)
       const discountsPct = answers.discountsPct || 3
       const discountAmt = grossFees * (discountsPct / 100)
       const netTaxPrepRevenue = grossFees - discountAmt
-      
+
       // Add other revenue sources
       const otherIncome = answers.otherIncome || 0
-      const taxRushIncome = (region === 'CA' && answers.taxRushReturns) 
-        ? answers.avgNetFee * answers.taxRushReturns 
+      const taxRushIncome = (region === 'CA' && answers.taxRushReturns)
+        ? answers.avgNetFee * answers.taxRushReturns
         : 0
-      
+
       const totalRevenue = netTaxPrepRevenue + otherIncome + taxRushIncome
-      
+
       console.log('🔍 NEW STORE Expected Revenue Calculation:', {
         netTaxPrepRevenue,
         otherIncome,
@@ -197,7 +189,7 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
         totalRevenue,
         willUpdateTo: totalRevenue
       })
-      
+
       updateAnswers({ expectedRevenue: totalRevenue })
     }
   }, [answers.avgNetFee, answers.taxPrepReturns, answers.expectedGrowthPct, answers.lastYearDiscountsPct, answers.lastYearOtherIncome, answers.lastYearTaxRushReturns, answers.region, answers.storeType, answers.discountsPct, answers.otherIncome, answers.taxRushReturns])
@@ -205,13 +197,12 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
   if (currentStep === 'inputs') {
     return (
       <div style={{ paddingLeft: '1rem' }}>
-        {stepNav}
-        <WizardInputs 
-          answers={answers} 
-          updateAnswers={updateAnswers} 
-          onNext={handleNext} 
-          onBack={handleBack} 
-          canProceed={canProceed()} 
+        <WizardInputs
+          answers={answers}
+          updateAnswers={updateAnswers}
+          onNext={handleNext}
+          onBack={handleBack}
+          canProceed={canProceed()}
         />
       </div>
     )
@@ -220,11 +211,10 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
   if (currentStep === 'review') {
     return (
       <div style={{ paddingLeft: '1rem' }}>
-        {stepNav}
-        <WizardReview 
-          answers={answers} 
-          onNext={() => onComplete(answers)} 
-          onBack={handleBack} 
+        <WizardReview
+          answers={answers}
+          onNext={() => onComplete(answers)}
+          onBack={handleBack}
         />
       </div>
     )
@@ -232,9 +222,8 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
 
   return (
     <div style={{ paddingLeft: '1rem' }}>
-      {stepNav}
-      <WelcomeStep 
-        region={region} 
+      <WelcomeStep
+        region={region}
         setRegion={setRegion}
         answers={answers}
         updateAnswers={updateAnswers}
@@ -248,9 +237,9 @@ export default function WizardShell({ region, setRegion, onComplete, onCancel, p
 }
 
 // Welcome step component - Clean orchestration of modular sections
-function WelcomeStep({ 
-  region, 
-  setRegion, 
+function WelcomeStep({
+  region,
+  setRegion,
   answers,
   updateAnswers,
   onNext,
@@ -292,23 +281,23 @@ function WelcomeStep({
       </div>
 
       {/* Region Selection */}
-      <FormField 
-        label="Region" 
+      <FormField
+        label="Region"
         helpText="Affects tax calculations and available features"
         required
       >
         <label htmlFor="region-select" style={{ fontWeight: 500, display: 'none' }}>Region</label>
-        <select 
+        <select
           id="region-select"
           title="Select region"
           aria-label="Region"
-          value={region} 
+          value={region}
           onChange={e => {
             const newRegion = e.target.value as Region
             setRegion(newRegion) // Update app state
             updateAnswers({ region: newRegion }) // Update wizard answers for saving
           }}
-          style={{ 
+          style={{
             padding: '0.5rem',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -322,18 +311,18 @@ function WelcomeStep({
       </FormField>
 
       {/* Store Type Selection */}
-      <FormField 
-        label="Store Type" 
+      <FormField
+        label="Store Type"
         helpText="New stores use regional stats, existing stores use your historical data"
         required
       >
         <label htmlFor="store-type-select" style={{ fontWeight: 500, display: 'none' }}>Store Type</label>
-        <select 
+        <select
           id="store-type-select"
           title="Select your store type"
-          value={answers.storeType || ''} 
+          value={answers.storeType || ''}
           onChange={e => updateAnswers({ storeType: e.target.value as 'new' | 'existing' })}
-          style={{ 
+          style={{
             padding: '0.5rem',
             border: '1px solid #d1d5db',
             borderRadius: '4px',
@@ -349,18 +338,18 @@ function WelcomeStep({
 
       {/* Store-specific sections */}
       {answers.storeType === 'existing' && (
-        <ExistingStoreSection 
-          answers={answers} 
-          updateAnswers={updateAnswers} 
-          region={region} 
+        <ExistingStoreSection
+          answers={answers}
+          updateAnswers={updateAnswers}
+          region={region}
         />
       )}
 
       {answers.storeType === 'new' && (
-        <NewStoreSection 
-          answers={answers} 
-          updateAnswers={updateAnswers} 
-          region={region} 
+        <NewStoreSection
+          answers={answers}
+          updateAnswers={updateAnswers}
+          region={region}
         />
       )}
 
@@ -378,18 +367,18 @@ function WelcomeStep({
 
       {/* Strategic Analysis - Only for existing stores with adjustments */}
       {answers.storeType === 'existing' && (
-        <StrategicAnalysis 
-          answers={answers} 
-          updateAnswers={updateAnswers} 
-          region={region} 
+        <StrategicAnalysis
+          answers={answers}
+          updateAnswers={updateAnswers}
+          region={region}
         />
       )}
 
       {/* Projected Net Income Summary - Only for stores with complete data */}
       {answers.projectedExpenses && answers.expectedRevenue && (
-        <div style={{ 
-          padding: '0.5rem', 
-          backgroundColor: '#fef3c7', 
+        <div style={{
+          padding: '0.5rem',
+          backgroundColor: '#fef3c7',
           borderRadius: '4px',
           fontWeight: 600,
           fontSize: '0.9rem',
@@ -407,23 +396,23 @@ function WelcomeStep({
       )}
 
       {/* Navigation */}
-      <div style={{ 
-        display: 'flex', 
-        gap: '12px', 
+      <div style={{
+        display: 'flex',
+        gap: '12px',
         justifyContent: 'space-between',
         padding: '1.5rem 0 1.5rem 0',
         borderTop: '1px solid #e5e7eb'
       }}>
         <div style={{ display: 'flex', gap: '8px' }}>
-          <button 
-            onClick={onResetData} 
+          <button
+            onClick={onResetData}
             title="Reset all wizard data and start fresh (stays in wizard)"
             aria-label="Clear wizard data"
             style={{
-              background: 'linear-gradient(45deg, #dc2626, #ef4444)', 
-              color: 'white', 
-              padding: '8px 16px', 
-              borderRadius: '6px', 
+              background: 'linear-gradient(45deg, #dc2626, #ef4444)',
+              color: 'white',
+              padding: '8px 16px',
+              borderRadius: '6px',
               border: 'none',
               textDecoration: 'none',
               fontWeight: '600',
@@ -434,14 +423,14 @@ function WelcomeStep({
           >
             🔄 Reset Data
           </button>
-          <button 
-            onClick={onCancel} 
+          <button
+            onClick={onCancel}
             title="Cancel wizard and return to dashboard"
             style={{
-              background: 'linear-gradient(45deg, #6b7280, #9ca3af)', 
-              color: 'white', 
-              padding: '6px 12px', 
-              borderRadius: '6px', 
+              background: 'linear-gradient(45deg, #6b7280, #9ca3af)',
+              color: 'white',
+              padding: '6px 12px',
+              borderRadius: '6px',
               border: 'none',
               textDecoration: 'none',
               fontWeight: '600',
@@ -454,16 +443,16 @@ function WelcomeStep({
             ❌ Cancel & Exit
           </button>
         </div>
-        <button 
-          onClick={onNext} 
+        <button
+          onClick={onNext}
           disabled={!canProceed()}
           style={{
             background: canProceed()
-              ? 'linear-gradient(45deg, #059669, #10b981)' 
-              : 'linear-gradient(45deg, #9ca3af, #d1d5db)', 
-            color: 'white', 
-            padding: '8px 16px', 
-            borderRadius: '6px', 
+              ? 'linear-gradient(45deg, #059669, #10b981)'
+              : 'linear-gradient(45deg, #9ca3af, #d1d5db)',
+            color: 'white',
+            padding: '8px 16px',
+            borderRadius: '6px',
             border: 'none',
             textDecoration: 'none',
             fontWeight: '600',

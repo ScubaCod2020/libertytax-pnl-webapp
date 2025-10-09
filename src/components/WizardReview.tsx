@@ -325,8 +325,8 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                       netMarginStatus === 'green'
                         ? '#059669'
                         : netMarginStatus === 'yellow'
-                        ? '#f59e0b'
-                        : '#dc2626',
+                          ? '#f59e0b'
+                          : '#dc2626',
                   }}
                 >
                   {results.netMarginPct.toFixed(1)}%
@@ -553,20 +553,6 @@ export default function WizardReview({ answers, onNext, onBack }: WizardReviewPr
                               }}
                             >
                               {field.label}
-                              {(answers as any)[field.id] !== undefined && (
-                                <span
-                                  style={{
-                                    fontSize: '0.7rem',
-                                    backgroundColor: '#dbeafe',
-                                    color: '#1e40af',
-                                    padding: '1px 4px',
-                                    borderRadius: '3px',
-                                    marginLeft: '0.5rem',
-                                  }}
-                                >
-                                  customized
-                                </span>
-                              )}
                             </td>
                             <td
                               style={{

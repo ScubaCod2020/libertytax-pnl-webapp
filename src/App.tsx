@@ -26,17 +26,17 @@ export default function App() {
   const persistence = usePersistence()
   const presets = usePresets(appState)
   const branding = useBranding(appState.region) // Apply regional branding
-  
+
   // Initialize wizard state from persistence on app startup
   React.useEffect(() => {
     const wizardState = persistence.getWizardState()
-    
+
     // If wizard is incomplete, show it
     if (wizardState.showWizard && !appState.showWizard) {
       console.log('🧙‍♂️ Restoring incomplete wizard session')
       appState.setShowWizard(true)
     }
-    
+
     // 🔧 FIX: If wizard is completed, load and apply saved answers to app state
     if (wizardState.wizardCompleted && !wizardState.showWizard) {
       const savedAnswers = persistence.loadWizardAnswers()
@@ -53,12 +53,12 @@ export default function App() {
   React.useEffect(() => {
     persistence.saveBaseline(appState)
     persistence.saveNow()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appState.region, appState.avgNetFee, appState.taxPrepReturns, appState.discountsPct])
-  
+
   // Debug system state
   const [debugOpen, setDebugOpen] = React.useState(false)
-  
+
   // Reset counter to force wizard remount when reset happens
   const [resetCounter, setResetCounter] = React.useState(0)
 
@@ -90,13 +90,13 @@ export default function App() {
   const handleDashboardToWizard = (updates: any) => {
     // Load current wizard answers
     const currentAnswers = persistence.loadWizardAnswers() || {}
-    
+
     // Merge dashboard changes with existing wizard answers
     const updatedAnswers = { ...currentAnswers, ...updates }
-    
+
     // Save back to wizard persistence
     persistence.saveWizardAnswers(updatedAnswers)
-    
+
     persistence.dbg('dashboard: Updated wizard persistence from dashboard changes', {
       updates,
       mergedAnswers: updatedAnswers
@@ -104,26 +104,26 @@ export default function App() {
   }
 
   // Debug panel handlers
-  const handleSaveNow = () => { 
+  const handleSaveNow = () => {
     persistence.dbg('ui: Save Now')
-    persistence.saveNow() 
+    persistence.saveNow()
   }
-  
-  const handleDumpStorage = () => { 
+
+  const handleDumpStorage = () => {
     persistence.dbg('ui: Dump storage')
     const env = persistence.loadEnvelope()
-    console.log('ENVELOPE', env) 
+    console.log('ENVELOPE', env)
   }
-  
+
   const handleCopyJSON = () => {
     try {
       const env = persistence.loadEnvelope()
       navigator.clipboard?.writeText(JSON.stringify(env ?? {}, null, 2))
       persistence.dbg('ui: Copied envelope to clipboard')
-    } catch {}
+    } catch { }
   }
-  
-  const handleClearStorage = () => { 
+
+  const handleClearStorage = () => {
     persistence.dbg('ui: Clear & reset')
     localStorage.removeItem(persistence.STORAGE_KEY)
     setResetCounter(prev => prev + 1) // Force wizard remount to clear state
@@ -132,37 +132,37 @@ export default function App() {
   // Debug panel configuration
   const showDebug = true // Enable debug UI for test expectations
 
-const savedAt = (() => {
-  try {
+  const savedAt = (() => {
+    try {
       const env = persistence.loadEnvelope()
       const iso = env?.meta?.savedAtISO
       return iso ? new Date(iso).toLocaleString() : '(never)'
-  } catch {
-    return '—'
-  }
-})()
+    } catch {
+      return '—'
+    }
+  })()
 
   // Main render - clean and focused
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       {/* Regional Brand Watermark */}
       <BrandWatermark region={appState.region} />
-      
-      <div style={{ 
-        flex: 1, 
+
+      <div style={{
+        flex: 1,
         transition: 'margin-right 0.3s ease',
         marginRight: debugOpen ? '350px' : '0',
         position: 'relative',
         zIndex: 1 // Ensure content is above watermark
       }}>
-        <Header 
-          region={appState.region} 
+        <Header
+          region={appState.region}
           setRegion={(newRegion) => {
             appState.setRegion(newRegion)
             // Save region change immediately to persistence
             persistence.saveBaseline({ ...appState, region: newRegion })
           }}
-          onReset={handleReset} 
+          onReset={handleReset}
           onShowWizard={() => appState.setShowWizard(true)}
           onShowDashboard={() => appState.setShowWizard(false)}
           onShowReports={() => {
@@ -190,34 +190,85 @@ const savedAt = (() => {
             persistence={persistence} // Pass persistence for loading saved answers
           />
         ) : (
-            <div className="container" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 350px) minmax(400px, 500px) minmax(600px, 1fr)', gap: '1.5rem', alignItems: 'start' }}>
-              <ProjectedPerformancePanel 
-                grossFees={calculations.grossFees}
-                discounts={calculations.discounts}
-                taxPrepIncome={calculations.taxPrepIncome}
-                taxRushIncome={calculations.taxRushIncome}
-                totalRevenue={calculations.totalRevenue}
-                totalExpenses={calculations.totalExpenses}
-                netIncome={calculations.netIncome}
-                netMarginPct={calculations.netMarginPct}
-                costPerReturn={calculations.costPerReturn}
-                totalReturns={calculations.totalReturns}
-                region={appState.region}
-                lastYearRevenue={(() => {
-                  const answers = persistence.loadWizardAnswers()
-                  if (!answers) return 0
-                  const grossFees = answers.lastYearGrossFees || 0
-                  const discounts = answers.lastYearDiscountsAmt || 0
-                  const otherIncome = answers.lastYearOtherIncome || 0
-                  return grossFees - discounts + otherIncome
-                })()}
-                lastYearExpenses={persistence.loadWizardAnswers()?.lastYearExpenses || 0}
-                lastYearReturns={persistence.loadWizardAnswers()?.lastYearTaxPrepReturns || 0}
-                expectedGrowthPct={persistence.loadWizardAnswers()?.expectedGrowthPct || 0}
-                handlesTaxRush={appState.region === 'CA' && persistence.loadWizardAnswers()?.handlesTaxRush}
-              />
-              
-              <InputsPanel
+          <div className="container" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 350px) minmax(400px, 500px) minmax(600px, 1fr)', gap: '1.5rem', alignItems: 'start' }}>
+            <ProjectedPerformancePanel
+              grossFees={calculations.grossFees}
+              discounts={calculations.discounts}
+              taxPrepIncome={calculations.taxPrepIncome}
+              taxRushIncome={calculations.taxRushIncome}
+              totalRevenue={calculations.totalRevenue}
+              totalExpenses={calculations.totalExpenses}
+              netIncome={calculations.netIncome}
+              netMarginPct={calculations.netMarginPct}
+              costPerReturn={calculations.costPerReturn}
+              totalReturns={calculations.totalReturns}
+              region={appState.region}
+              lastYearRevenue={(() => {
+                const answers = persistence.loadWizardAnswers()
+                if (!answers) return 0
+
+                // Calculate last year revenue from wizard data
+                const lastYearReturns = answers.lastYearTaxPrepReturns || 0
+                const lastYearAvgNetFee = answers.manualAvgNetFee || 0
+                const grossFees = lastYearReturns * lastYearAvgNetFee
+                const discounts = answers.lastYearDiscountsAmt || 0
+                const otherIncome = answers.hasOtherIncome ? (answers.lastYearOtherIncome || 0) : 0
+
+                console.log('🔍 PY Performance Revenue Calculation:', {
+                  lastYearReturns,
+                  lastYearAvgNetFee,
+                  grossFees,
+                  discounts,
+                  otherIncome,
+                  finalRevenue: grossFees - discounts + otherIncome
+                })
+
+                return grossFees - discounts + otherIncome
+              })()}
+              lastYearExpenses={(() => {
+                const answers = persistence.loadWizardAnswers()
+                if (!answers) return 0
+
+                // Use lastYearExpenses if provided, otherwise estimate at 76% of revenue
+                if (answers.lastYearExpenses) {
+                  return answers.lastYearExpenses
+                }
+
+                // Calculate estimated expenses if not provided
+                const lastYearReturns = answers.lastYearTaxPrepReturns || 0
+                const lastYearAvgNetFee = answers.manualAvgNetFee || 0
+                const grossFees = lastYearReturns * lastYearAvgNetFee
+                const discounts = answers.lastYearDiscountsAmt || 0
+                const taxPrepIncome = grossFees - discounts
+                const otherIncome = answers.hasOtherIncome ? (answers.lastYearOtherIncome || 0) : 0
+                const totalIncome = taxPrepIncome + otherIncome
+
+                // Estimate expenses at 76% of total income (industry standard)
+                const estimatedExpenses = Math.round(totalIncome * 0.76)
+
+                console.log('🔍 PY Performance Expenses Calculation:', {
+                  totalIncome,
+                  estimatedExpenses,
+                  source: 'estimated_76pct'
+                })
+
+                return estimatedExpenses
+              })()}
+              lastYearReturns={persistence.loadWizardAnswers()?.lastYearTaxPrepReturns || 0}
+              expectedGrowthPct={persistence.loadWizardAnswers()?.expectedGrowthPct || 0}
+              handlesTaxRush={(() => {
+                const wizardAnswers = persistence.loadWizardAnswers()
+                const result = appState.region === 'CA' && wizardAnswers?.handlesTaxRush
+                console.log('🔍 TaxRush Logic Debug:', {
+                  appStateRegion: appState.region,
+                  wizardHandlesTaxRush: wizardAnswers?.handlesTaxRush,
+                  finalResult: result
+                })
+                return result
+              })()}
+            />
+
+            <InputsPanel
               region={appState.region}
               scenario={appState.scenario}
               setScenario={appState.setScenario}
@@ -265,21 +316,30 @@ const savedAt = (() => {
               setTaxRushRoy={appState.setTaxRushRoy}
               miscPct={appState.miscPct}
               setMisc={appState.setMisc}
-              handlesTaxRush={appState.region === 'CA' && persistence.loadWizardAnswers()?.handlesTaxRush}
+              handlesTaxRush={(() => {
+                const wizardAnswers = persistence.loadWizardAnswers()
+                const result = appState.region === 'CA' && wizardAnswers?.handlesTaxRush
+                console.log('🔍 TaxRush Logic Debug:', {
+                  appStateRegion: appState.region,
+                  wizardHandlesTaxRush: wizardAnswers?.handlesTaxRush,
+                  finalResult: result
+                })
+                return result
+              })()}
               hasOtherIncome={persistence.loadWizardAnswers()?.hasOtherIncome}
               onSaveToWizard={handleDashboardToWizard}
             />
 
-            <Dashboard 
-              results={calculations} 
+            <Dashboard
+              results={calculations}
               hasOtherIncome={persistence.loadWizardAnswers()?.hasOtherIncome}
             />
           </div>
         )}
 
-        <Footer 
+        <Footer
           onNavigate={(page) => {
-            switch(page) {
+            switch (page) {
               case 'wizard':
                 appState.setShowWizard(true)
                 break

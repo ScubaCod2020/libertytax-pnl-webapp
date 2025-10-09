@@ -5,13 +5,13 @@ import React, { useEffect } from 'react'
 import type { Region } from '../lib/calcs'
 import type { Scenario } from '../data/presets'
 import type { WizardAnswers } from './Wizard/types'
-import { 
-  expenseFields, 
+import {
+  expenseFields,
   expenseCategories,
   getFieldsByCategory,
   getFieldsForRegion,
   type ExpenseField,
-  type ExpenseCategory 
+  type ExpenseCategory
 } from '../types/expenses'
 
 interface InputsPanelProps {
@@ -68,7 +68,7 @@ interface InputsPanelProps {
 
   // Bidirectional persistence functions
   onSaveToWizard?: (updates: Partial<WizardAnswers>) => void
-  
+
   // TaxRush handling for expense field filtering
   handlesTaxRush?: boolean
   hasOtherIncome?: boolean
@@ -118,7 +118,7 @@ export default function InputsPanel(props: InputsPanelProps) {
         // 🔄 PRESERVE: Don't include calculatedTotalExpenses in updates - preserve Page 2's calculation
         // Let Page 2's sophisticated calculation take priority over InputsPanel field changes
       }
-      
+
       console.log('🔄 Dashboard → Wizard: Saving changes to wizard persistence (preserving Page 2 calculatedTotalExpenses)', wizardUpdates)
       onSaveToWizard(wizardUpdates)
     }
@@ -190,7 +190,7 @@ export default function InputsPanel(props: InputsPanelProps) {
     const isTaxRushField = field.id === 'taxRushRoyaltiesPct'
     const isFranchiseRoyalty = field.category === 'franchise' && field.id.includes('oyalties')
     const isLocked = isFranchiseRoyalty // Franchise royalties are locked
-    
+
     // Calculate dollar value for percentage-based fields
     let dollarValue = 0
     if (!isFixed) {
@@ -223,7 +223,7 @@ export default function InputsPanel(props: InputsPanelProps) {
         } else if (field.calculationBase === 'percentage_salaries') {
           base = grossFees * salariesPct / 100
         }
-        
+
         if (base > 0) {
           const newPercentage = Math.round(validDollar / base * 100)
           const cappedPercentage = Math.max(0, Math.min(100, newPercentage))
@@ -231,7 +231,7 @@ export default function InputsPanel(props: InputsPanelProps) {
         }
       }
     }
-    
+
     // Style for TaxRush fields (blue boxed)
     const fieldStyle = isTaxRushField ? {
       border: '2px solid #3b82f6',
@@ -248,7 +248,7 @@ export default function InputsPanel(props: InputsPanelProps) {
             {field.label}
             {isLocked && ' (Locked)'}
           </label>
-          
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             {field.description && (
               <button
@@ -324,7 +324,7 @@ export default function InputsPanel(props: InputsPanelProps) {
             )}
           </div>
         </div>
-        
+
         {/* Slider for percentage-based fields */}
         {!isFixed && !isLocked && (
           <input
@@ -352,7 +352,7 @@ export default function InputsPanel(props: InputsPanelProps) {
     const isTaxRushField = field.id === 'taxRushRoyaltiesPct'
     const isFranchiseRoyalty = field.category === 'franchise' && field.id.includes('oyalties')
     const isLocked = isFranchiseRoyalty // Franchise royalties are locked
-    
+
     // Calculate dollar value for percentage-based fields
     let dollarValue = 0
     if (!isFixed) {
@@ -385,7 +385,7 @@ export default function InputsPanel(props: InputsPanelProps) {
         } else if (field.calculationBase === 'percentage_salaries') {
           base = grossFees * salariesPct / 100
         }
-        
+
         if (base > 0) {
           const newPercentage = Math.round(validDollar / base * 100)
           const cappedPercentage = Math.max(0, Math.min(100, newPercentage))
@@ -393,7 +393,7 @@ export default function InputsPanel(props: InputsPanelProps) {
         }
       }
     }
-    
+
     // Style for TaxRush fields (blue boxed)
     const fieldStyle = isTaxRushField ? {
       border: '2px solid #3b82f6',
@@ -410,7 +410,7 @@ export default function InputsPanel(props: InputsPanelProps) {
             {field.label}
             {isLocked && ' (Locked)'}
           </label>
-          
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             {/* Percentage/Fixed Amount Input */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
@@ -469,7 +469,7 @@ export default function InputsPanel(props: InputsPanelProps) {
             )}
           </div>
         </div>
-        
+
         {field.description && (
           <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
             {field.description}
@@ -504,16 +504,16 @@ export default function InputsPanel(props: InputsPanelProps) {
       </div>
 
       {/* 💰 Income Drivers Section - Enhanced with sliders */}
-      <div style={{ 
+      <div style={{
         marginBottom: '1.5rem',
         border: '1px solid #d1d5db',
         borderRadius: '8px',
         padding: '1rem',
         backgroundColor: '#fafafa'
       }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
           marginBottom: '1rem',
           fontWeight: 600,
           color: '#059669',
@@ -524,7 +524,7 @@ export default function InputsPanel(props: InputsPanelProps) {
           💰 Income Drivers
         </div>
 
-        {/* Average Net Fee with Manual Input + Slider */}
+        {/* Average Net Fee - Static Value from Wizard */}
         <div style={{ marginBottom: '0.75rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
             <label style={{ fontSize: '0.9rem', fontWeight: 500 }}>
@@ -532,41 +532,26 @@ export default function InputsPanel(props: InputsPanelProps) {
             </label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>
-                <input
-                type="number"
-                min="50"
-                max="500"
-                step="1"
-                value={avgNetFee}
-                onChange={(e) => setANF(Number(e.target.value) || 50)}
-                title="Average Net Fee"
-                  aria-label="Average Net Fee"
-                placeholder="125"
-                style={{
-                  width: '80px',
-                  padding: '0.25rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '4px',
-                  fontSize: '0.8rem',
-                  textAlign: 'right'
-                }}
-              />
+              <div style={{
+                width: '80px',
+                padding: '0.25rem',
+                border: '1px solid #e5e7eb',
+                borderRadius: '4px',
+                fontSize: '0.8rem',
+                textAlign: 'right',
+                backgroundColor: '#f9fafb',
+                color: '#6b7280'
+              }}>
+                {avgNetFee}
+              </div>
             </div>
           </div>
-          <input
-            type="range"
-            min="50"
-            max="500"
-            step="1"
-            value={avgNetFee}
-            onChange={(e) => setANF(Number(e.target.value))}
-            title={`Average Net Fee: $${avgNetFee} (Range: $50 - $500)`}
-            aria-label="ANF range"
-            style={{ width: '100%' }}
-          />
+          <div style={{ fontSize: '0.75rem', color: '#6b7280', fontStyle: 'italic' }}>
+            Value from Setup Wizard (read-only)
+          </div>
         </div>
 
-        {/* Tax-Prep Returns with Manual Input + Slider */}
+        {/* Tax-Prep Returns - Static Value from Wizard */}
         <div style={{ marginBottom: '0.75rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
             <label style={{ fontSize: '0.9rem', fontWeight: 500 }}>
@@ -574,220 +559,125 @@ export default function InputsPanel(props: InputsPanelProps) {
             </label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>#</span>
-                <input
-                type="number"
-                min="100"
-                max="10000"
-                step="1"
-                value={taxPrepReturns}
-                onChange={(e) => setReturns(Number(e.target.value) || 100)}
-                title="Tax Prep Returns"
-                  aria-label="Tax Prep Returns"
-                placeholder="1600"
-                style={{
-                  width: '80px',
-                  padding: '0.25rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '4px',
-                  fontSize: '0.8rem',
-                  textAlign: 'right'
-                }}
-              />
-            </div>
-          </div>
-          <input
-            type="range"
-            min="100"
-            max="5000"
-            step="1"
-            value={taxPrepReturns}
-            onChange={(e) => setReturns(Number(e.target.value))}
-            title={`Tax-Prep Returns: ${taxPrepReturns.toLocaleString()} (Range: 100 - 5,000)`}
-            aria-label="Returns range"
-            style={{ width: '100%' }}
-          />
-        </div>
-
-        {/* TaxRush Returns - Always render, disabled for US */}
-        <div style={{
-            border: '2px solid #3b82f6',
-            borderRadius: '8px',
-            padding: '0.75rem',
-            backgroundColor: '#f8fafc',
-            marginBottom: '0.75rem'
-          }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
-              <label style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-                TaxRush Returns
-              </label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>#</span>
-                <input
-                  type="number"
-                  min="0"
-                  max="1000"
-                  step="1"
-                  value={taxRushReturns}
-                  onChange={(e) => setTaxRush(Number(e.target.value) || 0)}
-                  title="TaxRush Returns"
-                  aria-label="TaxRush Returns"
-                  placeholder="0"
-                  disabled={region !== 'CA'}
-                  style={{
-                    width: '80px',
-                    padding: '0.25rem',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '4px',
-                    fontSize: '0.8rem',
-                    textAlign: 'right',
-                    backgroundColor: region === 'CA' ? '#f0f9ff' : '#f3f4f6'
-                  }}
-                />
+              <div style={{
+                width: '80px',
+                padding: '0.25rem',
+                border: '1px solid #e5e7eb',
+                borderRadius: '4px',
+                fontSize: '0.8rem',
+                textAlign: 'right',
+                backgroundColor: '#f9fafb',
+                color: '#6b7280'
+              }}>
+                {taxPrepReturns}
               </div>
             </div>
-            <input
-              type="range"
-              min="0"
-              max="1000"
-              step="1"
-              value={taxRushReturns}
-              onChange={(e) => setTaxRush(Number(e.target.value))}
-              title={`TaxRush Returns: ${taxRushReturns.toLocaleString()} (Range: 0 - 1,000)`}
-              aria-label="TaxRush range"
-              disabled={region !== 'CA'}
-              style={{ width: '100%', opacity: region === 'CA' ? 1 : 0.5 }}
-            />
+          </div>
+          <div style={{ fontSize: '0.75rem', color: '#6b7280', fontStyle: 'italic' }}>
+            Value from Setup Wizard (read-only)
+          </div>
         </div>
+        title={`Tax-Prep Returns: ${taxPrepReturns.toLocaleString()} (Range: 100 - 5,000)`}
+        aria-label="Returns range"
+        style={{ width: '100%' }}
+          />
+      </div>
 
-        {/* Customer Discounts - Dual Dollar/Percentage with Slider */}
+      {/* TaxRush Returns - Only for CA region */}
+      {region === 'CA' && handlesTaxRush && (
         <div style={{ marginBottom: '0.75rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
             <label style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-              Discounts
+              TaxRush Returns
             </label>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                        <input
-                          type="number"
-                          min="0"
-                          max="50"
-                          step="0.1"
-                          value={discountsPct || ''}
-                          onChange={(e) => handleDiscountPctChange(Number(e.target.value) || 0)}
-                          title="Customer Discounts Percentage"
-                          aria-label="Discounts %"
-                          placeholder="3"
-                          style={{
-                            width: '60px',
-                            padding: '0.25rem',
-                            border: '1px solid #d1d5db',
-                            borderRadius: '4px',
-                            fontSize: '0.8rem',
-                            textAlign: 'right'
-                          }}
-                        />
-                        <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>%</span>
-                      </div>
-                      <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>=</span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                        <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>
-                        <input
-                          type="number"
-                          min="0"
-                          step="1"
-                          value={Math.round(discountDollarAmount) || ''}
-                          onChange={(e) => handleDiscountDollarChange(Number(e.target.value) || 0)}
-                          title="Customer Discounts Dollar Amount"
-                          aria-label="Customer Discounts Dollar Amount"
-                          placeholder="0"
-                          style={{
-                            width: '80px',
-                            padding: '0.25rem',
-                            border: '1px solid #d1d5db',
-                            borderRadius: '4px',
-                            fontSize: '0.8rem',
-                            textAlign: 'right',
-                            backgroundColor: '#f9fafb'
-                          }}
-                        />
-                      </div>
-                    </div>
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="25"
-            step="1"
-            value={discountsPct}
-            onChange={(e) => handleDiscountPctChange(Number(e.target.value))}
-            title={`Customer Discounts: ${discountsPct}% ($${Math.round(discountDollarAmount).toLocaleString()}) - Range: 0% - 25%`}
-            aria-label="Customer Discounts slider"
-            style={{ width: '100%' }}
-          />
-        </div>
-
-        {/* Other Income with Manual Input - conditional */}
-        {hasOtherIncome && (
-          <div style={{ marginBottom: '0.75rem' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
-              <label style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-                Other Income
-              </label>
-              
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <button
-                  type="button"
-                  title="Additional revenue sources (e.g., notary services, business consulting)"
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#6b7280',
-                    cursor: 'help',
-                    fontSize: '0.8rem',
-                    padding: '0',
-                    lineHeight: 1
-                  }}
-                >
-                  ℹ️
-                </button>
-                <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>
-                <input
-                  type="number"
-                  min="0"
-                  max="50000"
-                  step="100"
-                  value={otherIncome}
-                  onChange={(e) => setOtherIncome(Number(e.target.value) || 0)}
-                  title="Other Income"
-                  aria-label="Other Income"
-                  placeholder="0"
-                  style={{
-                    width: '80px',
-                    padding: '0.25rem',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '4px',
-                    fontSize: '0.8rem',
-                    textAlign: 'right'
-                  }}
-                />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>#</span>
+              <div style={{
+                width: '80px',
+                padding: '0.25rem',
+                border: '1px solid #e5e7eb',
+                borderRadius: '4px',
+                fontSize: '0.8rem',
+                textAlign: 'right',
+                backgroundColor: '#f0f8ff',
+                color: '#1e40af',
+                fontWeight: 500
+              }}>
+                {taxRushReturns}
               </div>
             </div>
           </div>
+          <div style={{ fontSize: '0.75rem', color: '#1e40af', fontStyle: 'italic' }}>
+            Value from Setup Wizard (CA only)
+          </div>
+        </div>
+      )}
+
+      {/* Customer Discounts - Static Value from Wizard */}
+      <div style={{ marginBottom: '0.75rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
+          <label style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+            Discounts
+          </label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{
+              padding: '0.25rem',
+              border: '1px solid #e5e7eb',
+              borderRadius: '4px',
+              fontSize: '0.8rem',
+              backgroundColor: '#f9fafb',
+              color: '#6b7280'
+            }}>
+              {discountsPct}%
+            </div>
+          </div>
+        </div>
+        <div style={{ fontSize: '0.75rem', color: '#6b7280', fontStyle: 'italic' }}>
+          Value from Setup Wizard (read-only)
+        </div>
+      </div>
+
+      {/* Other Income - Only if enabled */}
+      {hasOtherIncome && (
+        <div style={{ marginBottom: '0.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
+            <label style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+              Other Income
+            </label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>$</span>
+              <div style={{
+                width: '80px',
+                padding: '0.25rem',
+                border: '1px solid #e5e7eb',
+                borderRadius: '4px',
+                fontSize: '0.8rem',
+                textAlign: 'right',
+                backgroundColor: '#f9fafb',
+                color: '#6b7280'
+              }}>
+                {otherIncome.toLocaleString()}
+              </div>
+            </div>
+          </div>
+          <div style={{ fontSize: '0.75rem', color: '#6b7280', fontStyle: 'italic' }}>
+            Value from Setup Wizard (read-only)
+          </div>
+        </div>
         )}
       </div>
 
-
-      {/* Expense Management Section - Flattened like Income Drivers */}
-      <div style={{ 
+      {/* Expense Management Section - Static Values from Wizard */}
+      <div style={{
         marginBottom: '1.5rem',
         border: '1px solid #d1d5db',
         borderRadius: '8px',
         padding: '1rem',
         backgroundColor: '#fafafa'
       }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
           marginBottom: '1rem',
           fontWeight: 600,
           color: '#6b7280',
@@ -797,33 +687,40 @@ export default function InputsPanel(props: InputsPanelProps) {
         }}>
           📊 Expense Management
         </div>
-        
-        <div>
-          {(() => {
-            // Get all expense fields filtered by region and TaxRush
-            const allExpenseFields = expenseFields.filter(field => {
-              // First filter by region
-              const regionMatch = !field.regionSpecific || field.regionSpecific === region || field.regionSpecific === 'both'
-              if (!regionMatch) return false
-              
-              // Then filter out TaxRush-related fields if handlesTaxRush is false
-              const isTaxRushField = field.id === 'taxRushRoyaltiesPct' || field.id === 'taxRushShortagesPct'
-              if (isTaxRushField && handlesTaxRush === false) return false
-              
-              return true
-            })
-            
-            // Debug logging
-            console.log('🔍 All Expense Fields:', {
-              region,
-              handlesTaxRush,
-              totalFields: expenseFields.length,
-              filteredFields: allExpenseFields.length,
-              fieldIds: allExpenseFields.map(f => f.id)
-            })
-            
-            return allExpenseFields.map(renderExpenseFieldWithSlider)
-          })()}
+
+        <div style={{ fontSize: '0.85rem', color: '#6b7280', fontStyle: 'italic', marginBottom: '1rem' }}>
+          Values calculated from Setup Wizard (read-only)
+        </div>
+
+        {/* Show key expense fields as static read-only values */}
+        <div style={{ display: 'grid', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', backgroundColor: '#f9fafb', borderRadius: '4px' }}>
+            <span>Salaries</span>
+            <span style={{ fontWeight: 500 }}>{salariesPct}%</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', backgroundColor: '#f9fafb', borderRadius: '4px' }}>
+            <span>Employee Deductions</span>
+            <span style={{ fontWeight: 500 }}>{empDeductionsPct}%</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', backgroundColor: '#f9fafb', borderRadius: '4px' }}>
+            <span>Rent</span>
+            <span style={{ fontWeight: 500 }}>{rentPct}%</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', backgroundColor: '#f9fafb', borderRadius: '4px' }}>
+            <span>Tax Prep Royalties</span>
+            <span style={{ fontWeight: 500 }}>{royaltiesPct}%</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', backgroundColor: '#f9fafb', borderRadius: '4px' }}>
+            <span>Advertising Royalties</span>
+            <span style={{ fontWeight: 500 }}>{advRoyaltiesPct}%</span>
+          </div>
+          {/* Only show TaxRush Royalties for CA region */}
+          {region === 'CA' && handlesTaxRush && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', backgroundColor: '#f0f8ff', borderRadius: '4px', border: '1px solid #3b82f6' }}>
+              <span>TaxRush Royalties</span>
+              <span style={{ fontWeight: 500 }}>{taxRushRoyaltiesPct}%</span>
+            </div>
+          )}
         </div>
       </div>
     </div>
